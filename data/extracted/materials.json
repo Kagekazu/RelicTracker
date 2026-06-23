@@ -1,0 +1,1241 @@
+[
+  {
+    "step": "Relic",
+    "material": "Radz-at-Han Quenching Oil",
+    "location": "Any Poetics Vendor",
+    "requirement": "15 Poetics",
+    "note": null
+  },
+  {
+    "step": "Zenith",
+    "material": "Thavnairian Mist",
+    "location": "Any Poetics Vendor",
+    "requirement": "20 Poetics",
+    "note": null
+  },
+  {
+    "step": "Novus",
+    "material": "Superior Enchanted Ink",
+    "location": "Any Poetics Vendor",
+    "requirement": "25 Poetics",
+    "note": null
+  },
+  {
+    "step": "Novus",
+    "material": "Alexandrite",
+    "location": "Mor Dhona",
+    "requirement": "75 Poetics (Map)",
+    "note": "5 Alexandrite per map"
+  },
+  {
+    "step": "Novus",
+    "material": null,
+    "location": "Hunt Billmaster",
+    "requirement": "50 Allied Seals",
+    "note": null
+  },
+  {
+    "step": "Novus",
+    "material": null,
+    "location": "Mor Dhona",
+    "requirement": "Morbid Motivation (Daily Quest)",
+    "note": "Rewards 1 map"
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Crafted Materials",
+    "location": "Each one requires a material acquired from desynthing an item bought from the Merchant & Mender in The Silver Bazaar in Western Thanalan for 3,000 Gil each. The material doesn't always drop from each desynth so this can be a bit of a Gil sink depending on luck. The items can also be sold on the marketboard as well, though likely at a high price. The items in question all have \"Aged\" at the start of their names.",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Bronze Lake Crystal",
+    "location": "Upper La Noscea - Jijiroon's Trading Post",
+    "requirement": "100,000 Gil",
+    "note": "Not much choice on how to get these. In total, this step alone costs 400,000 Gil, 40,000 Company Seals, and 400 Poetics. Adds up real quick when doing all 10 weapons."
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Allagan Resin",
+    "location": "Southern Thanalan - Forgotten Springs",
+    "requirement": "100,000 Gil",
+    "note": null
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Furite Sand",
+    "location": "Coerthas Central Highlands - Whitebrim Front",
+    "requirement": "100,000 Gil",
+    "note": null
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Brass Kettle",
+    "location": "North Shroud - Peacegarden",
+    "requirement": "100,000 Gil",
+    "note": null
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Bombard Core",
+    "location": "Grand Company Quartermaster",
+    "requirement": "20,000 Company Seals",
+    "note": null
+  },
+  {
+    "step": "Zodiac Braves",
+    "material": "Sacred Spring Water",
+    "location": "Any Poetics Vendor",
+    "requirement": "200 Poetics",
+    "note": null
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Anima",
+    "material": "Unidentifiable Bone",
+    "location": "Any Poetics Vendor",
+    "requirement": "150 Poetics",
+    "note": "Probably the step that offers the most ways to acquire the materials you're after. \n\nIf not using your daily Beast Tribe allowances, doing the ARR ones will net you one of each Unidentifiable material daily. You have to be at Friendly reputation for them. Otherwise, this turns into a massive poetics dump.\n\nIf going for the Precision items from Alexander, if you go on a tank you'll get progress for the achievements for one of the mounts."
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Hunt Billmaster",
+    "requirement": "300 Allied Seals",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Amalj'aa Vendor",
+    "requirement": "3 Steel Amalj'ok",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Luna Vanu",
+    "requirement": "6 Vanu Whitebone",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Vath Stickpeddler",
+    "requirement": "6 Black Copper Gil",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Mogmul Mogbelly",
+    "requirement": "18 Carved Kupo Nuts",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sabina",
+    "requirement": "3 Precision Gordian Bolt",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Unidentifiable Shell",
+    "location": "Any Poetics Vendor",
+    "requirement": "150 Poetics",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sahagin Vendor",
+    "requirement": "3 Rainbowtide Psashp",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Luna Vanu",
+    "requirement": "6 Vanu Whitebone",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Vath Stickpeddler",
+    "requirement": "6 Black Copper Gil",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Mogmul Mogbelly",
+    "requirement": "18 Carved Kupo Nuts",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sabina",
+    "requirement": "3 Precision Gordian Lens",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Dragonskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Wyvernskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Unidentifiable Ore",
+    "location": "Any Poetics Vendor",
+    "requirement": "150 Poetics",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Kobold Vendor",
+    "requirement": "3 Titan Cobaltpiece",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Luna Vanu",
+    "requirement": "6 Vanu Whitebone",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Vath Stickpeddler",
+    "requirement": "6 Black Copper Gil",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Mogmul Mogbelly",
+    "requirement": "18 Carved Kupo Nuts",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sabina",
+    "requirement": "3 Precision Gordian Spring",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Archaeoskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Dragonskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Unidentifiable Seeds",
+    "location": "Any Poetics Vendor",
+    "requirement": "150 Poetics",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Hunt Billmaster",
+    "requirement": "300 Allied Seals",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sylphic Vendor",
+    "requirement": "3 Sylphic Goldleaf",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Luna Vanu",
+    "requirement": "6 Vanu Whitebone",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Vath Stickpeddler",
+    "requirement": "6 Black Copper Gil",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Mogmul Mogbelly",
+    "requirement": "18 Carved Kupo Nuts",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Sabina",
+    "requirement": "3 Precision Gordian Shaft",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Adamantite Francesca",
+    "location": "Grand Company Quartermaster",
+    "requirement": "5,000 Company Seals",
+    "note": "Basically comes down to if you want to craft these or just buy them.\n\nIf you don't want to craft these, rolling Greed on any and all dungeon loot and then turning them in with Expert Delivery, unlocked at rank Sergeant Second Class, is a good way to farm Company Seals. Doing the daily turn-ins for them for crafting and gathering will also net some extra seals along with helping level those classes, if you don't already have them maxed out.\n\nCan be bought from the market board too if you really wanted too."
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Blacksmith",
+    "requirement": "Crafting",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Titanium Alloy Mirror",
+    "location": "Grand Company Quartermaster",
+    "requirement": "5,000 Company Seals",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Alchemist",
+    "requirement": "Crafting",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Dispelling Arrow",
+    "location": "Grand Company Quartermaster",
+    "requirement": "5,000 Company Seals",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Carpenter",
+    "requirement": "Crafting",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": "Kingcake",
+    "location": "Grand Company Quartermaster",
+    "requirement": "5,000 Company Seals",
+    "note": null
+  },
+  {
+    "step": "Anima",
+    "material": null,
+    "location": "Culinarian",
+    "requirement": "Crafting",
+    "note": null
+  },
+  {
+    "step": "Hyperconductive",
+    "material": "Aether Oil",
+    "location": "Any Poetics Vendor",
+    "requirement": "350 Poetics",
+    "note": "They removed \"The Gift of the Archmagus\" quest so this has been demoted to just another Poetics dumb. Fun times."
+  },
+  {
+    "step": "Reconditioned",
+    "material": "Umbrite",
+    "location": "Any Poetics Vendor",
+    "requirement": "75 Poetics",
+    "note": "This is just a straight Poetics sink."
+  },
+  {
+    "step": "Reconditioned",
+    "material": "Crystal Sand",
+    "location": "Ulan\n(All exchanges are for a single sand)",
+    "requirement": "5 Blue Crafters' Scrip Token",
+    "note": "These are what I personally do. Weekly Custom Deliveries can net a ton of these, and grinding the yellow scips for these is also very easy."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "5 Blue Gatherers' Scrip Token",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Garlond Steel",
+    "note": "Materials to craft these comes from FC Airships and Subs. Can also be bought from the Market Board. For those that say \"Fuck your grind, I've got Gil.\""
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Celestine",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "High Allagan Chimera Leather",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Amber-encased Vilekin",
+    "note": "Small chance to drop from Heavensward Battle Levequests treasure chests."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "3 Battlecraft Demimateria I",
+    "note": "From desynth or bought from the Market Board."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "2 Battlecraft Demimateria II",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "3 Fieldcraft Demimateria I",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "2 Fieldcraft Demimateria II",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Inferno Horn",
+    "note": "Can farm for the ARR EX Trial mounts while farming for these materials. I believe the weapon and accessory drops from the trails can desynth into the materials as well."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Crag Heart",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Diamond Tear",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Vortex Feather",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Barb of the Whorl",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Large Levin Orb",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "5 Superior Enchanted Ink",
+    "note": "Poetics dump"
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "5 Thavnairian Mist",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "2 Mhachi Farthing",
+    "note": "Mhachi Farthing is from Void Ark. The Allagan Catalyst is dropped in Labyrinth of the Ancients, Syrcus Tower, and is also desynthed from most of the gear dropped from the level 50 Alliance Raids."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "5 Allagan Catalyst",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Unidentifiable Bone",
+    "note": "See above for where and how to acquire."
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Unidentifiable Shell",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Unidentifiable Ore",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Unidentifiable Seeds",
+    "note": null
+  },
+  {
+    "step": "Reconditioned",
+    "material": null,
+    "location": null,
+    "requirement": "Moonstone",
+    "note": "Grand Company Seal dump or get a bunch of ARR maps and do those (Boarsking, Goatskin, Leather, Peisteskin, and Toadskin.)"
+  },
+  {
+    "step": "Sharpened",
+    "material": "Singing Cluster",
+    "location": "Any Poetics Vendor",
+    "requirement": "40 Poetics",
+    "note": null
+  },
+  {
+    "step": "Sharpened",
+    "material": null,
+    "location": "Idyllshire",
+    "requirement": "Cut from a Different Cloth (Daily Quest)",
+    "note": "Rewards 1 Singing Cluster"
+  },
+  {
+    "step": "Sharpened",
+    "material": null,
+    "location": "Idyllshire",
+    "requirement": "Seeking inspiration (Weekly Quest)",
+    "note": "Rewards 18 Singing Clusters"
+  },
+  {
+    "step": "Complete",
+    "material": "Pneumite",
+    "location": "Any Poetics Vendor",
+    "requirement": "100 Poetics",
+    "note": "Pretty much a choice of 1,500 Poetics or 60,000 Company Seals"
+  },
+  {
+    "step": "Complete",
+    "material": null,
+    "location": "Grand Company Quartermaster",
+    "requirement": "4,000 Company Seals",
+    "note": null
+  },
+  {
+    "step": "Complete",
+    "material": null,
+    "location": "Archaeoskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Complete",
+    "material": null,
+    "location": "Dragonskin Treasure Map",
+    "requirement": "Gathering",
+    "note": null
+  },
+  {
+    "step": "Lux",
+    "material": "Archaic Enchanted Ink",
+    "location": "Any Poetics Vendor",
+    "requirement": "500 Poetics",
+    "note": "Least its only 500 Poetics this time."
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Anemos",
+    "material": "Pazuzu's Feathers",
+    "location": "Pazuzu",
+    "requirement": "3 awarded on FATE completion",
+    "note": "Either get them from killing the enemy themselves in their NM FATE, or spend extra crystals for the materials."
+  },
+  {
+    "step": "Anemos",
+    "material": null,
+    "location": "Expedition Birdwatcher",
+    "requirement": "300 Protean Crystals",
+    "note": null
+  },
+  {
+    "step": "Pagos",
+    "material": "Louhi's Ice",
+    "location": "Louhi",
+    "requirement": "2 awarded on FATE completion",
+    "note": null
+  },
+  {
+    "step": "Pagos",
+    "material": null,
+    "location": "Expedition Birdwatcher",
+    "requirement": "50 Pagos Crystals",
+    "note": null
+  },
+  {
+    "step": "Pyros",
+    "material": "Penthesileas Flame",
+    "location": "Penthesilea",
+    "requirement": "3 awarded on FATE completion",
+    "note": null
+  },
+  {
+    "step": "Pyros",
+    "material": null,
+    "location": "Expedition Birdwatcher",
+    "requirement": "50 Pyros Crystals",
+    "note": null
+  },
+  {
+    "step": "Hydatos",
+    "material": "Crystalline Scale",
+    "location": "Provenance Watcher",
+    "requirement": "3 awarded on FATE completion",
+    "note": null
+  },
+  {
+    "step": "Hydatos",
+    "material": "Eureka Fragments",
+    "location": "The Baldesion Arsenal",
+    "requirement": "Awarded from the chests after bosses",
+    "note": "These are optional. Only thing you gain from upgrading the Eureka Relic is a +348 Elemental Bonus."
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Resistance Weapon",
+    "material": "Thavnairian Scalepowder",
+    "location": "Any Poetics Vendor",
+    "requirement": "250 Poetics",
+    "note": "First relic is free as a quest reward, after that, it's just a poetics dump."
+  },
+  {
+    "step": "Recollection",
+    "material": "Tortured Memory of the Dying",
+    "location": "Bozjan Southern Front - South Section\nCoerthas Western Highlands\nSea of Clouds",
+    "requirement": "Killing enemies with in the Bozjan Southern Front gives a chance for them to drop a Memory. \n\nGetting a Gold ranking on a FATE in HW awards a Memory 100% of the time.",
+    "note": "Farm Heavensward FATEs for 100% drop rate at a gold rating. Its technically faster to farm in the instance if you're able to set up an organized group."
+  },
+  {
+    "step": "Recollection",
+    "material": "Sorrowful Memory of the Dying",
+    "location": "Bozjan Southern Front - Middle Section\nThe Dravanian Forelands\nThe Churning Mists",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Recollection",
+    "material": "Harrowing Memory of the Dying",
+    "location": "Bozjan Southern Front - North Section\nThe Dravanian Hinterlands\nAzys Lla",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Recollection",
+    "material": "Bitter Memory of the Dying",
+    "location": "Bozjan Southern Front\nLeveling Roulette (Daily)\nLevel 60 Dungeons",
+    "requirement": null,
+    "note": "The Antitower can be cleared in under 15 minutes with randoms usually, depending on who you end up with in the party. A coordinated group can likely do it close if not sub-10 minutes. Would also be technically faster to do it inside the instance as you can get the other Memories at the same time."
+  },
+  {
+    "step": "Bozjan Armor",
+    "material": "Bozjan Coin",
+    "location": "Bozjan Southern Front",
+    "requirement": "Completion of Skirmishes and Castrum Lacus Litore",
+    "note": "Use to only be awarded in Castrum but that added them to Skirmish rewards of 1-2 per I believe. I've heard the change more or less killed Castrum a bit as doing Skirmishes also gives other rewards. Castrum does have a chance to award an Augmentation Item to skip having to grind 500/999 coins if you get lucky though."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Loathsome Memories of the Dying",
+    "location": "Bozjan Southern Front \nCrystal Tower Raids",
+    "requirement": null,
+    "note": "Critical Engagements are not 100% drop rate. They buffed Castrum to give 5 per clear so its best to do that now as you can also get some from other CEs while waiting along with doing the previous two memory farms at the same time."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Haunting Memories of the Dying",
+    "location": "Gyr Abania FATEs\nMhach Raids",
+    "requirement": null,
+    "note": "FATEs are not 100% drop rate, but they have buffed the rate once now so its a toss up on which is better really. Pick your favorite alliance raid from HW, and SB, and run it to death or go maul FATEs. BLU can also speed this up. Also it's thankfully a one time only deal."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Vexatious Memories of the Dying",
+    "location": "Othard FATEs\nIvalice Raids",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Timeworn Artifacts",
+    "location": "Palace of the Dead\nDelubrum Reginae",
+    "requirement": null,
+    "note": "Palace of the Dead isn't 100% drop rate but does increase every 50 floors. (1-50 - 30%) (51-100 - 50%) (101-150 - 80%) (151-200 - 100%) Finds some friends and do PotD or take a nap in Delubrum."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Aetherial Sealant",
+    "location": "Any Poetics Vendor",
+    "requirement": "100 Poetics",
+    "note": "Its only to redo stats on the relics."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Bozjan Silver Coin",
+    "location": "Delubrum Reginae\nField Notes Exchange",
+    "requirement": null,
+    "note": "All stuff for the Law's Order armor. To augment the armor, you need the augmented Bozjan Armor and sacrifice it."
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Bozjan Gold Coin",
+    "location": "Delubrum Reginae\nResistance Supplier\nOne Man's Relic (Weekly)",
+    "requirement": "100 Silver Coins",
+    "note": null
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Runner's Plating",
+    "location": "Delubrum Reginae (Savage)",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Augmented Law",
+    "material": "Orderly Runner's Secrets",
+    "location": "Resistance Supplier",
+    "requirement": "10 Runner's Plating",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "Compact Axles",
+    "location": "Zadnor\nAlexander Raids",
+    "requirement": "The Southern Plateau Skirmishs\nFirst two floors from each tier",
+    "note": "One time step divided across 3 quests but you can grab them all at once. Finish the Bozjan story with these active and you'll have a decent amount of what you need. From there just either go keep farming in Bozja and can go do what ever raids you'd need to finish this step out if you're having poor luck with CE spawns."
+  },
+  {
+    "step": "Blade's",
+    "material": "Compact Springs",
+    "location": "Zadnor\nAlexander Raids",
+    "requirement": "The Southern Plateau CEs\nLast two floors from each tier",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "A Day in the Life: Battles for the Realm",
+    "location": "Zadnor\nOmega raids",
+    "requirement": "The Western Plateau Skirmishs\nFirst two floors from each tier",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "A Day in the Life: Beyond the Rift",
+    "location": "Zadnor\nOmega raids",
+    "requirement": "The Western Plateau CEs\nLast two floors from each tier",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "Bleak Memories of the Dying",
+    "location": "Zadnor\nEden Raids",
+    "requirement": "The Northern Plateau Skirmishs\nFirst two floors from each tier",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "Lurid Memoreis of the Dying",
+    "location": "Zadnor\nEden Raids",
+    "requirement": "The Northern Plateau CEs\nLast two floors from each tier",
+    "note": null
+  },
+  {
+    "step": "Blade's",
+    "material": "Raw Emotions",
+    "location": "Delubrum Reginae\nThe Dalriada\nLevel 70 Dungeons\nHeaven on High",
+    "requirement": null,
+    "note": "Safe to assume the HoH drops work like they did for PotD for the most part. Really, just take your pick on how you want to do this.\nDelubrum gives 2 per run\nDalriada gives 3 per run"
+  },
+  {
+    "step": "Blade's",
+    "material": "Bozjan Mythril Con",
+    "location": "The Dalriada\nField Notes Exchange",
+    "requirement": null,
+    "note": "Stuff for the Blade's armor sets which are based on FFXII characters and most of it frankly looks like ARR gear we already have. They also don't give hast so its just for either stats for alt jobs or glamour really."
+  },
+  {
+    "step": "Blade's",
+    "material": "Bozjan Platinum Coin",
+    "location": "The Dalriada\nResistance Supplier\nA Ruined Opportunity (Weekly)",
+    "requirement": "100 Mythril Coins",
+    "note": null
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Manderville",
+    "material": "Everything",
+    "location": "Jubrunnah",
+    "requirement": "500 Allagan Tomestones of Poetics",
+    "note": "This entire relic is just 1500 tomes per step."
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Azurite",
+    "location": "Urqopacha",
+    "requirement": "FATEs & Critical Engagments",
+    "note": "Drop rates aren't amazing, best guess on out of instance FATEs is 5% or less. \n\nRecommended path is to do The Occult Crescent: South Horn till you start rounding out some of the Demiatma's and then go and target farm any remaning ones. This step is going to take a while either way."
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Eldergrowth",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Shadowed City",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Verdigris",
+    "location": "Kozama'uka",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Stonemarch",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Abandoned Ascent",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Malachite",
+    "location": "Yak T'el",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Crystallized Cavens",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Realgar",
+    "location": "Shaaloani",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Vanishing Slop",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - The Wanderer's Haven",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Caput",
+    "location": "Heritage Found",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Lost Citidel",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": "Orpiment",
+    "location": "Living Memory",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Southdown Heath",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Penumbrae",
+    "material": null,
+    "location": "The Occult Crescent: South Horn - Heath Cliff",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Umbrae",
+    "material": "Rroneek Glue",
+    "location": "Goplu - Tuliyollal",
+    "requirement": "300,000 Gil",
+    "note": "Just a one time step."
+  },
+  {
+    "step": "Umbrae",
+    "material": "Ut-ohmu Siderrite",
+    "location": "Rral Wuruq - Yak T'el",
+    "requirement": "600 Bicolor Gemstones",
+    "note": null
+  },
+  {
+    "step": "Umbrae",
+    "material": "Synthetic Dark Matter Alpha",
+    "location": "Crafted or purchased from the Market Board",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Umbrae",
+    "material": "Synthetic Dark Matter Beta",
+    "location": null,
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Umbrae",
+    "material": "Synthetic Dark Matter Gamma",
+    "location": null,
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Obscurum",
+    "material": "Umbral Clay",
+    "location": "Goplu - Tuliyollal",
+    "requirement": "300,000 Gil",
+    "note": "Just a one time step."
+  },
+  {
+    "step": "Obscurum",
+    "material": "Aspected Aether Agglomerate",
+    "location": "Crafted or purchased from the Market Board",
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Obscurum",
+    "material": "Aspected Aetheroconductor",
+    "location": null,
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Obscurum",
+    "material": "Aspected Aetherocatalyst",
+    "location": null,
+    "requirement": null,
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "E. Silver Pieces",
+    "location": "The Occult Crescent: South Horn",
+    "requirement": "FATEs & Critical Engagments",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "E. Gold Pieces",
+    "location": null,
+    "requirement": "Regular Mobs",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "Aetherspun Silver",
+    "location": "The Occult Crescent: South Horn - Expedition Antiquarian",
+    "requirement": "1200 E. Silver Pieces",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "Aetherial Fixative",
+    "location": null,
+    "requirement": "1600 E. Gold Pieces",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "Aetherspun Gold",
+    "location": "The Occult Crescent: South Horn",
+    "requirement": "Chests",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "X-Fixative",
+    "location": null,
+    "requirement": "The Forked Tower: Blood",
+    "note": null
+  },
+  {
+    "step": "Arcanaut",
+    "material": "Step",
+    "location": "Collecability",
+    "requirement": "Reward",
+    "note": "Note"
+  },
+  {
+    "step": "Skysung",
+    "material": "Augmented Dragonsung",
+    "location": "360-539",
+    "requirement": "2 Gobbiegoo",
+    "note": "Craft"
+  },
+  {
+    "step": "Skysung",
+    "material": null,
+    "location": "540-719",
+    "requirement": "3 Gobbiegoo",
+    "note": null
+  },
+  {
+    "step": "Skysung",
+    "material": null,
+    "location": "720+",
+    "requirement": "5 Gobbiegoo",
+    "note": null
+  },
+  {
+    "step": "Skysung",
+    "material": "Skysung",
+    "location": "400-599",
+    "requirement": "2 Highly Viscous Gobbiegoo",
+    "note": "More craft"
+  },
+  {
+    "step": "Skysung",
+    "material": null,
+    "location": "600-799",
+    "requirement": "3 Highly Viscous Gobbiegoo",
+    "note": null
+  },
+  {
+    "step": "Skysung",
+    "material": null,
+    "location": "800+",
+    "requirement": "5 Highly Viscous Gobbiegoo",
+    "note": null
+  },
+  {
+    "step": "Skybuilders",
+    "material": "DoH Skybuilders'",
+    "location": "470-849",
+    "requirement": "1 Oddly Delicate Part",
+    "note": "Further craft"
+  },
+  {
+    "step": "Skybuilders",
+    "material": null,
+    "location": "850-1229",
+    "requirement": "2 Oddly Delicate Part",
+    "note": null
+  },
+  {
+    "step": "Skybuilders",
+    "material": null,
+    "location": "1230+",
+    "requirement": "3 Oddly Delicate Part",
+    "note": null
+  },
+  {
+    "step": "Skybuilders",
+    "material": "DoL Skybuilders'",
+    "location": "400-699",
+    "requirement": "1 Oddly Delicate Part",
+    "note": "Gather"
+  },
+  {
+    "step": "Skybuilders",
+    "material": null,
+    "location": "700-999",
+    "requirement": "3 Oddly Delicate Part",
+    "note": null
+  },
+  {
+    "step": "Skybuilders",
+    "material": null,
+    "location": "1000.0",
+    "requirement": "7 Oddly Delicate Part",
+    "note": null
+  },
+  {
+    "step": "Step",
+    "material": "Material",
+    "location": "Location",
+    "requirement": "Requirement",
+    "note": "Note"
+  },
+  {
+    "step": "Crystalline",
+    "material": "DoH Augmented Splendourous",
+    "location": "540-899",
+    "requirement": "1 Splendorous Component",
+    "note": "Even further craft"
+  },
+  {
+    "step": "Crystalline",
+    "material": null,
+    "location": "900+",
+    "requirement": "3 Splendorous Component",
+    "note": null
+  },
+  {
+    "step": "Crystalline",
+    "material": "DoL Augmented Splendourous",
+    "location": "579-999",
+    "requirement": "1 Splendorous Component",
+    "note": "More gather"
+  },
+  {
+    "step": "Crystalline",
+    "material": null,
+    "location": "1000+",
+    "requirement": "3 Splendorous Component",
+    "note": null
+  },
+  {
+    "step": "Crystalline",
+    "material": "DoH Crystalline",
+    "location": "660-1099",
+    "requirement": "1 Adaptive Component",
+    "note": "Crafting Limit Break"
+  },
+  {
+    "step": "Crystalline",
+    "material": null,
+    "location": "1100+",
+    "requirement": "3 Adaptive Component",
+    "note": null
+  },
+  {
+    "step": "Crystalline",
+    "material": "DoH Crystalline",
+    "location": "579-999",
+    "requirement": "1 Adaptive Component",
+    "note": "Even further gather"
+  },
+  {
+    "step": "Crystalline",
+    "material": null,
+    "location": "1000+",
+    "requirement": "3 Adaptive Component",
+    "note": null
+  }
+]
