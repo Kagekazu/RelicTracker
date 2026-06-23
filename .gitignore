@@ -1,0 +1,16 @@
+# Build output
+**/bin/
+**/obj/
+.idea/
+.refs/
+
+# Wyn workbook (large; keep locally or use Git LFS)
+data/Wyn's Relic Tracker.xlsx
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store

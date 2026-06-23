@@ -1,0 +1,14 @@
+{
+  "source": "Wyn's Relic Tracker",
+  "sheetVersion": "v1.6.0",
+  "patch": "Patch 7.41",
+  "expansions": [
+    "ARR",
+    "HW",
+    "SB",
+    "ShB",
+    "EW",
+    "DT",
+    "DoHDoL"
+  ]
+}

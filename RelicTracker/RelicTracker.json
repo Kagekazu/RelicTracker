@@ -1,0 +1,15 @@
+{
+  "Author": "Kagekazu",
+  "Name": "RelicTracker",
+  "Punchline": "Track relic materials across inventory and retainers.",
+  "Description": "Track relic progression materials using Wyn's data model, with live inventory counts from Allagan Tools.",
+  "InternalName": "RelicTracker",
+  "IconUrl": "https://raw.githubusercontent.com/Kagekazu/RelicTracker/main/images/icon.png",
+  "RepoUrl": "https://github.com/Kagekazu/RelicTracker",
+  "Tags": [
+    "relic",
+    "inventory",
+    "crafting",
+    "utility"
+  ]
+}
