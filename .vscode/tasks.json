@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-debug",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/RelicTracker.slnx",
+        "-c",
+        "Debug",
+        "-p:Platform=x64"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-release",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/RelicTracker.slnx",
+        "-c",
+        "Release",
+        "-p:Platform=x64"
+      ],
+      "group": "build",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "extract-wyn-data",
+      "type": "shell",
+      "command": "python",
+      "args": ["${workspaceFolder}/data/extract_wyn.py"],
+      "group": "none"
+    }
+  ]
+}
