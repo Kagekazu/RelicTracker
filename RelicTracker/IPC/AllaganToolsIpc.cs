@@ -1,5 +1,5 @@
-using Dalamud.Plugin;
 using Dalamud.Plugin.Ipc;
+using ECommons.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace RelicTracker.IPC;
@@ -10,57 +10,91 @@ internal static class AllaganToolsIpc
         .Select(static t => (uint)t)
         .ToArray();
 
+    private static ICallGateSubscriber<bool, bool>? _initialized;
     private static ICallGateSubscriber<bool>? _isInitialized;
-    private static ICallGateSubscriber<uint, ulong, int, uint>? _itemCount;
     private static ICallGateSubscriber<uint, bool, uint[], uint>? _itemCountOwned;
-    private static ICallGateSubscriber<bool, HashSet<ulong>>? _getCharactersOwnedByActive;
+    private static bool _ipcBound;
 
-    public static bool IsPluginLoaded =>
+    public static bool IsInstalled =>
         Svc.PluginInterface.InstalledPlugins.Any(p =>
-            p.InternalName == RelicTrackerConstants.AllaganToolsPluginName && p.IsLoaded);
+            p.InternalName is "InventoryTools" or "Allagan Tools" or "AllaganTools");
 
-    public static bool IsReady => IsPluginLoaded && (_isInitialized?.InvokeFunc() ?? false);
+    public static bool IsEnabled =>
+        IsInstalled &&
+        (DalamudReflector.TryGetDalamudPlugin("Allagan Tools", out _, false, true) ||
+         DalamudReflector.TryGetDalamudPlugin("InventoryTools", out _, false, true));
 
-    public static void Initialize(IDalamudPluginInterface pluginInterface)
+    public static bool IsReady =>
+        IsEnabled && _ipcBound && _itemCountOwned != null && InvokeIsInitialized();
+
+    public static void Init()
     {
-        _isInitialized = pluginInterface.GetIpcSubscriber<bool>("AllaganTools.IsInitialized");
-        _itemCount = pluginInterface.GetIpcSubscriber<uint, ulong, int, uint>("AllaganTools.ItemCount");
-        _itemCountOwned = pluginInterface.GetIpcSubscriber<uint, bool, uint[], uint>("AllaganTools.ItemCountOwned");
-        _getCharactersOwnedByActive = pluginInterface.GetIpcSubscriber<bool, HashSet<ulong>>("AllaganTools.GetCharactersOwnedByActive");
+        _initialized = Svc.PluginInterface.GetIpcSubscriber<bool, bool>("AllaganTools.Initialized");
+        _isInitialized = Svc.PluginInterface.GetIpcSubscriber<bool>("AllaganTools.IsInitialized");
+        _initialized.Subscribe(OnAllaganToolsInitialized);
+        OnAllaganToolsInitialized(true);
+    }
+
+    public static void Dispose()
+    {
+        _initialized?.Unsubscribe(OnAllaganToolsInitialized);
+        _initialized = null;
+        _isInitialized = null;
+        _itemCountOwned = null;
+        _ipcBound = false;
     }
 
     public static uint GetOwnedCount(uint itemId, bool activeCharacterOnly)
     {
-        if (!IsReady)
+        if (!IsReady || _itemCountOwned == null)
         {
             return 0;
         }
 
         try
         {
-            if (!activeCharacterOnly && _itemCountOwned != null)
-            {
-                return _itemCountOwned.InvokeFunc(itemId, false, AllInventoryTypes);
-            }
-
-            if (_itemCount == null || _getCharactersOwnedByActive == null)
-            {
-                return 0;
-            }
-
-            var characterIds = _getCharactersOwnedByActive.InvokeFunc(true);
-            uint total = 0;
-            foreach (var characterId in characterIds)
-            {
-                total += _itemCount.InvokeFunc(itemId, characterId, -1);
-            }
-
-            return total;
+            return _itemCountOwned.InvokeFunc(itemId, activeCharacterOnly, AllInventoryTypes);
         }
         catch (Exception ex)
         {
             Svc.Log.Debug(ex, "[RelicTracker] Allagan Tools IPC query failed for item {ItemId}", itemId);
             return 0;
+        }
+    }
+
+    private static void OnAllaganToolsInitialized(bool _)
+    {
+        if (_ipcBound || !InvokeIsInitialized())
+        {
+            return;
+        }
+
+        try
+        {
+            _itemCountOwned = Svc.PluginInterface.GetIpcSubscriber<uint, bool, uint[], uint>("AllaganTools.ItemCountOwned");
+            _ipcBound = true;
+            Svc.Log.Information("[RelicTracker] Allagan Tools IPC ready.");
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "[RelicTracker] Failed to bind Allagan Tools IPC.");
+        }
+    }
+
+    private static bool InvokeIsInitialized()
+    {
+        if (_isInitialized == null)
+        {
+            return false;
+        }
+
+        try
+        {
+            return _isInitialized.InvokeFunc();
+        }
+        catch
+        {
+            return false;
         }
     }
 }

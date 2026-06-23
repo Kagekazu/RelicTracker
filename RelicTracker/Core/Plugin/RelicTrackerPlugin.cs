@@ -13,6 +13,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
 {
     private readonly Configuration configuration;
     private readonly ItemResolver itemResolver = new();
+    private readonly FfxivCollectService ffxivCollect = new();
     private readonly PluginUI pluginUi;
     private readonly RelicDataService relicData = new();
     private readonly WindowSystem windowSystem = new("RelicTracker");
@@ -24,18 +25,21 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         configuration = Svc.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         configuration.Initialize(Svc.PluginInterface);
 
-        AllaganToolsIpc.Initialize(Svc.PluginInterface);
+        AllaganToolsIpc.Init();
 
         relicData.Load();
         itemResolver.Build();
 
-        pluginUi = new PluginUI(configuration, relicData, itemResolver);
+        pluginUi = new PluginUI(configuration, relicData, itemResolver, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
-        Svc.Commands.AddHandler(RelicTrackerConstants.CommandName, new(OnCommand)
+        foreach (var commandName in RelicTrackerConstants.CommandNames)
         {
-            HelpMessage = "Open RelicTracker",
-        });
+            Svc.Commands.AddHandler(commandName, new(OnCommand)
+            {
+                HelpMessage = "Open RelicTracker",
+            });
+        }
 
         Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
         Svc.PluginInterface.UiBuilder.OpenConfigUi += ToggleUi;
@@ -49,11 +53,15 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
     public void Dispose()
     {
         configuration.PersistIfDirty();
-        Svc.Commands.RemoveHandler(RelicTrackerConstants.CommandName);
+        foreach (var commandName in RelicTrackerConstants.CommandNames)
+        {
+            Svc.Commands.RemoveHandler(commandName);
+        }
         Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= ToggleUi;
         Svc.PluginInterface.UiBuilder.OpenMainUi -= ToggleUi;
         windowSystem.RemoveAllWindows();
+        AllaganToolsIpc.Dispose();
         ECommonsMain.Dispose();
     }
 

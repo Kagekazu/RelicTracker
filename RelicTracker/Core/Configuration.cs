@@ -10,7 +10,7 @@ public sealed class Configuration : IPluginConfiguration
 
     [NonSerialized] private IDalamudPluginInterface? pluginInterface;
 
-    public int Version { get; set; } = 1;
+    public int Version { get; set; } = 5;
 
     public string SelectedExpansionId { get; set; } = "ARR";
 
@@ -18,6 +18,19 @@ public sealed class Configuration : IPluginConfiguration
     public bool ActiveCharacterOnly { get; set; }
 
     public ulong FfxivCollectCharacterId { get; set; }
+
+    /// <summary>Manual progress overrides: expansionId|step|label|jobIndex</summary>
+    public HashSet<string> CompletedProgress { get; set; } = new(StringComparer.Ordinal);
+
+    public HashSet<string> UncompletedProgress { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Hide materials you already have enough of.</summary>
+    public bool HideCompleteMaterials { get; set; } = true;
+
+    /// <summary>Show the per-job progress grid on the Tracker tab.</summary>
+    public bool ShowJobProgressSection { get; set; }
+
+    public Dictionary<string, bool> ExpandedMaterialSections { get; set; } = new(StringComparer.Ordinal);
 
     public void Initialize(IDalamudPluginInterface pi) => pluginInterface = pi;
 

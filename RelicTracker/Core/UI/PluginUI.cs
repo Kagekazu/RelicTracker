@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace RelicTracker;
 
-public sealed class PluginUI : Window
+public sealed partial class PluginUI : Window
 {
     private const string WindowId = "RelicTracker";
 
@@ -19,17 +19,23 @@ public sealed class PluginUI : Window
 
     private readonly Configuration config;
     private readonly RelicDataService data;
+    private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
+    private readonly CollectProgressSync collectSync = new();
+    private readonly JobAbbrevResolver jobAbbrevResolver = new();
+    private readonly RelicProgressTracker progressTracker;
     private bool drewTitleBarVersion;
-    private bool hideComplete;
     private string materialFilter = string.Empty;
 
-    public PluginUI(Configuration config, RelicDataService data, ItemResolver itemResolver)
+    public PluginUI(Configuration config, RelicDataService data, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
         : base($"RelicTracker###{WindowId}")
     {
         this.config = config;
         this.data = data;
         this.itemResolver = itemResolver;
+        this.ffxivCollect = ffxivCollect;
+        progressTracker = new RelicProgressTracker(config, collectSync);
+        jobAbbrevResolver.Build();
 
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(720, 560);
@@ -92,6 +98,12 @@ public sealed class PluginUI : Window
                 ImGui.EndTabItem();
             }
 
+            if (ImGui.BeginTabItem("Collect"))
+            {
+                DrawCollectTab();
+                ImGui.EndTabItem();
+            }
+
             if (ImGui.BeginTabItem("Settings"))
             {
                 DrawSettingsTab();
@@ -114,9 +126,15 @@ public sealed class PluginUI : Window
 
     private void DrawDependencyStatus()
     {
-        if (!AllaganToolsIpc.IsPluginLoaded)
+        if (!AllaganToolsIpc.IsInstalled)
         {
-            ImGui.TextColored(WarningColor, "Allagan Tools is not loaded. Install it for inventory counts.");
+            ImGui.TextColored(WarningColor, "Allagan Tools is not installed.");
+            return;
+        }
+
+        if (!AllaganToolsIpc.IsEnabled)
+        {
+            ImGui.TextColored(WarningColor, "Allagan Tools is installed but not enabled.");
             return;
         }
 
@@ -131,8 +149,8 @@ public sealed class PluginUI : Window
 
     private void DrawTrackerTab()
     {
-        ImGui.TextColored(MutedColor, "Per-weapon/tool quantities from Wyn's tracker (v1). Progress checkboxes coming later.");
-        ImGui.Spacing();
+        ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
+        progressTracker.EnsureCollectSynced(ffxivCollect, data);
 
         ImGui.SetNextItemWidth(160);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
@@ -150,105 +168,73 @@ public sealed class PluginUI : Window
         }
 
         ImGui.SameLine();
-        ImGui.Checkbox("Hide complete", ref hideComplete);
+        DrawTrackerProgressHint();
+
+        ImGui.Spacing();
+
+        var hideComplete = config.HideCompleteMaterials;
+        if (ImGui.Checkbox("Still needed only", ref hideComplete))
+        {
+            config.HideCompleteMaterials = hideComplete;
+            config.OnSettingChanged();
+        }
+
         ImGui.SameLine();
         ImGui.SetNextItemWidth(180);
         ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
 
         ImGui.Spacing();
-        DrawMaterialsTable(config.SelectedExpansionId);
+
+        var panelHeight = ImGui.GetContentRegionAvail().Y;
+        var collapsedProgressHeight = ImGui.GetFrameHeightWithSpacing();
+        var progressHeight = config.ShowJobProgressSection
+            ? Math.Clamp(panelHeight * 0.42f, 120f, panelHeight - 80f)
+            : collapsedProgressHeight;
+        var materialsHeight = Math.Max(60f, panelHeight - progressHeight);
+
+        DrawMaterialsTable(config.SelectedExpansionId, materialsHeight);
+
+        using var progressPane = ImRaii.Child("##TrackerProgressPane", new Vector2(0, progressHeight), false);
+        if (progressPane)
+        {
+            DrawProgressSection(config.SelectedExpansionId);
+        }
     }
 
-    private void DrawMaterialsTable(string expansionId)
+    private void DrawTrackerProgressHint()
     {
-        var rows = data.GetExpansionMaterials(
-            expansionId,
-            itemResolver,
-            itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly)).ToList();
-
-        if (rows.Count == 0)
+        if (progressTracker.UsesCollectProgress)
         {
-            ImGui.TextColored(MutedColor, "No materials for this expansion.");
+            ImGui.TextColored(GoodColor, "Progress from Collect");
             return;
         }
 
-        if (!string.IsNullOrWhiteSpace(materialFilter))
+        if (config.FfxivCollectCharacterId == 0)
         {
-            rows = rows
-                .Where(r => r.Name.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                            || (r.Step?.Contains(materialFilter, StringComparison.OrdinalIgnoreCase) ?? false))
-                .ToList();
-        }
-
-        if (hideComplete)
-        {
-            rows = rows.Where(r => r.Shortfall > 0 || r.IsCurrency).ToList();
-        }
-
-        using var table = ImRaii.Table("RelicMaterials", 5, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY, new Vector2(0, -1));
-        if (!table)
-        {
+            ImGui.TextColored(MutedColor, "Set Collect ID for auto progress");
             return;
         }
 
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 90);
-        ImGui.TableSetupColumn("Material", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 52);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 52);
-        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 52);
-        ImGui.TableHeadersRow();
-
-        foreach (var row in rows)
+        if (ffxivCollect.IsLoading)
         {
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(row.Step ?? "—");
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency)
-            {
-                ImGui.TextColored(MutedColor, row.Name);
-            }
-            else if (row.ItemId is null)
-            {
-                ImGui.TextColored(WarningColor, row.Name);
-            }
-            else
-            {
-                ImGui.Text(row.Name);
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.Text(row.Needed.ToString());
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency)
-            {
-                ImGui.TextColored(MutedColor, "—");
-            }
-            else
-            {
-                ImGui.Text(row.Owned.ToString());
-            }
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency)
-            {
-                ImGui.TextColored(MutedColor, "curr");
-            }
-            else
-            {
-                var color = row.Shortfall == 0 ? GoodColor : BadColor;
-                ImGui.TextColored(color, row.Shortfall.ToString());
-            }
+            ImGui.TextColored(MutedColor, "Loading Collect…");
+            return;
         }
+
+        ImGui.TextColored(MutedColor, "Manual progress — counts assume all jobs incomplete");
     }
 
     private void DrawMaterialsReferenceTab()
     {
-        ImGui.TextColored(MutedColor, "Acquisition reference from Wyn's Materials sheet.");
+        ImGui.TextColored(MutedColor, $"Acquisition reference for {config.SelectedExpansionId} (matches Tracker expansion).");
         ImGui.Spacing();
+
+        var rows = data.GetMaterialReference(config.SelectedExpansionId).ToList();
+        if (rows.Count == 0)
+        {
+            ImGui.TextColored(MutedColor, "No reference entries for this expansion.");
+            return;
+        }
 
         using var table = ImRaii.Table("MaterialRef", 4, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY, new Vector2(0, -1));
         if (!table)
@@ -262,13 +248,8 @@ public sealed class PluginUI : Window
         ImGui.TableSetupColumn("Requirement", ImGuiTableColumnFlags.WidthStretch);
         ImGui.TableHeadersRow();
 
-        foreach (var row in data.MaterialReference)
+        foreach (var row in rows)
         {
-            if (string.IsNullOrWhiteSpace(row.Material) && string.IsNullOrWhiteSpace(row.Location))
-            {
-                continue;
-            }
-
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
             ImGui.TextWrapped(row.Step ?? "");
@@ -296,17 +277,7 @@ public sealed class PluginUI : Window
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.Text("FFXIV Collect character ID (optional, future sync)");
-        var collectId = config.FfxivCollectCharacterId.ToString();
-        if (ImGui.InputText("##collectId", ref collectId, 32))
-        {
-            if (ulong.TryParse(collectId, out var parsed))
-            {
-                config.FfxivCollectCharacterId = parsed;
-                config.OnSettingChanged();
-            }
-        }
-
-        ImGui.TextColored(MutedColor, "Read-only Collect integration is planned; Lodestone refresh remains the official sync path.");
+        ImGui.Text("FFXIV Collect character ID is configured on the Collect tab.");
+        ImGui.TextColored(MutedColor, "Data is read-only from ffxivcollect.com. Refresh your character there after earning relics.");
     }
 }
