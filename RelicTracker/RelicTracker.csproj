@@ -1,10 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
     <PropertyGroup>
         <Authors>Kagekazu</Authors>
         <Version>0.1.0.0</Version>
-        <Platforms>x64</Platforms>
-        <PlatformTarget>x64</PlatformTarget>
-        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -23,32 +21,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ECommons" Version="3.2.1.15" />
+        <PackageReference Include="ECommons" Version="3.2.1.9"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include=".\RelicTracker.json">
+        <None Update="RelicTracker.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\images\icon.png" Link="images\icon.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\data\extracted\manifest.json" Link="Data\manifest.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\images\icon.png">
-            <Link>images\icon.png</Link>
+        </None>
+        <None Include="..\data\extracted\materials.json" Link="Data\materials.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\data\extracted\manifest.json">
-            <Link>Data\manifest.json</Link>
+        </None>
+        <None Include="..\data\extracted\expansions.json" Link="Data\expansions.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\data\extracted\materials.json">
-            <Link>Data\materials.json</Link>
+        </None>
+        <None Include="..\data\extracted\notes.json" Link="Data\notes.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\data\extracted\expansions.json">
-            <Link>Data\expansions.json</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="..\data\extracted\notes.json">
-            <Link>Data\notes.json</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
+        </None>
     </ItemGroup>
 </Project>
