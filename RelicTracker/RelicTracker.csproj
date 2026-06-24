@@ -47,6 +47,15 @@
         <None Include="..\data\extracted\job_columns.json" Link="Data\job_columns.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Include="..\data\extracted\relic_lines.json" Link="Data\relic_lines.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="..\data\extracted\relic_step_notes.json" Link="Data\relic_step_notes.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="..\data\extracted\relic_armor.json" Link="Data\relic_armor.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Include="..\data\extracted\material_aliases.json" Link="Data\material_aliases.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

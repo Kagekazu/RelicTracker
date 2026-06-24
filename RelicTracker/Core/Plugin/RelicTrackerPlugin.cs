@@ -16,6 +16,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
     private readonly FfxivCollectService ffxivCollect = new();
     private readonly PluginUI pluginUi;
     private readonly RelicDataService relicData = new();
+    private readonly RelicCatalog relicCatalog = new();
     private readonly WindowSystem windowSystem = new("RelicTracker");
 
     public RelicTrackerPlugin(IDalamudPluginInterface pluginInterface)
@@ -28,9 +29,11 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         AllaganToolsIpc.Init();
 
         relicData.Load();
+        relicCatalog.Load();
         itemResolver.Build();
+        relicCatalog.ResolveJobs(itemResolver);
 
-        pluginUi = new PluginUI(configuration, relicData, itemResolver, ffxivCollect);
+        pluginUi = new PluginUI(configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
         foreach (var commandName in RelicTrackerConstants.CommandNames)

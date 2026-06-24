@@ -11,6 +11,9 @@ data/Wyn's Relic Tracker.xlsx
 __pycache__/
 *.pyc
 
+# Cached API pull used by data/extract_relics.py
+data/extracted/_relics_index_raw.json
+
 # OS
 Thumbs.db
 .DS_Store
