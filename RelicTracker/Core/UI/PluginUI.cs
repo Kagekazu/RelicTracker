@@ -130,11 +130,6 @@ public sealed partial class PluginUI : Window
 
     private void DrawHeader()
     {
-        ImGui.TextColored(HeaderColor, "RelicTracker");
-        ImGui.SameLine();
-        ImGui.TextColored(MutedColor, $"({data.Manifest.SheetVersion}, {data.Manifest.Patch})");
-
-        ImGui.Spacing();
         DrawDependencyStatus();
     }
 
@@ -202,7 +197,7 @@ public sealed partial class PluginUI : Window
 
         ImGui.Spacing();
 
-        DrawMaterialsTable(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
+        DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
     }
 
     private void DrawTrackerProgressHint()

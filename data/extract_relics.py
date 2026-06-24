@@ -75,31 +75,39 @@ JOB_LISTS = {
     "Cosmic Tools": DOH_DOL,
 }
 
-# Field-operation relic armor, curated by expansion. Each stage is a FFXIV Collect
-# armor type; pieces come from the API. Excludes GARO event armor and the unrelated
-# "Idealized" Bozja gear. "Antiquated Artifact" / "Occult Accessories" aren't tracked
-# as collectibles on FFXIV Collect, so they're omitted.
+# Field-operation relic armor, curated by expansion. Each line groups DISTINCT armor
+# SETS (these are separate sets, not one upgrade chain); within a set, "Augmented" /
+# "+1" / "+2" are augment tiers of the same set. Pieces come from the API. Excludes
+# GARO event armor and the unrelated "Idealized" Bozja gear. "Antiquated Artifact" /
+# "Occult Accessories" aren't tracked as collectibles on FFXIV Collect, so they're omitted.
 ARMOR_LINES = [
+    # Main progression (Antiquated AF -> Base -> +1 -> +2 -> Anemos; Antiquated isn't a
+    # FFXIV Collect collectible so tracked tiers start at Base), plus the separate
+    # 35-piece Elemental set.
     ("SB", "Eurekan Armor", [
-        ("Eureka Job Armor", "Base"),
-        ("Eureka Job Armor +1", "Base +1"),
-        ("Eureka Job Armor +2", "Base +2"),
-        ("Eureka Anemos Armor", "Anemos"),
-        ("Elemental Armor", "Elemental"),
-        ("Elemental Armor +1", "Elemental +1"),
-        ("Elemental Armor +2", "Elemental +2"),
+        ("Eurekan", [
+            ("Eureka Job Armor", "Base"),
+            ("Eureka Job Armor +1", "+1"),
+            ("Eureka Job Armor +2", "+2"),
+            ("Eureka Anemos Armor", "Anemos"),
+        ]),
+        ("Elemental", [
+            ("Elemental Armor", "Base"),
+            ("Elemental Armor +1", "+1"),
+            ("Elemental Armor +2", "+2"),
+        ]),
     ]),
     ("ShB", "Resistance Armor", [
-        ("Bozjan Armor", "Bozjan"),
-        ("Augmented Bozjan Armor", "Augmented Bozjan"),
-        ("Law's Order", "Law's Order"),
-        ("Augmented Law's Order", "Augmented Law's Order"),
-        ("Blade's Armor", "Blade's"),
+        ("Bozjan", [("Bozjan Armor", "Base"), ("Augmented Bozjan Armor", "Augmented")]),
+        ("Law's Order", [("Law's Order", "Base"), ("Augmented Law's Order", "Augmented")]),
+        ("Blade's", [("Blade's Armor", "Base")]),
     ]),
     ("DT", "Phantom Armor", [
-        ("Arcanaut's Armor", "Arcanaut's"),
-        ("Arcanaut's Armor +1", "Arcanaut's +1"),
-        ("Arcanaut's Armor +2", "Arcanaut's +2"),
+        ("Arcanaut's", [
+            ("Arcanaut's Armor", "Base"),
+            ("Arcanaut's Armor +1", "+1"),
+            ("Arcanaut's Armor +2", "+2"),
+        ]),
     ]),
 ]
 
@@ -180,14 +188,17 @@ def build_armor(relics: list[dict]) -> list[dict]:
             counts[name] = counts.get(name, 0) + 1
 
     lines: list[dict] = []
-    for expansion, line_name, stages in ARMOR_LINES:
-        resolved = []
-        for collect_type, label in stages:
-            pieces = counts.get(collect_type, 0)
-            if pieces == 0:
-                raise ValueError(f"Armor type not found in index: {collect_type}")
-            resolved.append({"collectType": collect_type, "label": label, "pieces": pieces})
-        lines.append({"expansion": expansion, "lineName": line_name, "stages": resolved})
+    for expansion, line_name, sets in ARMOR_LINES:
+        resolved_sets = []
+        for set_name, tiers in sets:
+            resolved_tiers = []
+            for collect_type, label in tiers:
+                pieces = counts.get(collect_type, 0)
+                if pieces == 0:
+                    raise ValueError(f"Armor type not found in index: {collect_type}")
+                resolved_tiers.append({"collectType": collect_type, "label": label, "pieces": pieces})
+            resolved_sets.append({"name": set_name, "tiers": resolved_tiers})
+        lines.append({"expansion": expansion, "lineName": line_name, "sets": resolved_sets})
     return lines
 
 
@@ -204,8 +215,9 @@ def main() -> None:
     armor_out.write_text(json.dumps(armor, indent=2) + "\n", encoding="utf-8")
     print(f"\nWrote {len(armor)} armor lines to {armor_out}")
     for line in armor:
-        total = sum(stage["pieces"] for stage in line["stages"])
-        print(f"  {line['expansion']:5} {line['lineName']:18} stages={len(line['stages'])} pieces={total}")
+        total = sum(t["pieces"] for s in line["sets"] for t in s["tiers"])
+        set_names = ", ".join(s["name"] for s in line["sets"])
+        print(f"  {line['expansion']:5} {line['lineName']:18} sets={len(line['sets'])} pieces={total}  [{set_names}]")
 
 
 if __name__ == "__main__":

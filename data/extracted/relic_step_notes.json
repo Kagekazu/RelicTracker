@@ -41,5 +41,14 @@
   },
   "Cosmic Tools": {
     "_line": "Dawntrail crafter/gatherer relic — earned through Cosmic Exploration on Sinus Ardorum; no crafting materials, just research and mission deliveries."
+  },
+  "Eurekan Armor": {
+    "_line": "Field armor from The Forbidden Land, Eureka — start from the Antiquated artifact set, then upgrade Base → +1 → +2 → Anemos via Gerolt."
+  },
+  "Resistance Armor": {
+    "_line": "Field armor from the Bozjan Southern Front and Zadnor — earned via lockboxes, the large-scale raids and cluster exchanges."
+  },
+  "Phantom Armor": {
+    "_line": "Field armor from the Occult Crescent (South Horn) — earned alongside the Phantom relic weapon."
   }
 }

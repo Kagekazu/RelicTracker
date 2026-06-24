@@ -118,50 +118,9 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (lines.Count > 0)
-        {
-            using var table = ImRaii.Table(
-                $"OverviewLines_{expansionId}",
-                4,
-                ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-                new Vector2(0, 0));
-            if (table)
-            {
-                ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
-                ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 56);
-                ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
-                ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-                ImGui.TableHeadersRow();
-
-                foreach (var status in lines)
-                {
-                    DrawOverviewLineRow(status);
-                }
-            }
-        }
-
-        foreach (var armor in armorLines)
-        {
-            DrawOverviewArmor(expansionId, armor, ownership);
-        }
-    }
-
-    private void DrawOverviewArmor(string expansionId, ArmorLine armor, RelicOwnership ownership)
-    {
-        var owned = armor.Stages.Sum(stage => Math.Min(stage.Pieces, ownership.OwnedCount(stage.CollectType)));
-        var total = armor.TotalPieces;
-        var fraction = total > 0 ? (float)owned / total : 0f;
-
-        ImGui.Spacing();
-        ImGui.TextColored(fraction >= 1f ? GoodColor : HeaderColor, $"{armor.LineName} (armor)");
-        ImGui.SameLine();
-        ImGui.TextColored(MutedColor, $"{owned}/{total} pieces");
-        ImGui.SameLine();
-        DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
-
         using var table = ImRaii.Table(
-            $"OverviewArmor_{expansionId}_{armor.LineName}",
-            3,
+            $"OverviewLines_{expansionId}",
+            4,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
             new Vector2(0, 0));
         if (!table)
@@ -169,31 +128,79 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TableSetupColumn("Stage", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        ImGui.TableSetupColumn("Pieces", ImGuiTableColumnFlags.WidthFixed, 72);
+        ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
+        ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
+        ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
         ImGui.TableHeadersRow();
 
-        foreach (var stage in armor.Stages)
+        foreach (var status in lines)
         {
-            var stageOwned = Math.Min(stage.Pieces, ownership.OwnedCount(stage.CollectType));
-            var stageFraction = stage.Pieces > 0 ? (float)stageOwned / stage.Pieces : 0f;
-
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(stage.Label);
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(stage.CollectType);
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.TextColored(stageFraction >= 1f ? GoodColor : MutedColor, $"{stageOwned}/{stage.Pieces}");
-
-            ImGui.TableNextColumn();
-            DrawPercentBar(stageFraction, 140f, $"{stageFraction * 100f:0}%");
+            DrawOverviewLineRow(status);
         }
+
+        foreach (var armor in armorLines)
+        {
+            DrawOverviewArmorRow(armor, ownership);
+        }
+    }
+
+    private void DrawOverviewArmorRow(ArmorLine armor, RelicOwnership ownership)
+    {
+        var owned = OwnedPieces(armor, ownership);
+        var total = armor.TotalPieces;
+        var setsDone = armor.Sets.Count(set => IsSetComplete(set, ownership));
+        var fraction = total > 0 ? (float)owned / total : 0f;
+        var complete = total > 0 && owned >= total;
+
+        ImGui.TableNextRow();
+
+        ImGui.TableNextColumn();
+        ImGui.TextUnformatted($"{armor.LineName} (armor)");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(BuildArmorTooltip(armor, ownership));
+        }
+
+        ImGui.TableNextColumn();
+        var doneColor = complete ? GoodColor : owned > 0 ? WarningColor : MutedColor;
+        ImGui.TextColored(doneColor, $"{owned}/{total}");
+
+        ImGui.TableNextColumn();
+        DrawPercentBar(fraction, 140f, $"{fraction * 100f:0}%");
+
+        ImGui.TableNextColumn();
+        if (complete)
+        {
+            ImGui.TextColored(GoodColor, "All pieces collected");
+        }
+        else
+        {
+            ImGui.TextUnformatted($"{setsDone}/{armor.Sets.Count} sets complete");
+        }
+    }
+
+    private static int OwnedPieces(ArmorLine armor, RelicOwnership ownership) =>
+        armor.AllTiers.Sum(tier => Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType)));
+
+    private static bool IsSetComplete(ArmorSet set, RelicOwnership ownership) =>
+        set.Tiers.All(tier => ownership.OwnedCount(tier.CollectType) >= tier.Pieces);
+
+    private static string BuildArmorTooltip(ArmorLine armor, RelicOwnership ownership)
+    {
+        var lines = new List<string> { $"{armor.LineName} — pieces owned per set:" };
+        foreach (var set in armor.Sets)
+        {
+            lines.Add(string.Empty);
+            lines.Add(set.Name + ":");
+            foreach (var tier in set.Tiers)
+            {
+                var tierOwned = Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType));
+                lines.Add($"  {tier.Label}: {tierOwned}/{tier.Pieces}");
+            }
+        }
+
+        return string.Join("\n", lines);
     }
 
     private bool MatchesArmorFilter(ArmorLine armor, RelicOwnership ownership)
@@ -205,13 +212,9 @@ public sealed partial class PluginUI
             return false;
         }
 
-        if (config.OverviewIncompleteOnly)
+        if (config.OverviewIncompleteOnly && OwnedPieces(armor, ownership) >= armor.TotalPieces)
         {
-            var owned = armor.Stages.Sum(stage => Math.Min(stage.Pieces, ownership.OwnedCount(stage.CollectType)));
-            if (owned >= armor.TotalPieces)
-            {
-                return false;
-            }
+            return false;
         }
 
         return true;
