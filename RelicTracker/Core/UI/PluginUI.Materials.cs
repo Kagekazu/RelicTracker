@@ -153,12 +153,9 @@ public sealed partial class PluginUI
 
     private void DrawMaterialRowsTable(string section, IReadOnlyList<MaterialDisplayRow> rows)
     {
-        var showJobsColumn = rows.Any(row => !string.IsNullOrEmpty(row.JobsNeeded));
-        var columnCount = showJobsColumn ? 6 : 5;
-
         using var table = ImRaii.Table(
             $"RelicMaterials_{section}",
-            columnCount,
+            5,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.ScrollY,
             new Vector2(0, Math.Min(280f, (rows.Count + 1) * ImGui.GetTextLineHeightWithSpacing() + 8f)));
         if (!table)
@@ -168,11 +165,6 @@ public sealed partial class PluginUI
 
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 88);
         ImGui.TableSetupColumn("Material", ImGuiTableColumnFlags.WidthStretch);
-        if (showJobsColumn)
-        {
-            ImGui.TableSetupColumn("Jobs", ImGuiTableColumnFlags.WidthFixed, 96);
-        }
-
         ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 48);
         ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 48);
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
@@ -205,23 +197,6 @@ public sealed partial class PluginUI
                 if (row.ItemIds.Count > 1 && ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip($"Counts inventory across {row.ItemIds.Count} related items.");
-                }
-            }
-
-            if (showJobsColumn)
-            {
-                ImGui.TableNextColumn();
-                if (string.IsNullOrEmpty(row.JobsNeeded))
-                {
-                    ImGui.TextColored(MutedColor, "—");
-                }
-                else
-                {
-                    ImGui.TextUnformatted(row.JobsNeeded);
-                    if (ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip($"Still needed for: {row.JobsNeeded}");
-                    }
                 }
             }
 

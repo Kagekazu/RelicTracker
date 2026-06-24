@@ -24,8 +24,21 @@ public sealed class Configuration : IPluginConfiguration
 
     public HashSet<string> UncompletedProgress { get; set; } = new(StringComparer.Ordinal);
 
+    /// <summary>Per-job step completions in the Relic detail view: collectType|job|tierIndex</summary>
+    public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Last selected line + job in the Relic detail view, for convenience.</summary>
+    public string DetailExpansionId { get; set; } = "ARR";
+
+    public string DetailCollectType { get; set; } = string.Empty;
+
+    public string DetailJob { get; set; } = string.Empty;
+
     /// <summary>Hide materials you already have enough of.</summary>
     public bool HideCompleteMaterials { get; set; } = true;
+
+    /// <summary>On the Overview tab, hide relic lines you have already finished on every job.</summary>
+    public bool OverviewIncompleteOnly { get; set; }
 
     /// <summary>Show the per-job progress grid on the Tracker tab.</summary>
     public bool ShowJobProgressSection { get; set; }

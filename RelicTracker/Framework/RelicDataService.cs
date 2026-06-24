@@ -139,6 +139,12 @@ public sealed class RelicDataService
             currencyTotals[name!] = existingTotal + perUnit;
         }
 
+        // Currencies are expansion-wide aggregates, so fold them into the primary relic
+        // section rather than a separate "Currencies" block.
+        var currencySection = CollectStepMap.GetSectionOrder(expansionId)
+            .FirstOrDefault(section => !string.Equals(section, "Currencies", StringComparison.OrdinalIgnoreCase))
+            ?? "Materials";
+
         foreach (var (name, totalPerUnit) in currencyTotals.OrderBy(pair => pair.Key, StringComparer.OrdinalIgnoreCase))
         {
             var needed = CurrencyBalances.CalculateNeeded(expansionId, totalPerUnit, sheet, progress);
@@ -148,7 +154,7 @@ public sealed class RelicDataService
             yield return new MaterialDisplayRow
             {
                 ExpansionId = expansionId,
-                Section = CollectStepMap.ResolveSection(expansionId, null, isCurrency: true),
+                Section = currencySection,
                 Step = null,
                 Label = null,
                 Name = name,

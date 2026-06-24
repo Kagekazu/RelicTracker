@@ -1,0 +1,45 @@
+{
+  "A Relic Reborn": {
+    "_line": "The 2.x Zodiac questline — start 'A Relic Reborn' from the Weaponsmith of Gridania in Old Gridania.",
+    "Atma": "Farm 12 Atma from FATEs across the original A Realm Reborn zones (one per element).",
+    "Animus": "Complete the nine Trials of the Braves books (dungeons, FATEs, leves and enemies).",
+    "Nexus": "Fill the weapon with Light by running duties while it is equipped.",
+    "Zeta": "Fill nine Mahatma with Light to finish the Zodiac Zeta."
+  },
+  "Anima Weapons": {
+    "_line": "The Heavensward Anima questline — start 'Soul Without Life' in Idyllshire."
+  },
+  "Eureka Weapons": {
+    "_line": "Progressed entirely inside The Forbidden Land, Eureka — farm the matching zone's crystals and light, then turn in to Gerolt.",
+    "Base": "Claim the base Eurekan weapon from Gerolt after starting the Eureka quest line in Rhalgr's Reach.",
+    "Eureka": "Trade Eureka Fragments (from Eureka Hydatos and the Baldesion Arsenal) toward the Physeos upgrade.",
+    "Physeos": "Final form — trade further Eureka Fragments to Gerolt in Eureka Hydatos."
+  },
+  "Resistance Weapons": {
+    "_line": "The Bozja / Save the Queen questline — start 'Hail to the Queen' in Kugane."
+  },
+  "Manderville Weapons": {
+    "_line": "The Endwalker Manderville questline from Jubrunnah in Radz-at-Han — each step also needs a tomestone-bought material."
+  },
+  "Phantom Weapons": {
+    "_line": "The Dawntrail relic questline from the Occult Crescent (South Horn) — trade Arcanite earned there."
+  },
+  "Lucis Tools": {
+    "_line": "ARR crafter/gatherer relic tools.",
+    "Mastercraft": "Base tools from your level 50 Disciple of the Hand/Land class quest.",
+    "Supra": "Trade the Mastercraft tool with Fieldcraft Demimateria III and Mastercraft Demimateria (Purple Crafters' Scrips).",
+    "Lucis": "Trade the Supra tool with Moonstone and crafted items (Company Seals / Allied Seals)."
+  },
+  "Skysteel Tools": {
+    "_line": "The Heavensward Skysteel Tool questline — start with Stephanivien in The Pillars (Ishgard)."
+  },
+  "Resplendent Tools": {
+    "_line": "Shadowbringers crafter/gatherer relic — craft collectables and turn them in to Limbeth in Eulmore across several stages, finishing with 60 of the final material (Purple Crafters' Scrips)."
+  },
+  "Splendorous Tools": {
+    "_line": "The Endwalker Splendorous Tool questline — start with Mowen's Merchant in Radz-at-Han."
+  },
+  "Cosmic Tools": {
+    "_line": "Dawntrail crafter/gatherer relic — earned through Cosmic Exploration on Sinus Ardorum; no crafting materials, just research and mission deliveries."
+  }
+}

@@ -1,0 +1,95 @@
+[
+  {
+    "expansion": "SB",
+    "lineName": "Eurekan Armor",
+    "stages": [
+      {
+        "collectType": "Eureka Job Armor",
+        "label": "Base",
+        "pieces": 75
+      },
+      {
+        "collectType": "Eureka Job Armor +1",
+        "label": "Base +1",
+        "pieces": 75
+      },
+      {
+        "collectType": "Eureka Job Armor +2",
+        "label": "Base +2",
+        "pieces": 75
+      },
+      {
+        "collectType": "Eureka Anemos Armor",
+        "label": "Anemos",
+        "pieces": 75
+      },
+      {
+        "collectType": "Elemental Armor",
+        "label": "Elemental",
+        "pieces": 35
+      },
+      {
+        "collectType": "Elemental Armor +1",
+        "label": "Elemental +1",
+        "pieces": 35
+      },
+      {
+        "collectType": "Elemental Armor +2",
+        "label": "Elemental +2",
+        "pieces": 35
+      }
+    ]
+  },
+  {
+    "expansion": "ShB",
+    "lineName": "Resistance Armor",
+    "stages": [
+      {
+        "collectType": "Bozjan Armor",
+        "label": "Bozjan",
+        "pieces": 35
+      },
+      {
+        "collectType": "Augmented Bozjan Armor",
+        "label": "Augmented Bozjan",
+        "pieces": 35
+      },
+      {
+        "collectType": "Law's Order",
+        "label": "Law's Order",
+        "pieces": 35
+      },
+      {
+        "collectType": "Augmented Law's Order",
+        "label": "Augmented Law's Order",
+        "pieces": 35
+      },
+      {
+        "collectType": "Blade's Armor",
+        "label": "Blade's",
+        "pieces": 35
+      }
+    ]
+  },
+  {
+    "expansion": "DT",
+    "lineName": "Phantom Armor",
+    "stages": [
+      {
+        "collectType": "Arcanaut's Armor",
+        "label": "Arcanaut's",
+        "pieces": 35
+      },
+      {
+        "collectType": "Arcanaut's Armor +1",
+        "label": "Arcanaut's +1",
+        "pieces": 35
+      },
+      {
+        "collectType": "Arcanaut's Armor +2",
+        "label": "Arcanaut's +2",
+        "pieces": 35
+      }
+    ]
+  }
+]

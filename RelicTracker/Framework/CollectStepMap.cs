@@ -10,7 +10,7 @@ internal static class CollectStepMap
             ["SB"] = ["Eureka Weapons", "Currencies"],
             ["ShB"] = ["Resistance Weapons", "Currencies"],
             ["EW"] = ["Manderville Weapons", "Currencies"],
-            ["DT"] = ["Phantom Weapons", "Exquisite Weapons", "Figmental Weapons", "Currencies"],
+            ["DT"] = ["Phantom Weapons", "Currencies"],
             ["DoHDoL"] = ["Skysteel Tools", "Splendorous Tools", "Cosmic Tools", "Currencies"],
         };
 
@@ -38,7 +38,7 @@ internal static class CollectStepMap
                 ["Reconditioned"] = Req("Anima Weapons", 4),
                 ["Sharpened"] = Req("Anima Weapons", 5),
                 ["Complete"] = Req("Anima Weapons", 6),
-                ["Lux"] = Req("Anima Weapons", 6),
+                ["Lux"] = Req("Anima Weapons", 7),
             },
             ["SB"] = new(StringComparer.OrdinalIgnoreCase)
             {
@@ -68,8 +68,6 @@ internal static class CollectStepMap
                 ["Penumbrae"] = Req("Phantom Weapons", 0),
                 ["Umbrae"] = Req("Phantom Weapons", 1),
                 ["Obscurum"] = Req("Phantom Weapons", 2),
-                ["Arcanaut"] = Req("Exquisite Weapons", 0),
-                ["Step 4"] = Req("Figmental Weapons", 0),
             },
             ["DoHDoL"] = new(StringComparer.OrdinalIgnoreCase)
             {

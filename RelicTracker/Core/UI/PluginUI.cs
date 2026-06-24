@@ -19,6 +19,7 @@ public sealed partial class PluginUI : Window
 
     private readonly Configuration config;
     private readonly RelicDataService data;
+    private readonly RelicCatalog catalog;
     private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
     private readonly CollectProgressSync collectSync = new();
@@ -27,11 +28,12 @@ public sealed partial class PluginUI : Window
     private bool drewTitleBarVersion;
     private string materialFilter = string.Empty;
 
-    public PluginUI(Configuration config, RelicDataService data, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
+    public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
         : base($"RelicTracker###{WindowId}")
     {
         this.config = config;
         this.data = data;
+        this.catalog = catalog;
         this.itemResolver = itemResolver;
         this.ffxivCollect = ffxivCollect;
         progressTracker = new RelicProgressTracker(config, collectSync);
@@ -86,6 +88,18 @@ public sealed partial class PluginUI : Window
 
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {
+            if (ImGui.BeginTabItem("Overview"))
+            {
+                DrawOverviewTab();
+                ImGui.EndTabItem();
+            }
+
+            if (ImGui.BeginTabItem("Relic"))
+            {
+                DrawRelicTab();
+                ImGui.EndTabItem();
+            }
+
             if (ImGui.BeginTabItem("Tracker"))
             {
                 DrawTrackerTab();
@@ -183,22 +197,12 @@ public sealed partial class PluginUI : Window
         ImGui.SetNextItemWidth(180);
         ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
 
+        ImGui.SameLine();
+        ImGui.TextColored(MutedColor, "Per-job progress lives on the Relic tab.");
+
         ImGui.Spacing();
 
-        var panelHeight = ImGui.GetContentRegionAvail().Y;
-        var collapsedProgressHeight = ImGui.GetFrameHeightWithSpacing();
-        var progressHeight = config.ShowJobProgressSection
-            ? Math.Clamp(panelHeight * 0.42f, 120f, panelHeight - 80f)
-            : collapsedProgressHeight;
-        var materialsHeight = Math.Max(60f, panelHeight - progressHeight);
-
-        DrawMaterialsTable(config.SelectedExpansionId, materialsHeight);
-
-        using var progressPane = ImRaii.Child("##TrackerProgressPane", new Vector2(0, progressHeight), false);
-        if (progressPane)
-        {
-            DrawProgressSection(config.SelectedExpansionId);
-        }
+        DrawMaterialsTable(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
     }
 
     private void DrawTrackerProgressHint()
