@@ -55,8 +55,8 @@ public sealed class RelicLine
         tierIndex >= 0 && tierIndex < Steps.Count ? Steps[tierIndex] : $"Step {tierIndex + 1}";
 }
 
-/// <summary>One stage of a relic armor set (a FFXIV Collect armor type).</summary>
-public sealed class ArmorStage
+/// <summary>One augment tier of an armor set (a FFXIV Collect armor type).</summary>
+public sealed class ArmorTier
 {
     [JsonPropertyName("collectType")]
     public string CollectType { get; set; } = string.Empty;
@@ -68,6 +68,19 @@ public sealed class ArmorStage
     public int Pieces { get; set; }
 }
 
+/// <summary>A distinct armor set (e.g. Bozjan), with its Base/Augmented/+1/+2 tiers.</summary>
+public sealed class ArmorSet
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("tiers")]
+    public List<ArmorTier> Tiers { get; set; } = [];
+
+    [JsonIgnore]
+    public int Pieces => Tiers.Sum(tier => tier.Pieces);
+}
+
 /// <summary>A field-operation relic armor line (Eurekan / Resistance / Phantom), per expansion.</summary>
 public sealed class ArmorLine
 {
@@ -77,11 +90,14 @@ public sealed class ArmorLine
     [JsonPropertyName("lineName")]
     public string LineName { get; set; } = string.Empty;
 
-    [JsonPropertyName("stages")]
-    public List<ArmorStage> Stages { get; set; } = [];
+    [JsonPropertyName("sets")]
+    public List<ArmorSet> Sets { get; set; } = [];
 
     [JsonIgnore]
-    public int TotalPieces => Stages.Sum(stage => stage.Pieces);
+    public IEnumerable<ArmorTier> AllTiers => Sets.SelectMany(set => set.Tiers);
+
+    [JsonIgnore]
+    public int TotalPieces => AllTiers.Sum(tier => tier.Pieces);
 }
 
 /// <summary>

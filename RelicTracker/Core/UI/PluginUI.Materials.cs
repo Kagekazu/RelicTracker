@@ -6,7 +6,7 @@ namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
-    private void DrawMaterialsTable(string expansionId, float regionHeight)
+    private void DrawShoppingList(string expansionId, float regionHeight)
     {
         using var pane = ImRaii.Child("##TrackerMaterialsPane", new Vector2(0, regionHeight), false);
         if (!pane)
@@ -14,123 +14,217 @@ public sealed partial class PluginUI
             return;
         }
 
-        var rows = data.GetExpansionMaterials(
-            expansionId,
-            itemResolver,
-            itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly),
-            progressTracker).ToList();
-
-        if (rows.Count == 0)
+        if (config.FfxivCollectCharacterId == 0)
         {
-            if (data.Expansions.Count == 0)
-            {
-                ImGui.TextColored(WarningColor, "Relic data failed to load. Rebuild the plugin or check /xllog for JSON errors.");
-            }
-            else
-            {
-                ImGui.TextColored(MutedColor, "No materials for this expansion.");
-            }
-
+            ImGui.TextWrapped(
+                "Set a FFXIV Collect ID on the Collect tab so the shopping list knows which weapons you still need.");
             return;
         }
 
-        var hideComplete = config.HideCompleteMaterials;
+        var statuses = RelicStatusService.Build(ffxivCollect.Snapshot, catalog);
+        var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
+        var materials = data.GetShoppingMaterials(expansionId, statuses, itemResolver, ownedLookup);
+        var currencies = data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();
+
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
-            rows = rows
-                .Where(r => r.Name.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                            || (r.Step?.Contains(materialFilter, StringComparison.OrdinalIgnoreCase) ?? false)
-                            || (r.Label?.Contains(materialFilter, StringComparison.OrdinalIgnoreCase) ?? false)
-                            || r.Section.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                            || (r.JobsNeeded?.Contains(materialFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            materials = materials
+                .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
+                              || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            currencies = currencies
+                .Where(row => row.Name.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
 
-        if (hideComplete)
+        if (config.HideCompleteMaterials)
         {
-            rows = rows.Where(r => r.Shortfall > 0).ToList();
+            materials = materials.Where(row => row.Short > 0).ToList();
+            currencies = currencies.Where(row => row.Shortfall > 0).ToList();
         }
 
-        DrawMaterialsSummary(rows, hideComplete);
-
+        DrawShoppingSummary(materials);
         ImGui.Spacing();
 
-        var sectionOrder = CollectStepMap.GetSectionOrder(expansionId);
-        var rowsBySection = rows
-            .GroupBy(row => row.Section, StringComparer.OrdinalIgnoreCase)
-            .ToDictionary(group => group.Key, group => group.ToList(), StringComparer.OrdinalIgnoreCase);
-
-        var drewAnySection = false;
-        foreach (var section in sectionOrder)
+        var drewAny = false;
+        foreach (var group in materials
+                     .GroupBy(row => (row.StepOrder, row.Step))
+                     .OrderBy(group => group.Key.StepOrder))
         {
-            if (!rowsBySection.TryGetValue(section, out var sectionRows) || sectionRows.Count == 0)
-            {
-                continue;
-            }
-
-            drewAnySection = true;
-            DrawMaterialSection(expansionId, section, sectionRows);
+            drewAny = true;
+            DrawShoppingStepGroup(expansionId, group.Key.Step, group.ToList());
         }
 
-        foreach (var (section, sectionRows) in rowsBySection.OrderBy(pair => pair.Key, StringComparer.OrdinalIgnoreCase))
+        if (currencies.Count > 0)
         {
-            if (sectionOrder.Contains(section, StringComparer.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            drewAnySection = true;
-            DrawMaterialSection(expansionId, section, sectionRows);
+            drewAny = true;
+            DrawCurrencyGroup(expansionId, currencies);
         }
 
-        if (!drewAnySection)
+        if (!drewAny)
         {
-            ImGui.TextColored(MutedColor, "No materials match the current filter.");
-        }
-    }
-
-    private void DrawMaterialsSummary(IReadOnlyList<MaterialDisplayRow> rows, bool hideComplete)
-    {
-        var shortfallRows = rows.Count(r => !r.IsCurrency && r.Shortfall > 0);
-        var unresolvedRows = rows.Count(r => !r.IsCurrency && !r.IsResolved);
-        if (shortfallRows == 0 && unresolvedRows == 0)
-        {
-            ImGui.TextColored(GoodColor, hideComplete
+            ImGui.TextColored(GoodColor, config.HideCompleteMaterials
                 ? "Nothing left to farm for this expansion."
-                : "You have enough of every tracked material for this expansion.");
-            return;
-        }
-
-        if (shortfallRows > 0)
-        {
-            ImGui.TextColored(BadColor, $"{shortfallRows} material{(shortfallRows == 1 ? string.Empty : "s")} still needed.");
-            if (unresolvedRows > 0)
-            {
-                ImGui.SameLine();
-                ImGui.TextColored(WarningColor, $"({unresolvedRows} not linked to an item)");
-            }
-
-            return;
-        }
-
-        if (unresolvedRows > 0)
-        {
-            ImGui.TextColored(WarningColor, $"{unresolvedRows} material{(unresolvedRows == 1 ? string.Empty : "s")} could not be matched to an item ID.");
+                : "No tracked materials for this expansion.");
         }
     }
 
-    private void DrawMaterialSection(string expansionId, string section, IReadOnlyList<MaterialDisplayRow> rows)
+    private void DrawShoppingSummary(IReadOnlyList<ShoppingMaterialRow> materials)
     {
-        var shortfall = rows.Count(row => !row.IsCurrency && row.Shortfall > 0);
-        var header = shortfall > 0 ? $"{section} ({shortfall} needed)" : section;
-        var configKey = $"{expansionId}|{section}";
-        var isOpen = config.ExpandedMaterialSections.TryGetValue(configKey, out var savedOpen)
-            ? savedOpen
-            : shortfall > 0;
+        var shortCount = materials.Count(row => row.Short > 0);
+        var unresolved = materials.Count(row => !row.Resolved);
 
-        var nodeOpen = ImGui.CollapsingHeader(
-            header,
-            isOpen ? ImGuiTreeNodeFlags.DefaultOpen : ImGuiTreeNodeFlags.None);
+        if (shortCount == 0)
+        {
+            ImGui.TextColored(GoodColor, "You have enough of every tracked material for your remaining weapons.");
+        }
+        else
+        {
+            ImGui.TextColored(BadColor, $"{shortCount} material{(shortCount == 1 ? string.Empty : "s")} still needed.");
+        }
+
+        if (unresolved > 0)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(WarningColor, $"({unresolved} not linked to an item)");
+        }
+
+        ImGui.TextColored(MutedColor, "Needs cover every job still missing the weapon. Owned counts are your live inventory.");
+    }
+
+    private void DrawShoppingStepGroup(string expansionId, string step, IReadOnlyList<ShoppingMaterialRow> rows)
+    {
+        var shortCount = rows.Count(row => row.Short > 0);
+        var header = shortCount > 0 ? $"{step} ({shortCount} needed)" : step;
+        if (!DrawCollapsingSection($"{expansionId}|{step}", header, shortCount > 0))
+        {
+            return;
+        }
+
+        using var table = ImRaii.Table(
+            $"Shopping_{expansionId}_{step}",
+            4,
+            ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.ScrollY,
+            new Vector2(0, Math.Min(280f, (rows.Count + 1) * ImGui.GetTextLineHeightWithSpacing() + 8f)));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Material", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableHeadersRow();
+
+        foreach (var row in rows)
+        {
+            ImGui.TableNextRow();
+
+            ImGui.TableNextColumn();
+            if (row.Resolved)
+            {
+                ImGui.TextUnformatted(row.Material);
+            }
+            else
+            {
+                ImGui.TextColored(WarningColor, row.Material);
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Couldn't match this to a game item, so owned can't be counted.");
+                }
+            }
+
+            ImGui.TableNextColumn();
+            ImGui.Text(row.Need.ToString());
+
+            ImGui.TableNextColumn();
+            if (row.Resolved)
+            {
+                ImGui.Text(row.Owned.ToString());
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "—");
+            }
+
+            ImGui.TableNextColumn();
+            if (row.Resolved)
+            {
+                ImGui.TextColored(row.Short == 0 ? GoodColor : BadColor, row.Short.ToString());
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "?");
+            }
+        }
+    }
+
+    private void DrawCurrencyGroup(string expansionId, IReadOnlyList<MaterialDisplayRow> currencies)
+    {
+        var shortCount = currencies.Count(row => row.Shortfall > 0);
+        var header = shortCount > 0 ? $"Currencies ({shortCount} short)" : "Currencies";
+        if (!DrawCollapsingSection($"{expansionId}|Currencies", header, shortCount > 0))
+        {
+            return;
+        }
+
+        using var table = ImRaii.Table(
+            $"ShoppingCurrencies_{expansionId}",
+            4,
+            ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.ScrollY,
+            new Vector2(0, Math.Min(200f, (currencies.Count + 1) * ImGui.GetTextLineHeightWithSpacing() + 8f)));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Currency", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableHeadersRow();
+
+        foreach (var row in currencies)
+        {
+            ImGui.TableNextRow();
+
+            ImGui.TableNextColumn();
+            ImGui.TextUnformatted(row.Name);
+
+            ImGui.TableNextColumn();
+            ImGui.Text(row.Needed.ToString());
+
+            ImGui.TableNextColumn();
+            if (row.IsCurrencyTracked)
+            {
+                ImGui.Text(row.Owned.ToString());
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "—");
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Owned count isn't available for this currency.");
+                }
+            }
+
+            ImGui.TableNextColumn();
+            if (row.IsCurrencyTracked)
+            {
+                ImGui.TextColored(row.Shortfall == 0 ? GoodColor : BadColor, row.Shortfall.ToString());
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "—");
+            }
+        }
+    }
+
+    private bool DrawCollapsingSection(string configKey, string header, bool defaultOpen)
+    {
+        var isOpen = config.ExpandedMaterialSections.TryGetValue(configKey, out var saved) ? saved : defaultOpen;
+        var nodeOpen = ImGui.CollapsingHeader(header, isOpen ? ImGuiTreeNodeFlags.DefaultOpen : ImGuiTreeNodeFlags.None);
         if (nodeOpen != isOpen)
         {
             config.ExpandedMaterialSections[configKey] = nodeOpen;
@@ -141,92 +235,6 @@ public sealed partial class PluginUI
             config.ExpandedMaterialSections[configKey] = nodeOpen;
         }
 
-        if (!nodeOpen)
-        {
-            return;
-        }
-
-        ImGui.Spacing();
-        DrawMaterialRowsTable(section, rows);
-        ImGui.Spacing();
-    }
-
-    private void DrawMaterialRowsTable(string section, IReadOnlyList<MaterialDisplayRow> rows)
-    {
-        using var table = ImRaii.Table(
-            $"RelicMaterials_{section}",
-            5,
-            ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.ScrollY,
-            new Vector2(0, Math.Min(280f, (rows.Count + 1) * ImGui.GetTextLineHeightWithSpacing() + 8f)));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 88);
-        ImGui.TableSetupColumn("Material", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 48);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 48);
-        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
-        ImGui.TableHeadersRow();
-
-        foreach (var row in rows)
-        {
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            var stepLabel = row.DisplayStep;
-            ImGui.TextUnformatted(stepLabel);
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(stepLabel);
-            }
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency)
-            {
-                ImGui.TextColored(MutedColor, row.Name);
-            }
-            else if (!row.IsResolved)
-            {
-                ImGui.TextColored(WarningColor, row.Name);
-            }
-            else
-            {
-                ImGui.Text(row.Name);
-                if (row.ItemIds.Count > 1 && ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip($"Counts inventory across {row.ItemIds.Count} related items.");
-                }
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.Text(row.Needed.ToString());
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency && !row.IsCurrencyTracked)
-            {
-                ImGui.TextColored(MutedColor, "—");
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("Wallet currency tracking is not available for this entry.");
-                }
-            }
-            else
-            {
-                ImGui.Text(row.Owned.ToString());
-            }
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrency && !row.IsCurrencyTracked)
-            {
-                ImGui.TextColored(MutedColor, "—");
-            }
-            else
-            {
-                var color = row.Shortfall == 0 ? GoodColor : BadColor;
-                ImGui.TextColored(color, row.Shortfall.ToString());
-            }
-        }
+        return nodeOpen;
     }
 }

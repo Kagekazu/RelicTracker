@@ -137,10 +137,6 @@ public sealed class MaterialDisplayRow
     public required string Section { get; init; }
     public string? Step { get; init; }
     public string? Label { get; init; }
-    public string? DisplayStepOverride { get; init; }
-    public string DisplayStep =>
-        DisplayStepOverride
-        ?? (string.IsNullOrWhiteSpace(Label) ? Step ?? "—" : $"{Step} — {Label}");
     public required string Name { get; init; }
     public uint? ItemId { get; init; }
     public IReadOnlyList<uint> ItemIds { get; init; } = [];
@@ -150,5 +146,4 @@ public sealed class MaterialDisplayRow
     public uint Shortfall => Needed > Owned ? Needed - Owned : 0;
     public bool IsCurrency { get; init; }
     public bool IsCurrencyTracked { get; init; }
-    public string? JobsNeeded { get; init; }
 }
