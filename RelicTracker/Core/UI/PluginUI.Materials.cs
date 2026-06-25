@@ -16,13 +16,13 @@ public sealed partial class PluginUI
 
         if (config.FfxivCollectCharacterId == 0)
         {
-            ImGui.TextWrapped(
-                "Set a FFXIV Collect ID on the Collect tab so the shopping list knows which weapons you still need.");
-            return;
+            ImGui.TextColored(MutedColor,
+                "Standalone mode — this list covers every job still missing each step. Tick finished steps on the Relic tab (or link FFXIV Collect) to trim it down.");
+            ImGui.Spacing();
         }
 
-        var statuses = RelicStatusService.Build(ffxivCollect.Snapshot, catalog);
         var ownership = GetOwnership();
+        var statuses = RelicStatusService.Build(ownership, catalog);
         var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
         var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup);
         var currencies = data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();

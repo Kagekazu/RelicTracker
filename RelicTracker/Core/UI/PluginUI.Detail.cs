@@ -146,19 +146,19 @@ public sealed partial class PluginUI
 
     private void DrawArmorDetail(ArmorLine armor, RelicOwnership ownership)
     {
-        var owned = armor.AllTiers.Sum(tier => Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType)));
+        var owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
         var total = armor.TotalPieces;
         var complete = total > 0 && owned >= total;
 
-        if (config.FfxivCollectCharacterId == 0)
-        {
-            ImGui.TextColored(MutedColor, "Set a FFXIV Collect ID on the Collect tab to track armor pieces.");
-        }
-        else
+        if (CollectActive)
         {
             ImGui.TextColored(GoodColor, "Auto-tracked from FFXIV Collect — no ticking needed.");
             ImGui.SameLine();
             ImGui.TextColored(complete ? GoodColor : MutedColor, $"({owned}/{total} pieces)");
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Link FFXIV Collect on the Collect tab to auto-track instead.");
         }
 
         ImGui.Separator();
@@ -208,7 +208,7 @@ public sealed partial class PluginUI
 
         foreach (var tier in set.Tiers)
         {
-            var tierOwned = Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType));
+            var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
             var fraction = tier.Pieces > 0 ? (float)tierOwned / tier.Pieces : 0f;
 
             ImGui.TableNextRow();
@@ -226,8 +226,44 @@ public sealed partial class PluginUI
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, $"{tierOwned}/{tier.Pieces}");
 
             ImGui.TableNextColumn();
-            DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
+            if (CollectActive)
+            {
+                DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
+            }
+            else
+            {
+                // Manual: one checkbox per piece, count of ticked = owned.
+                for (var i = 0; i < tier.Pieces; i++)
+                {
+                    if (i > 0)
+                    {
+                        ImGui.SameLine();
+                    }
+
+                    var done = config.ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
+                    if (ImGui.Checkbox($"##{tier.CollectType}_{i}", ref done))
+                    {
+                        SetArmorPieceDone(tier.CollectType, i, done);
+                    }
+                }
+            }
         }
+    }
+
+    /// <summary>Manual armor piece tick (used when FFXIV Collect isn't linked).</summary>
+    private void SetArmorPieceDone(string collectType, int piece, bool done)
+    {
+        var key = $"{collectType}|{piece}";
+        if (done)
+        {
+            config.ArmorPieceDone.Add(key);
+        }
+        else
+        {
+            config.ArmorPieceDone.Remove(key);
+        }
+
+        config.OnSettingChanged();
     }
 
     private RelicOwnership GetOwnership()
@@ -235,7 +271,8 @@ public sealed partial class PluginUI
         var stamp = ffxivCollect.LastRefreshUtc;
         if (cachedOwnership is null || cachedOwnershipStamp != stamp)
         {
-            cachedOwnership = new RelicOwnership(ffxivCollect.Snapshot);
+            // Pass the live manual-tick sets so the funnel/armor reflect manual ticks without rebuilding.
+            cachedOwnership = new RelicOwnership(ffxivCollect.Snapshot, config.RelicStepDone, config.ArmorPieceDone);
             cachedOwnershipStamp = stamp;
         }
 
@@ -435,7 +472,7 @@ public sealed partial class PluginUI
         ImGui.TextColored(HeaderColor, $"To do now: {stepName}");
         ImGui.Spacing();
 
-        var note = catalog.StepNote(line.CollectType, stepName);
+        var note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
         if (!string.IsNullOrWhiteSpace(note))
         {
             ImGui.TextWrapped(note);
@@ -578,6 +615,46 @@ public sealed partial class PluginUI
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Picks the part of a step note relevant to one job. Tool-line notes split per discipline with
+    /// inline [[Crafters]] / [[Gatherers]] / [[Fisher]] tags (slots 0-7 / 8-9 / 10), keeping any
+    /// untagged intro for everyone. Notes without tags (weapons, armor) are returned unchanged.
+    /// </summary>
+    private static string? NoteForDiscipline(string? note, int slotIndex)
+    {
+        if (string.IsNullOrEmpty(note) || !note.Contains("[[", StringComparison.Ordinal))
+        {
+            return note;
+        }
+
+        var wanted = slotIndex switch
+        {
+            >= 0 and <= 7 => "[[Crafters]]",
+            8 or 9 => "[[Gatherers]]",
+            10 => "[[Fisher]]",
+            _ => null,
+        };
+
+        var firstTag = note.IndexOf("[[", StringComparison.Ordinal);
+        var intro = note[..firstTag].Trim();
+
+        if (wanted is null)
+        {
+            return intro;
+        }
+
+        var start = note.IndexOf(wanted, StringComparison.Ordinal);
+        if (start < 0)
+        {
+            return intro;
+        }
+
+        start += wanted.Length;
+        var end = note.IndexOf("[[", start, StringComparison.Ordinal);
+        var section = (end < 0 ? note[start..] : note[start..end]).Trim();
+        return string.IsNullOrEmpty(intro) ? section : $"{intro}\n\n{section}";
     }
 
     private static string StepKey(RelicLine line, string job, int tier) =>

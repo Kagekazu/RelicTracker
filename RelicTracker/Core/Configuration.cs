@@ -27,6 +27,9 @@ public sealed class Configuration : IPluginConfiguration
     /// <summary>Per-job step completions in the Relic detail view: collectType|job|tierIndex</summary>
     public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
 
+    /// <summary>Manual armor piece ticks (used when FFXIV Collect is not linked): collectType|pieceIndex</summary>
+    public HashSet<string> ArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
+
     /// <summary>Last selected line + job in the Relic detail view, for convenience.</summary>
     public string DetailExpansionId { get; set; } = "ARR";
 
