@@ -43,6 +43,9 @@ public sealed class Configuration : IPluginConfiguration
     /// <summary>On the Overview tab, hide relic lines you have already finished on every job.</summary>
     public bool OverviewIncompleteOnly { get; set; }
 
+    /// <summary>Tracker focus: a CollectType to scope the shopping list to one relic line ("" = all lines).</summary>
+    public string TrackerLineFilter { get; set; } = string.Empty;
+
     /// <summary>Show the per-job progress grid on the Tracker tab.</summary>
     public bool ShowJobProgressSection { get; set; }
 

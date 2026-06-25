@@ -106,18 +106,6 @@ public sealed partial class PluginUI : Window
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Materials ref"))
-            {
-                DrawMaterialsReferenceTab();
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Collect"))
-            {
-                DrawCollectTab();
-                ImGui.EndTabItem();
-            }
-
             if (ImGui.BeginTabItem("Settings"))
             {
                 DrawSettingsTab();
@@ -161,7 +149,7 @@ public sealed partial class PluginUI : Window
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
         progressTracker.EnsureCollectSynced(ffxivCollect, data);
 
-        ImGui.SetNextItemWidth(160);
+        ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
         {
             foreach (var expansionId in data.Manifest.Expansions)
@@ -169,6 +157,37 @@ public sealed partial class PluginUI : Window
                 if (ImGui.Selectable(expansionId, expansionId == config.SelectedExpansionId))
                 {
                     config.SelectedExpansionId = expansionId;
+                    config.TrackerLineFilter = string.Empty; // focus is per-expansion
+                    config.OnSettingChanged();
+                }
+            }
+
+            ImGui.EndCombo();
+        }
+
+        // Focus the list on a single relic line (or all lines in the expansion).
+        var lines = catalog.LinesFor(config.SelectedExpansionId).ToList();
+        if (!string.IsNullOrEmpty(config.TrackerLineFilter) && lines.All(l => l.CollectType != config.TrackerLineFilter))
+        {
+            config.TrackerLineFilter = string.Empty; // stale from a previous expansion
+        }
+
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(190);
+        var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
+        if (ImGui.BeginCombo("Focus", focusLabel))
+        {
+            if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
+            {
+                config.TrackerLineFilter = string.Empty;
+                config.OnSettingChanged();
+            }
+
+            foreach (var line in lines)
+            {
+                if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
+                {
+                    config.TrackerLineFilter = line.CollectType;
                     config.OnSettingChanged();
                 }
             }
@@ -193,7 +212,7 @@ public sealed partial class PluginUI : Window
         ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
 
         ImGui.SameLine();
-        ImGui.TextColored(MutedColor, "Per-job progress lives on the Relic tab.");
+        ImGui.TextColored(MutedColor, "Per-job detail is on the Relic tab.");
 
         ImGui.Spacing();
 
@@ -223,46 +242,9 @@ public sealed partial class PluginUI : Window
         ImGui.TextColored(MutedColor, "Manual progress — counts assume all jobs incomplete");
     }
 
-    private void DrawMaterialsReferenceTab()
-    {
-        ImGui.TextColored(MutedColor, $"Acquisition reference for {config.SelectedExpansionId} (matches Tracker expansion).");
-        ImGui.Spacing();
-
-        var rows = data.GetMaterialReference(config.SelectedExpansionId).ToList();
-        if (rows.Count == 0)
-        {
-            ImGui.TextColored(MutedColor, "No reference entries for this expansion.");
-            return;
-        }
-
-        using var table = ImRaii.Table("MaterialRef", 4, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY, new Vector2(0, -1));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 100);
-        ImGui.TableSetupColumn("Material", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("Location", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("Requirement", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableHeadersRow();
-
-        foreach (var row in rows)
-        {
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(row.Step ?? "");
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(row.Material ?? "");
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(row.Location ?? "");
-            ImGui.TableNextColumn();
-            ImGui.TextWrapped(row.Requirement ?? "");
-        }
-    }
-
     private void DrawSettingsTab()
     {
+        ImGui.TextColored(HeaderColor, "Inventory");
         var activeOnly = config.ActiveCharacterOnly;
         if (ImGui.Checkbox("Active character + retainers only", ref activeOnly))
         {
@@ -276,7 +258,10 @@ public sealed partial class PluginUI : Window
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.Text("FFXIV Collect character ID is configured on the Collect tab.");
-        ImGui.TextColored(MutedColor, "Data is read-only from ffxivcollect.com. Refresh your character there after earning relics.");
+        ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
+        ImGui.TextColored(MutedColor, "Link an ID to auto-fill finished relics. Without it, tick steps and armor pieces manually on the Relic tab.");
+        ImGui.Spacing();
+
+        DrawCollectSection();
     }
 }

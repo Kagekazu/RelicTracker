@@ -115,7 +115,9 @@ public sealed partial class PluginUI
             ? title
             : allDone ? $"{title} — done" : $"{title} — {jobsComplete}/{jobsTotal} maxed";
 
-        if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", ImGuiTreeNodeFlags.DefaultOpen))
+        // Finished expansions collapse by default; ones you're still working on stay open.
+        var headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
+        if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", headerFlags))
         {
             return;
         }

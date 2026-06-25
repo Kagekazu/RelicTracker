@@ -21,11 +21,17 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
+        var lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
+        var focused = lineFilter is not null;
+
         var ownership = GetOwnership();
         var statuses = RelicStatusService.Build(ownership, catalog);
         var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
-        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup);
-        var currencies = data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();
+        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup, lineFilter);
+        // Currencies and armours are expansion-wide; when focused on one weapon/tool line, hide them.
+        var currencies = focused
+            ? new List<MaterialDisplayRow>()
+            : data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
@@ -47,7 +53,8 @@ public sealed partial class PluginUI
         DrawShoppingSummary(materials);
         ImGui.Spacing();
 
-        var hasArmor = data.ArmorCosts.TryGetValue(expansionId, out var armorCosts) && armorCosts.Count > 0;
+        data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
+        var hasArmor = !focused && armorCosts is { Count: > 0 };
         var drewAny = false;
 
         if (materials.Count > 0 || currencies.Count > 0)
@@ -70,20 +77,154 @@ public sealed partial class PluginUI
         }
     }
 
-    private static readonly string[] WeaponsColumns = ["Item", "Where / how to get", "Need", "Owned", "Short"];
+    private const ImGuiTableFlags ShoppingTableFlags =
+        ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg;
 
     private void DrawWeaponsList(
         string expansionId,
         IReadOnlyList<ShoppingMaterialRow> materials,
         IReadOnlyList<MaterialDisplayRow> currencies)
     {
-        if (!DrawCollapsingSection($"{expansionId}|Weapons", "Weapons", true))
+        if (!DrawCollapsingSection($"{expansionId}|Weapons", "Weapons & tools", true))
         {
             return;
         }
 
+        // Group by where you get it (zone or step); each group is its own collapsible block so the
+        // list stays scannable. The group header is the "where", so rows drop that column.
+        foreach (var group in materials
+                     .GroupBy(row => WhereToGet(expansionId, row))
+                     .OrderBy(g => g.Min(row => row.StepOrder)))
+        {
+            var rows = group.OrderBy(row => row.StepOrder).ToList();
+            var shortCount = rows.Count(row => row.Short > 0);
+            var badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
+            var key = $"{expansionId}|W|{group.Key}";
+            if (!DrawCollapsingSection(key, $"{group.Key}  ({badge})###{key}", false))
+            {
+                continue;
+            }
+
+            using var table = ImRaii.Table($"WGrp_{key}", 4, ShoppingTableFlags, new Vector2(0, 0));
+            if (!table)
+            {
+                continue;
+            }
+
+            ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch, 0.6f);
+            ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
+            ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
+            ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
+            ImGui.TableHeadersRow();
+
+            foreach (var row in rows)
+            {
+                DrawMaterialRow(row);
+            }
+        }
+
+        if (currencies.Count > 0 && DrawCollapsingSection($"{expansionId}|W|currencies", $"Currencies  ({currencies.Count})###{expansionId}cur", false))
+        {
+            using var table = ImRaii.Table($"WCur_{expansionId}", 5, ShoppingTableFlags, new Vector2(0, 0));
+            if (table)
+            {
+                ImGui.TableSetupColumn("Currency", ImGuiTableColumnFlags.WidthStretch, 0.4f);
+                ImGui.TableSetupColumn("Where / how to get", ImGuiTableColumnFlags.WidthStretch, 0.6f);
+                ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
+                ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
+                ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
+                ImGui.TableHeadersRow();
+
+                foreach (var row in currencies)
+                {
+                    DrawCurrencyRow(row);
+                }
+            }
+        }
+    }
+
+    private void DrawMaterialRow(ShoppingMaterialRow row)
+    {
+        ImGui.TableNextRow();
+
+        ImGui.TableNextColumn();
+        if (row.Resolved)
+        {
+            ImGui.TextUnformatted(row.Material);
+        }
+        else
+        {
+            ImGui.TextColored(WarningColor, row.Material);
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Couldn't match this to a game item, so owned can't be counted.");
+            }
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.Text(row.Need.ToString());
+
+        ImGui.TableNextColumn();
+        if (row.Resolved)
+        {
+            ImGui.Text(row.Owned.ToString());
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor, "—");
+        }
+
+        ImGui.TableNextColumn();
+        if (row.Resolved)
+        {
+            ImGui.TextColored(row.Short == 0 ? GoodColor : BadColor, row.Short.ToString());
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor, "?");
+        }
+    }
+
+    private void DrawCurrencyRow(MaterialDisplayRow row)
+    {
+        ImGui.TableNextRow();
+
+        ImGui.TableNextColumn();
+        ImGui.TextColored(MutedColor, row.Name);
+
+        ImGui.TableNextColumn();
+        ImGui.TextUnformatted(CurrencyWhere(row.Name));
+
+        ImGui.TableNextColumn();
+        ImGui.Text(row.Needed.ToString());
+
+        ImGui.TableNextColumn();
+        if (row.IsCurrencyTracked)
+        {
+            ImGui.Text(row.Owned.ToString());
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor, "—");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TextColored(row.IsCurrencyTracked && row.Shortfall == 0 ? GoodColor : row.IsCurrencyTracked ? BadColor : MutedColor,
+            row.IsCurrencyTracked ? row.Shortfall.ToString() : "—");
+    }
+
+    private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs)
+    {
+        if (!DrawCollapsingSection($"{expansionId}|Armours", "Armours — currency per stage", true))
+        {
+            return;
+        }
+
+        ImGui.TextColored(MutedColor, "Need = every set (all jobs/roles). Hover a stage for per-set / per-piece / slot detail. Short = Need − Owned.");
+        ImGui.Spacing();
+
         using var table = ImRaii.Table(
-            $"WeaponsList_{expansionId}",
+            $"ArmoursList_{expansionId}",
             5,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
             new Vector2(0, 0));
@@ -92,112 +233,9 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TableSetupColumn(WeaponsColumns[0], ImGuiTableColumnFlags.WidthStretch, 0.36f);
-        ImGui.TableSetupColumn(WeaponsColumns[1], ImGuiTableColumnFlags.WidthStretch, 0.64f);
-        ImGui.TableSetupColumn(WeaponsColumns[2], ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn(WeaponsColumns[3], ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn(WeaponsColumns[4], ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableHeadersRow();
-
-        foreach (var row in materials.OrderBy(row => row.StepOrder))
-        {
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            if (row.Resolved)
-            {
-                ImGui.TextUnformatted(row.Material);
-            }
-            else
-            {
-                ImGui.TextColored(WarningColor, row.Material);
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("Couldn't match this to a game item, so owned can't be counted.");
-                }
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(WhereToGet(expansionId, row));
-
-            ImGui.TableNextColumn();
-            ImGui.Text(row.Need.ToString());
-
-            ImGui.TableNextColumn();
-            if (row.Resolved)
-            {
-                ImGui.Text(row.Owned.ToString());
-            }
-            else
-            {
-                ImGui.TextColored(MutedColor, "—");
-            }
-
-            ImGui.TableNextColumn();
-            if (row.Resolved)
-            {
-                ImGui.TextColored(row.Short == 0 ? GoodColor : BadColor, row.Short.ToString());
-            }
-            else
-            {
-                ImGui.TextColored(MutedColor, "?");
-            }
-        }
-
-        foreach (var row in currencies)
-        {
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            ImGui.TextColored(MutedColor, row.Name);
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(CurrencyWhere(row.Name));
-
-            ImGui.TableNextColumn();
-            ImGui.Text(row.Needed.ToString());
-
-            ImGui.TableNextColumn();
-            if (row.IsCurrencyTracked)
-            {
-                ImGui.Text(row.Owned.ToString());
-            }
-            else
-            {
-                ImGui.TextColored(MutedColor, "—");
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.TextColored(row.IsCurrencyTracked && row.Shortfall == 0 ? GoodColor : row.IsCurrencyTracked ? BadColor : MutedColor,
-                row.IsCurrencyTracked ? row.Shortfall.ToString() : "—");
-        }
-    }
-
-    private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs)
-    {
-        if (!DrawCollapsingSection($"{expansionId}|Armours", "Armours — cost per set / per piece", true))
-        {
-            return;
-        }
-
-        ImGui.TextColored(MutedColor, "Per set = a full 5-piece set of one job/role. Need (all) = every set. Hover a stage for slot detail. Short = Need (all) − Owned.");
-        ImGui.Spacing();
-
-        using var table = ImRaii.Table(
-            $"ArmoursList_{expansionId}",
-            7,
-            ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-            new Vector2(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Stage", ImGuiTableColumnFlags.WidthStretch, 0.4f);
-        ImGui.TableSetupColumn("Currency", ImGuiTableColumnFlags.WidthStretch, 0.6f);
-        ImGui.TableSetupColumn("Per set", ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn("Per piece", ImGuiTableColumnFlags.WidthFixed, 70);
-        ImGui.TableSetupColumn("Need (all)", ImGuiTableColumnFlags.WidthFixed, 76);
+        ImGui.TableSetupColumn("Stage", ImGuiTableColumnFlags.WidthStretch, 0.45f);
+        ImGui.TableSetupColumn("Currency", ImGuiTableColumnFlags.WidthStretch, 0.55f);
+        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 76);
         ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
@@ -208,9 +246,16 @@ public sealed partial class PluginUI
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.Set);
-            if (!string.IsNullOrWhiteSpace(cost.Note) && ImGui.IsItemHovered())
+            if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip(cost.Note);
+                var perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
+                var detail = $"Per piece: {perPiece}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
+                if (!string.IsNullOrWhiteSpace(cost.Note))
+                {
+                    detail += $"\n\n{cost.Note}";
+                }
+
+                ImGui.SetTooltip(detail);
             }
 
             ImGui.TableNextColumn();
@@ -223,12 +268,6 @@ public sealed partial class PluginUI
             {
                 ImGui.TextColored(WarningColor, cost.Currency);
             }
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—");
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies");
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
