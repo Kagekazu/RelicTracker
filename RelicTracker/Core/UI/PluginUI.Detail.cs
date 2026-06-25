@@ -324,7 +324,8 @@ public sealed partial class PluginUI
 
     private void DrawAllJobsGrid(RelicLine line, IReadOnlyList<string> jobList, string selectedJob, RelicOwnership ownership)
     {
-        if (!ImGui.CollapsingHeader($"All jobs · {line.CollectType}###alljobs", ImGuiTreeNodeFlags.DefaultOpen))
+        // Collapsed by default — it's a wide reference grid; open it when you want the full picture.
+        if (!ImGui.CollapsingHeader($"All jobs · {line.CollectType}###alljobs"))
         {
             return;
         }

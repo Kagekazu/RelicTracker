@@ -13,7 +13,7 @@ public sealed partial class PluginUI
     private string collectCharacterIdInput = string.Empty;
     private bool collectInputInitialized;
 
-    private void DrawCollectTab()
+    private void DrawCollectSection()
     {
         if (!collectInputInitialized)
         {

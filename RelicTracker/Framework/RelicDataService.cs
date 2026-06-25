@@ -81,10 +81,11 @@ public sealed class RelicDataService
         IReadOnlyList<RelicLineStatus> statuses,
         RelicOwnership ownership,
         ItemResolver items,
-        Func<uint, uint> ownedLookup)
+        Func<uint, uint> ownedLookup,
+        string? lineFilter = null)
     {
         return Expansions.TryGetValue(expansionId, out var sheet)
-            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources)
+            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources, lineFilter)
             : [];
     }
 
