@@ -36,6 +36,7 @@ public sealed class RelicDataService
                           ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         ArmorCosts = ReadJson<Dictionary<string, List<ArmorCostRow>>>(Path.Combine(baseDir, "armor_costs.json"))
                      ?? new Dictionary<string, List<ArmorCostRow>>(StringComparer.Ordinal);
+        MergeExtraMaterials(Path.Combine(baseDir, "tool_extra_materials.json"));
         TagMaterialReferenceExpansions();
         IsLoaded = true;
         Svc.Log.Information(
@@ -45,15 +46,45 @@ public sealed class RelicDataService
             Expansions.Count);
     }
 
+    /// <summary>
+    /// Folds curated step materials (e.g. the ARR Lucis tool currencies that Wyn's sheet lacks)
+    /// into the loaded expansion sheets. Kept in its own file so a Wyn re-extract can't wipe them.
+    /// </summary>
+    private void MergeExtraMaterials(string path)
+    {
+        var extra = ReadJson<Dictionary<string, ToolExtraMaterials>>(path);
+        if (extra is null)
+        {
+            return;
+        }
+
+        foreach (var (expansionId, entry) in extra)
+        {
+            if (!Expansions.TryGetValue(expansionId, out var sheet))
+            {
+                continue;
+            }
+
+            if (entry.ReplaceSteps.Count > 0)
+            {
+                var drop = new HashSet<string>(entry.ReplaceSteps, StringComparer.OrdinalIgnoreCase);
+                sheet.Materials.RemoveAll(row => row.Step is not null && drop.Contains(row.Step.Trim()));
+            }
+
+            sheet.Materials.AddRange(entry.Materials);
+        }
+    }
+
     /// <summary>Per-step materials shopping list, scaled by jobs still needing each step (from FFXIV Collect).</summary>
     public List<ShoppingMaterialRow> GetShoppingMaterials(
         string expansionId,
         IReadOnlyList<RelicLineStatus> statuses,
+        RelicOwnership ownership,
         ItemResolver items,
         Func<uint, uint> ownedLookup)
     {
         return Expansions.TryGetValue(expansionId, out var sheet)
-            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, items, ownedLookup, MaterialSources)
+            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources)
             : [];
     }
 

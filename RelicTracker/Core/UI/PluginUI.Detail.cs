@@ -361,7 +361,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        DrawCurrentStepDetail(line, currentTier);
+        DrawCurrentStepDetail(line, currentTier, slotIndex);
     }
 
     private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership, bool collectActive)
@@ -424,12 +424,12 @@ public sealed partial class PluginUI
     // Catalog step name -> Wyn material-sheet step name, for the few that differ.
     private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["Skybuilders'"] = "Skybuilders",
-        ["Augmented Dragonsung"] = "Dragonsung",
+        // Skysteel steps now use their catalog names directly via the curated tool_extra_materials
+        // supplement, so they no longer need to alias onto Wyn's lumped step names.
         ["Augmented Law's Order"] = "Augmented Law's",
     };
 
-    private void DrawCurrentStepDetail(RelicLine line, int currentTier)
+    private void DrawCurrentStepDetail(RelicLine line, int currentTier, int slotIndex)
     {
         var stepName = line.StepName(currentTier);
         ImGui.TextColored(HeaderColor, $"To do now: {stepName}");
@@ -442,7 +442,7 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
-        var items = GetStepItems(line, stepName).ToList();
+        var items = GetStepItems(line, stepName, slotIndex).ToList();
         if (items.Count == 0)
         {
             if (string.IsNullOrWhiteSpace(note))
@@ -517,20 +517,31 @@ public sealed partial class PluginUI
     private readonly record struct StepItem(string Name, string? Where, uint Need, uint Owned, bool Resolved);
 
     /// <summary>Per-weapon materials for a step, from Wyn's per-expansion data, with live owned counts.</summary>
-    private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName)
+    private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName, int slotIndex)
     {
         if (!data.Expansions.TryGetValue(line.Expansion, out var sheet))
         {
             yield break;
         }
 
+        // On tool lines the material flag columns line up with the relic job slots, so a Fisher
+        // only sees fishing parts and crafters don't see them. Weapon-line flags are spreadsheet
+        // artifacts (e.g. every Eureka material is flagged for one stray column), so don't filter.
+        var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
+
         var wynStep = WynStepAliases.TryGetValue(stepName, out var alias) ? alias : stepName;
+        var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
                 || !string.Equals(row.Step.Trim(), wynStep, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (filterBySlot && !ShoppingListBuilder.ToolMaterialAppliesToSlot(row.Jobs, slotIndex, hasFisherSection))
             {
                 continue;
             }

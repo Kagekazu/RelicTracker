@@ -22,8 +22,9 @@ public sealed partial class PluginUI
         }
 
         var statuses = RelicStatusService.Build(ffxivCollect.Snapshot, catalog);
+        var ownership = GetOwnership();
         var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
-        var materials = data.GetShoppingMaterials(expansionId, statuses, itemResolver, ownedLookup);
+        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup);
         var currencies = data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
