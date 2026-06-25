@@ -54,7 +54,13 @@ public sealed class RelicOwnership
     private readonly HashSet<string> owned;
     private readonly Dictionary<string, int> ownedCountByType;
 
-    public RelicOwnership(FfxivCollectSnapshot snapshot)
+    /// <summary>Live reference to manual step ticks (Configuration.RelicStepDone), keyed CollectType|job|tier.</summary>
+    private readonly HashSet<string> manualDone;
+
+    /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
+    private readonly HashSet<string> manualArmor;
+
+    public RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string>? manualDone = null, HashSet<string>? manualArmor = null)
     {
         owned = snapshot.Owned
             .Where(relic => relic.Type is not null && relic.Order > 0)
@@ -65,13 +71,43 @@ public sealed class RelicOwnership
             .Where(relic => relic.Type is not null)
             .GroupBy(relic => relic.Type!.Name, StringComparer.Ordinal)
             .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
+
+        this.manualDone = manualDone ?? new HashSet<string>(StringComparer.Ordinal);
+        this.manualArmor = manualArmor ?? new HashSet<string>(StringComparer.Ordinal);
     }
 
-    /// <summary>How many relics of a given Collect type the character owns (used for armor piece counts).</summary>
+    /// <summary>How many relics of a given Collect type FFXIV Collect shows owned (armor auto-tracking).</summary>
     public int OwnedCount(string collectType) =>
         ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
 
-    /// <summary>True if the character owns the relic for this job slot at this step (tier).</summary>
+    /// <summary>How many of an armor tier's pieces are manually ticked (used when Collect isn't linked).</summary>
+    public int ManualPieceCount(string collectType, int pieces)
+    {
+        if (manualArmor.Count == 0)
+        {
+            return 0;
+        }
+
+        var n = 0;
+        for (var i = 0; i < pieces; i++)
+        {
+            if (manualArmor.Contains($"{collectType}|{i}"))
+            {
+                n++;
+            }
+        }
+
+        return n;
+    }
+
+    /// <summary>Effective owned pieces for an armor tier — FFXIV Collect or manual ticks, whichever is higher.</summary>
+    public int OwnedPieceCount(string collectType, int pieces) =>
+        Math.Max(Math.Min(pieces, OwnedCount(collectType)), ManualPieceCount(collectType, pieces));
+
+    /// <summary>
+    /// True if FFXIV Collect shows the relic for this job slot at this step (tier) as owned. This is
+    /// the auto-detected source only — manual ticks are kept separate so they stay editable.
+    /// </summary>
     public bool IsStepDone(RelicLine line, int slotIndex, int tier)
     {
         if (line.Jobs <= 0 || slotIndex < 0 || tier < 0)
@@ -82,33 +118,54 @@ public sealed class RelicOwnership
         var order = (tier * line.Jobs) + slotIndex + 1;
         return owned.Contains($"{line.CollectType}#{order}");
     }
+
+    /// <summary>
+    /// True if the step is done for this slot either from FFXIV Collect OR a manual tick. This is the
+    /// unified "done" used by the Overview funnel and the Tracker, so the plugin works standalone
+    /// (without a Collect link) off manual ticks alone.
+    /// </summary>
+    public bool IsStepDoneOrManual(RelicLine line, int slotIndex, int tier)
+    {
+        if (IsStepDone(line, slotIndex, tier))
+        {
+            return true;
+        }
+
+        if (manualDone.Count == 0)
+        {
+            return false;
+        }
+
+        var jobs = line.EffectiveJobList;
+        return slotIndex >= 0 && slotIndex < jobs.Count
+            && manualDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
+    }
 }
 
 public sealed class RelicStatusService
 {
-    /// <summary>Builds per-line status from the owned-relic snapshot, keyed by Collect type name.</summary>
-    public static IReadOnlyList<RelicLineStatus> Build(FfxivCollectSnapshot snapshot, RelicCatalog catalog)
+    /// <summary>
+    /// Builds per-line status from ownership (FFXIV Collect plus manual ticks), so the Overview and
+    /// Tracker funnel reflect manual progress and work without a Collect link.
+    /// </summary>
+    public static IReadOnlyList<RelicLineStatus> Build(RelicOwnership ownership, RelicCatalog catalog)
     {
-        var ownedByType = snapshot.Owned
-            .Where(relic => relic.Order > 0 && relic.Type is not null)
-            .GroupBy(relic => relic.Type!.Name, StringComparer.Ordinal)
-            .ToDictionary(group => group.Key, group => group.ToList(), StringComparer.Ordinal);
-
         var statuses = new List<RelicLineStatus>(catalog.Lines.Count);
         foreach (var line in catalog.Lines)
         {
             var reached = new int[line.TierCount];
-            if (line.Jobs > 0 && line.TierCount > 0
-                && ownedByType.TryGetValue(line.CollectType, out var owned))
+            for (var tier = 0; tier < line.TierCount; tier++)
             {
-                foreach (var relic in owned)
+                var count = 0;
+                for (var slot = 0; slot < line.Jobs; slot++)
                 {
-                    var tier = (relic.Order - 1) / line.Jobs;
-                    if (tier >= 0 && tier < line.TierCount)
+                    if (ownership.IsStepDoneOrManual(line, slot, tier))
                     {
-                        reached[tier]++;
+                        count++;
                     }
                 }
+
+                reached[tier] = count;
             }
 
             statuses.Add(new RelicLineStatus

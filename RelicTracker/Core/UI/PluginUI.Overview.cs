@@ -21,16 +21,19 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (config.FfxivCollectCharacterId == 0)
+        if (config.FfxivCollectCharacterId != 0)
         {
-            ImGui.TextWrapped(
-                "The Overview reads your finished relics from FFXIV Collect. Open the Collect tab and enter your character ID to light it up.");
-            return;
+            ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor,
+                "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Collect tab to auto-fill finished relics.");
+            ImGui.Spacing();
         }
 
-        ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
-
-        var statuses = RelicStatusService.Build(ffxivCollect.Snapshot, catalog);
+        var ownership = GetOwnership();
+        var statuses = RelicStatusService.Build(ownership, catalog);
         DrawOverviewHeader(statuses);
 
         ImGui.Spacing();
@@ -43,7 +46,6 @@ public sealed partial class PluginUI
             return;
         }
 
-        var ownership = GetOwnership();
         foreach (var expansionId in catalog.Expansions)
         {
             var lines = statuses
@@ -181,10 +183,10 @@ public sealed partial class PluginUI
     }
 
     private static int OwnedPieces(ArmorLine armor, RelicOwnership ownership) =>
-        armor.AllTiers.Sum(tier => Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType)));
+        armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
 
     private static bool IsSetComplete(ArmorSet set, RelicOwnership ownership) =>
-        set.Tiers.All(tier => ownership.OwnedCount(tier.CollectType) >= tier.Pieces);
+        set.Tiers.All(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces) >= tier.Pieces);
 
     private static string BuildArmorTooltip(ArmorLine armor, RelicOwnership ownership)
     {
@@ -195,7 +197,7 @@ public sealed partial class PluginUI
             lines.Add(set.Name + ":");
             foreach (var tier in set.Tiers)
             {
-                var tierOwned = Math.Min(tier.Pieces, ownership.OwnedCount(tier.CollectType));
+                var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
                 lines.Add($"  {tier.Label}: {tierOwned}/{tier.Pieces}");
             }
         }
