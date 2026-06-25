@@ -15,6 +15,12 @@ public sealed class RelicDataService
     public Dictionary<string, ExpansionSheet> Expansions { get; private set; } = new(StringComparer.Ordinal);
     public Dictionary<string, List<string>> JobColumnsByExpansion { get; private set; } = new(StringComparer.Ordinal);
 
+    /// <summary>Material name -> where it is farmed, for grouping the shopping list by source.</summary>
+    public Dictionary<string, string> MaterialSources { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Expansion id -> field-op relic armor currency costs (per piece).</summary>
+    public Dictionary<string, List<ArmorCostRow>> ArmorCosts { get; private set; } = new(StringComparer.Ordinal);
+
     public bool IsLoaded { get; private set; }
 
     public void Load()
@@ -26,6 +32,10 @@ public sealed class RelicDataService
         MaterialReference = ReadJson<List<MaterialReferenceRow>>(Path.Combine(baseDir, "materials.json")) ?? [];
         JobColumnsByExpansion = ReadJson<Dictionary<string, List<string>>>(Path.Combine(baseDir, "job_columns.json"))
                                 ?? new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        MaterialSources = ReadJson<Dictionary<string, string>>(Path.Combine(baseDir, "material_sources.json"))
+                          ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        ArmorCosts = ReadJson<Dictionary<string, List<ArmorCostRow>>>(Path.Combine(baseDir, "armor_costs.json"))
+                     ?? new Dictionary<string, List<ArmorCostRow>>(StringComparer.Ordinal);
         TagMaterialReferenceExpansions();
         IsLoaded = true;
         Svc.Log.Information(
@@ -43,7 +53,7 @@ public sealed class RelicDataService
         Func<uint, uint> ownedLookup)
     {
         return Expansions.TryGetValue(expansionId, out var sheet)
-            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, items, ownedLookup)
+            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, items, ownedLookup, MaterialSources)
             : [];
     }
 
