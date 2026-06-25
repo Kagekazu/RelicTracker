@@ -131,6 +131,27 @@ public sealed class ExpansionCurrencyRow
     public double? Remaining { get; set; }
 }
 
+public sealed class ArmorCostRow
+{
+    [JsonPropertyName("set")]
+    public string Set { get; set; } = string.Empty;
+
+    [JsonPropertyName("currency")]
+    public string Currency { get; set; } = string.Empty;
+
+    [JsonPropertyName("perPiece")]
+    public int PerPiece { get; set; }
+
+    [JsonPropertyName("setTotal")]
+    public int SetTotal { get; set; }
+
+    [JsonPropertyName("allTotal")]
+    public int AllTotal { get; set; }
+
+    [JsonPropertyName("note")]
+    public string? Note { get; set; }
+}
+
 public sealed class MaterialDisplayRow
 {
     public required string ExpansionId { get; init; }

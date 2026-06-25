@@ -1,0 +1,27 @@
+{
+  "_comment": "Maps a tracked material (by its Wyn name) to where it is actually farmed, so the shopping list groups by source/zone instead of the weapon upgrade step. Materials without an entry fall back to their relic step. Extend per expansion.",
+  "Protean Crystals": "Eureka Anemos",
+  "Anemos Crystals": "Eureka Anemos",
+  "Frosted Crystals": "Eureka Anemos",
+  "Pazuzu's Feather": "Eureka Anemos",
+  "Pagos Crystals": "Eureka Pagos",
+  "Louhi's Ice": "Eureka Pagos",
+  "Pyros Crystals": "Eureka Pyros",
+  "Penthesilea's Flame": "Eureka Pyros",
+  "Hydatos Crystals": "Eureka Hydatos",
+  "Crystalline Scale": "Eureka Hydatos",
+  "Eureka Fragments": "Eureka Hydatos",
+
+  "Thavnairian Scalepowder": "Bozjan Southern Front",
+  "Tortured Memories": "Bozjan Southern Front",
+  "Sorrowful Memories": "Bozjan Southern Front",
+  "Harrowing Memories": "Bozjan Southern Front",
+  "Bitter Memories": "Bozjan Southern Front",
+  "Loathsome Memories": "Bozjan Southern Front",
+  "Timeworn Artifacts": "Zadnor",
+  "Raw Emotions": "Zadnor",
+
+  "Arcanite": "Occult Crescent",
+  "Waxing Arcanite": "Occult Crescent",
+  "Waning Arcanite": "Occult Crescent"
+}

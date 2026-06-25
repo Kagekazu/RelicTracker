@@ -43,12 +43,12 @@
     "_line": "Dawntrail crafter/gatherer relic — earned through Cosmic Exploration on Sinus Ardorum; no crafting materials, just research and mission deliveries."
   },
   "Eurekan Armor": {
-    "_line": "Field armor from The Forbidden Land, Eureka — start from the Antiquated artifact set, then upgrade Base → +1 → +2 → Anemos via Gerolt."
+    "_line": "The Forbidden Land, Eureka (from Gerolt). Elemental set: base 40 Pyros Crystal, +1 +Hydatos (50 body/legs, 30 small), +2 +Eureka Fragment (35 body/legs, 21 small). Eurekan/Artifact set (Anemos line): 50 Protean (base), 150 (+1), 400 (+2), then 150 Anemos Crystal for the final Anemos stage — per piece."
   },
   "Resistance Armor": {
-    "_line": "Field armor from the Bozjan Southern Front and Zadnor — earned via lockboxes, the large-scale raids and cluster exchanges."
+    "_line": "From the Resistance Supplier. Bozjan (Southern Front) = Bozjan Coin (98/set). Augmented Bozjan = base piece + Bozjan Runner's Secrets (999/500 coin each or rare Castrum drops; ~3,498/set). Law's Order (Gangos) = Bozjan Gold Coin (12/set). Augmented Law's Order = Law's Order + Augmented Bozjan + Orderly Runner's Secrets, each made from 10 slot-specific Runner's Plating (Head/Body/Hand/Leg/Foot — 5 different items, 50 total/set; Delubrum Reginae Savage). Blade's (Zadnor) = Bozjan Platinum Coin (36/set)."
   },
   "Phantom Armor": {
-    "_line": "Field armor from the Occult Crescent (South Horn) — earned alongside the Phantom relic weapon."
+    "_line": "The Occult Crescent (South Horn). Arcanaut's base = 4,000 Enlightenment Silver Piece/piece (20,000/set). +1 adds 3 Aetherspun Silver (≈1,200 Silver each) + 3 Aetherial Fixative (≈1,600 Gold each) per piece. +2 adds 3 Aetherspun Gold (treasure chests) + 6 X-Fixative (= 60 Sanguinite) per piece."
   }
 }

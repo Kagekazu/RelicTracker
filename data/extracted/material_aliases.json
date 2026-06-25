@@ -156,8 +156,25 @@
   "Skybuilder's Scrips": "Skybuilders' Scrip",
   "Thinker's Coral": "Thinker's Coral",
   "Dragonspine": "Dragonspine",
-  "Gobbiegoo": "Gobbiegoo",
-  "Highly Viscous Gobbiegoo": "Highly Viscous Gobbiegoo",
+  "Gobbiegoo": [
+    "Alchemist's Gobbiegoo", "Armorer's Gobbiegoo", "Blacksmith's Gobbiegoo",
+    "Botanist's Gobbiegoo", "Carpenter's Gobbiegoo", "Culinarian's Gobbiegoo",
+    "Fisher's Gobbiegoo", "Goldsmith's Gobbiegoo", "Leatherworker's Gobbiegoo",
+    "Miner's Gobbiegoo", "Weaver's Gobbiegoo"
+  ],
+  "Highly Viscous Gobbiegoo": [
+    "Highly Viscous Alchemist's Gobbiegoo", "Highly Viscous Armorer's Gobbiegoo",
+    "Highly Viscous Blacksmith's Gobbiegoo", "Highly Viscous Botanist's Gobbiegoo",
+    "Highly Viscous Carpenter's Gobbiegoo", "Highly Viscous Culinarian's Gobbiegoo",
+    "Highly Viscous Fisher's Gobbiegoo", "Highly Viscous Goldsmith's Gobbiegoo",
+    "Highly Viscous Leatherworker's Gobbiegoo", "Highly Viscous Miner's Gobbiegoo",
+    "Highly Viscous Weaver's Gobbiegoo"
+  ],
+  "Atma": [
+    "Atma of the Archer", "Atma of the Bull", "Atma of the Crab", "Atma of the Fish",
+    "Atma of the Goat", "Atma of the Lion", "Atma of the Maiden", "Atma of the Ram",
+    "Atma of the Scales", "Atma of the Scorpion", "Atma of the Twins", "Atma of the Water-bearer"
+  ],
   "Protean Crystals": "Protean Crystal",
   "Anemos Crystals": "Anemos Crystal",
   "Frosted Crystals": "Frosted Protean Crystal",
@@ -171,5 +188,13 @@
   "Bitter Memories": "Bitter Memory of the Dying",
   "Loathsome Memories": "Loathsome Memory of the Dying",
   "Raw Emotions": "Raw Emotion",
-  "Timeworn Artifacts": "Timeworn Artifact"
+  "Timeworn Artifacts": "Timeworn Artifact",
+  "Runner's Plating": [
+    "Runner's Plating (Head Gear)", "Runner's Plating (Body Gear)", "Runner's Plating (Hand Gear)",
+    "Runner's Plating (Leg Gear)", "Runner's Plating (Foot Gear)"
+  ],
+  "Bozjan Runner's Secrets": [
+    "Bozjan Runner's Secrets (Head Gear)", "Bozjan Runner's Secrets (Body Gear)", "Bozjan Runner's Secrets (Hand Gear)",
+    "Bozjan Runner's Secrets (Leg Gear)", "Bozjan Runner's Secrets (Foot Gear)"
+  ]
 }

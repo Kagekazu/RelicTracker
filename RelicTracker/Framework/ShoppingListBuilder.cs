@@ -10,6 +10,9 @@ public sealed class ShoppingMaterialRow
     public required uint Owned { get; init; }
     public required bool Resolved { get; init; }
 
+    /// <summary>Where the material is farmed (from material_sources.json); falls back to the step.</summary>
+    public required string Source { get; init; }
+
     public uint Short => Need > Owned ? Need - Owned : 0;
 }
 
@@ -33,7 +36,8 @@ public static class ShoppingListBuilder
         ExpansionSheet sheet,
         IReadOnlyList<RelicLineStatus> statuses,
         ItemResolver items,
-        Func<uint, uint> ownedLookup)
+        Func<uint, uint> ownedLookup,
+        IReadOnlyDictionary<string, string> sources)
     {
         var expansionStatuses = statuses
             .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
@@ -55,8 +59,11 @@ public static class ShoppingListBuilder
             }
         }
 
-        var accumulated = new Dictionary<(string Step, string Material), (uint Need, int Order)>();
-        var keyOrder = new List<(string Step, string Material)>();
+        // Accumulate by (source, material): a material's source is fixed by its name, so this
+        // merges the same material across weapon steps into one total per farm location. For
+        // materials without a source, the source falls back to the step (keeps per-step rows).
+        var accumulated = new Dictionary<(string Source, string Material), (uint Need, int Order)>();
+        var keyOrder = new List<(string Source, string Material)>();
 
         foreach (var row in sheet.Materials)
         {
@@ -87,10 +94,11 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            var key = (step!, material!);
+            var source = sources.TryGetValue(material!, out var mappedSource) ? mappedSource : step!;
+            var key = (source, material!);
             if (accumulated.TryGetValue(key, out var existing))
             {
-                accumulated[key] = (existing.Need + need, existing.Order);
+                accumulated[key] = (existing.Need + need, Math.Min(existing.Order, info.Order));
             }
             else
             {
@@ -107,12 +115,13 @@ public static class ShoppingListBuilder
             var owned = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
             result.Add(new ShoppingMaterialRow
             {
-                Step = key.Step,
+                Step = key.Source,
                 StepOrder = stepOrder,
                 Material = key.Material,
                 Need = need,
                 Owned = owned,
                 Resolved = itemIds.Count > 0,
+                Source = key.Source,
             });
         }
 
