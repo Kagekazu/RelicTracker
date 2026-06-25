@@ -65,5 +65,8 @@
         <None Include="..\data\extracted\armor_costs.json" Link="Data\armor_costs.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Include="..\data\extracted\tool_extra_materials.json" Link="Data\tool_extra_materials.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 </Project>

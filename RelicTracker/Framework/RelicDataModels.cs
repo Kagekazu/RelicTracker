@@ -131,6 +131,20 @@ public sealed class ExpansionCurrencyRow
     public double? Remaining { get; set; }
 }
 
+/// <summary>
+/// Curated per-expansion material supplement (tool_extra_materials.json): rows to fold into a
+/// sheet, plus step names whose generated (Wyn) rows should be dropped first so accurate curated
+/// rows replace them. Kept separate from the generated expansions.json so a re-extract can't wipe it.
+/// </summary>
+public sealed class ToolExtraMaterials
+{
+    [JsonPropertyName("replaceSteps")]
+    public List<string> ReplaceSteps { get; set; } = [];
+
+    [JsonPropertyName("materials")]
+    public List<ExpansionMaterialRow> Materials { get; set; } = [];
+}
+
 public sealed class ArmorCostRow
 {
     [JsonPropertyName("set")]

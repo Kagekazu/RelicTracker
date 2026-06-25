@@ -1,0 +1,299 @@
+{
+  "DoHDoL": {
+    "replaceSteps": [
+      "Dragonsung",
+      "Skysung",
+      "Skybuilders"
+    ],
+    "materials": [
+      {
+        "step": "Supra",
+        "material": "Fieldcraft Demimateria III",
+        "perUnit": 2,
+        "jobs": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "step": "Supra",
+        "material": "Mastercraft Demimateria",
+        "perUnit": 1,
+        "jobs": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "step": "Lucis",
+        "material": "Moonstone",
+        "perUnit": 5,
+        "jobs": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Thinker's Coral",
+        "perUnit": 40,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Obsidian",
+        "perUnit": 340,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Mineral Sand",
+        "perUnit": 120,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Latex",
+        "perUnit": 340,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Fossil Dust",
+        "perUnit": 120,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Petrified Log",
+        "perUnit": 20,
+        "jobs": [
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Iron Sand",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Iron Ore",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Uncut Gemstone",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Skin",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Cotton",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Quartz",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "step": "Skysteel +1",
+        "material": "Oddly Specific Seeds",
+        "perUnit": 20,
+        "jobs": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          false
+        ]
+      }
+    ]
+  }
+}
