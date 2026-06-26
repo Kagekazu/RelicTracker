@@ -69,10 +69,6 @@ internal sealed class FfxivCollectApiError
     public string? Error { get; set; }
 }
 
-public sealed class FfxivCollectException : Exception
+public sealed class FfxivCollectException(string message) : Exception(message)
 {
-    public FfxivCollectException(string message)
-        : base(message)
-    {
-    }
 }

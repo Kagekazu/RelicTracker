@@ -146,7 +146,7 @@ public sealed partial class PluginUI : Window
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
         {
-            foreach(string expansionId in data.Manifest.Expansions)
+            foreach (string expansionId in data.Manifest.Expansions)
             {
                 if (ImGui.Selectable(expansionId, expansionId == config.SelectedExpansionId))
                 {
@@ -160,7 +160,7 @@ public sealed partial class PluginUI : Window
         }
 
         // DoH/DoL has several tool lines per expansion; weapon expansions have one line each.
-        List<RelicLine> lines = catalog.LinesFor(config.SelectedExpansionId).ToList();
+        List<RelicLine> lines = [.. catalog.LinesFor(config.SelectedExpansionId)];
         bool multiLine = lines.Count > 1;
         if (!multiLine)
         {
@@ -188,7 +188,7 @@ public sealed partial class PluginUI : Window
                     config.OnSettingChanged();
                 }
 
-                foreach(RelicLine line in lines)
+                foreach (RelicLine line in lines)
                 {
                     if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
                     {

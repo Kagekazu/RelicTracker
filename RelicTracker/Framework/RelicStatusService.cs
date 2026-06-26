@@ -49,31 +49,21 @@ public sealed class RelicProgressSummary
 }
 
 /// <summary>Fast lookup of which exact relics a character owns, for per-job step detection.</summary>
-public sealed class RelicOwnership
+public sealed class RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string>? manualDone = null, HashSet<string>? manualArmor = null)
 {
     /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
-    private readonly HashSet<string> manualArmor;
+    private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
 
     /// <summary>Live reference to manual step ticks (Configuration.RelicStepDone), keyed CollectType|job|tier.</summary>
-    private readonly HashSet<string> manualDone;
-    private readonly HashSet<string> owned;
-    private readonly Dictionary<string, int> ownedCountByType;
-
-    public RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string>? manualDone = null, HashSet<string>? manualArmor = null)
-    {
-        owned = snapshot.Owned
+    private readonly HashSet<string> manualDone = manualDone ?? new(StringComparer.Ordinal);
+    private readonly HashSet<string> owned = snapshot.Owned
             .Where(relic => relic.Type is not null && relic.Order > 0)
             .Select(relic => $"{relic.Type!.Name}#{relic.Order}")
             .ToHashSet(StringComparer.Ordinal);
-
-        ownedCountByType = snapshot.Owned
+    private readonly Dictionary<string, int> ownedCountByType = snapshot.Owned
             .Where(relic => relic.Type is not null)
             .GroupBy(relic => relic.Type!.Name, StringComparer.Ordinal)
             .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
-
-        this.manualDone = manualDone ?? new HashSet<string>(StringComparer.Ordinal);
-        this.manualArmor = manualArmor ?? new HashSet<string>(StringComparer.Ordinal);
-    }
 
     /// <summary>How many relics of a given Collect type FFXIV Collect shows owned (armor auto-tracking).</summary>
     public int OwnedCount(string collectType) =>
@@ -88,7 +78,7 @@ public sealed class RelicOwnership
         }
 
         int n = 0;
-        for(int i = 0; i < pieces; i++)
+        for (int i = 0; i < pieces; i++)
         {
             if (manualArmor.Contains($"{collectType}|{i}"))
             {
@@ -150,13 +140,13 @@ public sealed class RelicStatusService
     public static IReadOnlyList<RelicLineStatus> Build(RelicOwnership ownership, RelicCatalog catalog)
     {
         List<RelicLineStatus> statuses = new(catalog.Lines.Count);
-        foreach(RelicLine line in catalog.Lines)
+        foreach (RelicLine line in catalog.Lines)
         {
             int[] reached = new int[line.TierCount];
-            for(int tier = 0; tier < line.TierCount; tier++)
+            for (int tier = 0; tier < line.TierCount; tier++)
             {
                 int count = 0;
-                for(int slot = 0; slot < line.Jobs; slot++)
+                for (int slot = 0; slot < line.Jobs; slot++)
                 {
                     if (ownership.IsStepDoneOrManual(line, slot, tier))
                     {
@@ -179,7 +169,7 @@ public sealed class RelicStatusService
 
     public static RelicProgressSummary Summarize(IEnumerable<RelicLineStatus> statuses)
     {
-        IReadOnlyList<RelicLineStatus> list = statuses as IReadOnlyList<RelicLineStatus> ?? statuses.ToList();
+        IReadOnlyList<RelicLineStatus> list = statuses as IReadOnlyList<RelicLineStatus> ?? [.. statuses];
         return new()
         {
             LineCount = list.Count,

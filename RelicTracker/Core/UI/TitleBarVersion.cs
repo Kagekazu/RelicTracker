@@ -95,7 +95,7 @@ internal static unsafe partial class TitleBarVersion
         }
 
         byte* basePtr = (byte*)window;
-        for(int offset = 0; offset < 512; offset += 4)
+        for (int offset = 0; offset < 512; offset += 4)
         {
             Vector2 candidatePos = ReadVector2(basePtr + offset);
             if (Vector2.Distance(candidatePos, expectedPos) > 1f)

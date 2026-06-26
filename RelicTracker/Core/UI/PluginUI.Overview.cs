@@ -44,16 +44,13 @@ public sealed partial class PluginUI
             return;
         }
 
-        foreach(string expansionId in catalog.Expansions)
+        foreach (string expansionId in catalog.Expansions)
         {
-            List<RelicLineStatus> lines = statuses
+            List<RelicLineStatus> lines = [.. statuses
                 .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
-                .Where(MatchesOverviewFilter)
-                .ToList();
+                .Where(MatchesOverviewFilter)];
 
-            List<ArmorLine> armorLines = catalog.ArmorLinesFor(expansionId)
-                .Where(armor => MatchesArmorFilter(armor, ownership))
-                .ToList();
+            List<ArmorLine> armorLines = [.. catalog.ArmorLinesFor(expansionId).Where(armor => MatchesArmorFilter(armor, ownership))];
 
             if (lines.Count == 0 && armorLines.Count == 0)
             {
@@ -138,12 +135,12 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
         ImGui.TableHeadersRow();
 
-        foreach(RelicLineStatus status in lines)
+        foreach (RelicLineStatus status in lines)
         {
             DrawOverviewLineRow(status);
         }
 
-        foreach(ArmorLine armor in armorLines)
+        foreach (ArmorLine armor in armorLines)
         {
             DrawOverviewArmorRow(armor, ownership);
         }
@@ -192,13 +189,12 @@ public sealed partial class PluginUI
 
     private static string BuildArmorTooltip(ArmorLine armor, RelicOwnership ownership)
     {
-        List<string> lines = new()
-            { $"{armor.LineName} — pieces owned per set:" };
-        foreach(ArmorSet set in armor.Sets)
+        List<string> lines = [$"{armor.LineName} — pieces owned per set:"];
+        foreach (ArmorSet set in armor.Sets)
         {
             lines.Add(string.Empty);
             lines.Add(set.Name + ":");
-            foreach(ArmorTier tier in set.Tiers)
+            foreach (ArmorTier tier in set.Tiers)
             {
                 int tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
                 lines.Add($"  {tier.Label}: {tierOwned}/{tier.Pieces}");
@@ -264,14 +260,14 @@ public sealed partial class PluginUI
     /// <summary>Concise "what step are you on" summary: how many jobs need each upcoming step next.</summary>
     private static string BuildFrontierText(RelicLineStatus status)
     {
-        List<(int Count, string Step)> frontiers = new();
+        List<(int Count, string Step)> frontiers = [];
 
         if (status.JobsNotStarted > 0 && status.Line.TierCount > 0)
         {
             frontiers.Add((status.JobsNotStarted, status.Line.StepName(0)));
         }
 
-        for(int tier = 0; tier < status.Line.TierCount - 1; tier++)
+        for (int tier = 0; tier < status.Line.TierCount - 1; tier++)
         {
             int count = status.JobsAtStep(tier);
             if (count > 0)
@@ -285,7 +281,7 @@ public sealed partial class PluginUI
             return "—";
         }
 
-        List<string> parts = frontiers.Select(frontier => $"{frontier.Count} → {frontier.Step}").ToList();
+        List<string> parts = [.. frontiers.Select(frontier => $"{frontier.Count} → {frontier.Step}")];
         return parts.Count <= 3
             ? string.Join(",  ", parts)
             : string.Join(",  ", parts.Take(3)) + $",  +{parts.Count - 3} more";
@@ -293,15 +289,15 @@ public sealed partial class PluginUI
 
     private static string BuildLineTooltip(RelicLineStatus status)
     {
-        List<string> lines = new()
-        {
+        List<string> lines =
+        [
             $"{status.Line.CollectType} ({status.Line.Category})",
             $"{status.JobsComplete}/{status.Line.Jobs} jobs fully complete",
             string.Empty,
             "Jobs that reached each step:"
-        };
+        ];
 
-        for(int tier = 0; tier < status.Line.TierCount; tier++)
+        for (int tier = 0; tier < status.Line.TierCount; tier++)
         {
             lines.Add($"  {status.Line.StepName(tier)}: {status.ReachedPerStep[tier]}/{status.Line.Jobs}");
         }

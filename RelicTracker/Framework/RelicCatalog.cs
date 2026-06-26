@@ -132,14 +132,13 @@ public sealed class RelicCatalog
         {
             string json = File.ReadAllText(path);
             Lines = JsonSerializer.Deserialize<List<RelicLine>>(json, JsonOptions) ?? [];
-            Expansions = Lines
+            Expansions = [.. Lines
                 .Select(line => line.Expansion)
-                .Distinct(StringComparer.Ordinal)
-                .ToList();
+                .Distinct(StringComparer.Ordinal)];
             IsLoaded = true;
             Svc.Log.Information("[RelicTracker] Loaded relic catalog: {LineCount} lines.", Lines.Count);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Error(ex, "[RelicTracker] Failed to load relic catalog from {Path}", path);
         }
@@ -160,7 +159,7 @@ public sealed class RelicCatalog
             ArmorLines = JsonSerializer.Deserialize<List<ArmorLine>>(File.ReadAllText(path), JsonOptions) ?? [];
             Svc.Log.Information("[RelicTracker] Loaded {Count} relic armor lines.", ArmorLines.Count);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] Failed to load relic armor from {Path}", path);
         }
@@ -184,7 +183,7 @@ public sealed class RelicCatalog
                 stepNotes = parsed;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] Failed to load relic step notes from {Path}", path);
         }
@@ -210,7 +209,7 @@ public sealed class RelicCatalog
     public void ResolveJobs(ItemResolver items)
     {
         int resolvedLines = 0;
-        foreach(RelicLine line in Lines)
+        foreach (RelicLine line in Lines)
         {
             if (line.Jobs <= 0 || line.SlotRelics.Count != line.Jobs)
             {
@@ -218,7 +217,7 @@ public sealed class RelicCatalog
             }
 
             List<string> resolved = new(line.Jobs);
-            foreach(string relicName in line.SlotRelics)
+            foreach (string relicName in line.SlotRelics)
             {
                 if (!items.TryResolveEquipJob(relicName, out string abbrev))
                 {

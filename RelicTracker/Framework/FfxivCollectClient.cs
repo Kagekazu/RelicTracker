@@ -79,7 +79,7 @@ internal static class FfxivCollectClient
         {
             return JsonSerializer.Deserialize<List<FfxivCollectRelic>>(json, JsonOptions) ?? [];
         }
-        catch(JsonException ex)
+        catch (JsonException ex)
         {
             throw new FfxivCollectException($"Could not parse relic data from FFXIV Collect ({ex.Message}).");
         }

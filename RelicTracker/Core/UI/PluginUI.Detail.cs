@@ -38,7 +38,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("##expansion-detail", ExpansionLongName(expansionId)))
         {
-            foreach(string candidate in catalog.Expansions)
+            foreach (string candidate in catalog.Expansions)
             {
                 if (ImGui.Selectable(ExpansionLongName(candidate), candidate == expansionId))
                 {
@@ -51,8 +51,8 @@ public sealed partial class PluginUI
             ImGui.EndCombo();
         }
 
-        List<RelicLine> weaponLines = catalog.LinesFor(expansionId).ToList();
-        List<ArmorLine> armorLines = catalog.ArmorLinesFor(expansionId).ToList();
+        List<RelicLine> weaponLines = [.. catalog.LinesFor(expansionId)];
+        List<ArmorLine> armorLines = [.. catalog.ArmorLinesFor(expansionId)];
         if (weaponLines.Count == 0 && armorLines.Count == 0)
         {
             ImGui.TextColored(MutedColor, "No relic lines for this expansion.");
@@ -80,7 +80,7 @@ public sealed partial class PluginUI
             string relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
             if (ImGui.BeginCombo("##relic-detail", relicLabel))
             {
-                foreach(RelicLine candidate in weaponLines)
+                foreach (RelicLine candidate in weaponLines)
                 {
                     if (ImGui.Selectable(candidate.CollectType, armor is null && candidate == weapon))
                     {
@@ -91,7 +91,7 @@ public sealed partial class PluginUI
                     }
                 }
 
-                foreach(ArmorLine candidate in armorLines)
+                foreach (ArmorLine candidate in armorLines)
                 {
                     if (ImGui.Selectable($"{candidate.LineName} (armor)", candidate == armor))
                     {
@@ -142,7 +142,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(90);
         if (ImGui.BeginCombo("##job-detail", string.IsNullOrEmpty(job) ? "—" : job))
         {
-            foreach(string candidate in jobList)
+            foreach (string candidate in jobList)
             {
                 if (ImGui.Selectable(candidate, candidate == job))
                 {
@@ -224,7 +224,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 160);
         ImGui.TableHeadersRow();
 
-        foreach(ArmorSet set in armor.Sets)
+        foreach (ArmorSet set in armor.Sets)
         {
             DrawArmorSetRows(set, ownership);
         }
@@ -234,7 +234,7 @@ public sealed partial class PluginUI
     {
         bool multiTier = set.Tiers.Count > 1;
 
-        foreach(ArmorTier tier in set.Tiers)
+        foreach (ArmorTier tier in set.Tiers)
         {
             int tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
             float fraction = tier.Pieces > 0 ? (float)tierOwned / tier.Pieces : 0f;
@@ -261,7 +261,7 @@ public sealed partial class PluginUI
             else
             {
                 // Manual: one checkbox per piece, count of ticked = owned.
-                for(int i = 0; i < tier.Pieces; i++)
+                for (int i = 0; i < tier.Pieces; i++)
                 {
                     if (i > 0)
                     {
@@ -319,7 +319,7 @@ public sealed partial class PluginUI
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
     {
-        for(int i = 0; i < jobList.Count; i++)
+        for (int i = 0; i < jobList.Count; i++)
         {
             if (string.Equals(jobList[i], job, StringComparison.Ordinal))
             {
@@ -339,7 +339,7 @@ public sealed partial class PluginUI
         }
 
         int complete = 0;
-        for(int slot = 0; slot < jobList.Count; slot++)
+        for (int slot = 0; slot < jobList.Count; slot++)
         {
             if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
             {
@@ -378,7 +378,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 150);
-        foreach(string jobName in jobList)
+        foreach (string jobName in jobList)
         {
             ImGui.TableSetupColumn(jobName, ImGuiTableColumnFlags.WidthFixed, 34);
         }
@@ -386,14 +386,14 @@ public sealed partial class PluginUI
         ImGui.TableSetupScrollFreeze(1, 1);
         ImGui.TableHeadersRow();
 
-        for(int tier = 0; tier < line.TierCount; tier++)
+        for (int tier = 0; tier < line.TierCount; tier++)
         {
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted($"{tier + 1}. {line.StepName(tier)}");
 
-            for(int slot = 0; slot < jobList.Count; slot++)
+            for (int slot = 0; slot < jobList.Count; slot++)
             {
                 ImGui.TableNextColumn();
                 bool done = ownership.IsStepDone(line, slot, tier)
@@ -453,7 +453,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch);
         ImGui.TableHeadersRow();
 
-        for(int tier = 0; tier < line.TierCount; tier++)
+        for (int tier = 0; tier < line.TierCount; tier++)
         {
             ImGui.TableNextRow();
 
@@ -507,7 +507,7 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
-        List<StepItem> items = GetStepItems(line, stepName, slotIndex).ToList();
+        List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
         if (items.Count == 0)
         {
             if (string.IsNullOrWhiteSpace(note))
@@ -539,7 +539,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
         ImGui.TableHeadersRow();
 
-        foreach(StepItem item in items)
+        foreach (StepItem item in items)
         {
             ImGui.TableNextRow();
 
@@ -595,7 +595,7 @@ public sealed partial class PluginUI
         string wynStep = WynStepAliases.TryGetValue(stepName, out string? alias) ? alias : stepName;
         bool hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
-        Dictionary<uint, uint> ownedCounts = new();
+        Dictionary<uint, uint> ownedCounts = [];
         uint OwnedLookup(uint itemId)
         {
             if (!ownedCounts.TryGetValue(itemId, out uint count))
@@ -607,7 +607,7 @@ public sealed partial class PluginUI
             return count;
         }
 
-        foreach(ExpansionMaterialRow row in sheet.Materials)
+        foreach (ExpansionMaterialRow row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
                 || !string.Equals(row.Step.Trim(), wynStep, StringComparison.OrdinalIgnoreCase))
@@ -690,7 +690,7 @@ public sealed partial class PluginUI
     /// <summary>First tier not yet done (auto from Collect or manual) — the step the job is working on.</summary>
     private int CurrentStepTier(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
     {
-        for(int tier = 0; tier < line.TierCount; tier++)
+        for (int tier = 0; tier < line.TierCount; tier++)
         {
             if (!ownership.IsStepDone(line, slotIndex, tier) && !IsManualStepDone(line, job, tier))
             {
@@ -706,14 +706,14 @@ public sealed partial class PluginUI
     {
         if (done)
         {
-            for(int lower = 0; lower <= tier; lower++)
+            for (int lower = 0; lower <= tier; lower++)
             {
                 config.RelicStepDone.Add(StepKey(line, job, lower));
             }
         }
         else
         {
-            for(int upper = tier; upper < line.TierCount; upper++)
+            for (int upper = tier; upper < line.TierCount; upper++)
             {
                 config.RelicStepDone.Remove(StepKey(line, job, upper));
             }
