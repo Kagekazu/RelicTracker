@@ -24,7 +24,7 @@ public sealed partial class PluginUI
 
         RelicOwnership ownership = GetOwnership();
         IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
-        Dictionary<uint, uint> ownedCounts = new();
+        Dictionary<uint, uint> ownedCounts = [];
         uint OwnedLookup(uint itemId)
         {
             if (!ownedCounts.TryGetValue(itemId, out uint count))
@@ -40,15 +40,14 @@ public sealed partial class PluginUI
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
-            materials = materials
+            materials = [.. materials
                 .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                              || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+                              || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))];
         }
 
         if (config.HideCompleteMaterials)
         {
-            materials = materials.Where(row => row.Short > 0).ToList();
+            materials = [.. materials.Where(row => row.Short > 0)];
         }
 
         DrawShoppingSummary(materials);
@@ -89,11 +88,11 @@ public sealed partial class PluginUI
 
         // Group by where you get it (zone or step); each group is its own collapsible block so the
         // list stays scannable. The group header is the "where", so rows drop that column.
-        foreach(IGrouping<string, ShoppingMaterialRow> group in materials
+        foreach (IGrouping<string, ShoppingMaterialRow> group in materials
             .GroupBy(row => WhereToGet(expansionId, row))
             .OrderBy(g => g.Min(row => row.StepOrder)))
         {
-            List<ShoppingMaterialRow> rows = group.OrderBy(row => row.StepOrder).ToList();
+            List<ShoppingMaterialRow> rows = [.. group.OrderBy(row => row.StepOrder)];
             int shortCount = rows.Count(row => row.Short > 0);
             string badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
             string key = $"{expansionId}|W|{group.Key}";
@@ -114,7 +113,7 @@ public sealed partial class PluginUI
             ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
             ImGui.TableHeadersRow();
 
-            foreach(ShoppingMaterialRow row in rows)
+            foreach (ShoppingMaterialRow row in rows)
             {
                 DrawMaterialRow(row);
             }
@@ -190,7 +189,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
-        foreach(ArmorCostRow cost in costs)
+        foreach (ArmorCostRow cost in costs)
         {
             ImGui.TableNextRow();
 

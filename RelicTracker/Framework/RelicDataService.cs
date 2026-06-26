@@ -26,9 +26,9 @@ public sealed class RelicDataService
         string baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
         Manifest = ReadJson<RelicManifest>(Path.Combine(baseDir, "manifest.json")) ?? new RelicManifest();
         MaterialSources = ReadJson<Dictionary<string, string>>(Path.Combine(baseDir, "material_sources.json"))
-                          ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                          ?? new(StringComparer.OrdinalIgnoreCase);
         ArmorCosts = ReadJson<Dictionary<string, List<ArmorCostRow>>>(Path.Combine(baseDir, "armor_costs.json"))
-                     ?? new Dictionary<string, List<ArmorCostRow>>(StringComparer.Ordinal);
+                     ?? new(StringComparer.Ordinal);
         MergeExtraMaterials(Path.Combine(baseDir, "tool_extra_materials.json"));
         IsLoaded = true;
         Svc.Log.Information(
@@ -48,12 +48,12 @@ public sealed class RelicDataService
             return;
         }
 
-        foreach((string expansionId, List<ExpansionMaterialRow> materials) in extra)
+        foreach ((string expansionId, List<ExpansionMaterialRow> materials) in extra)
         {
             if (!Expansions.TryGetValue(expansionId, out ExpansionSheet? sheet))
             {
                 sheet = new()
-                    { Id = expansionId };
+                { Id = expansionId };
                 Expansions[expansionId] = sheet;
             }
 
@@ -87,7 +87,7 @@ public sealed class RelicDataService
             string json = File.ReadAllText(path);
             return JsonSerializer.Deserialize<T>(json, JsonOptions);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Error(ex, "[RelicTracker] Failed to read {Path}", path);
             return default;

@@ -5,9 +5,7 @@ namespace RelicTracker.IPC;
 
 internal static class AllaganToolsIpc
 {
-    private static readonly uint[] AllInventoryTypes = Enum.GetValues<InventoryType>()
-        .Select(static t => (uint)t)
-        .ToArray();
+    private static readonly uint[] AllInventoryTypes = [.. Enum.GetValues<InventoryType>().Select(static t => (uint)t)];
 
     private static ICallGateSubscriber<bool, bool>? _initialized;
     private static ICallGateSubscriber<bool>? _isInitialized;
@@ -54,7 +52,7 @@ internal static class AllaganToolsIpc
         {
             return _itemCountOwned.InvokeFunc(itemId, activeCharacterOnly, AllInventoryTypes);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Debug(ex, "[RelicTracker] Allagan Tools IPC query failed for item {ItemId}", itemId);
             return 0;
@@ -74,7 +72,7 @@ internal static class AllaganToolsIpc
             _ipcBound = true;
             Svc.Log.Information("[RelicTracker] Allagan Tools IPC ready.");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] Failed to bind Allagan Tools IPC.");
         }

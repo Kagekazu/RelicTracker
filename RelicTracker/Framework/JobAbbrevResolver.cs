@@ -11,7 +11,7 @@ public sealed class JobAbbrevResolver
         abbrevByToken.Clear();
 
         ExcelSheet<ClassJob> sheet = Svc.Data.GetExcelSheet<ClassJob>();
-        foreach(ClassJob row in sheet)
+        foreach (ClassJob row in sheet)
         {
             string abbrev = row.Abbreviation.ToString().Trim();
             string name = row.Name.ToString().Trim();
@@ -27,12 +27,12 @@ public sealed class JobAbbrevResolver
             }
         }
 
-        foreach(string abbrev in JobColumnDefaults.CombatJobs)
+        foreach (string abbrev in JobColumnDefaults.CombatJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
 
-        foreach(string abbrev in JobColumnDefaults.DoHDoLJobs)
+        foreach (string abbrev in JobColumnDefaults.DoHDoLJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
@@ -92,7 +92,7 @@ internal static class JobColumnDefaults
             : CombatJobs;
 
         List<string> names = new(jobCount);
-        for(int index = 0; index < jobCount; index++)
+        for (int index = 0; index < jobCount; index++)
         {
             names.Add(index < source.Length ? source[index] : $"J{index + 1}");
         }

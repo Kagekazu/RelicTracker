@@ -4,11 +4,6 @@ namespace RelicTracker.Framework;
 
 public sealed class ItemResolver
 {
-    private static readonly JsonSerializerOptions AliasJsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
-
     // Job bool accessors on ClassJobCategory, jobs only (no base classes), in the order
     // we prefer to report. A relic weapon/tool is equippable by exactly one of these.
     private static readonly (string Abbrev, Func<ClassJobCategory, bool> Has)[] JobAccessors =
@@ -34,7 +29,7 @@ public sealed class ItemResolver
         aliasToNames.Clear();
 
         ExcelSheet<Item> sheet = Svc.Data.GetExcelSheet<Item>();
-        foreach(Item row in sheet)
+        foreach (Item row in sheet)
         {
             string name = row.Name.ToString().Trim();
             if (string.IsNullOrEmpty(name))
@@ -78,7 +73,7 @@ public sealed class ItemResolver
             return false;
         }
 
-        foreach((string abbrev, Func<ClassJobCategory, bool> has) in JobAccessors)
+        foreach ((string abbrev, Func<ClassJobCategory, bool> has) in JobAccessors)
         {
             if (has(category.Value))
             {
@@ -105,8 +100,8 @@ public sealed class ItemResolver
 
     public IReadOnlyList<uint> ResolveItemIds(string materialName)
     {
-        List<uint> ids = new();
-        foreach(string candidate in GetCandidateNames(materialName))
+        List<uint> ids = [];
+        foreach (string candidate in GetCandidateNames(materialName))
         {
             if (byName.TryGetValue(candidate, out uint itemId) && ids.All(id => id != itemId))
             {
@@ -122,7 +117,7 @@ public sealed class ItemResolver
         string trimmed = materialName.Trim();
         if (aliasToNames.TryGetValue(trimmed, out IReadOnlyList<string>? aliasedNames))
         {
-            foreach(string aliasedName in aliasedNames)
+            foreach (string aliasedName in aliasedNames)
             {
                 yield return aliasedName;
             }
@@ -130,7 +125,7 @@ public sealed class ItemResolver
             yield break;
         }
 
-        foreach(string candidate in ExpandNameVariants(trimmed))
+        foreach (string candidate in ExpandNameVariants(trimmed))
         {
             yield return candidate;
         }
@@ -176,12 +171,12 @@ public sealed class ItemResolver
         try
         {
             using JsonDocument document = JsonDocument.Parse(File.ReadAllText(path));
-            foreach(JsonProperty property in document.RootElement.EnumerateObject())
+            foreach (JsonProperty property in document.RootElement.EnumerateObject())
             {
                 aliasToNames[property.Name] = ParseAliasNames(property.Value);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Svc.Log.Error(ex, "[RelicTracker] Failed to load material aliases from {Path}", path);
         }

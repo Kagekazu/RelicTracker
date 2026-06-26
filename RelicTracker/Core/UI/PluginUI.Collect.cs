@@ -93,7 +93,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(140);
         if (ImGui.BeginCombo("Category", CollectCategories[collectCategoryIndex]))
         {
-            for(int i = 0; i < CollectCategories.Length; i++)
+            for (int i = 0; i < CollectCategories.Length; i++)
             {
                 if (ImGui.Selectable(CollectCategories[i], i == collectCategoryIndex))
                 {
@@ -139,7 +139,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
-        foreach(FfxivCollectRelic relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
+        foreach (FfxivCollectRelic relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
         {
             ImGui.TableNextRow();
 
@@ -174,7 +174,7 @@ public sealed partial class PluginUI
                 r.TypeName.Contains(collectFilter, StringComparison.OrdinalIgnoreCase));
         }
 
-        return query.ToList();
+        return [.. query];
     }
 
     private static void OpenUrl(string url)
