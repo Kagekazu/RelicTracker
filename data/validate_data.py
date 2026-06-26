@@ -119,12 +119,35 @@ def main() -> int:
             fail(errors, f"Legacy Wyn output should not live in data/extracted: {filename}")
 
     manifest = load_json(DATA / "manifest.json")
+    relic_lines = load_json(DATA / "relic_lines.json")
     extra = load_json(DATA / "tool_extra_materials.json")
     sources = load_json(DATA / "material_sources.json")
     aliases = load_json(DATA / "material_aliases.json")
     armor_costs = load_json(DATA / "armor_costs.json")
 
     expansions = set(manifest.get("expansions") or [])
+
+    for index, line in enumerate(relic_lines):
+        expansion = line.get("expansion")
+        jobs = int(line.get("jobs") or 0)
+        tier_count = int(line.get("tierCount") or 0)
+        relic_count = int(line.get("relicCount") or 0)
+        steps = line.get("steps") or []
+        relic_names = line.get("relicNames") or []
+
+        if expansion not in expansions:
+            fail(errors, f"relic_lines[{index}] uses expansion not in manifest: {expansion}")
+        if jobs <= 0 or tier_count <= 0:
+            fail(errors, f"relic_lines[{index}] has invalid jobs/tierCount")
+        if len(steps) != tier_count:
+            fail(errors, f"relic_lines[{index}] step count does not match tierCount")
+        if relic_count != jobs * tier_count:
+            fail(errors, f"relic_lines[{index}] relicCount does not equal jobs * tierCount")
+        if len(relic_names) != relic_count:
+            fail(errors, f"relic_lines[{index}] relicNames count does not match relicCount")
+        if any(not isinstance(name, str) or not name.strip() for name in relic_names):
+            fail(errors, f"relic_lines[{index}] has blank relicNames entries")
+
     material_names: set[str] = set()
     for expansion, index, row in iter_material_rows(extra):
         if expansion not in expansions:

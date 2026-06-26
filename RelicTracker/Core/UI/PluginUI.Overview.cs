@@ -1,3 +1,4 @@
+using RelicTracker.IPC;
 using System.Numerics;
 namespace RelicTracker;
 
@@ -26,7 +27,9 @@ public sealed partial class PluginUI
         else
         {
             ImGui.TextColored(MutedColor,
-                "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Settings tab to auto-fill finished relics.");
+                AllaganToolsIpc.IsReady
+                    ? "Owned relic items are auto-tracked from Allagan Tools. Link FFXIV Collect on the Settings tab or tick missing steps manually."
+                    : "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Settings tab to auto-fill finished relics.");
             ImGui.Spacing();
         }
 

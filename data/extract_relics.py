@@ -153,6 +153,8 @@ def build_lines(relics: list[dict]) -> list[dict]:
         tier_count = total // jobs if jobs else 0
         # Tier-0 relic names in slot order — used at runtime to resolve slot -> job.
         slot_relics = [relic_name for _, relic_name in ordered[:jobs]]
+        # Full FFXIV Collect order — tier = index // jobs, slot = index % jobs.
+        relic_names = [relic_name for _, relic_name in ordered]
         authored = STEP_NAMES.get(name, [])
         steps = [
             authored[i] if i < len(authored) else f"Step {i + 1}"
@@ -172,6 +174,7 @@ def build_lines(relics: list[dict]) -> list[dict]:
                 "steps": steps,
                 "jobList": job_list,
                 "slotRelics": slot_relics,
+                "relicNames": relic_names,
                 "typeOrder": entry["typeOrder"],
             }
         )

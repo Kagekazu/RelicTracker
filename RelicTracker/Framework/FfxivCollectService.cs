@@ -4,6 +4,7 @@ public sealed class FfxivCollectService
 {
     private readonly object gate = new();
     private bool isLoading;
+    private DateTime? lastAttemptUtc;
 
     public FfxivCollectSnapshot Snapshot { get; private set; } = FfxivCollectSnapshot.Empty;
 
@@ -38,6 +39,7 @@ public sealed class FfxivCollectService
             }
 
             isLoading = true;
+            lastAttemptUtc = DateTime.UtcNow;
         }
 
         StatusMessage = "Fetching from FFXIV Collect…";
@@ -65,9 +67,14 @@ public sealed class FfxivCollectService
                 StatusMessage = ex.Message;
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect: {Message}", ex.Message);
             }
+            catch (TaskCanceledException)
+            {
+                StatusMessage = "FFXIV Collect timed out. Allagan Tools inventory progress still works — try Refresh again later.";
+                Svc.Log.Warning("[RelicTracker] FFXIV Collect timed out for character {CharacterId}.", characterId);
+            }
             catch (Exception ex)
             {
-                StatusMessage = "Could not reach FFXIV Collect.";
+                StatusMessage = "Could not reach FFXIV Collect. Allagan Tools inventory progress still works.";
                 Svc.Log.Warning(ex, "[RelicTracker] FFXIV Collect request failed.");
             }
             finally
@@ -87,9 +94,17 @@ public sealed class FfxivCollectService
             return;
         }
 
-        if (LastRefreshUtc is null || DateTime.UtcNow - LastRefreshUtc.Value > maxAge)
+        DateTime now = DateTime.UtcNow;
+        if (lastAttemptUtc is not null && now - lastAttemptUtc.Value < maxAge)
         {
-            Refresh(characterId);
+            return;
         }
+
+        if (LastRefreshUtc is not null && now - LastRefreshUtc.Value < maxAge)
+        {
+            return;
+        }
+
+        Refresh(characterId);
     }
 }
