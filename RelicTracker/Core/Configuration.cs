@@ -19,11 +19,6 @@ public sealed class Configuration : IPluginConfiguration
 
     public ulong FfxivCollectCharacterId { get; set; }
 
-    /// <summary>Manual progress overrides: expansionId|step|label|jobIndex</summary>
-    public HashSet<string> CompletedProgress { get; set; } = new(StringComparer.Ordinal);
-
-    public HashSet<string> UncompletedProgress { get; set; } = new(StringComparer.Ordinal);
-
     /// <summary>Per-job step completions in the Relic detail view: collectType|job|tierIndex</summary>
     public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
 
@@ -45,9 +40,6 @@ public sealed class Configuration : IPluginConfiguration
 
     /// <summary>Tracker focus: a CollectType to scope the shopping list to one relic line ("" = all lines).</summary>
     public string TrackerLineFilter { get; set; } = string.Empty;
-
-    /// <summary>Show the per-job progress grid on the Tracker tab.</summary>
-    public bool ShowJobProgressSection { get; set; }
 
     public Dictionary<string, bool> ExpandedMaterialSections { get; set; } = new(StringComparer.Ordinal);
 
