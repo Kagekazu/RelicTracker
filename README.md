@@ -1,8 +1,8 @@
 # RelicTracker
 
-Track your FFXIV relic weapons, tools, and armor across every job — see what's
-finished, what you're working on, and exactly what materials you still need to
-farm, with live inventory counts pulled from Allagan Tools.
+Track your FFXIV relic weapons, tools, and armor across every job — see what is
+finished, what you are working on, and exactly what materials you still need to
+farm, using live inventory data from Allagan Tools.
 
 ## What it does
 
@@ -18,17 +18,19 @@ farm, with live inventory counts pulled from Allagan Tools.
 
 ## How it works
 
-RelicTracker reads your inventory through **Allagan Tools** to show how many of
-each material you already have. Install and enable Allagan Tools for owned counts
-to appear.
+RelicTracker reads your inventory through **Allagan Tools**. If it finds a relic
+weapon or tool in your inventory or retainers, that step is marked complete
+automatically. It also uses the same inventory data to show how many materials
+and currencies you already have.
 
-Progress can be tracked two ways:
+Progress can be tracked three ways:
 
-- **Manual** — tick steps and armor pieces yourself on the Relic tab. The Overview
-  and Tracker update to match.
+- **Allagan Tools** — owned relic items are detected automatically from inventory.
 - **FFXIV Collect (optional)** — add your [FFXIV Collect](https://ffxivcollect.com/)
   character ID on the Settings tab and finished relics fill in automatically. Your
   ID is the number in your profile URL (`ffxivcollect.com/characters/XXXXXXXX`).
+- **Manual** — tick anything that is not currently owned or synced, including armor
+  pieces, on the Relic tab. The Overview and Tracker update to match.
 
 The Tracker's "still needed" numbers cover every job that hasn't finished a step
 yet, so as you complete relics (or tick them off) the list shrinks to just what's
@@ -36,7 +38,7 @@ left.
 
 ## Getting started
 
-1. Install and enable **Allagan Tools** for inventory counts.
+1. Install and enable **Allagan Tools** for relic detection and inventory counts.
 2. Open RelicTracker with `/relictracker` (or `/rtracker`).
 3. (Optional) Add your FFXIV Collect ID on the **Settings** tab to auto-fill
    finished relics. Otherwise, tick steps yourself on the **Relic** tab.

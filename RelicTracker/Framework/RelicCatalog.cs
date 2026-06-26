@@ -33,6 +33,9 @@ public sealed class RelicLine
     [JsonPropertyName("slotRelics")]
     public List<string> SlotRelics { get; set; } = [];
 
+    [JsonPropertyName("relicNames")]
+    public List<string> RelicNames { get; set; } = [];
+
     [JsonPropertyName("typeOrder")]
     public int TypeOrder { get; set; }
 
@@ -50,6 +53,17 @@ public sealed class RelicLine
 
     public string StepName(int tierIndex) =>
         tierIndex >= 0 && tierIndex < Steps.Count ? Steps[tierIndex] : $"Step {tierIndex + 1}";
+
+    public string? RelicName(int slotIndex, int tierIndex)
+    {
+        if (Jobs <= 0 || slotIndex < 0 || tierIndex < 0)
+        {
+            return null;
+        }
+
+        int index = (tierIndex * Jobs) + slotIndex;
+        return index >= 0 && index < RelicNames.Count ? RelicNames[index] : null;
+    }
 }
 
 /// <summary>One augment tier of an armor set (a FFXIV Collect armor type).</summary>

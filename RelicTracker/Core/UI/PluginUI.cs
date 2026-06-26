@@ -208,6 +208,7 @@ public sealed partial class PluginUI : Window
         if (ImGui.Checkbox("Active character + retainers only", ref activeOnly))
         {
             config.ActiveCharacterOnly = activeOnly;
+            InvalidateOwnershipCache();
             config.OnSettingChanged();
         }
 

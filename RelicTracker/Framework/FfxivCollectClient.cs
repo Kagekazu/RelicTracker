@@ -8,7 +8,7 @@ internal static class FfxivCollectClient
 
     private static readonly HttpClient Http = new()
     {
-        Timeout = TimeSpan.FromSeconds(30)
+        Timeout = TimeSpan.FromSeconds(90)
     };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -24,14 +24,15 @@ internal static class FfxivCollectClient
 
     public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId)
     {
-        List<FfxivCollectRelic> owned = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
-        List<FfxivCollectRelic> missing = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
+        Task<List<FfxivCollectRelic>> ownedTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
+        Task<List<FfxivCollectRelic>> missingTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
+        await Task.WhenAll(ownedTask, missingTask).ConfigureAwait(false);
 
         return new()
         {
             CharacterId = characterId,
-            Owned = owned,
-            Missing = missing
+            Owned = await ownedTask.ConfigureAwait(false),
+            Missing = await missingTask.ConfigureAwait(false)
         };
     }
 

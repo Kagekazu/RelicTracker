@@ -9,7 +9,9 @@ public sealed partial class PluginUI
     // tool_extra_materials supplement), so no Wyn step-name aliasing is needed here anymore.
     private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase);
     private RelicOwnership? cachedOwnership;
+    private bool cachedOwnershipActiveCharacterOnly;
     private ulong cachedOwnershipCharacterId;
+    private long cachedOwnershipInventoryStamp;
     private DateTime? cachedOwnershipStamp;
 
     private bool CollectActive =>
@@ -299,15 +301,60 @@ public sealed partial class PluginUI
     {
         ulong characterId = config.FfxivCollectCharacterId;
         DateTime? stamp = ffxivCollect.LastRefreshUtc;
-        if (cachedOwnership is null || cachedOwnershipStamp != stamp || cachedOwnershipCharacterId != characterId)
+        long inventoryStamp = AllaganToolsIpc.IsReady ? Environment.TickCount64 / 10_000 : 0;
+        if (cachedOwnership is null
+            || cachedOwnershipStamp != stamp
+            || cachedOwnershipCharacterId != characterId
+            || cachedOwnershipInventoryStamp != inventoryStamp
+            || cachedOwnershipActiveCharacterOnly != config.ActiveCharacterOnly)
         {
             FfxivCollectSnapshot snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
-            cachedOwnership = new(snapshot, config.RelicStepDone, config.ArmorPieceDone);
+            cachedOwnership = new(
+                snapshot,
+                config.RelicStepDone,
+                config.ArmorPieceDone,
+                BuildInventoryStepDone());
             cachedOwnershipStamp = stamp;
             cachedOwnershipCharacterId = characterId;
+            cachedOwnershipInventoryStamp = inventoryStamp;
+            cachedOwnershipActiveCharacterOnly = config.ActiveCharacterOnly;
         }
 
         return cachedOwnership;
+    }
+
+    private HashSet<string> BuildInventoryStepDone()
+    {
+        HashSet<string> done = new(StringComparer.Ordinal);
+        if (!AllaganToolsIpc.IsReady)
+        {
+            return done;
+        }
+
+        foreach (RelicLine line in catalog.Lines)
+        {
+            IReadOnlyList<string> jobs = line.EffectiveJobList;
+            for (int slot = 0; slot < line.Jobs && slot < jobs.Count; slot++)
+            {
+                for (int tier = 0; tier < line.TierCount; tier++)
+                {
+                    string? relicName = line.RelicName(slot, tier);
+                    if (string.IsNullOrWhiteSpace(relicName)
+                        || !itemResolver.TryResolveItem(relicName, out uint itemId)
+                        || AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly) == 0)
+                    {
+                        continue;
+                    }
+
+                    for (int completedTier = 0; completedTier <= tier; completedTier++)
+                    {
+                        done.Add(StepKey(line, jobs[slot], completedTier));
+                    }
+                }
+            }
+        }
+
+        return done;
     }
 
     private void InvalidateOwnershipCache()
@@ -315,6 +362,8 @@ public sealed partial class PluginUI
         cachedOwnership = null;
         cachedOwnershipStamp = null;
         cachedOwnershipCharacterId = 0;
+        cachedOwnershipInventoryStamp = 0;
+        cachedOwnershipActiveCharacterOnly = false;
     }
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
@@ -334,7 +383,10 @@ public sealed partial class PluginUI
     {
         if (config.FfxivCollectCharacterId == 0)
         {
-            ImGui.TextColored(MutedColor, "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.");
+            string message = AllaganToolsIpc.IsReady
+                ? "Owned relic items are auto-tracked from Allagan Tools. Link FFXIV Collect on the Settings tab or tick missing steps manually."
+                : "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.";
+            ImGui.TextColored(MutedColor, message);
             return;
         }
 
@@ -347,7 +399,9 @@ public sealed partial class PluginUI
             }
         }
 
-        ImGui.TextColored(GoodColor, "Auto-tracked from FFXIV Collect — no ticking needed.");
+        ImGui.TextColored(GoodColor, AllaganToolsIpc.IsReady
+            ? "Auto-tracked from FFXIV Collect and Allagan Tools."
+            : "Auto-tracked from FFXIV Collect.");
         ImGui.SameLine();
         ImGui.TextColored(complete == line.Jobs ? GoodColor : MutedColor, $"({complete}/{line.Jobs} jobs complete)");
         if (ffxivCollect.IsLoading)
@@ -422,7 +476,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.Spacing();
-        DrawDetailStepChecklist(line, job, slotIndex, currentTier, ownership, CollectActive);
+        DrawDetailStepChecklist(line, job, slotIndex, currentTier, ownership);
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -437,7 +491,7 @@ public sealed partial class PluginUI
         DrawCurrentStepDetail(line, currentTier, slotIndex);
     }
 
-    private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership, bool collectActive)
+    private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership)
     {
         using ImRaii.TableDisposable table = ImRaii.Table(
             "DetailSteps",
@@ -457,26 +511,27 @@ public sealed partial class PluginUI
         {
             ImGui.TableNextRow();
 
-            bool autoDone = ownership.IsStepDone(line, slotIndex, tier);
-            bool done = autoDone || IsManualStepDone(line, job, tier);
+            bool collectDone = ownership.IsCollectStepDone(line, slotIndex, tier);
+            bool inventoryDone = ownership.IsInventoryStepDone(line, slotIndex, tier);
+            bool autoDone = collectDone || inventoryDone;
+            bool manualDone = IsManualStepDone(line, job, tier);
+            bool done = autoDone || manualDone;
 
             ImGui.TableNextColumn();
-            if (collectActive)
-            {
-                // Fully automatic: read-only status, no boxes to tick.
-                ImGui.TextColored(done ? GoodColor : MutedColor, done ? "✓" : "·");
-                if (done && ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(autoDone ? "Completed (from FFXIV Collect)" : "Marked done manually");
-                }
-            }
-            else if (autoDone)
+            if (autoDone)
             {
                 ImGui.TextColored(GoodColor, "✓");
+                if (ImGui.IsItemHovered())
+                {
+                    string source = collectDone && inventoryDone
+                        ? "FFXIV Collect + Allagan Tools inventory"
+                        : collectDone ? "FFXIV Collect" : "Allagan Tools inventory";
+                    ImGui.SetTooltip($"Completed ({source})");
+                }
             }
             else
             {
-                bool manual = IsManualStepDone(line, job, tier);
+                bool manual = manualDone;
                 ImGui.PushID(tier);
                 if (ImGui.Checkbox("##stepdone", ref manual))
                 {

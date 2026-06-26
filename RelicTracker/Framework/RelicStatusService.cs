@@ -1,6 +1,6 @@
 namespace RelicTracker.Framework;
 
-/// <summary>Progress for a single relic line, derived from FFXIV Collect owned relics.</summary>
+/// <summary>Progress for a single relic line, derived from Collect, inventory ownership, and manual ticks.</summary>
 public sealed class RelicLineStatus
 {
     public required RelicLine Line { get; init; }
@@ -49,13 +49,21 @@ public sealed class RelicProgressSummary
 }
 
 /// <summary>Fast lookup of which exact relics a character owns, for per-job step detection.</summary>
-public sealed class RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string>? manualDone = null, HashSet<string>? manualArmor = null)
+public sealed class RelicOwnership(
+    FfxivCollectSnapshot snapshot,
+    HashSet<string>? manualDone = null,
+    HashSet<string>? manualArmor = null,
+    HashSet<string>? inventoryDone = null)
 {
     /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
     private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
 
     /// <summary>Live reference to manual step ticks (Configuration.RelicStepDone), keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> manualDone = manualDone ?? new(StringComparer.Ordinal);
+
+    /// <summary>Allagan Tools inventory detections, keyed CollectType|job|tier.</summary>
+    private readonly HashSet<string> inventoryDone = inventoryDone ?? new(StringComparer.Ordinal);
+
     private readonly HashSet<string> owned = snapshot.Owned
             .Where(relic => relic.Type is not null && relic.Order > 0)
             .Select(relic => $"{relic.Type!.Name}#{relic.Order}")
@@ -93,11 +101,7 @@ public sealed class RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string
     public int OwnedPieceCount(string collectType, int pieces) =>
         Math.Max(Math.Min(pieces, OwnedCount(collectType)), ManualPieceCount(collectType, pieces));
 
-    /// <summary>
-    ///     True if FFXIV Collect shows the relic for this job slot at this step (tier) as owned. This is
-    ///     the auto-detected source only — manual ticks are kept separate so they stay editable.
-    /// </summary>
-    public bool IsStepDone(RelicLine line, int slotIndex, int tier)
+    public bool IsCollectStepDone(RelicLine line, int slotIndex, int tier)
     {
         if (line.Jobs <= 0 || slotIndex < 0 || tier < 0)
         {
@@ -107,6 +111,20 @@ public sealed class RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string
         int order = (tier * line.Jobs) + slotIndex + 1;
         return owned.Contains($"{line.CollectType}#{order}");
     }
+
+    public bool IsInventoryStepDone(RelicLine line, int slotIndex, int tier)
+    {
+        IReadOnlyList<string> jobs = line.EffectiveJobList;
+        return slotIndex >= 0 && slotIndex < jobs.Count
+                              && inventoryDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
+    }
+
+    /// <summary>
+    ///     True if FFXIV Collect or Allagan Tools inventory shows this step as owned. Manual ticks are
+    ///     kept separate so they remain editable fallbacks.
+    /// </summary>
+    public bool IsStepDone(RelicLine line, int slotIndex, int tier) =>
+        IsCollectStepDone(line, slotIndex, tier) || IsInventoryStepDone(line, slotIndex, tier);
 
     /// <summary>
     ///     True if the step is done for this slot either from FFXIV Collect OR a manual tick. This is the
@@ -134,8 +152,8 @@ public sealed class RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string
 public sealed class RelicStatusService
 {
     /// <summary>
-    ///     Builds per-line status from ownership (FFXIV Collect plus manual ticks), so the Overview and
-    ///     Tracker funnel reflect manual progress and work without a Collect link.
+    ///     Builds per-line status from ownership (FFXIV Collect, Allagan Tools inventory, and manual
+    ///     ticks), so the Overview and Tracker funnel work without a Collect link.
     /// </summary>
     public static IReadOnlyList<RelicLineStatus> Build(RelicOwnership ownership, RelicCatalog catalog)
     {

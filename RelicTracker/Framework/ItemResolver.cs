@@ -74,6 +74,9 @@ public sealed class ItemResolver
         return true;
     }
 
+    public bool TryResolveItem(string itemName, out uint itemId) =>
+        byName.TryGetValue(itemName.Trim(), out itemId);
+
     public IReadOnlyList<uint> ResolveItemIds(string materialName)
     {
         List<uint> ids = [];
