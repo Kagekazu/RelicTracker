@@ -1,7 +1,6 @@
 using Dalamud.Plugin.Ipc;
 using ECommons.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game;
-
 namespace RelicTracker.IPC;
 
 internal static class AllaganToolsIpc
@@ -21,8 +20,8 @@ internal static class AllaganToolsIpc
 
     public static bool IsEnabled =>
         IsInstalled &&
-        (DalamudReflector.TryGetDalamudPlugin("Allagan Tools", out _, false, true) ||
-         DalamudReflector.TryGetDalamudPlugin("InventoryTools", out _, false, true));
+        (DalamudReflector.TryGetDalamudPlugin("Allagan Tools", out object _, false, true) ||
+         DalamudReflector.TryGetDalamudPlugin("InventoryTools", out object _, false, true));
 
     public static bool IsReady =>
         IsEnabled && _ipcBound && _itemCountOwned != null && InvokeIsInitialized();
@@ -55,7 +54,7 @@ internal static class AllaganToolsIpc
         {
             return _itemCountOwned.InvokeFunc(itemId, activeCharacterOnly, AllInventoryTypes);
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             Svc.Log.Debug(ex, "[RelicTracker] Allagan Tools IPC query failed for item {ItemId}", itemId);
             return 0;
@@ -75,7 +74,7 @@ internal static class AllaganToolsIpc
             _ipcBound = true;
             Svc.Log.Information("[RelicTracker] Allagan Tools IPC ready.");
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] Failed to bind Allagan Tools IPC.");
         }

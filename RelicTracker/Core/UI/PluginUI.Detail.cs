@@ -1,14 +1,19 @@
-using System.Numerics;
-using RelicTracker.Framework;
 using RelicTracker.IPC;
-
+using System.Numerics;
 namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
+    // Catalog step name -> Wyn material-sheet step name, for the few that differ.
+    // All relic lines now use their catalog step names directly (materials come from the curated
+    // tool_extra_materials supplement), so no Wyn step-name aliasing is needed here anymore.
+    private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase);
     private RelicOwnership? cachedOwnership;
-    private DateTime? cachedOwnershipStamp;
     private ulong cachedOwnershipCharacterId;
+    private DateTime? cachedOwnershipStamp;
+
+    private bool CollectActive =>
+        config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
 
     private void DrawRelicTab()
     {
@@ -23,7 +28,7 @@ public sealed partial class PluginUI
             ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
         }
 
-        var expansionId = catalog.Expansions.Contains(config.DetailExpansionId, StringComparer.Ordinal)
+        string expansionId = catalog.Expansions.Contains(config.DetailExpansionId, StringComparer.Ordinal)
             ? config.DetailExpansionId
             : catalog.Expansions.FirstOrDefault() ?? string.Empty;
 
@@ -33,7 +38,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("##expansion-detail", ExpansionLongName(expansionId)))
         {
-            foreach (var candidate in catalog.Expansions)
+            foreach(string candidate in catalog.Expansions)
             {
                 if (ImGui.Selectable(ExpansionLongName(candidate), candidate == expansionId))
                 {
@@ -46,16 +51,16 @@ public sealed partial class PluginUI
             ImGui.EndCombo();
         }
 
-        var weaponLines = catalog.LinesFor(expansionId).ToList();
-        var armorLines = catalog.ArmorLinesFor(expansionId).ToList();
+        List<RelicLine> weaponLines = catalog.LinesFor(expansionId).ToList();
+        List<ArmorLine> armorLines = catalog.ArmorLinesFor(expansionId).ToList();
         if (weaponLines.Count == 0 && armorLines.Count == 0)
         {
             ImGui.TextColored(MutedColor, "No relic lines for this expansion.");
             return;
         }
 
-        var armor = armorLines.FirstOrDefault(candidate => candidate.LineName == config.DetailCollectType);
-        var weapon = armor is null
+        ArmorLine? armor = armorLines.FirstOrDefault(candidate => candidate.LineName == config.DetailCollectType);
+        RelicLine? weapon = armor is null
             ? weaponLines.FirstOrDefault(candidate => candidate.CollectType == config.DetailCollectType)
             : null;
         if (armor is null && weapon is null)
@@ -64,7 +69,7 @@ public sealed partial class PluginUI
             armor = weapon is null ? armorLines.FirstOrDefault() : null;
         }
 
-        var relicLineCount = weaponLines.Count + armorLines.Count;
+        int relicLineCount = weaponLines.Count + armorLines.Count;
         if (relicLineCount > 1)
         {
             ImGui.SameLine();
@@ -72,10 +77,10 @@ public sealed partial class PluginUI
             ImGui.TextUnformatted("Relic");
             ImGui.SameLine();
             ImGui.SetNextItemWidth(200);
-            var relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
+            string relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
             if (ImGui.BeginCombo("##relic-detail", relicLabel))
             {
-                foreach (var candidate in weaponLines)
+                foreach(RelicLine candidate in weaponLines)
                 {
                     if (ImGui.Selectable(candidate.CollectType, armor is null && candidate == weapon))
                     {
@@ -86,7 +91,7 @@ public sealed partial class PluginUI
                     }
                 }
 
-                foreach (var candidate in armorLines)
+                foreach(ArmorLine candidate in armorLines)
                 {
                     if (ImGui.Selectable($"{candidate.LineName} (armor)", candidate == armor))
                     {
@@ -102,7 +107,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            var soleCollectType = weapon?.CollectType ?? armor?.LineName;
+            string? soleCollectType = weapon?.CollectType ?? armor?.LineName;
             if (!string.IsNullOrEmpty(soleCollectType) && config.DetailCollectType != soleCollectType)
             {
                 config.DetailCollectType = soleCollectType;
@@ -110,7 +115,7 @@ public sealed partial class PluginUI
             }
         }
 
-        var ownership = GetOwnership();
+        RelicOwnership ownership = GetOwnership();
 
         if (armor is not null)
         {
@@ -125,8 +130,8 @@ public sealed partial class PluginUI
             return;
         }
 
-        var jobList = weapon.EffectiveJobList;
-        var job = jobList.Contains(config.DetailJob, StringComparer.Ordinal)
+        IReadOnlyList<string> jobList = weapon.EffectiveJobList;
+        string job = jobList.Contains(config.DetailJob, StringComparer.Ordinal)
             ? config.DetailJob
             : jobList.FirstOrDefault() ?? string.Empty;
 
@@ -137,7 +142,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(90);
         if (ImGui.BeginCombo("##job-detail", string.IsNullOrEmpty(job) ? "—" : job))
         {
-            foreach (var candidate in jobList)
+            foreach(string candidate in jobList)
             {
                 if (ImGui.Selectable(candidate, candidate == job))
                 {
@@ -150,13 +155,13 @@ public sealed partial class PluginUI
             ImGui.EndCombo();
         }
 
-        var slotIndex = IndexOfJob(jobList, job);
+        int slotIndex = IndexOfJob(jobList, job);
 
         ImGui.Spacing();
         DrawDetailCollectContext(weapon, ownership, jobList);
         ImGui.Separator();
 
-        using var scroll = ImRaii.Child("##RelicDetailScroll", new Vector2(0, -1), false);
+        using ImRaii.ChildDisposable scroll = ImRaii.Child("##RelicDetailScroll", new(0, -1), false);
         if (!scroll)
         {
             return;
@@ -169,9 +174,9 @@ public sealed partial class PluginUI
 
     private void DrawArmorDetail(ArmorLine armor, RelicOwnership ownership)
     {
-        var owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
-        var total = armor.TotalPieces;
-        var complete = total > 0 && owned >= total;
+        int owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
+        int total = armor.TotalPieces;
+        bool complete = total > 0 && owned >= total;
 
         if (CollectActive)
         {
@@ -196,7 +201,7 @@ public sealed partial class PluginUI
             ImGui.TextColored(MutedColor, $"· {armor.Sets.Count} separate sets");
         }
 
-        var note = catalog.StepNote(armor.LineName, string.Empty);
+        string? note = catalog.StepNote(armor.LineName, string.Empty);
         if (!string.IsNullOrWhiteSpace(note))
         {
             ImGui.Spacing();
@@ -204,11 +209,11 @@ public sealed partial class PluginUI
         }
 
         ImGui.Spacing();
-        using var table = ImRaii.Table(
+        using ImRaii.TableDisposable table = ImRaii.Table(
             "ArmorSets",
             3,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-            new Vector2(0, 0));
+            new(0, 0));
         if (!table)
         {
             return;
@@ -219,7 +224,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 160);
         ImGui.TableHeadersRow();
 
-        foreach (var set in armor.Sets)
+        foreach(ArmorSet set in armor.Sets)
         {
             DrawArmorSetRows(set, ownership);
         }
@@ -227,18 +232,18 @@ public sealed partial class PluginUI
 
     private void DrawArmorSetRows(ArmorSet set, RelicOwnership ownership)
     {
-        var multiTier = set.Tiers.Count > 1;
+        bool multiTier = set.Tiers.Count > 1;
 
-        foreach (var tier in set.Tiers)
+        foreach(ArmorTier tier in set.Tiers)
         {
-            var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
-            var fraction = tier.Pieces > 0 ? (float)tierOwned / tier.Pieces : 0f;
+            int tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
+            float fraction = tier.Pieces > 0 ? (float)tierOwned / tier.Pieces : 0f;
 
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
             // Single-tier sets show just the set name; multi-tier show "Set — Tier".
-            var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+            string label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, label);
             if (ImGui.IsItemHovered())
             {
@@ -256,14 +261,14 @@ public sealed partial class PluginUI
             else
             {
                 // Manual: one checkbox per piece, count of ticked = owned.
-                for (var i = 0; i < tier.Pieces; i++)
+                for(int i = 0; i < tier.Pieces; i++)
                 {
                     if (i > 0)
                     {
                         ImGui.SameLine();
                     }
 
-                    var done = config.ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
+                    bool done = config.ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
                     if (ImGui.Checkbox($"##{tier.CollectType}_{i}", ref done))
                     {
                         SetArmorPieceDone(tier.CollectType, i, done);
@@ -276,7 +281,7 @@ public sealed partial class PluginUI
     /// <summary>Manual armor piece tick (used when FFXIV Collect isn't linked).</summary>
     private void SetArmorPieceDone(string collectType, int piece, bool done)
     {
-        var key = $"{collectType}|{piece}";
+        string key = $"{collectType}|{piece}";
         if (done)
         {
             config.ArmorPieceDone.Add(key);
@@ -292,12 +297,12 @@ public sealed partial class PluginUI
 
     private RelicOwnership GetOwnership()
     {
-        var characterId = config.FfxivCollectCharacterId;
-        var stamp = ffxivCollect.LastRefreshUtc;
+        ulong characterId = config.FfxivCollectCharacterId;
+        DateTime? stamp = ffxivCollect.LastRefreshUtc;
         if (cachedOwnership is null || cachedOwnershipStamp != stamp || cachedOwnershipCharacterId != characterId)
         {
-            var snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
-            cachedOwnership = new RelicOwnership(snapshot, config.RelicStepDone, config.ArmorPieceDone);
+            FfxivCollectSnapshot snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
+            cachedOwnership = new(snapshot, config.RelicStepDone, config.ArmorPieceDone);
             cachedOwnershipStamp = stamp;
             cachedOwnershipCharacterId = characterId;
         }
@@ -314,7 +319,7 @@ public sealed partial class PluginUI
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
     {
-        for (var i = 0; i < jobList.Count; i++)
+        for(int i = 0; i < jobList.Count; i++)
         {
             if (string.Equals(jobList[i], job, StringComparison.Ordinal))
             {
@@ -325,9 +330,6 @@ public sealed partial class PluginUI
         return -1;
     }
 
-    private bool CollectActive =>
-        config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
-
     private void DrawDetailCollectContext(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
     {
         if (config.FfxivCollectCharacterId == 0)
@@ -336,8 +338,8 @@ public sealed partial class PluginUI
             return;
         }
 
-        var complete = 0;
-        for (var slot = 0; slot < jobList.Count; slot++)
+        int complete = 0;
+        for(int slot = 0; slot < jobList.Count; slot++)
         {
             if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
             {
@@ -363,20 +365,20 @@ public sealed partial class PluginUI
             return;
         }
 
-        var columns = 1 + jobList.Count;
-        using var table = ImRaii.Table(
+        int columns = 1 + jobList.Count;
+        using ImRaii.TableDisposable table = ImRaii.Table(
             "AllJobsGrid",
             columns,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg
-                | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY,
-            new Vector2(0, Math.Min(320f, (line.TierCount + 2) * ImGui.GetTextLineHeightWithSpacing() + 12f)));
+            | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY,
+            new(0, Math.Min(320f, (line.TierCount + 2) * ImGui.GetTextLineHeightWithSpacing() + 12f)));
         if (!table)
         {
             return;
         }
 
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 150);
-        foreach (var jobName in jobList)
+        foreach(string jobName in jobList)
         {
             ImGui.TableSetupColumn(jobName, ImGuiTableColumnFlags.WidthFixed, 34);
         }
@@ -384,20 +386,20 @@ public sealed partial class PluginUI
         ImGui.TableSetupScrollFreeze(1, 1);
         ImGui.TableHeadersRow();
 
-        for (var tier = 0; tier < line.TierCount; tier++)
+        for(int tier = 0; tier < line.TierCount; tier++)
         {
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted($"{tier + 1}. {line.StepName(tier)}");
 
-            for (var slot = 0; slot < jobList.Count; slot++)
+            for(int slot = 0; slot < jobList.Count; slot++)
             {
                 ImGui.TableNextColumn();
-                var done = ownership.IsStepDone(line, slot, tier)
-                           || IsManualStepDone(line, jobList[slot], tier);
-                var isSelected = string.Equals(jobList[slot], selectedJob, StringComparison.Ordinal);
-                var color = done ? GoodColor : isSelected ? WarningColor : MutedColor;
+                bool done = ownership.IsStepDone(line, slot, tier)
+                            || IsManualStepDone(line, jobList[slot], tier);
+                bool isSelected = string.Equals(jobList[slot], selectedJob, StringComparison.Ordinal);
+                Vector4 color = done ? GoodColor : isSelected ? WarningColor : MutedColor;
                 ImGui.TextColored(color, done ? "✓" : "·");
             }
         }
@@ -405,8 +407,8 @@ public sealed partial class PluginUI
 
     private void DrawDetailSteps(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
     {
-        var currentTier = CurrentStepTier(line, job, slotIndex, ownership);
-        var complete = currentTier >= line.TierCount;
+        int currentTier = CurrentStepTier(line, job, slotIndex, ownership);
+        bool complete = currentTier >= line.TierCount;
 
         ImGui.TextColored(HeaderColor, $"{job} · {line.CollectType}");
         ImGui.SameLine();
@@ -437,11 +439,11 @@ public sealed partial class PluginUI
 
     private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership, bool collectActive)
     {
-        using var table = ImRaii.Table(
+        using ImRaii.TableDisposable table = ImRaii.Table(
             "DetailSteps",
             2,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
-            new Vector2(0, 0));
+            new(0, 0));
         if (!table)
         {
             return;
@@ -451,12 +453,12 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch);
         ImGui.TableHeadersRow();
 
-        for (var tier = 0; tier < line.TierCount; tier++)
+        for(int tier = 0; tier < line.TierCount; tier++)
         {
             ImGui.TableNextRow();
 
-            var autoDone = ownership.IsStepDone(line, slotIndex, tier);
-            var done = autoDone || IsManualStepDone(line, job, tier);
+            bool autoDone = ownership.IsStepDone(line, slotIndex, tier);
+            bool done = autoDone || IsManualStepDone(line, job, tier);
 
             ImGui.TableNextColumn();
             if (collectActive)
@@ -474,7 +476,7 @@ public sealed partial class PluginUI
             }
             else
             {
-                var manual = IsManualStepDone(line, job, tier);
+                bool manual = IsManualStepDone(line, job, tier);
                 ImGui.PushID(tier);
                 if (ImGui.Checkbox("##stepdone", ref manual))
                 {
@@ -485,32 +487,27 @@ public sealed partial class PluginUI
             }
 
             ImGui.TableNextColumn();
-            var isCurrent = tier == currentTier;
-            var color = done ? GoodColor : isCurrent ? WarningColor : MutedColor;
-            var suffix = isCurrent ? "  ← current step" : string.Empty;
+            bool isCurrent = tier == currentTier;
+            Vector4 color = done ? GoodColor : isCurrent ? WarningColor : MutedColor;
+            string suffix = isCurrent ? "  ← current step" : string.Empty;
             ImGui.TextColored(color, $"{tier + 1}. {line.StepName(tier)}{suffix}");
         }
     }
 
-    // Catalog step name -> Wyn material-sheet step name, for the few that differ.
-    // All relic lines now use their catalog step names directly (materials come from the curated
-    // tool_extra_materials supplement), so no Wyn step-name aliasing is needed here anymore.
-    private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase);
-
     private void DrawCurrentStepDetail(RelicLine line, int currentTier, int slotIndex)
     {
-        var stepName = line.StepName(currentTier);
+        string stepName = line.StepName(currentTier);
         ImGui.TextColored(HeaderColor, $"To do now: {stepName}");
         ImGui.Spacing();
 
-        var note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
+        string? note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
         if (!string.IsNullOrWhiteSpace(note))
         {
             ImGui.TextWrapped(note);
             ImGui.Spacing();
         }
 
-        var items = GetStepItems(line, stepName, slotIndex).ToList();
+        List<StepItem> items = GetStepItems(line, stepName, slotIndex).ToList();
         if (items.Count == 0)
         {
             if (string.IsNullOrWhiteSpace(note))
@@ -525,11 +522,11 @@ public sealed partial class PluginUI
         ImGui.TextColored(MutedColor, "Materials for one weapon/tool (owned counts are live from Allagan Tools):");
         ImGui.Spacing();
 
-        using var table = ImRaii.Table(
+        using ImRaii.TableDisposable table = ImRaii.Table(
             "DetailStepItems",
             5,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
-            new Vector2(0, 0));
+            new(0, 0));
         if (!table)
         {
             return;
@@ -542,7 +539,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
         ImGui.TableHeadersRow();
 
-        foreach (var item in items)
+        foreach(StepItem item in items)
         {
             ImGui.TableNextRow();
 
@@ -577,17 +574,15 @@ public sealed partial class PluginUI
             }
 
             ImGui.TableNextColumn();
-            var shortfall = item.Need > item.Owned ? item.Need - item.Owned : 0;
+            uint shortfall = item.Need > item.Owned ? item.Need - item.Owned : 0;
             ImGui.TextColored(shortfall == 0 && item.Resolved ? GoodColor : BadColor, item.Resolved ? shortfall.ToString() : "?");
         }
     }
 
-    private readonly record struct StepItem(string Name, string? Where, uint Need, uint Owned, bool Resolved);
-
     /// <summary>Per-weapon materials for a step, from Wyn's per-expansion data, with live owned counts.</summary>
     private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName, int slotIndex)
     {
-        if (!data.Expansions.TryGetValue(line.Expansion, out var sheet))
+        if (!data.Expansions.TryGetValue(line.Expansion, out ExpansionSheet? sheet))
         {
             yield break;
         }
@@ -595,15 +590,15 @@ public sealed partial class PluginUI
         // On tool lines the material flag columns line up with the relic job slots, so a Fisher
         // only sees fishing parts and crafters don't see them. Weapon-line flags are spreadsheet
         // artifacts (e.g. every Eureka material is flagged for one stray column), so don't filter.
-        var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
+        bool filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
 
-        var wynStep = WynStepAliases.TryGetValue(stepName, out var alias) ? alias : stepName;
-        var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
-        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var ownedCounts = new Dictionary<uint, uint>();
+        string wynStep = WynStepAliases.TryGetValue(stepName, out string? alias) ? alias : stepName;
+        bool hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
+        HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<uint, uint> ownedCounts = new();
         uint OwnedLookup(uint itemId)
         {
-            if (!ownedCounts.TryGetValue(itemId, out var count))
+            if (!ownedCounts.TryGetValue(itemId, out uint count))
             {
                 count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
                 ownedCounts[itemId] = count;
@@ -612,7 +607,7 @@ public sealed partial class PluginUI
             return count;
         }
 
-        foreach (var row in sheet.Materials)
+        foreach(ExpansionMaterialRow row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
                 || !string.Equals(row.Step.Trim(), wynStep, StringComparison.OrdinalIgnoreCase))
@@ -625,31 +620,31 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            var name = row.Material?.Trim();
+            string? name = row.Material?.Trim();
             if (!MaterialFilters.IsTrackableMaterial(name) || !seen.Add(name!))
             {
                 continue;
             }
 
-            var need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
+            uint need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
             if (need == 0)
             {
                 continue;
             }
 
-            var itemIds = itemResolver.ResolveItemIds(name!);
-            var resolved = itemIds.Count > 0;
-            var owned = itemIds.Aggregate(0u, (total, itemId) => total + OwnedLookup(itemId));
+            IReadOnlyList<uint> itemIds = itemResolver.ResolveItemIds(name!);
+            bool resolved = itemIds.Count > 0;
+            uint owned = itemIds.Aggregate(0u, (total, itemId) => total + OwnedLookup(itemId));
 
-            var where = data.MaterialSources.TryGetValue(name!, out var src) ? src : null;
-            yield return new StepItem(name!, where, need, owned, resolved);
+            string? where = data.MaterialSources.TryGetValue(name!, out string? src) ? src : null;
+            yield return new(name!, where, need, owned, resolved);
         }
     }
 
     /// <summary>
-    /// Picks the part of a step note relevant to one job. Tool-line notes split per discipline with
-    /// inline [[Crafters]] / [[Gatherers]] / [[Fisher]] tags (slots 0-7 / 8-9 / 10), keeping any
-    /// untagged intro for everyone. Notes without tags (weapons, armor) are returned unchanged.
+    ///     Picks the part of a step note relevant to one job. Tool-line notes split per discipline with
+    ///     inline [[Crafters]] / [[Gatherers]] / [[Fisher]] tags (slots 0-7 / 8-9 / 10), keeping any
+    ///     untagged intro for everyone. Notes without tags (weapons, armor) are returned unchanged.
     /// </summary>
     private static string? NoteForDiscipline(string? note, int slotIndex)
     {
@@ -658,31 +653,31 @@ public sealed partial class PluginUI
             return note;
         }
 
-        var wanted = slotIndex switch
+        string? wanted = slotIndex switch
         {
             >= 0 and <= 7 => "[[Crafters]]",
             8 or 9 => "[[Gatherers]]",
             10 => "[[Fisher]]",
-            _ => null,
+            var _ => null
         };
 
-        var firstTag = note.IndexOf("[[", StringComparison.Ordinal);
-        var intro = note[..firstTag].Trim();
+        int firstTag = note.IndexOf("[[", StringComparison.Ordinal);
+        string intro = note[..firstTag].Trim();
 
         if (wanted is null)
         {
             return intro;
         }
 
-        var start = note.IndexOf(wanted, StringComparison.Ordinal);
+        int start = note.IndexOf(wanted, StringComparison.Ordinal);
         if (start < 0)
         {
             return intro;
         }
 
         start += wanted.Length;
-        var end = note.IndexOf("[[", start, StringComparison.Ordinal);
-        var section = (end < 0 ? note[start..] : note[start..end]).Trim();
+        int end = note.IndexOf("[[", start, StringComparison.Ordinal);
+        string section = (end < 0 ? note[start..] : note[start..end]).Trim();
         return string.IsNullOrEmpty(intro) ? section : $"{intro}\n\n{section}";
     }
 
@@ -695,7 +690,7 @@ public sealed partial class PluginUI
     /// <summary>First tier not yet done (auto from Collect or manual) — the step the job is working on.</summary>
     private int CurrentStepTier(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
     {
-        for (var tier = 0; tier < line.TierCount; tier++)
+        for(int tier = 0; tier < line.TierCount; tier++)
         {
             if (!ownership.IsStepDone(line, slotIndex, tier) && !IsManualStepDone(line, job, tier))
             {
@@ -711,14 +706,14 @@ public sealed partial class PluginUI
     {
         if (done)
         {
-            for (var lower = 0; lower <= tier; lower++)
+            for(int lower = 0; lower <= tier; lower++)
             {
                 config.RelicStepDone.Add(StepKey(line, job, lower));
             }
         }
         else
         {
-            for (var upper = tier; upper < line.TierCount; upper++)
+            for(int upper = tier; upper < line.TierCount; upper++)
             {
                 config.RelicStepDone.Remove(StepKey(line, job, upper));
             }
@@ -727,4 +722,6 @@ public sealed partial class PluginUI
         config.OnSettingChanged();
         InvalidateOwnershipCache();
     }
+
+    private readonly record struct StepItem(string Name, string? Where, uint Need, uint Owned, bool Resolved);
 }

@@ -1,6 +1,5 @@
 using Dalamud.Configuration;
 using Dalamud.Plugin;
-
 namespace RelicTracker;
 
 [Serializable]
@@ -9,8 +8,6 @@ public sealed class Configuration : IPluginConfiguration
     [NonSerialized] private bool _pendingPersist;
 
     [NonSerialized] private IDalamudPluginInterface? pluginInterface;
-
-    public int Version { get; set; } = 5;
 
     public string SelectedExpansionId { get; set; } = "ARR";
 
@@ -42,6 +39,8 @@ public sealed class Configuration : IPluginConfiguration
     public string TrackerLineFilter { get; set; } = string.Empty;
 
     public Dictionary<string, bool> ExpandedMaterialSections { get; set; } = new(StringComparer.Ordinal);
+
+    public int Version { get; set; } = 5;
 
     public void Initialize(IDalamudPluginInterface pi) => pluginInterface = pi;
 

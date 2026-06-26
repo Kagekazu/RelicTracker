@@ -11,7 +11,7 @@ public sealed class FfxivCollectService
     {
         get
         {
-            lock (gate)
+            lock(gate)
             {
                 return isLoading;
             }
@@ -30,7 +30,7 @@ public sealed class FfxivCollectService
             return;
         }
 
-        lock (gate)
+        lock(gate)
         {
             if (isLoading)
             {
@@ -46,8 +46,8 @@ public sealed class FfxivCollectService
         {
             try
             {
-                var snapshot = await FfxivCollectClient.FetchCharacterRelicsAsync(characterId).ConfigureAwait(false);
-                lock (gate)
+                FfxivCollectSnapshot snapshot = await FfxivCollectClient.FetchCharacterRelicsAsync(characterId).ConfigureAwait(false);
+                lock(gate)
                 {
                     Snapshot = snapshot;
                     LastRefreshUtc = DateTime.UtcNow;
@@ -60,19 +60,19 @@ public sealed class FfxivCollectService
                     snapshot.Missing.Count,
                     characterId);
             }
-            catch (FfxivCollectException ex)
+            catch(FfxivCollectException ex)
             {
                 StatusMessage = ex.Message;
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect: {Message}", ex.Message);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 StatusMessage = "Could not reach FFXIV Collect.";
                 Svc.Log.Warning(ex, "[RelicTracker] FFXIV Collect request failed.");
             }
             finally
             {
-                lock (gate)
+                lock(gate)
                 {
                     isLoading = false;
                 }

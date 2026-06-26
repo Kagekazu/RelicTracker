@@ -1,10 +1,8 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using RelicTracker.Framework;
 using RelicTracker.IPC;
 using System.Diagnostics;
 using System.Numerics;
-
 namespace RelicTracker;
 
 public sealed partial class PluginUI : Window
@@ -16,10 +14,10 @@ public sealed partial class PluginUI : Window
     private static readonly Vector4 WarningColor = new(0.95f, 0.75f, 0.35f, 1f);
     private static readonly Vector4 GoodColor = new(0.45f, 0.9f, 0.55f, 1f);
     private static readonly Vector4 BadColor = new(0.95f, 0.45f, 0.45f, 1f);
+    private readonly RelicCatalog catalog;
 
     private readonly Configuration config;
     private readonly RelicDataService data;
-    private readonly RelicCatalog catalog;
     private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
     private readonly JobAbbrevResolver jobAbbrevResolver = new();
@@ -46,8 +44,8 @@ public sealed partial class PluginUI : Window
             Click = _ => Process.Start(new ProcessStartInfo
             {
                 FileName = "https://ko-fi.com/kagekazu",
-                UseShellExecute = true,
-            }),
+                UseShellExecute = true
+            })
         });
     }
 
@@ -148,7 +146,7 @@ public sealed partial class PluginUI : Window
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
         {
-            foreach (var expansionId in data.Manifest.Expansions)
+            foreach(string expansionId in data.Manifest.Expansions)
             {
                 if (ImGui.Selectable(expansionId, expansionId == config.SelectedExpansionId))
                 {
@@ -162,8 +160,8 @@ public sealed partial class PluginUI : Window
         }
 
         // DoH/DoL has several tool lines per expansion; weapon expansions have one line each.
-        var lines = catalog.LinesFor(config.SelectedExpansionId).ToList();
-        var multiLine = lines.Count > 1;
+        List<RelicLine> lines = catalog.LinesFor(config.SelectedExpansionId).ToList();
+        bool multiLine = lines.Count > 1;
         if (!multiLine)
         {
             if (!string.IsNullOrEmpty(config.TrackerLineFilter))
@@ -181,7 +179,7 @@ public sealed partial class PluginUI : Window
 
             ImGui.SameLine();
             ImGui.SetNextItemWidth(190);
-            var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
+            string focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
             if (ImGui.BeginCombo("Line", focusLabel))
             {
                 if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
@@ -190,7 +188,7 @@ public sealed partial class PluginUI : Window
                     config.OnSettingChanged();
                 }
 
-                foreach (var line in lines)
+                foreach(RelicLine line in lines)
                 {
                     if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
                     {
@@ -205,7 +203,7 @@ public sealed partial class PluginUI : Window
 
         ImGui.Spacing();
 
-        var hideComplete = config.HideCompleteMaterials;
+        bool hideComplete = config.HideCompleteMaterials;
         if (ImGui.Checkbox("Still needed only", ref hideComplete))
         {
             config.HideCompleteMaterials = hideComplete;
@@ -227,7 +225,7 @@ public sealed partial class PluginUI : Window
     private void DrawSettingsTab()
     {
         ImGui.TextColored(HeaderColor, "Inventory");
-        var activeOnly = config.ActiveCharacterOnly;
+        bool activeOnly = config.ActiveCharacterOnly;
         if (ImGui.Checkbox("Active character + retainers only", ref activeOnly))
         {
             config.ActiveCharacterOnly = activeOnly;

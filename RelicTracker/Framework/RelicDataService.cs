@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace RelicTracker.Framework;
 
 public sealed class RelicDataService
@@ -7,13 +5,13 @@ public sealed class RelicDataService
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
-        Converters = { new FlexibleDoubleJsonConverter() },
+        Converters = { new FlexibleDoubleJsonConverter() }
     };
 
     public RelicManifest Manifest { get; private set; } = new();
 
     /// <summary>Expansion id -> relic step materials (built entirely from the curated supplement).</summary>
-    public Dictionary<string, ExpansionSheet> Expansions { get; private set; } = new(StringComparer.Ordinal);
+    public Dictionary<string, ExpansionSheet> Expansions { get; } = new(StringComparer.Ordinal);
 
     /// <summary>Material name -> where it is farmed, for grouping the shopping list by source.</summary>
     public Dictionary<string, string> MaterialSources { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
@@ -25,7 +23,7 @@ public sealed class RelicDataService
 
     public void Load()
     {
-        var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
+        string baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
         Manifest = ReadJson<RelicManifest>(Path.Combine(baseDir, "manifest.json")) ?? new RelicManifest();
         MaterialSources = ReadJson<Dictionary<string, string>>(Path.Combine(baseDir, "material_sources.json"))
                           ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -39,22 +37,23 @@ public sealed class RelicDataService
     }
 
     /// <summary>
-    /// Loads the curated relic materials — the single source of truth for every relic line's step
-    /// materials. Creates the expansion sheet if needed and replaces any materials wholesale.
+    ///     Loads the curated relic materials — the single source of truth for every relic line's step
+    ///     materials. Creates the expansion sheet if needed and replaces any materials wholesale.
     /// </summary>
     private void MergeExtraMaterials(string path)
     {
-        var extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
+        Dictionary<string, List<ExpansionMaterialRow>>? extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
         if (extra is null)
         {
             return;
         }
 
-        foreach (var (expansionId, materials) in extra)
+        foreach((string expansionId, List<ExpansionMaterialRow> materials) in extra)
         {
-            if (!Expansions.TryGetValue(expansionId, out var sheet))
+            if (!Expansions.TryGetValue(expansionId, out ExpansionSheet? sheet))
             {
-                sheet = new ExpansionSheet { Id = expansionId };
+                sheet = new()
+                    { Id = expansionId };
                 Expansions[expansionId] = sheet;
             }
 
@@ -70,12 +69,10 @@ public sealed class RelicDataService
         RelicOwnership ownership,
         ItemResolver items,
         Func<uint, uint> ownedLookup,
-        string? lineFilter = null)
-    {
-        return Expansions.TryGetValue(expansionId, out var sheet)
+        string? lineFilter = null) =>
+        Expansions.TryGetValue(expansionId, out ExpansionSheet? sheet)
             ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources, lineFilter)
             : [];
-    }
 
     private static T? ReadJson<T>(string path)
     {
@@ -87,10 +84,10 @@ public sealed class RelicDataService
 
         try
         {
-            var json = File.ReadAllText(path);
+            string json = File.ReadAllText(path);
             return JsonSerializer.Deserialize<T>(json, JsonOptions);
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             Svc.Log.Error(ex, "[RelicTracker] Failed to read {Path}", path);
             return default;

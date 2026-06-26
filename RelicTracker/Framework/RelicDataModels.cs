@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace RelicTracker.Framework;
 
 public sealed class RelicManifest

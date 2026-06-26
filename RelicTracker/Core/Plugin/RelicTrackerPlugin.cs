@@ -1,30 +1,24 @@
-using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using ECommons;
-using RelicTracker.Framework;
 using RelicTracker.IPC;
-using System.Diagnostics;
-using System.Numerics;
-
 namespace RelicTracker;
 
 public sealed class RelicTrackerPlugin : IDalamudPlugin
 {
-    private readonly Configuration configuration;
-    private readonly ItemResolver itemResolver = new();
     private readonly FfxivCollectService ffxivCollect = new();
+    private readonly ItemResolver itemResolver = new();
     private readonly PluginUI pluginUi;
-    private readonly RelicDataService relicData = new();
     private readonly RelicCatalog relicCatalog = new();
+    private readonly RelicDataService relicData = new();
     private readonly WindowSystem windowSystem = new("RelicTracker");
 
     public RelicTrackerPlugin(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this);
 
-        configuration = Svc.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-        configuration.Initialize(Svc.PluginInterface);
+        Configuration = Svc.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        Configuration.Initialize(Svc.PluginInterface);
 
         AllaganToolsIpc.Init();
 
@@ -33,14 +27,14 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         itemResolver.Build();
         relicCatalog.ResolveJobs(itemResolver);
 
-        pluginUi = new PluginUI(configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
+        pluginUi = new(Configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
-        foreach (var commandName in RelicTrackerConstants.CommandNames)
+        foreach(string commandName in RelicTrackerConstants.CommandNames)
         {
             Svc.Commands.AddHandler(commandName, new(OnCommand)
             {
-                HelpMessage = "Open RelicTracker",
+                HelpMessage = "Open RelicTracker"
             });
         }
 
@@ -51,12 +45,12 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         Svc.Log.Information("Loaded {Name} (data {Version}).", Svc.PluginInterface.Manifest.Name, relicData.Manifest.SheetVersion);
     }
 
-    public Configuration Configuration => configuration;
+    public Configuration Configuration { get; }
 
     public void Dispose()
     {
-        configuration.PersistIfDirty();
-        foreach (var commandName in RelicTrackerConstants.CommandNames)
+        Configuration.PersistIfDirty();
+        foreach(string commandName in RelicTrackerConstants.CommandNames)
         {
             Svc.Commands.RemoveHandler(commandName);
         }
