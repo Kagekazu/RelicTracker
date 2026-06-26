@@ -27,8 +27,11 @@ public sealed partial class PluginUI
             ? config.DetailExpansionId
             : catalog.Expansions.FirstOrDefault() ?? string.Empty;
 
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("Expansion");
+        ImGui.SameLine();
         ImGui.SetNextItemWidth(150);
-        if (ImGui.BeginCombo("Expansion##detail", ExpansionLongName(expansionId)))
+        if (ImGui.BeginCombo("##expansion-detail", ExpansionLongName(expansionId)))
         {
             foreach (var candidate in catalog.Expansions)
             {
@@ -61,34 +64,50 @@ public sealed partial class PluginUI
             armor = weapon is null ? armorLines.FirstOrDefault() : null;
         }
 
-        ImGui.SameLine();
-        ImGui.SetNextItemWidth(200);
-        var relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
-        if (ImGui.BeginCombo("Relic##detail", relicLabel))
+        var relicLineCount = weaponLines.Count + armorLines.Count;
+        if (relicLineCount > 1)
         {
-            foreach (var candidate in weaponLines)
+            ImGui.SameLine();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted("Relic");
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(200);
+            var relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
+            if (ImGui.BeginCombo("##relic-detail", relicLabel))
             {
-                if (ImGui.Selectable(candidate.CollectType, armor is null && candidate == weapon))
+                foreach (var candidate in weaponLines)
                 {
-                    config.DetailCollectType = candidate.CollectType;
-                    config.OnSettingChanged();
-                    weapon = candidate;
-                    armor = null;
+                    if (ImGui.Selectable(candidate.CollectType, armor is null && candidate == weapon))
+                    {
+                        config.DetailCollectType = candidate.CollectType;
+                        config.OnSettingChanged();
+                        weapon = candidate;
+                        armor = null;
+                    }
                 }
-            }
 
-            foreach (var candidate in armorLines)
+                foreach (var candidate in armorLines)
+                {
+                    if (ImGui.Selectable($"{candidate.LineName} (armor)", candidate == armor))
+                    {
+                        config.DetailCollectType = candidate.LineName;
+                        config.OnSettingChanged();
+                        armor = candidate;
+                        weapon = null;
+                    }
+                }
+
+                ImGui.EndCombo();
+            }
+        }
+        else
+        {
+            var soleCollectType = weapon?.CollectType ?? armor?.LineName;
+            if (!string.IsNullOrEmpty(soleCollectType) && config.DetailCollectType != soleCollectType)
             {
-                if (ImGui.Selectable($"{candidate.LineName} (armor)", candidate == armor))
-                {
-                    config.DetailCollectType = candidate.LineName;
-                    config.OnSettingChanged();
-                    armor = candidate;
-                    weapon = null;
-                }
+                config.DetailCollectType = soleCollectType;
+                config.OnSettingChanged();
             }
-
-            ImGui.EndCombo();
         }
 
         var ownership = GetOwnership();
@@ -112,8 +131,11 @@ public sealed partial class PluginUI
             : jobList.FirstOrDefault() ?? string.Empty;
 
         ImGui.SameLine();
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("Job");
+        ImGui.SameLine();
         ImGui.SetNextItemWidth(90);
-        if (ImGui.BeginCombo("Job##detail", string.IsNullOrEmpty(job) ? "—" : job))
+        if (ImGui.BeginCombo("##job-detail", string.IsNullOrEmpty(job) ? "—" : job))
         {
             foreach (var candidate in jobList)
             {
