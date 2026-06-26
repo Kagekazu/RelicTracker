@@ -4,21 +4,6 @@ namespace RelicTracker.Framework;
 
 public sealed class ItemResolver
 {
-    // Job bool accessors on ClassJobCategory, jobs only (no base classes), in the order
-    // we prefer to report. A relic weapon/tool is equippable by exactly one of these.
-    private static readonly (string Abbrev, Func<ClassJobCategory, bool> Has)[] JobAccessors =
-    [
-        ("PLD", c => c.PLD), ("WAR", c => c.WAR), ("DRK", c => c.DRK), ("GNB", c => c.GNB),
-        ("WHM", c => c.WHM), ("SCH", c => c.SCH), ("AST", c => c.AST), ("SGE", c => c.SGE),
-        ("MNK", c => c.MNK), ("DRG", c => c.DRG), ("NIN", c => c.NIN), ("SAM", c => c.SAM),
-        ("RPR", c => c.RPR), ("VPR", c => c.VPR),
-        ("BRD", c => c.BRD), ("MCH", c => c.MCH), ("DNC", c => c.DNC),
-        ("BLM", c => c.BLM), ("SMN", c => c.SMN), ("RDM", c => c.RDM), ("PCT", c => c.PCT),
-        ("BLU", c => c.BLU),
-        ("CRP", c => c.CRP), ("BSM", c => c.BSM), ("ARM", c => c.ARM), ("GSM", c => c.GSM),
-        ("LTW", c => c.LTW), ("WVR", c => c.WVR), ("ALC", c => c.ALC), ("CUL", c => c.CUL),
-        ("MIN", c => c.MIN), ("BTN", c => c.BTN), ("FSH", c => c.FSH)
-    ];
     private readonly Dictionary<string, IReadOnlyList<string>> aliasToNames = new(StringComparer.OrdinalIgnoreCase);
 
     private readonly Dictionary<string, uint> byName = new(StringComparer.OrdinalIgnoreCase);
@@ -73,16 +58,7 @@ public sealed class ItemResolver
             return false;
         }
 
-        foreach ((string abbrev, Func<ClassJobCategory, bool> has) in JobAccessors)
-        {
-            if (has(category.Value))
-            {
-                jobAbbrev = abbrev;
-                return true;
-            }
-        }
-
-        return false;
+        return ClassJobEquipResolver.TryResolve(category.Value, out jobAbbrev);
     }
 
     public bool TryResolve(string materialName, out uint itemId)

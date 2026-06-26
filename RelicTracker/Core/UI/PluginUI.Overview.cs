@@ -26,7 +26,7 @@ public sealed partial class PluginUI
         else
         {
             ImGui.TextColored(MutedColor,
-                "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Collect tab to auto-fill finished relics.");
+                "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Settings tab to auto-fill finished relics.");
             ImGui.Spacing();
         }
 
