@@ -460,12 +460,9 @@ public sealed partial class PluginUI
     }
 
     // Catalog step name -> Wyn material-sheet step name, for the few that differ.
-    private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase)
-    {
-        // Skysteel steps now use their catalog names directly via the curated tool_extra_materials
-        // supplement, so they no longer need to alias onto Wyn's lumped step names.
-        ["Augmented Law's Order"] = "Augmented Law's",
-    };
+    // All relic lines now use their catalog step names directly (materials come from the curated
+    // tool_extra_materials supplement), so no Wyn step-name aliasing is needed here anymore.
+    private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase);
 
     private void DrawCurrentStepDetail(RelicLine line, int currentTier, int slotIndex)
     {
@@ -600,22 +597,9 @@ public sealed partial class PluginUI
             var resolved = itemIds.Count > 0;
             var owned = itemIds.Aggregate(0u, (total, itemId) => total + AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
 
-            yield return new StepItem(name!, FindLocation(line.Expansion, name!), need, owned, resolved);
+            var where = data.MaterialSources.TryGetValue(name!, out var src) ? src : null;
+            yield return new StepItem(name!, where, need, owned, resolved);
         }
-    }
-
-    private string? FindLocation(string expansionId, string material)
-    {
-        foreach (var row in data.GetMaterialReference(expansionId))
-        {
-            if (string.Equals(row.Material?.Trim(), material, StringComparison.OrdinalIgnoreCase)
-                && !string.IsNullOrWhiteSpace(row.Location))
-            {
-                return row.Location;
-            }
-        }
-
-        return null;
     }
 
     /// <summary>

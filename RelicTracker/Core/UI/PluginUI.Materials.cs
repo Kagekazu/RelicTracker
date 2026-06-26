@@ -28,10 +28,6 @@ public sealed partial class PluginUI
         var statuses = RelicStatusService.Build(ownership, catalog);
         var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
         var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup, lineFilter);
-        // Currencies and armours are expansion-wide; when focused on one weapon/tool line, hide them.
-        var currencies = focused
-            ? new List<MaterialDisplayRow>()
-            : data.GetExpansionCurrencies(expansionId, itemResolver, ownedLookup, progressTracker).ToList();
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
@@ -39,15 +35,11 @@ public sealed partial class PluginUI
                 .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
                               || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-            currencies = currencies
-                .Where(row => row.Name.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
-                .ToList();
         }
 
         if (config.HideCompleteMaterials)
         {
             materials = materials.Where(row => row.Short > 0).ToList();
-            currencies = currencies.Where(row => row.Shortfall > 0).ToList();
         }
 
         DrawShoppingSummary(materials);
@@ -57,10 +49,10 @@ public sealed partial class PluginUI
         var hasArmor = !focused && armorCosts is { Count: > 0 };
         var drewAny = false;
 
-        if (materials.Count > 0 || currencies.Count > 0)
+        if (materials.Count > 0)
         {
             drewAny = true;
-            DrawWeaponsList(expansionId, materials, currencies);
+            DrawWeaponsList(expansionId, materials);
         }
 
         if (hasArmor)
@@ -82,8 +74,7 @@ public sealed partial class PluginUI
 
     private void DrawWeaponsList(
         string expansionId,
-        IReadOnlyList<ShoppingMaterialRow> materials,
-        IReadOnlyList<MaterialDisplayRow> currencies)
+        IReadOnlyList<ShoppingMaterialRow> materials)
     {
         if (!DrawCollapsingSection($"{expansionId}|Weapons", "Weapons & tools", true))
         {
@@ -120,25 +111,6 @@ public sealed partial class PluginUI
             foreach (var row in rows)
             {
                 DrawMaterialRow(row);
-            }
-        }
-
-        if (currencies.Count > 0 && DrawCollapsingSection($"{expansionId}|W|currencies", $"Currencies  ({currencies.Count})###{expansionId}cur", false))
-        {
-            using var table = ImRaii.Table($"WCur_{expansionId}", 5, ShoppingTableFlags, new Vector2(0, 0));
-            if (table)
-            {
-                ImGui.TableSetupColumn("Currency", ImGuiTableColumnFlags.WidthStretch, 0.4f);
-                ImGui.TableSetupColumn("Where / how to get", ImGuiTableColumnFlags.WidthStretch, 0.6f);
-                ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
-                ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
-                ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
-                ImGui.TableHeadersRow();
-
-                foreach (var row in currencies)
-                {
-                    DrawCurrencyRow(row);
-                }
             }
         }
     }
@@ -183,34 +155,6 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(MutedColor, "?");
         }
-    }
-
-    private void DrawCurrencyRow(MaterialDisplayRow row)
-    {
-        ImGui.TableNextRow();
-
-        ImGui.TableNextColumn();
-        ImGui.TextColored(MutedColor, row.Name);
-
-        ImGui.TableNextColumn();
-        ImGui.TextUnformatted(CurrencyWhere(row.Name));
-
-        ImGui.TableNextColumn();
-        ImGui.Text(row.Needed.ToString());
-
-        ImGui.TableNextColumn();
-        if (row.IsCurrencyTracked)
-        {
-            ImGui.Text(row.Owned.ToString());
-        }
-        else
-        {
-            ImGui.TextColored(MutedColor, "—");
-        }
-
-        ImGui.TableNextColumn();
-        ImGui.TextColored(row.IsCurrencyTracked && row.Shortfall == 0 ? GoodColor : row.IsCurrencyTracked ? BadColor : MutedColor,
-            row.IsCurrencyTracked ? row.Shortfall.ToString() : "—");
     }
 
     private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs)
@@ -300,29 +244,9 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Where/how to get a material: farm zone, else the reference location, else the relic step.</summary>
-    private string WhereToGet(string expansionId, ShoppingMaterialRow row)
-    {
-        if (data.MaterialSources.TryGetValue(row.Material, out var source))
-        {
-            return source;
-        }
-
-        var location = FindLocation(expansionId, row.Material);
-        return !string.IsNullOrWhiteSpace(location) ? location : row.Step;
-    }
-
-    private static string CurrencyWhere(string name) => name switch
-    {
-        "Poetics" => "Tomestones — duty roulettes / dungeons",
-        "Company Seals" => "Grand Company — hunts / FATEs / turn-ins",
-        "Allied Seals" => "Hunts — clan mark logs",
-        "Purple Crafter Scrips" or "Purple Gatherer Scrips" => "Collectables (crafting/gathering)",
-        "Orange Crafter Scrips" or "Orange Gatherer Scrips" => "Collectables (crafting/gathering)",
-        "Skybuilder's Scrips" => "Ishgardian Restoration",
-        "Gil" => "—",
-        _ => "Wallet currency",
-    };
+    /// <summary>Where/how to get a material: farm zone (material_sources.json), else the relic step.</summary>
+    private string WhereToGet(string expansionId, ShoppingMaterialRow row) =>
+        data.MaterialSources.TryGetValue(row.Material, out var source) ? source : row.Step;
 
     private void DrawShoppingSummary(IReadOnlyList<ShoppingMaterialRow> materials)
     {
