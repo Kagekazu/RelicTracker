@@ -1,6 +1,4 @@
 using System.Diagnostics;
-using System.Numerics;
-
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -8,10 +6,10 @@ public sealed partial class PluginUI
     private static readonly string[] CollectCategories = ["all", "weapons", "tools", "armor", "ultimate"];
 
     private int collectCategoryIndex;
-    private bool collectShowMissing;
-    private string collectFilter = string.Empty;
     private string collectCharacterIdInput = string.Empty;
+    private string collectFilter = string.Empty;
     private bool collectInputInitialized;
+    private bool collectShowMissing;
 
     private void DrawCollectSection()
     {
@@ -34,7 +32,7 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         if (ImGui.Button("Save ID"))
         {
-            if (ulong.TryParse(collectCharacterIdInput.Trim(), out var parsed) && parsed > 0)
+            if (ulong.TryParse(collectCharacterIdInput.Trim(), out ulong parsed) && parsed > 0)
             {
                 config.FfxivCollectCharacterId = parsed;
                 config.OnSettingChanged();
@@ -95,7 +93,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(140);
         if (ImGui.BeginCombo("Category", CollectCategories[collectCategoryIndex]))
         {
-            for (var i = 0; i < CollectCategories.Length; i++)
+            for(int i = 0; i < CollectCategories.Length; i++)
             {
                 if (ImGui.Selectable(CollectCategories[i], i == collectCategoryIndex))
                 {
@@ -118,18 +116,18 @@ public sealed partial class PluginUI
 
     private void DrawCollectTable(List<FfxivCollectRelic> relics)
     {
-        var rows = FilterCollectRelics(relics);
+        List<FfxivCollectRelic> rows = FilterCollectRelics(relics);
         if (rows.Count == 0)
         {
             ImGui.TextColored(MutedColor, collectShowMissing ? "No missing relics in this category." : "No owned relics in this category.");
             return;
         }
 
-        using var table = ImRaii.Table(
+        using ImRaii.TableDisposable table = ImRaii.Table(
             "CollectRelics",
             3,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY,
-            new Vector2(0, -1));
+            new(0, -1));
 
         if (!table)
         {
@@ -141,7 +139,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
-        foreach (var relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
+        foreach(FfxivCollectRelic relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
         {
             ImGui.TableNextRow();
 
@@ -163,7 +161,7 @@ public sealed partial class PluginUI
     {
         IEnumerable<FfxivCollectRelic> query = relics;
 
-        var category = CollectCategories[collectCategoryIndex];
+        string category = CollectCategories[collectCategoryIndex];
         if (category != "all")
         {
             query = query.Where(r => r.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
@@ -184,7 +182,7 @@ public sealed partial class PluginUI
         Process.Start(new ProcessStartInfo
         {
             FileName = url,
-            UseShellExecute = true,
+            UseShellExecute = true
         });
     }
 }

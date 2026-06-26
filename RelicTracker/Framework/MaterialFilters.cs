@@ -11,7 +11,7 @@ internal static class MaterialFilters
         "Stellar",
         "Hyper",
         "Select Material",
-        "You just do Cosmic Exploration.",
+        "You just do Cosmic Exploration."
     };
 
     public static bool IsTrackableMaterial(string? name)
@@ -21,7 +21,7 @@ internal static class MaterialFilters
             return false;
         }
 
-        var trimmed = name.Trim();
+        string trimmed = name.Trim();
         if (trimmed.Contains('\n', StringComparison.Ordinal))
         {
             return false;
@@ -48,7 +48,7 @@ internal static class MaterialFilters
             return false;
         }
 
-        var trimmed = name.Trim();
+        string trimmed = name.Trim();
         return !trimmed.Contains("calculations", StringComparison.OrdinalIgnoreCase)
                && !trimmed.Contains("Crystal Sand", StringComparison.OrdinalIgnoreCase);
     }

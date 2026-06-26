@@ -1,5 +1,5 @@
+using Lumina.Excel;
 using Lumina.Excel.Sheets;
-
 namespace RelicTracker.Framework;
 
 public sealed class JobAbbrevResolver
@@ -10,11 +10,11 @@ public sealed class JobAbbrevResolver
     {
         abbrevByToken.Clear();
 
-        var sheet = Svc.Data.GetExcelSheet<ClassJob>();
-        foreach (var row in sheet)
+        ExcelSheet<ClassJob> sheet = Svc.Data.GetExcelSheet<ClassJob>();
+        foreach(ClassJob row in sheet)
         {
-            var abbrev = row.Abbreviation.ToString().Trim();
-            var name = row.Name.ToString().Trim();
+            string abbrev = row.Abbreviation.ToString().Trim();
+            string name = row.Name.ToString().Trim();
             if (string.IsNullOrEmpty(abbrev))
             {
                 continue;
@@ -27,12 +27,12 @@ public sealed class JobAbbrevResolver
             }
         }
 
-        foreach (var abbrev in JobColumnDefaults.CombatJobs)
+        foreach(string abbrev in JobColumnDefaults.CombatJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
 
-        foreach (var abbrev in JobColumnDefaults.DoHDoLJobs)
+        foreach(string abbrev in JobColumnDefaults.DoHDoLJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
@@ -47,8 +47,8 @@ public sealed class JobAbbrevResolver
             return "?";
         }
 
-        var trimmed = name.Trim();
-        if (abbrevByToken.TryGetValue(trimmed, out var abbrev))
+        string trimmed = name.Trim();
+        if (abbrevByToken.TryGetValue(trimmed, out string? abbrev))
         {
             return abbrev;
         }
@@ -72,12 +72,12 @@ internal static class JobColumnDefaults
     public static readonly string[] CombatJobs =
     [
         "PLD", "MNK", "WAR", "DRG", "BRD", "BLM", "WHM", "SCH", "NIN", "DRK",
-        "AST", "MCH", "SAM", "RDM", "GNB", "DNC", "VPR", "PCT",
+        "AST", "MCH", "SAM", "RDM", "GNB", "DNC", "VPR", "PCT"
     ];
 
     public static readonly string[] DoHDoLJobs =
     [
-        "CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL", "MIN", "BTN", "FSH",
+        "CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL", "MIN", "BTN", "FSH"
     ];
 
     public static IReadOnlyList<string> GetForExpansion(string expansionId, int jobCount)
@@ -87,12 +87,12 @@ internal static class JobColumnDefaults
             return [];
         }
 
-        var source = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal)
+        string[] source = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal)
             ? DoHDoLJobs
             : CombatJobs;
 
-        var names = new List<string>(jobCount);
-        for (var index = 0; index < jobCount; index++)
+        List<string> names = new(jobCount);
+        for(int index = 0; index < jobCount; index++)
         {
             names.Add(index < source.Length ? source[index] : $"J{index + 1}");
         }

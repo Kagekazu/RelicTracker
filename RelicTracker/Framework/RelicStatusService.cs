@@ -30,8 +30,8 @@ public sealed class RelicLineStatus
             return 0;
         }
 
-        var atOrBelow = ReachedPerStep[tierIndex];
-        var above = tierIndex + 1 < Line.TierCount ? ReachedPerStep[tierIndex + 1] : 0;
+        int atOrBelow = ReachedPerStep[tierIndex];
+        int above = tierIndex + 1 < Line.TierCount ? ReachedPerStep[tierIndex + 1] : 0;
         return Math.Max(0, atOrBelow - above);
     }
 }
@@ -51,14 +51,13 @@ public sealed class RelicProgressSummary
 /// <summary>Fast lookup of which exact relics a character owns, for per-job step detection.</summary>
 public sealed class RelicOwnership
 {
-    private readonly HashSet<string> owned;
-    private readonly Dictionary<string, int> ownedCountByType;
+    /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
+    private readonly HashSet<string> manualArmor;
 
     /// <summary>Live reference to manual step ticks (Configuration.RelicStepDone), keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> manualDone;
-
-    /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
-    private readonly HashSet<string> manualArmor;
+    private readonly HashSet<string> owned;
+    private readonly Dictionary<string, int> ownedCountByType;
 
     public RelicOwnership(FfxivCollectSnapshot snapshot, HashSet<string>? manualDone = null, HashSet<string>? manualArmor = null)
     {
@@ -78,7 +77,7 @@ public sealed class RelicOwnership
 
     /// <summary>How many relics of a given Collect type FFXIV Collect shows owned (armor auto-tracking).</summary>
     public int OwnedCount(string collectType) =>
-        ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
+        ownedCountByType.TryGetValue(collectType, out int count) ? count : 0;
 
     /// <summary>How many of an armor tier's pieces are manually ticked (used when Collect isn't linked).</summary>
     public int ManualPieceCount(string collectType, int pieces)
@@ -88,8 +87,8 @@ public sealed class RelicOwnership
             return 0;
         }
 
-        var n = 0;
-        for (var i = 0; i < pieces; i++)
+        int n = 0;
+        for(int i = 0; i < pieces; i++)
         {
             if (manualArmor.Contains($"{collectType}|{i}"))
             {
@@ -105,8 +104,8 @@ public sealed class RelicOwnership
         Math.Max(Math.Min(pieces, OwnedCount(collectType)), ManualPieceCount(collectType, pieces));
 
     /// <summary>
-    /// True if FFXIV Collect shows the relic for this job slot at this step (tier) as owned. This is
-    /// the auto-detected source only — manual ticks are kept separate so they stay editable.
+    ///     True if FFXIV Collect shows the relic for this job slot at this step (tier) as owned. This is
+    ///     the auto-detected source only — manual ticks are kept separate so they stay editable.
     /// </summary>
     public bool IsStepDone(RelicLine line, int slotIndex, int tier)
     {
@@ -115,14 +114,14 @@ public sealed class RelicOwnership
             return false;
         }
 
-        var order = (tier * line.Jobs) + slotIndex + 1;
+        int order = (tier * line.Jobs) + slotIndex + 1;
         return owned.Contains($"{line.CollectType}#{order}");
     }
 
     /// <summary>
-    /// True if the step is done for this slot either from FFXIV Collect OR a manual tick. This is the
-    /// unified "done" used by the Overview funnel and the Tracker, so the plugin works standalone
-    /// (without a Collect link) off manual ticks alone.
+    ///     True if the step is done for this slot either from FFXIV Collect OR a manual tick. This is the
+    ///     unified "done" used by the Overview funnel and the Tracker, so the plugin works standalone
+    ///     (without a Collect link) off manual ticks alone.
     /// </summary>
     public bool IsStepDoneOrManual(RelicLine line, int slotIndex, int tier)
     {
@@ -136,28 +135,28 @@ public sealed class RelicOwnership
             return false;
         }
 
-        var jobs = line.EffectiveJobList;
+        IReadOnlyList<string> jobs = line.EffectiveJobList;
         return slotIndex >= 0 && slotIndex < jobs.Count
-            && manualDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
+                              && manualDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
     }
 }
 
 public sealed class RelicStatusService
 {
     /// <summary>
-    /// Builds per-line status from ownership (FFXIV Collect plus manual ticks), so the Overview and
-    /// Tracker funnel reflect manual progress and work without a Collect link.
+    ///     Builds per-line status from ownership (FFXIV Collect plus manual ticks), so the Overview and
+    ///     Tracker funnel reflect manual progress and work without a Collect link.
     /// </summary>
     public static IReadOnlyList<RelicLineStatus> Build(RelicOwnership ownership, RelicCatalog catalog)
     {
-        var statuses = new List<RelicLineStatus>(catalog.Lines.Count);
-        foreach (var line in catalog.Lines)
+        List<RelicLineStatus> statuses = new(catalog.Lines.Count);
+        foreach(RelicLine line in catalog.Lines)
         {
-            var reached = new int[line.TierCount];
-            for (var tier = 0; tier < line.TierCount; tier++)
+            int[] reached = new int[line.TierCount];
+            for(int tier = 0; tier < line.TierCount; tier++)
             {
-                var count = 0;
-                for (var slot = 0; slot < line.Jobs; slot++)
+                int count = 0;
+                for(int slot = 0; slot < line.Jobs; slot++)
                 {
                     if (ownership.IsStepDoneOrManual(line, slot, tier))
                     {
@@ -168,10 +167,10 @@ public sealed class RelicStatusService
                 reached[tier] = count;
             }
 
-            statuses.Add(new RelicLineStatus
+            statuses.Add(new()
             {
                 Line = line,
-                ReachedPerStep = reached,
+                ReachedPerStep = reached
             });
         }
 
@@ -180,15 +179,15 @@ public sealed class RelicStatusService
 
     public static RelicProgressSummary Summarize(IEnumerable<RelicLineStatus> statuses)
     {
-        var list = statuses as IReadOnlyList<RelicLineStatus> ?? statuses.ToList();
-        return new RelicProgressSummary
+        IReadOnlyList<RelicLineStatus> list = statuses as IReadOnlyList<RelicLineStatus> ?? statuses.ToList();
+        return new()
         {
             LineCount = list.Count,
             LinesComplete = list.Count(status => status.IsComplete),
             JobsComplete = list.Sum(status => status.JobsComplete),
             JobsTotal = list.Sum(status => status.Line.Jobs),
             StepsDone = list.Sum(status => status.StepsDone),
-            StepsTotal = list.Sum(status => status.StepsTotal),
+            StepsTotal = list.Sum(status => status.StepsTotal)
         };
     }
 }

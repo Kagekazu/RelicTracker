@@ -1,29 +1,176 @@
 {
   "SB": [
-    { "set": "Artifact (base)", "currency": "Protean Crystal", "perPiece": 50, "setTotal": 250, "allTotal": 3750, "note": "Eurekan/Anemos line — from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets" },
-    { "set": "Artifact +1", "currency": "Protean Crystal", "perPiece": 150, "setTotal": 750, "allTotal": 11250, "note": "150 every slot. All = 15 job sets" },
-    { "set": "Artifact +2", "currency": "Protean Crystal", "perPiece": 400, "setTotal": 2000, "allTotal": 30000, "note": "400 every slot. All = 15 job sets" },
-    { "set": "Anemos (final)", "currency": "Anemos Crystal", "perPiece": 150, "setTotal": 750, "allTotal": 11250, "note": "final stage — dyeable, 5 materia slots; 150 every slot. All = 15 job sets" },
-    { "set": "Elemental (base)", "currency": "Pyros Crystal", "perPiece": 40, "setTotal": 200, "allTotal": 1400, "note": "40 every slot. All = 7 role sets" },
-    { "set": "Elemental +1", "currency": "Hydatos Crystal", "perPiece": 50, "setTotal": 190, "allTotal": 1330, "note": "body/legs 50, head/hands/feet 30. All = 7 role sets" },
-    { "set": "Elemental +2", "currency": "Eureka Fragment", "perPiece": 35, "setTotal": 133, "allTotal": 931, "note": "body/legs 35, head/hands/feet 21. All = 7 role sets" }
+    {
+      "set": "Artifact (base)",
+      "currency": "Protean Crystal",
+      "perPiece": 50,
+      "setTotal": 250,
+      "allTotal": 3750,
+      "note": "Eurekan/Anemos line — from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets"
+    },
+    {
+      "set": "Artifact +1",
+      "currency": "Protean Crystal",
+      "perPiece": 150,
+      "setTotal": 750,
+      "allTotal": 11250,
+      "note": "150 every slot. All = 15 job sets"
+    },
+    {
+      "set": "Artifact +2",
+      "currency": "Protean Crystal",
+      "perPiece": 400,
+      "setTotal": 2000,
+      "allTotal": 30000,
+      "note": "400 every slot. All = 15 job sets"
+    },
+    {
+      "set": "Anemos (final)",
+      "currency": "Anemos Crystal",
+      "perPiece": 150,
+      "setTotal": 750,
+      "allTotal": 11250,
+      "note": "final stage — dyeable, 5 materia slots; 150 every slot. All = 15 job sets"
+    },
+    {
+      "set": "Elemental (base)",
+      "currency": "Pyros Crystal",
+      "perPiece": 40,
+      "setTotal": 200,
+      "allTotal": 1400,
+      "note": "40 every slot. All = 7 role sets"
+    },
+    {
+      "set": "Elemental +1",
+      "currency": "Hydatos Crystal",
+      "perPiece": 50,
+      "setTotal": 190,
+      "allTotal": 1330,
+      "note": "body/legs 50, head/hands/feet 30. All = 7 role sets"
+    },
+    {
+      "set": "Elemental +2",
+      "currency": "Eureka Fragment",
+      "perPiece": 35,
+      "setTotal": 133,
+      "allTotal": 931,
+      "note": "body/legs 35, head/hands/feet 21. All = 7 role sets"
+    }
   ],
   "ShB": [
-    { "set": "Bozjan", "currency": "Bozjan Coin", "perPiece": 28, "setTotal": 98, "allTotal": 686, "note": "body/legs 28, head/hands/feet 14 — Resistance Supplier, Southern Front. All = 7 role sets" },
-    { "set": "Augmented Bozjan", "currency": "Bozjan Runner's Secrets", "perPiece": 1, "setTotal": 5, "allTotal": 35, "note": "1 of the MATCHING slot's Bozjan Runner's Secrets per piece (5 slot-specific items), plus the base Bozjan piece. Each = 999 (body/legs) or 500 (small) Bozjan Coin, or rare Castrum Lacus Litore drops. Owned = total across all 5 slots. All = 7 role sets" },
-    { "set": "Law's Order", "currency": "Bozjan Gold Coin", "perPiece": 3, "setTotal": 12, "allTotal": 84, "note": "body/legs 3, others 2 — Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets" },
-    { "set": "Aug. Law's Order (Head)", "currency": "Runner's Plating (Head Gear)", "perPiece": 10, "setTotal": 10, "allTotal": 70, "note": "10 → the Head Gear Orderly Runner's Secrets. Drops in Delubrum Reginae (Savage). Also needs the matching Law's Order & Augmented Bozjan pieces. All = 7 role sets" },
-    { "set": "Aug. Law's Order (Body)", "currency": "Runner's Plating (Body Gear)", "perPiece": 10, "setTotal": 10, "allTotal": 70, "note": "10 → the Body Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets" },
-    { "set": "Aug. Law's Order (Hands)", "currency": "Runner's Plating (Hand Gear)", "perPiece": 10, "setTotal": 10, "allTotal": 70, "note": "10 → the Hand Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets" },
-    { "set": "Aug. Law's Order (Legs)", "currency": "Runner's Plating (Leg Gear)", "perPiece": 10, "setTotal": 10, "allTotal": 70, "note": "10 → the Leg Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets" },
-    { "set": "Aug. Law's Order (Feet)", "currency": "Runner's Plating (Foot Gear)", "perPiece": 10, "setTotal": 10, "allTotal": 70, "note": "10 → the Foot Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets" },
-    { "set": "Blade's", "currency": "Bozjan Platinum Coin", "perPiece": 9, "setTotal": 36, "allTotal": 252, "note": "body/legs 9, others 6 — Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets" }
+    {
+      "set": "Bozjan",
+      "currency": "Bozjan Coin",
+      "perPiece": 28,
+      "setTotal": 98,
+      "allTotal": 686,
+      "note": "body/legs 28, head/hands/feet 14 — Resistance Supplier, Southern Front. All = 7 role sets"
+    },
+    {
+      "set": "Augmented Bozjan",
+      "currency": "Bozjan Runner's Secrets",
+      "perPiece": 1,
+      "setTotal": 5,
+      "allTotal": 35,
+      "note": "1 of the MATCHING slot's Bozjan Runner's Secrets per piece (5 slot-specific items), plus the base Bozjan piece. Each = 999 (body/legs) or 500 (small) Bozjan Coin, or rare Castrum Lacus Litore drops. Owned = total across all 5 slots. All = 7 role sets"
+    },
+    {
+      "set": "Law's Order",
+      "currency": "Bozjan Gold Coin",
+      "perPiece": 3,
+      "setTotal": 12,
+      "allTotal": 84,
+      "note": "body/legs 3, others 2 — Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets"
+    },
+    {
+      "set": "Aug. Law's Order (Head)",
+      "currency": "Runner's Plating (Head Gear)",
+      "perPiece": 10,
+      "setTotal": 10,
+      "allTotal": 70,
+      "note": "10 → the Head Gear Orderly Runner's Secrets. Drops in Delubrum Reginae (Savage). Also needs the matching Law's Order & Augmented Bozjan pieces. All = 7 role sets"
+    },
+    {
+      "set": "Aug. Law's Order (Body)",
+      "currency": "Runner's Plating (Body Gear)",
+      "perPiece": 10,
+      "setTotal": 10,
+      "allTotal": 70,
+      "note": "10 → the Body Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+    },
+    {
+      "set": "Aug. Law's Order (Hands)",
+      "currency": "Runner's Plating (Hand Gear)",
+      "perPiece": 10,
+      "setTotal": 10,
+      "allTotal": 70,
+      "note": "10 → the Hand Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+    },
+    {
+      "set": "Aug. Law's Order (Legs)",
+      "currency": "Runner's Plating (Leg Gear)",
+      "perPiece": 10,
+      "setTotal": 10,
+      "allTotal": 70,
+      "note": "10 → the Leg Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+    },
+    {
+      "set": "Aug. Law's Order (Feet)",
+      "currency": "Runner's Plating (Foot Gear)",
+      "perPiece": 10,
+      "setTotal": 10,
+      "allTotal": 70,
+      "note": "10 → the Foot Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+    },
+    {
+      "set": "Blade's",
+      "currency": "Bozjan Platinum Coin",
+      "perPiece": 9,
+      "setTotal": 36,
+      "allTotal": 252,
+      "note": "body/legs 9, others 6 — Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets"
+    }
   ],
   "DT": [
-    { "set": "Arcanaut's (base)", "currency": "Enlightenment Silver Piece", "perPiece": 4000, "setTotal": 20000, "allTotal": 140000, "note": "Occult Crescent (South Horn) — 4,000 every slot. All = 7 role sets" },
-    { "set": "Arcanaut's +1", "currency": "Aetherspun Silver", "perPiece": 3, "setTotal": 15, "allTotal": 105, "note": "needs the base piece; Aetherspun Silver ≈ 1,200 Enlightenment Silver Piece each. All = 7 role sets" },
-    { "set": "Arcanaut's +1", "currency": "Aetherial Fixative", "perPiece": 3, "setTotal": 15, "allTotal": 105, "note": "Aetherial Fixative ≈ 1,600 Enlightenment Gold Piece each. All = 7 role sets" },
-    { "set": "Arcanaut's +2", "currency": "Aetherspun Gold", "perPiece": 3, "setTotal": 15, "allTotal": 105, "note": "needs the +1 piece; Aetherspun Gold drops from treasure chests. All = 7 role sets" },
-    { "set": "Arcanaut's +2", "currency": "X-Fixative", "perPiece": 6, "setTotal": 30, "allTotal": 210, "note": "each X-Fixative = 10 Sanguinite (60 Sanguinite per piece). All = 7 role sets" }
+    {
+      "set": "Arcanaut's (base)",
+      "currency": "Enlightenment Silver Piece",
+      "perPiece": 4000,
+      "setTotal": 20000,
+      "allTotal": 140000,
+      "note": "Occult Crescent (South Horn) — 4,000 every slot. All = 7 role sets"
+    },
+    {
+      "set": "Arcanaut's +1",
+      "currency": "Aetherspun Silver",
+      "perPiece": 3,
+      "setTotal": 15,
+      "allTotal": 105,
+      "note": "needs the base piece; Aetherspun Silver ≈ 1,200 Enlightenment Silver Piece each. All = 7 role sets"
+    },
+    {
+      "set": "Arcanaut's +1",
+      "currency": "Aetherial Fixative",
+      "perPiece": 3,
+      "setTotal": 15,
+      "allTotal": 105,
+      "note": "Aetherial Fixative ≈ 1,600 Enlightenment Gold Piece each. All = 7 role sets"
+    },
+    {
+      "set": "Arcanaut's +2",
+      "currency": "Aetherspun Gold",
+      "perPiece": 3,
+      "setTotal": 15,
+      "allTotal": 105,
+      "note": "needs the +1 piece; Aetherspun Gold drops from treasure chests. All = 7 role sets"
+    },
+    {
+      "set": "Arcanaut's +2",
+      "currency": "X-Fixative",
+      "perPiece": 6,
+      "setTotal": 30,
+      "allTotal": 210,
+      "note": "each X-Fixative = 10 Sanguinite (60 Sanguinite per piece). All = 7 role sets"
+    }
   ]
 }

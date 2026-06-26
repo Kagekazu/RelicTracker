@@ -1,8 +1,5 @@
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace RelicTracker.Framework;
 
 internal static class FfxivCollectClient
@@ -11,13 +8,13 @@ internal static class FfxivCollectClient
 
     private static readonly HttpClient Http = new()
     {
-        Timeout = TimeSpan.FromSeconds(30),
+        Timeout = TimeSpan.FromSeconds(30)
     };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
-        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
     static FfxivCollectClient()
@@ -27,21 +24,21 @@ internal static class FfxivCollectClient
 
     public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId)
     {
-        var owned = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
-        var missing = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
+        List<FfxivCollectRelic> owned = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
+        List<FfxivCollectRelic> missing = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
 
-        return new FfxivCollectSnapshot
+        return new()
         {
             CharacterId = characterId,
             Owned = owned,
-            Missing = missing,
+            Missing = missing
         };
     }
 
     private static async Task<List<FfxivCollectRelic>> FetchRelicListAsync(string url)
     {
-        using var response = await Http.GetAsync(url).ConfigureAwait(false);
-        var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        using HttpResponseMessage response = await Http.GetAsync(url).ConfigureAwait(false);
+        string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -58,8 +55,8 @@ internal static class FfxivCollectClient
 
     private static List<FfxivCollectRelic> ParseRelicList(string body)
     {
-        using var document = JsonDocument.Parse(body);
-        var root = document.RootElement;
+        using JsonDocument document = JsonDocument.Parse(body);
+        JsonElement root = document.RootElement;
 
         if (root.ValueKind == JsonValueKind.Array)
         {
@@ -67,7 +64,7 @@ internal static class FfxivCollectClient
         }
 
         if (root.ValueKind == JsonValueKind.Object
-            && root.TryGetProperty("results", out var results)
+            && root.TryGetProperty("results", out JsonElement results)
             && results.ValueKind == JsonValueKind.Array)
         {
             return DeserializeRelicList(results.GetRawText());
@@ -82,7 +79,7 @@ internal static class FfxivCollectClient
         {
             return JsonSerializer.Deserialize<List<FfxivCollectRelic>>(json, JsonOptions) ?? [];
         }
-        catch (JsonException ex)
+        catch(JsonException ex)
         {
             throw new FfxivCollectException($"Could not parse relic data from FFXIV Collect ({ex.Message}).");
         }
@@ -92,7 +89,7 @@ internal static class FfxivCollectClient
     {
         try
         {
-            var error = JsonSerializer.Deserialize<FfxivCollectApiError>(body, JsonOptions);
+            FfxivCollectApiError? error = JsonSerializer.Deserialize<FfxivCollectApiError>(body, JsonOptions);
             if (!string.IsNullOrWhiteSpace(error?.Error))
             {
                 return error.Error;
@@ -107,7 +104,7 @@ internal static class FfxivCollectClient
         {
             HttpStatusCode.NotFound => "Character not found on FFXIV Collect.",
             HttpStatusCode.Forbidden => "Character or relic collection is private on FFXIV Collect.",
-            _ => $"FFXIV Collect request failed ({(int)statusCode}).",
+            var _ => $"FFXIV Collect request failed ({(int)statusCode})."
         };
     }
 }

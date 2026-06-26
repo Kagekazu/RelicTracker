@@ -1,7 +1,4 @@
 using System.Globalization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace RelicTracker.Framework;
 
 internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
@@ -13,7 +10,7 @@ internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
             JsonTokenType.Null => null,
             JsonTokenType.Number => reader.GetDouble(),
             JsonTokenType.String => TryParse(reader.GetString()),
-            _ => null,
+            var _ => null
         };
     }
 
@@ -37,6 +34,6 @@ internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
         }
 
         text = text.Trim().Replace(",", string.Empty);
-        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var value) ? value : null;
+        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out double value) ? value : null;
     }
 }
