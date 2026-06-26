@@ -7,7 +7,6 @@
 
     <PropertyGroup>
         <LangVersion>preview</LangVersion>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug' Or '$(CI)' == 'true'">

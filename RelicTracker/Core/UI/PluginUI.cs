@@ -1,8 +1,8 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using RelicTracker.IPC;
-using System.Diagnostics;
 using System.Numerics;
+using static ECommons.GenericHelpers;
 namespace RelicTracker;
 
 public sealed partial class PluginUI : Window
@@ -21,7 +21,7 @@ public sealed partial class PluginUI : Window
     private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
     private readonly JobAbbrevResolver jobAbbrevResolver = new();
-    private bool drewTitleBarVersion;
+
     private string materialFilter = string.Empty;
 
     public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
@@ -41,43 +41,18 @@ public sealed partial class PluginUI : Window
         {
             Icon = FontAwesomeIcon.Heart,
             ShowTooltip = () => ImGui.SetTooltip("Ko-fi (because relics are thirsty work)"),
-            Click = _ => Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://ko-fi.com/kagekazu",
-                UseShellExecute = true
-            })
+            Click = _ => ShellStart("https://ko-fi.com/kagekazu")
         });
     }
 
     public override void OnClose()
     {
         config.PersistIfDirty();
-        TitleBarVersion.ClearCache();
         base.OnClose();
-    }
-
-    public override void PostDraw()
-    {
-        if (!drewTitleBarVersion)
-        {
-            TitleBarVersion.DrawFromWindowLookup(
-                TitleBarButtons.Count,
-                AllowPinning || AllowClickthrough,
-                WindowName);
-        }
-
-        drewTitleBarVersion = false;
-        base.PostDraw();
     }
 
     public override void Draw()
     {
-        TitleBarVersion.DrawFromContext(
-            TitleBarButtons.Count,
-            AllowPinning || AllowClickthrough,
-            WindowName);
-        drewTitleBarVersion = true;
-
         DrawHeader();
         ImGui.Spacing();
 
@@ -109,6 +84,10 @@ public sealed partial class PluginUI : Window
 
             ImGui.EndTabBar();
         }
+
+        TitleBarVersion.DrawFromContext(
+            TitleBarButtons.Count,
+            AllowPinning || AllowClickthrough);
     }
 
     private void DrawHeader()

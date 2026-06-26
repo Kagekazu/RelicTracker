@@ -5,6 +5,8 @@ namespace RelicTracker.IPC;
 
 internal static class AllaganToolsIpc
 {
+    private static readonly string[] PluginNames = ["Allagan Tools", "InventoryTools", "AllaganTools"];
+
     private static readonly uint[] AllInventoryTypes = [.. Enum.GetValues<InventoryType>().Select(static t => (uint)t)];
 
     private static ICallGateSubscriber<bool, bool>? _initialized;
@@ -13,13 +15,10 @@ internal static class AllaganToolsIpc
     private static bool _ipcBound;
 
     public static bool IsInstalled =>
-        Svc.PluginInterface.InstalledPlugins.Any(p =>
-            p.InternalName is "InventoryTools" or "Allagan Tools" or "AllaganTools");
+        PluginNames.Any(name => Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.Name == name));
 
     public static bool IsEnabled =>
-        IsInstalled &&
-        (DalamudReflector.TryGetDalamudPlugin("Allagan Tools", out object _, false, true) ||
-         DalamudReflector.TryGetDalamudPlugin("InventoryTools", out object _, false, true));
+        PluginNames.Any(name => DalamudReflector.TryGetDalamudPlugin(name, out object _, false, true));
 
     public static bool IsReady =>
         IsEnabled && _ipcBound && _itemCountOwned != null && InvokeIsInitialized();

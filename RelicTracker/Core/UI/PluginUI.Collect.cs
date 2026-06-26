@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using static ECommons.GenericHelpers;
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -62,7 +62,7 @@ public sealed partial class PluginUI
             ImGui.SameLine();
             if (ImGui.Button("Open profile"))
             {
-                OpenUrl($"https://ffxivcollect.com/characters/{config.FfxivCollectCharacterId}");
+                ShellStart($"https://ffxivcollect.com/characters/{config.FfxivCollectCharacterId}");
             }
         }
 
@@ -149,7 +149,7 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             if (ImGui.Selectable($"{relic.Name}###collect_{relic.Id}", false, ImGuiSelectableFlags.SpanAllColumns))
             {
-                OpenUrl($"https://ffxivcollect.com/relics/{relic.Id}");
+                ShellStart($"https://ffxivcollect.com/relics/{relic.Id}");
             }
 
             ImGui.TableNextColumn();
@@ -175,14 +175,5 @@ public sealed partial class PluginUI
         }
 
         return [.. query];
-    }
-
-    private static void OpenUrl(string url)
-    {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = url,
-            UseShellExecute = true
-        });
     }
 }

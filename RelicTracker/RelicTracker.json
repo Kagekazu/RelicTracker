@@ -2,7 +2,7 @@
   "Author": "Kagekazu",
   "Name": "RelicTracker",
   "Punchline": "Track relic materials across inventory and retainers.",
-  "Description": "Track relic progression materials using Wyn's data model, with live inventory counts from Allagan Tools.",
+  "Description": "Track relic weapon, tool, and armor progress across every job, with live material counts from Allagan Tools and optional FFXIV Collect sync.",
   "InternalName": "RelicTracker",
   "IconUrl": "https://raw.githubusercontent.com/Kagekazu/RelicTracker/main/images/icon.png",
   "RepoUrl": "https://github.com/Kagekazu/RelicTracker",

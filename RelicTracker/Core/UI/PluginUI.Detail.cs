@@ -186,7 +186,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Link FFXIV Collect on the Collect tab to auto-track instead.");
+            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Link FFXIV Collect on the Settings tab to auto-track instead.");
         }
 
         ImGui.Separator();
@@ -334,7 +334,7 @@ public sealed partial class PluginUI
     {
         if (config.FfxivCollectCharacterId == 0)
         {
-            ImGui.TextColored(MutedColor, "Set a FFXIV Collect ID on the Collect tab to auto-fill finished steps. Until then, tick steps manually.");
+            ImGui.TextColored(MutedColor, "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.");
             return;
         }
 
