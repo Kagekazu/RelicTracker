@@ -220,7 +220,152 @@ for cls in C:
 
 # Cosmic Tools (DT) have NO materials — upgraded via Cosmic Exploration research data (notes only).
 # Drop Wyn's placeholder Cosmic/Stellar/Hyper rows so those steps are clean (notes carry them).
-data={"DoHDoL":{"replaceSteps":["Dragonsung","Skysung","Skybuilders","Crystalline","Brilliant","Lodestar","Cosmic","Stellar","Hyper"],"materials":rows}}
+
+# ===== ARR Zodiac weapons (A Relic Reborn) — part 1: Relic / Zenith / Atma / Animus =====
+# Activity relic (quests, FATEs, dungeons, books) — notes carry most of it. Wyn's rows were shifted
+# one step (12 Atma under Zenith, 9 Books under Atma, Superior Enchanted Ink under Animus), so we
+# drop those steps and re-place the stockpilable items at their correct step. Weapon-line `jobs`
+# flags are ignored (the Tracker scales by all jobs; the Relic tab shows all step items), so the
+# flag array is just a placeholder. Books are held one at a time -> note only, not a row.
+arr_rows=[]
+def arr_add(step, material, per):
+    arr_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*10})
+# Relic: base quest turn-in (1 Radz-at-Han Quenching Oil, 15 Poetics).
+arr_add("Relic", "Radz-at-Han Quenching Oil", 1)
+# Zenith: 3 Thavnairian Mist (20 Poetics each).
+arr_add("Zenith", "Thavnairian Mist", 3)
+# Atma: 12 FATE-drop atmas (aliased to the 12 items).
+arr_add("Atma", "Atma", 12)
+# Animus: 9 Trials of the Braves books, held one at a time -> note only.
+# Novus: Sphere Scroll = 3 Superior Enchanted Ink + 75 Alexandrite (+ ~75 materia, grade I-IV -> note).
+arr_add("Novus", "Superior Enchanted Ink", 3)
+arr_add("Novus", "Alexandrite", 75)
+# Nexus: Light grind (Soulglaze) -> note only.
+# Zodiac (Braves): 4 sub-quests; per weapon = purchased + 8 HQ crafted items.
+arr_add("Zodiac", "Bombard Core", 4)          # 20,000 Company Seals each
+arr_add("Zodiac", "Sacred Spring Water", 4)   # 200 Poetics each
+arr_add("Zodiac", "Furite Sand", 1)           # 100,000 gil
+arr_add("Zodiac", "Allagan Resin", 1)         # 100,000 gil
+arr_add("Zodiac", "Bronze Lake Crystal", 1)   # 100,000 gil
+arr_add("Zodiac", "Brass Kettle", 1)          # 100,000 gil
+for craft in ["Perfect Firewood","Perfect Pestle","Perfect Mortar","Furnace Ring",
+              "Perfect Vellum","Perfect Cloth","Perfect Pounce","Tailor-made Eel Pie"]:
+    arr_add("Zodiac", craft, 1)               # HQ Master Recipe I crafts (desynth ingredients)
+# Zeta: 12 Mahatma Light grind (held one at a time) -> note only.
+
+# ===== HW Anima weapons — part 1: Animated / Awoken / Anima / Hyperconductive =====
+# Wyn's HW data is scattered across wrong steps (Bone under Awoken, Aether Oil under Complete, etc.)
+# so we replace ALL 8 steps and place the stockpilable items correctly. Reconditioned / Sharpened /
+# Complete / Lux are left empty until part 2. 13 jobs; flag array is a placeholder (ignored).
+hw_rows=[]
+def hw_add(step, material, per):
+    hw_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*13})
+# Animated: 1 of each of the 6 Luminous Crystals (FATE drops -> Astral/Umbral Nodule turn-in).
+for c in ["Wind","Fire","Lightning","Ice","Earth","Water"]:
+    hw_add("Animated", f"Luminous {c} Crystal", 1)
+# Awoken: 10 dungeons in order -> note only.
+# Anima: 40 unidentifiable + 16 crafted items.
+for u in ["Bone","Shell","Ore","Seeds"]:
+    hw_add("Anima", f"Unidentifiable {u}", 10)
+for c in ["Adamantite Francesca","Titanium Alloy Mirror","Dispelling Arrow","Kingcake"]:
+    hw_add("Anima", c, 4)
+# Hyperconductive: 5 Aether Oil (350 Poetics each).
+hw_add("Hyperconductive", "Aether Oil", 5)
+# Reconditioned: ~57-60 each of Umbrite + Crystal Sand (use 60).
+hw_add("Reconditioned", "Umbrite", 60)
+hw_add("Reconditioned", "Crystal Sand", 60)
+# Sharpened: 50 Singing Cluster.
+hw_add("Sharpened", "Singing Cluster", 50)
+# Complete: 15 Pneumite (+ aetheric density grind -> note).
+hw_add("Complete", "Pneumite", 15)
+# Lux: 1 Archaic Enchanted Ink (+ 12 Hard trials -> note).
+hw_add("Lux", "Archaic Enchanted Ink", 1)
+
+# ===== SB Eureka weapons — part 1: Base..Eureka (Physeos = part 2) =====
+# Catalog tracks all 15 sub-tiers; Wyn lumped totals at the major milestones. Place each sub-tier's
+# exact crystal cost. Real singular item names (zones via material_sources). 15 jobs (flags ignored).
+sb_rows=[]
+def sb_add(step, material, per):
+    sb_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*15})
+# Eureka Anemos — Protean Crystal (1300 total) + 3 Pazuzu's Feather.
+sb_add("Base", "Protean Crystal", 100)
+sb_add("Base +1", "Protean Crystal", 400)
+sb_add("Base +2", "Protean Crystal", 800)
+sb_add("Anemos", "Pazuzu's Feather", 3)
+# Eureka Pagos — Frosted Protean Crystal (31 total) + 500 Pagos Crystal + 5 Louhi's Ice.
+sb_add("Pagos", "Frosted Protean Crystal", 5)
+sb_add("Pagos +1", "Frosted Protean Crystal", 10)
+sb_add("Pagos +1", "Pagos Crystal", 500)
+sb_add("Elemental", "Frosted Protean Crystal", 16)
+sb_add("Elemental", "Louhi's Ice", 5)
+# Eureka Pyros — Pyros Crystal (650 total) + 5 Penthesilea's Flame (+ Logos Actions note).
+sb_add("Elemental +1", "Pyros Crystal", 150)
+sb_add("Elemental +2", "Pyros Crystal", 200)
+sb_add("Pyros", "Pyros Crystal", 300)
+sb_add("Pyros", "Penthesilea's Flame", 5)
+# Eureka Hydatos — Hydatos Crystal (350 total) + 5 Crystalline Scale.
+sb_add("Hydatos", "Hydatos Crystal", 50)
+sb_add("Hydatos +1", "Hydatos Crystal", 100)
+sb_add("Base (Physeos)", "Hydatos Crystal", 100)
+sb_add("Eureka", "Hydatos Crystal", 100)
+sb_add("Eureka", "Crystalline Scale", 5)
+# Physeos — 100 Eureka Fragment, dropped only in The Baldesion Arsenal (~28/clear, ~4 runs).
+sb_add("Physeos", "Eureka Fragment", 100)
+SB_STEPS=["Base","Base +1","Base +2","Anemos","Pagos","Pagos +1","Elemental",
+          "Elemental +1","Elemental +2","Pyros","Hydatos","Hydatos +1","Base (Physeos)","Eureka","Physeos"]
+
+# ===== ShB Resistance weapons (Bozja) — part 1: Resistance / Augmented / Recollection / Law's Order =====
+# Memory-grind relic; Wyn's data was correct here, just moved to the supplement with real singular
+# names (memory items). 17 jobs (flags ignored). Augmented Law's Order + Blade's = part 2.
+shb_rows=[]
+def shb_add(step, material, per):
+    shb_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*17})
+shb_add("Resistance", "Thavnairian Scalepowder", 4)          # subsequent weapons (first is free)
+for m in ["Tortured","Sorrowful","Harrowing"]:
+    shb_add("Augmented", f"{m} Memory of the Dying", 20)
+shb_add("Recollection", "Bitter Memory of the Dying", 6)
+shb_add("Law's Order", "Loathsome Memory of the Dying", 15)
+shb_add("Augmented Law's Order", "Timeworn Artifact", 15)   # 3/Delubrum Reginae clear, or PotD
+shb_add("Blade's", "Raw Emotion", 15)                       # Dalriada 3 / DR 2 / SB dungeon 1 / HoH
+# One-time grinds (1st: Haunting/Vexatious; 2nd: Zadnor Compact Axle etc.) + optional Aetherial
+# Sealant reallocation are one-time / optional, NOT per weapon -> notes only.
+# replaceSteps uses Wyn's step name "Augmented Law's" (catalog step is "Augmented Law's Order").
+SHB_STEPS=["Resistance","Augmented","Recollection","Law's Order","Augmented Law's","Blade's","Bozjan Haste"]
+
+# ===== EW Manderville weapons — each tier = 3 of a Poetics item (500 each) from Jubrunnah. =====
+# Wyn's data was correct; moved to the supplement for consistency. 19 jobs (flags ignored).
+ew_rows=[]
+def ew_add(step, material):
+    ew_rows.append({"step":step,"material":material,"perUnit":3,"jobs":[True]*19})
+ew_add("Manderville", "Manderium Meteorite")
+ew_add("Amazing", "Complementary Chondrite")
+ew_add("Majestic", "Amplifying Achondrite")
+ew_add("Mandervillous", "Cosmic Crystallite")
+EW_STEPS=["Manderville","Amazing","Majestic","Mandervillous"]
+
+# ===== DT Phantom weapons (Occult Crescent) — 3 tiers, each 3 of an "Arcanite" per weapon. =====
+# Per weapon: exchange 1,500 Allagan Tomestones of Mathematics for 3 arcanites (Ermina, Phantom
+# Village) + the previous tier's weapon, traded to Dodokkuli. Each tier has a one-time unlock grind
+# (demiatmas / 5 items + aether array / 4 items + crystal paste) -> notes. 21 jobs (flags ignored).
+# Wyn's weapon rows were correct; "Step 4"/"Arcanaut" Wyn rows are leaked future/armor data -> dropped.
+dt_rows=[]
+def dt_add(step, material):
+    dt_rows.append({"step":step,"material":material,"perUnit":3,"jobs":[True]*21})
+dt_add("Penumbrae", "Arcanite")
+dt_add("Umbrae", "Waxing Arcanite")
+dt_add("Obscurum", "Waning Arcanite")
+
+# The curated supplement is now the SOLE source of relic materials (Wyn's expansions.json is gone);
+# RelicDataService loads each expansion's rows wholesale, so no replaceSteps is needed.
+data={
+ "DoHDoL":rows,
+ "ARR":arr_rows,
+ "HW":hw_rows,
+ "SB":sb_rows,
+ "ShB":shb_rows,
+ "EW":ew_rows,
+ "DT":dt_rows,
+}
 out=os.path.join(os.path.dirname(__file__),"extracted","tool_extra_materials.json")
 json.dump(data,open(out,"w",encoding="utf-8"),ensure_ascii=False,indent=2)
-print(f"Total DoHDoL rows: {len(rows)}")
+print(f"DoHDoL {len(rows)} · ARR {len(arr_rows)} · HW {len(hw_rows)} · SB {len(sb_rows)} · ShB {len(shb_rows)}")

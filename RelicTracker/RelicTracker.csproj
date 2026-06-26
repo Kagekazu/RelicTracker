@@ -35,18 +35,6 @@
         <None Include="..\data\extracted\manifest.json" Link="Data\manifest.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="..\data\extracted\materials.json" Link="Data\materials.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="..\data\extracted\expansions.json" Link="Data\expansions.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="..\data\extracted\notes.json" Link="Data\notes.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="..\data\extracted\job_columns.json" Link="Data\job_columns.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Include="..\data\extracted\relic_lines.json" Link="Data\relic_lines.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

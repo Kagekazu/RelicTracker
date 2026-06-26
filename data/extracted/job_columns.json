@@ -1,9 +1,0 @@
-{
-  "ARR": ["PLD", "MNK", "WAR", "DRG", "BRD", "BLM", "WHM", "SCH", "NIN", "DRK"],
-  "HW": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH"],
-  "SB": ["PLD", "MNK", "WAR", "DRG", "BRD", "BLM", "WHM", "SCH", "NIN", "DRK", "AST", "MCH", "SAM", "RDM", "GNB"],
-  "ShB": ["PLD", "MNK", "WAR", "DRG", "BRD", "BLM", "WHM", "SCH", "NIN", "DRK", "AST", "MCH", "SAM", "RDM", "GNB", "DNC", "VPR"],
-  "EW": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST", "SAM", "RDM", "GNB", "DNC", "PCT", "RPR"],
-  "DT": ["PLD", "WAR", "DRK", "GNB", "WHM", "SCH", "AST", "SGE", "MNK", "DRG", "NIN", "SAM", "RPR", "VPR", "BRD", "MCH", "DNC", "BLM", "SMN", "RDM", "PCT", "BLU"],
-  "DoHDoL": ["CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL", "MIN", "BTN", "FSH"]
-}

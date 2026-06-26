@@ -22,9 +22,7 @@ public sealed partial class PluginUI : Window
     private readonly RelicCatalog catalog;
     private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
-    private readonly CollectProgressSync collectSync = new();
     private readonly JobAbbrevResolver jobAbbrevResolver = new();
-    private readonly RelicProgressTracker progressTracker;
     private bool drewTitleBarVersion;
     private string materialFilter = string.Empty;
 
@@ -36,7 +34,6 @@ public sealed partial class PluginUI : Window
         this.catalog = catalog;
         this.itemResolver = itemResolver;
         this.ffxivCollect = ffxivCollect;
-        progressTracker = new RelicProgressTracker(config, collectSync);
         jobAbbrevResolver.Build();
 
         SizeCondition = ImGuiCond.FirstUseEver;
@@ -147,7 +144,6 @@ public sealed partial class PluginUI : Window
     private void DrawTrackerTab()
     {
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
-        progressTracker.EnsureCollectSynced(ffxivCollect, data);
 
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
@@ -195,9 +191,6 @@ public sealed partial class PluginUI : Window
             ImGui.EndCombo();
         }
 
-        ImGui.SameLine();
-        DrawTrackerProgressHint();
-
         ImGui.Spacing();
 
         var hideComplete = config.HideCompleteMaterials;
@@ -217,29 +210,6 @@ public sealed partial class PluginUI : Window
         ImGui.Spacing();
 
         DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
-    }
-
-    private void DrawTrackerProgressHint()
-    {
-        if (progressTracker.UsesCollectProgress)
-        {
-            ImGui.TextColored(GoodColor, "Progress from Collect");
-            return;
-        }
-
-        if (config.FfxivCollectCharacterId == 0)
-        {
-            ImGui.TextColored(MutedColor, "Set Collect ID for auto progress");
-            return;
-        }
-
-        if (ffxivCollect.IsLoading)
-        {
-            ImGui.TextColored(MutedColor, "Loading Collect…");
-            return;
-        }
-
-        ImGui.TextColored(MutedColor, "Manual progress — counts assume all jobs incomplete");
     }
 
     private void DrawSettingsTab()
