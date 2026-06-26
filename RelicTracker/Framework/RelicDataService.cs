@@ -40,8 +40,7 @@ public sealed class RelicDataService
 
     /// <summary>
     /// Loads the curated relic materials — the single source of truth for every relic line's step
-    /// materials. Creates the expansion sheet if needed and replaces any materials wholesale, so it
-    /// works standalone (no Wyn-extracted expansions.json required).
+    /// materials. Creates the expansion sheet if needed and replaces any materials wholesale.
     /// </summary>
     private void MergeExtraMaterials(string path)
     {

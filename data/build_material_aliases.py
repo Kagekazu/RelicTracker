@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Match Wyn material names to Garland Tools item names for alias generation."""
+"""Match tracked material names to Garland Tools item names for alias generation."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-EXPANSIONS = ROOT / "extracted" / "expansions.json"
+MATERIALS = ROOT / "extracted" / "tool_extra_materials.json"
 OUT = ROOT / "extracted" / "material_aliases.json"
 
 SKIP = {
@@ -24,10 +24,10 @@ SKIP = {
 
 
 def collect_material_names() -> list[str]:
-    data = json.loads(EXPANSIONS.read_text(encoding="utf-8"))
+    data = json.loads(MATERIALS.read_text(encoding="utf-8"))
     names: set[str] = set()
-    for sheet in data.values():
-        for row in sheet.get("materials", []):
+    for rows in data.values():
+        for row in rows:
             name = (row.get("material") or "").strip()
             if not name or len(name) > 60 or "\n" in name:
                 continue

@@ -161,34 +161,46 @@ public sealed partial class PluginUI : Window
             ImGui.EndCombo();
         }
 
-        // Focus the list on a single relic line (or all lines in the expansion).
+        // DoH/DoL has several tool lines per expansion; weapon expansions have one line each.
         var lines = catalog.LinesFor(config.SelectedExpansionId).ToList();
-        if (!string.IsNullOrEmpty(config.TrackerLineFilter) && lines.All(l => l.CollectType != config.TrackerLineFilter))
+        var multiLine = lines.Count > 1;
+        if (!multiLine)
         {
-            config.TrackerLineFilter = string.Empty; // stale from a previous expansion
-        }
-
-        ImGui.SameLine();
-        ImGui.SetNextItemWidth(190);
-        var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
-        if (ImGui.BeginCombo("Focus", focusLabel))
-        {
-            if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
+            if (!string.IsNullOrEmpty(config.TrackerLineFilter))
             {
                 config.TrackerLineFilter = string.Empty;
                 config.OnSettingChanged();
             }
-
-            foreach (var line in lines)
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(config.TrackerLineFilter) && lines.All(l => l.CollectType != config.TrackerLineFilter))
             {
-                if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
-                {
-                    config.TrackerLineFilter = line.CollectType;
-                    config.OnSettingChanged();
-                }
+                config.TrackerLineFilter = string.Empty; // stale from a previous expansion
             }
 
-            ImGui.EndCombo();
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(190);
+            var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
+            if (ImGui.BeginCombo("Line", focusLabel))
+            {
+                if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
+                {
+                    config.TrackerLineFilter = string.Empty;
+                    config.OnSettingChanged();
+                }
+
+                foreach (var line in lines)
+                {
+                    if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
+                    {
+                        config.TrackerLineFilter = line.CollectType;
+                        config.OnSettingChanged();
+                    }
+                }
+
+                ImGui.EndCombo();
+            }
         }
 
         ImGui.Spacing();

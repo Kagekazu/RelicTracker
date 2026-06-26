@@ -22,12 +22,22 @@ public sealed partial class PluginUI
         }
 
         var lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
-        var focused = lineFilter is not null;
 
         var ownership = GetOwnership();
         var statuses = RelicStatusService.Build(ownership, catalog);
-        var ownedLookup = (Func<uint, uint>)(itemId => AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
-        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup, lineFilter);
+        var ownedCounts = new Dictionary<uint, uint>();
+        uint OwnedLookup(uint itemId)
+        {
+            if (!ownedCounts.TryGetValue(itemId, out var count))
+            {
+                count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
+                ownedCounts[itemId] = count;
+            }
+
+            return count;
+        }
+
+        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, OwnedLookup, lineFilter);
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
@@ -46,7 +56,7 @@ public sealed partial class PluginUI
         ImGui.Spacing();
 
         data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
-        var hasArmor = !focused && armorCosts is { Count: > 0 };
+        var hasArmor = armorCosts is { Count: > 0 };
         var drewAny = false;
 
         if (materials.Count > 0)
@@ -58,7 +68,7 @@ public sealed partial class PluginUI
         if (hasArmor)
         {
             drewAny = true;
-            DrawArmoursList(expansionId, armorCosts!);
+            DrawArmoursList(expansionId, armorCosts!, OwnedLookup);
         }
 
         if (!drewAny)
@@ -157,7 +167,7 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs)
+    private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs, Func<uint, uint> ownedLookup)
     {
         if (!DrawCollapsingSection($"{expansionId}|Armours", "Armours — currency per stage", true))
         {
@@ -218,7 +228,7 @@ public sealed partial class PluginUI
 
             var resolved = itemIds.Count > 0;
             var owned = resolved
-                ? itemIds.Aggregate(0u, (total, itemId) => total + AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly))
+                ? itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
                 : 0u;
 
             ImGui.TableNextColumn();

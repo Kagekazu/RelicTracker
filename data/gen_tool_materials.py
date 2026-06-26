@@ -1,7 +1,6 @@
 """
-Generates data/extracted/tool_extra_materials.json — the curated DoH/DoL relic-tool material
-supplement that RelicDataService.MergeExtraMaterials folds into the generated expansions.json
-(Wyn's sheet has no/garbage data for these tool chains). One row per (step, material, discipline);
+Generates data/extracted/tool_extra_materials.json — the curated material source for relic
+weapons and DoH/DoL relic tools. One row per (step, material, discipline);
 the `jobs` flag picks the relic job slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH). For each crafter
 step we capture all three items the wiki lists: the Purple-Scrip currency item, the gathered
 input(s), and the trade/collectable turn-in. Collectability-gated steps use best-case (max
@@ -355,7 +354,7 @@ dt_add("Penumbrae", "Arcanite")
 dt_add("Umbrae", "Waxing Arcanite")
 dt_add("Obscurum", "Waning Arcanite")
 
-# The curated supplement is now the SOLE source of relic materials (Wyn's expansions.json is gone);
+# The curated JSON is now the sole source of relic materials;
 # RelicDataService loads each expansion's rows wholesale, so no replaceSteps is needed.
 data={
  "DoHDoL":rows,

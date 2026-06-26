@@ -38,12 +38,14 @@ public sealed partial class PluginUI
             {
                 config.FfxivCollectCharacterId = parsed;
                 config.OnSettingChanged();
+                InvalidateOwnershipCache();
                 ffxivCollect.Refresh(parsed);
             }
             else
             {
                 config.FfxivCollectCharacterId = 0;
                 config.OnSettingChanged();
+                InvalidateOwnershipCache();
             }
         }
 
@@ -52,6 +54,7 @@ public sealed partial class PluginUI
         {
             if (ImGui.Button("Refresh"))
             {
+                InvalidateOwnershipCache();
                 ffxivCollect.Refresh(config.FfxivCollectCharacterId);
             }
         }

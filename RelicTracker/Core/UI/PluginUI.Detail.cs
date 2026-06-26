@@ -8,6 +8,7 @@ public sealed partial class PluginUI
 {
     private RelicOwnership? cachedOwnership;
     private DateTime? cachedOwnershipStamp;
+    private ulong cachedOwnershipCharacterId;
 
     private void DrawRelicTab()
     {
@@ -263,20 +264,30 @@ public sealed partial class PluginUI
             config.ArmorPieceDone.Remove(key);
         }
 
+        InvalidateOwnershipCache();
         config.OnSettingChanged();
     }
 
     private RelicOwnership GetOwnership()
     {
+        var characterId = config.FfxivCollectCharacterId;
         var stamp = ffxivCollect.LastRefreshUtc;
-        if (cachedOwnership is null || cachedOwnershipStamp != stamp)
+        if (cachedOwnership is null || cachedOwnershipStamp != stamp || cachedOwnershipCharacterId != characterId)
         {
-            // Pass the live manual-tick sets so the funnel/armor reflect manual ticks without rebuilding.
-            cachedOwnership = new RelicOwnership(ffxivCollect.Snapshot, config.RelicStepDone, config.ArmorPieceDone);
+            var snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
+            cachedOwnership = new RelicOwnership(snapshot, config.RelicStepDone, config.ArmorPieceDone);
             cachedOwnershipStamp = stamp;
+            cachedOwnershipCharacterId = characterId;
         }
 
         return cachedOwnership;
+    }
+
+    private void InvalidateOwnershipCache()
+    {
+        cachedOwnership = null;
+        cachedOwnershipStamp = null;
+        cachedOwnershipCharacterId = 0;
     }
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
@@ -567,6 +578,17 @@ public sealed partial class PluginUI
         var wynStep = WynStepAliases.TryGetValue(stepName, out var alias) ? alias : stepName;
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var ownedCounts = new Dictionary<uint, uint>();
+        uint OwnedLookup(uint itemId)
+        {
+            if (!ownedCounts.TryGetValue(itemId, out var count))
+            {
+                count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
+                ownedCounts[itemId] = count;
+            }
+
+            return count;
+        }
 
         foreach (var row in sheet.Materials)
         {
@@ -595,7 +617,7 @@ public sealed partial class PluginUI
 
             var itemIds = itemResolver.ResolveItemIds(name!);
             var resolved = itemIds.Count > 0;
-            var owned = itemIds.Aggregate(0u, (total, itemId) => total + AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly));
+            var owned = itemIds.Aggregate(0u, (total, itemId) => total + OwnedLookup(itemId));
 
             var where = data.MaterialSources.TryGetValue(name!, out var src) ? src : null;
             yield return new StepItem(name!, where, need, owned, resolved);
@@ -681,5 +703,6 @@ public sealed partial class PluginUI
         }
 
         config.OnSettingChanged();
+        InvalidateOwnershipCache();
     }
 }
