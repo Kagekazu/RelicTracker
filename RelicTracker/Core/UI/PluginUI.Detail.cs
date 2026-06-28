@@ -431,7 +431,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 150);
+        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 200);
         foreach (string jobName in jobList)
         {
             ImGui.TableSetupColumn(jobName, ImGuiTableColumnFlags.WidthFixed, 34);
@@ -444,8 +444,17 @@ public sealed partial class PluginUI
         {
             ImGui.TableNextRow();
 
+            int doneCount = 0;
+            for (int slot = 0; slot < jobList.Count; slot++)
+            {
+                if (ownership.IsStepDone(line, slot, tier) || IsManualStepDone(line, jobList[slot], tier))
+                {
+                    doneCount++;
+                }
+            }
+
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted($"{tier + 1}. {line.StepName(tier)}");
+            ImGui.TextUnformatted($"{tier + 1}. {line.StepName(tier)} ({doneCount}/{jobList.Count})");
 
             for (int slot = 0; slot < jobList.Count; slot++)
             {
