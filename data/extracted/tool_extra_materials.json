@@ -52,7 +52,11 @@
         true,
         true,
         true
-      ]
+      ],
+      "purchase": {
+        "currency": "GC seals",
+        "unit": 4000
+      }
     },
     {
       "step": "Skysteel +1",
@@ -8292,7 +8296,11 @@
         true,
         true,
         true
-      ]
+      ],
+      "purchase": {
+        "currency": "GC seals",
+        "unit": 20000
+      }
     },
     {
       "step": "Zodiac",

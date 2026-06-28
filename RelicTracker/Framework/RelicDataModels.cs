@@ -31,6 +31,20 @@ public sealed class ExpansionMaterialRow
     [JsonPropertyName("perUnit")]
     [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
     public double? PerUnit { get; set; }
+
+    /// <summary>Optional vendor price for a purchasable material (e.g. GC seals), for display only.</summary>
+    [JsonPropertyName("purchase")]
+    public MaterialPurchase? Purchase { get; set; }
+}
+
+/// <summary>A material's vendor purchase price (currency + per-unit cost), shown as a tooltip.</summary>
+public sealed class MaterialPurchase
+{
+    [JsonPropertyName("currency")]
+    public string Currency { get; set; } = string.Empty;
+
+    [JsonPropertyName("unit")]
+    public int Unit { get; set; }
 }
 
 /// <summary>An expansion's relic step materials, built entirely from the curated supplement.</summary>

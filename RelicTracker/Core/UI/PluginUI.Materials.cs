@@ -128,13 +128,20 @@ public sealed partial class PluginUI
         if (row.Resolved)
         {
             ImGui.TextUnformatted(row.Material);
+            DrawPurchaseTooltip(row);
         }
         else
         {
             ImGui.TextColored(WarningColor, row.Material);
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("Couldn't match this to a game item, so owned can't be counted.");
+                string tooltip = "Couldn't match this to a game item, so owned can't be counted.";
+                if (PurchaseSummary(row) is { } cost)
+                {
+                    tooltip += $"\n\n{cost}";
+                }
+
+                ImGui.SetTooltip(tooltip);
             }
         }
 
@@ -160,6 +167,33 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(MutedColor, "?");
         }
+    }
+
+    private static void DrawPurchaseTooltip(ShoppingMaterialRow row)
+    {
+        if (ImGui.IsItemHovered() && PurchaseSummary(row) is { } summary)
+        {
+            ImGui.SetTooltip(summary);
+        }
+    }
+
+    /// <summary>Vendor-price breakdown for a purchasable material (per unit, total need, total short).</summary>
+    private static string? PurchaseSummary(ShoppingMaterialRow row)
+    {
+        if (row.Purchase is not { Unit: > 0 } purchase)
+        {
+            return null;
+        }
+
+        long unit = purchase.Unit;
+        string currency = purchase.Currency;
+        string summary = $"{unit:N0} {currency} each\nNeed {row.Need:N0} \u2192 {unit * row.Need:N0} {currency}";
+        if (row.Short > 0)
+        {
+            summary += $"\nStill short {row.Short:N0} \u2192 {unit * row.Short:N0} {currency}";
+        }
+
+        return summary;
     }
 
     private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs, Func<uint, uint> ownedLookup)
