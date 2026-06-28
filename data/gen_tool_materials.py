@@ -21,7 +21,7 @@ def add(step, material, per, *slots):
 # ---------------- ARR Lucis shared currencies (kept) ----------------
 rows.append({"step":"Supra","material":"Fieldcraft Demimateria III","perUnit":2,"jobs":ALL})
 rows.append({"step":"Supra","material":"Mastercraft Demimateria","perUnit":1,"jobs":ALL})
-rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL})
+rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL,"purchase":{"currency":"GC seals","unit":4000}})
 
 C=["CRP","BSM","ARM","GSM","LTW","WVR","ALC","CUL"]
 def crafter(step, cur_cnt, trade_cnt, data):
@@ -242,6 +242,7 @@ arr_add("Novus", "Alexandrite", 75)
 # Nexus: Light grind (Soulglaze) -> note only.
 # Zodiac (Braves): 4 sub-quests; per weapon = purchased + 8 HQ crafted items.
 arr_add("Zodiac", "Bombard Core", 4)          # 20,000 Company Seals each
+arr_rows[-1]["purchase"] = {"currency": "GC seals", "unit": 20000}
 arr_add("Zodiac", "Sacred Spring Water", 4)   # 200 Poetics each
 arr_add("Zodiac", "Furite Sand", 1)           # 100,000 gil
 arr_add("Zodiac", "Allagan Resin", 1)         # 100,000 gil
