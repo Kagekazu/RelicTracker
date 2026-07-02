@@ -79,6 +79,8 @@ public sealed partial class PluginUI
             ImGui.TextColored(MutedColor, $"(updated {refreshed.ToLocalTime():t})");
         }
 
+        DrawProgressRecheckButton();
+
         ImGui.Text($"{summary.LinesComplete}/{summary.LineCount} relic lines finished on every job");
         ImGui.SameLine();
         ImGui.TextColored(MutedColor, $"·  {summary.JobsComplete}/{summary.JobsTotal} job relics maxed");

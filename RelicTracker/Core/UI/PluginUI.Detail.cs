@@ -381,12 +381,13 @@ public sealed partial class PluginUI
 
     private void DrawDetailCollectContext(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
     {
-        if (config.FfxivCollectCharacterId == 0)
+        bool collectLinked = config.FfxivCollectCharacterId != 0;
+        bool inventoryLinked = AllaganToolsIpc.IsReady;
+
+        if (!collectLinked && !inventoryLinked)
         {
-            string message = AllaganToolsIpc.IsReady
-                ? "Owned relic items are auto-tracked from Allagan Tools. Link FFXIV Collect on the Settings tab or tick missing steps manually."
-                : "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.";
-            ImGui.TextColored(MutedColor, message);
+            ImGui.TextColored(MutedColor,
+                "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.");
             return;
         }
 
@@ -399,16 +400,22 @@ public sealed partial class PluginUI
             }
         }
 
-        ImGui.TextColored(GoodColor, AllaganToolsIpc.IsReady
+        string source = collectLinked && inventoryLinked
             ? "Auto-tracked from FFXIV Collect and Allagan Tools."
-            : "Auto-tracked from FFXIV Collect.");
+            : collectLinked
+                ? "Auto-tracked from FFXIV Collect."
+                : "Auto-tracked from Allagan Tools.";
+        ImGui.TextColored(GoodColor, source);
         ImGui.SameLine();
         ImGui.TextColored(complete == line.Jobs ? GoodColor : MutedColor, $"({complete}/{line.Jobs} jobs complete)");
-        if (ffxivCollect.IsLoading)
+
+        if (collectLinked && ffxivCollect.IsLoading)
         {
             ImGui.SameLine();
             ImGui.TextColored(MutedColor, "syncing…");
         }
+
+        DrawProgressRecheckButton();
     }
 
     private void DrawAllJobsGrid(RelicLine line, IReadOnlyList<string> jobList, string selectedJob, RelicOwnership ownership)
@@ -608,21 +615,62 @@ public sealed partial class PluginUI
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
+            if (item.Depth > 0)
+            {
+                ImGui.Indent(24f * item.Depth);
+            }
+
+            string displayName = item.Depth > 0 ? $"- {item.Name}" : item.Name;
             if (item.Resolved)
             {
-                ImGui.TextUnformatted(item.Name);
+                if (item.IsCraftProduct)
+                {
+                    ImGui.TextColored(HeaderColor, displayName);
+                }
+                else if (item.Depth >= 2)
+                {
+                    ImGui.TextColored(MutedColor, displayName);
+                }
+                else if (item.IsScrip)
+                {
+                    ImGui.TextColored(MutedColor, displayName);
+                }
+                else
+                {
+                    ImGui.TextUnformatted(displayName);
+                }
             }
             else
             {
-                ImGui.TextColored(WarningColor, item.Name);
+                ImGui.TextColored(WarningColor, displayName);
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip("Couldn't match this to a game item, so owned can't be counted.");
                 }
             }
 
+            if (item.Depth > 0)
+            {
+                ImGui.Unindent(24f * item.Depth);
+            }
+
             ImGui.TableNextColumn();
-            ImGui.TextWrapped(string.IsNullOrWhiteSpace(item.Where) ? "—" : item.Where);
+            if (item.IsCraftProduct)
+            {
+                ImGui.TextColored(MutedColor, "Collectable");
+            }
+            else if (item.IsPrecraft)
+            {
+                ImGui.TextColored(MutedColor, "Precraft");
+            }
+            else if (item.IsScrip)
+            {
+                ImGui.TextColored(MutedColor, "Scrip");
+            }
+            else
+            {
+                ImGui.TextWrapped(string.IsNullOrWhiteSpace(item.Where) ? "—" : item.Where);
+            }
 
             ImGui.TableNextColumn();
             ImGui.Text(item.Need.ToString());
@@ -671,6 +719,7 @@ public sealed partial class PluginUI
             return count;
         }
 
+        List<ExpansionMaterialRow> matched = [];
         foreach (ExpansionMaterialRow row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
@@ -696,12 +745,110 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            IReadOnlyList<uint> itemIds = itemResolver.ResolveItemIds(name!);
+            matched.Add(row);
+        }
+
+        foreach (ExpansionMaterialRow row in matched)
+        {
+            if (!string.Equals(row.Role, "craft", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            string? product = row.Material?.Trim();
+            if (string.IsNullOrWhiteSpace(product))
+            {
+                continue;
+            }
+
+            yield return ToStepItem(row, product, depth: 0, isCraftProduct: true);
+
+            foreach (ExpansionMaterialRow ingredient in matched)
+            {
+                if (!string.Equals(ingredient.CraftOf, product, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(ingredient.Role, "precraft", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                string? ingredientName = ingredient.Material?.Trim();
+                if (string.IsNullOrWhiteSpace(ingredientName))
+                {
+                    continue;
+                }
+
+                bool isScrip = string.Equals(ingredient.Role, "scrip", StringComparison.OrdinalIgnoreCase)
+                    || ingredientName.StartsWith("Select ", StringComparison.OrdinalIgnoreCase)
+                    || ingredientName.StartsWith("Oddly Specific ", StringComparison.OrdinalIgnoreCase)
+                    || ingredientName.StartsWith("Oddly Delicate ", StringComparison.OrdinalIgnoreCase);
+                yield return ToStepItem(ingredient, ingredientName, depth: 1, isScrip: isScrip);
+            }
+
+            foreach (ExpansionMaterialRow precraft in matched)
+            {
+                if (!string.Equals(precraft.CraftOf, product, StringComparison.OrdinalIgnoreCase)
+                    || !string.Equals(precraft.Role, "precraft", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                string? precraftName = precraft.Material?.Trim();
+                if (string.IsNullOrWhiteSpace(precraftName))
+                {
+                    continue;
+                }
+
+                yield return ToStepItem(precraft, precraftName, depth: 1, isPrecraft: true);
+
+                foreach (ExpansionMaterialRow raw in matched)
+                {
+                    if (!string.Equals(raw.CraftOf, precraftName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string? rawName = raw.Material?.Trim();
+                    if (string.IsNullOrWhiteSpace(rawName))
+                    {
+                        continue;
+                    }
+
+                    yield return ToStepItem(raw, rawName, depth: 2);
+                }
+            }
+        }
+
+        foreach (ExpansionMaterialRow row in matched)
+        {
+            if (string.Equals(row.Role, "craft", StringComparison.OrdinalIgnoreCase)
+                || !string.IsNullOrWhiteSpace(row.CraftOf))
+            {
+                continue;
+            }
+
+            string? name = row.Material?.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                continue;
+            }
+
+            yield return ToStepItem(row, name);
+        }
+
+        StepItem ToStepItem(
+            ExpansionMaterialRow row,
+            string name,
+            int depth = 0,
+            bool isCraftProduct = false,
+            bool isPrecraft = false,
+            bool isScrip = false)
+        {
+            uint need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
+            IReadOnlyList<uint> itemIds = itemResolver.ResolveItemIds(name);
             bool resolved = itemIds.Count > 0;
             uint owned = itemIds.Aggregate(0u, (total, itemId) => total + OwnedLookup(itemId));
-
-            string? where = data.MaterialSources.TryGetValue(name!, out string? src) ? src : null;
-            yield return new(name!, where, need, owned, resolved);
+            string? where = data.MaterialSources.TryGetValue(name, out string? src) ? src : null;
+            return new(name, where, need, owned, resolved, depth, isCraftProduct, isPrecraft, isScrip);
         }
     }
 
@@ -787,5 +934,14 @@ public sealed partial class PluginUI
         InvalidateOwnershipCache();
     }
 
-    private readonly record struct StepItem(string Name, string? Where, uint Need, uint Owned, bool Resolved);
+    private readonly record struct StepItem(
+        string Name,
+        string? Where,
+        uint Need,
+        uint Owned,
+        bool Resolved,
+        int Depth = 0,
+        bool IsCraftProduct = false,
+        bool IsPrecraft = false,
+        bool IsScrip = false);
 }

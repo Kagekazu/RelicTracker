@@ -60,6 +60,25 @@
     },
     {
       "step": "Skysteel +1",
+      "material": "Oddly Specific Petrified Orb",
+      "perUnit": 20,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skysteel +1",
       "material": "Oddly Specific Petrified Log",
       "perUnit": 20,
       "jobs": [
@@ -74,7 +93,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Petrified Orb"
     },
     {
       "step": "Skysteel +1",
@@ -92,61 +113,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Skysteel +1",
-      "material": "Oddly Specific Petrified Orb",
-      "perUnit": 20,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skysteel +1",
-      "material": "Oddly Specific Iron Sand",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skysteel +1",
-      "material": "Manasilver Sand",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Oddly Specific Petrified Orb"
     },
     {
       "step": "Skysteel +1",
@@ -164,14 +132,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Iron Ore",
+      "material": "Oddly Specific Iron Sand",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -181,8 +149,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Rivets"
     },
     {
       "step": "Skysteel +1",
@@ -190,7 +161,6 @@
       "perUnit": 20,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -199,8 +169,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Rivets"
     },
     {
       "step": "Skysteel +1",
@@ -218,14 +190,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Uncut Gemstone",
+      "material": "Oddly Specific Iron Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -235,8 +207,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Wire"
     },
     {
       "step": "Skysteel +1",
@@ -245,7 +220,6 @@
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -253,8 +227,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Wire"
     },
     {
       "step": "Skysteel +1",
@@ -272,14 +248,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Skin",
+      "material": "Oddly Specific Uncut Gemstone",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -289,15 +265,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Whetstone"
     },
     {
       "step": "Skysteel +1",
-      "material": "Atrociraptor Skin",
+      "material": "Manasilver Sand",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -307,8 +285,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Whetstone"
     },
     {
       "step": "Skysteel +1",
@@ -326,14 +306,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Cotton",
+      "material": "Oddly Specific Skin",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -343,15 +323,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Leather"
     },
     {
       "step": "Skysteel +1",
-      "material": "Pixie Floss Boll",
+      "material": "Atrociraptor Skin",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -361,8 +343,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Leather"
     },
     {
       "step": "Skysteel +1",
@@ -380,14 +364,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Quartz",
+      "material": "Oddly Specific Cotton",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -397,15 +381,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Moonbeam Silk"
     },
     {
       "step": "Skysteel +1",
-      "material": "Vampire Vine Sap",
+      "material": "Pixie Floss Boll",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -415,8 +401,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Moonbeam Silk"
     },
     {
       "step": "Skysteel +1",
@@ -434,14 +422,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysteel +1",
-      "material": "Oddly Specific Seeds",
+      "material": "Oddly Specific Quartz",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -451,15 +439,17 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Synthetic Resin"
     },
     {
       "step": "Skysteel +1",
-      "material": "Highland Spring Water",
+      "material": "Vampire Vine Sap",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -469,8 +459,10 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Synthetic Resin"
     },
     {
       "step": "Skysteel +1",
@@ -488,7 +480,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skysteel +1",
+      "material": "Oddly Specific Seeds",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Seed Extract"
+    },
+    {
+      "step": "Skysteel +1",
+      "material": "Highland Spring Water",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Seed Extract"
     },
     {
       "step": "Skysteel +1",
@@ -582,6 +614,25 @@
     },
     {
       "step": "Dragonsung",
+      "material": "Oddly Specific Shaft",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Dragonsung",
       "material": "Oddly Specific Petrified Log",
       "perUnit": 30,
       "jobs": [
@@ -596,7 +647,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Shaft"
     },
     {
       "step": "Dragonsung",
@@ -614,79 +667,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Oddly Specific Shaft",
-      "perUnit": 30,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Oddly Specific Iron Sand",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Titancopper Ore",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Titanium Ore",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Oddly Specific Shaft"
     },
     {
       "step": "Dragonsung",
@@ -704,14 +686,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Iron Ore",
+      "material": "Oddly Specific Iron Sand",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -721,8 +703,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Fitting"
     },
     {
       "step": "Dragonsung",
@@ -730,7 +715,6 @@
       "perUnit": 120,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -739,8 +723,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Fitting"
     },
     {
       "step": "Dragonsung",
@@ -748,7 +734,6 @@
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -757,8 +742,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Fitting"
     },
     {
       "step": "Dragonsung",
@@ -776,16 +763,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Uncut Gemstone",
+      "material": "Oddly Specific Iron Ore",
       "perUnit": 30,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -793,15 +780,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Chainmail Sheet"
     },
     {
       "step": "Dragonsung",
-      "material": "Volcanic Tuff",
-      "perUnit": 90,
+      "material": "Titancopper Ore",
+      "perUnit": 120,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -811,8 +800,29 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Chainmail Sheet"
+    },
+    {
+      "step": "Dragonsung",
+      "material": "Titanium Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Chainmail Sheet"
     },
     {
       "step": "Dragonsung",
@@ -830,61 +840,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Skin",
+      "material": "Oddly Specific Uncut Gemstone",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Gemstone"
     },
     {
       "step": "Dragonsung",
-      "material": "Zonure Skin",
-      "perUnit": 120,
+      "material": "Volcanic Tuff",
+      "perUnit": 90,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Yellow Alumen",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Gemstone"
     },
     {
       "step": "Dragonsung",
@@ -902,14 +898,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Cotton",
+      "material": "Oddly Specific Skin",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -919,62 +915,49 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Vellum"
     },
     {
       "step": "Dragonsung",
-      "material": "Ovim Fleece",
+      "material": "Zonure Skin",
       "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Vellum"
     },
     {
       "step": "Dragonsung",
-      "material": "Extra Effervescent Water",
+      "material": "Yellow Alumen",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Dragonsung",
-      "material": "Ala Mhigan Salt Crystal",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Vellum"
     },
     {
       "step": "Dragonsung",
@@ -992,14 +975,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Quartz",
+      "material": "Oddly Specific Cotton",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -1009,8 +992,30 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Velvet"
+    },
+    {
+      "step": "Dragonsung",
+      "material": "Ovim Fleece",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Velvet"
     },
     {
       "step": "Dragonsung",
@@ -1022,13 +1027,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Velvet"
     },
     {
       "step": "Dragonsung",
@@ -1040,13 +1046,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Velvet"
     },
     {
       "step": "Dragonsung",
@@ -1064,11 +1071,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Dragonsung",
-      "material": "Oddly Specific Seeds",
+      "material": "Oddly Specific Quartz",
       "perUnit": 30,
       "jobs": [
         false,
@@ -1077,17 +1085,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Glass"
     },
     {
       "step": "Dragonsung",
-      "material": "Royal Grapes",
-      "perUnit": 50,
+      "material": "Extra Effervescent Water",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
@@ -1095,12 +1105,32 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Glass"
+    },
+    {
+      "step": "Dragonsung",
+      "material": "Ala Mhigan Salt Crystal",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Glass"
     },
     {
       "step": "Dragonsung",
@@ -1118,7 +1148,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Dragonsung",
+      "material": "Oddly Specific Seeds",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Seed Flour"
+    },
+    {
+      "step": "Dragonsung",
+      "material": "Royal Grapes",
+      "perUnit": 50,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Seed Flour"
     },
     {
       "step": "Dragonsung",
@@ -1212,6 +1282,25 @@
     },
     {
       "step": "Augmented Dragonsung",
+      "material": "Oddly Specific Cedar Lumber",
+      "perUnit": 18,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Augmented Dragonsung",
       "material": "Oddly Specific Cedar Log",
       "perUnit": 18,
       "jobs": [
@@ -1226,7 +1315,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Cedar Lumber"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1244,61 +1335,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Cedar Lumber",
-      "perUnit": 18,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Coerthan Iron Ore",
-      "perUnit": 18,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Augmented Dragonsung",
-      "material": "Dimythrite Ore",
-      "perUnit": 36,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Oddly Specific Cedar Lumber"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1316,14 +1354,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Mythrite Sand",
+      "material": "Oddly Specific Coerthan Iron Ore",
       "perUnit": 18,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -1333,8 +1371,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Iron Nails"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1342,7 +1383,6 @@
       "perUnit": 36,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -1351,8 +1391,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Iron Nails"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1370,16 +1412,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Silver Ore",
+      "material": "Oddly Specific Mythrite Sand",
       "perUnit": 18,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -1387,17 +1429,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Mythril Rings"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Dimythrite Sand",
+      "material": "Dimythrite Ore",
       "perUnit": 36,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -1405,8 +1449,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Mythril Rings"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1424,43 +1470,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Gagana Skin",
+      "material": "Oddly Specific Silver Ore",
       "perUnit": 18,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Silver Nugget"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Yellow Alumen",
+      "material": "Dimythrite Sand",
       "perUnit": 36,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Silver Nugget"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1478,43 +1528,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Fleece",
+      "material": "Oddly Specific Gagana Skin",
       "perUnit": 18,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Gaganaskin Strap"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Dwarven Cotton Boll",
+      "material": "Yellow Alumen",
       "perUnit": 36,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Gaganaskin Strap"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1532,11 +1586,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Sap",
+      "material": "Oddly Specific Fleece",
       "perUnit": 18,
       "jobs": [
         false,
@@ -1544,17 +1599,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Cloth"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Vampire Cup Vine",
+      "material": "Dwarven Cotton Boll",
       "perUnit": 36,
       "jobs": [
         false,
@@ -1562,13 +1619,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Cloth"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1586,11 +1644,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Oddly Specific Aloe",
+      "material": "Oddly Specific Sap",
       "perUnit": 18,
       "jobs": [
         false,
@@ -1599,16 +1658,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Glue"
     },
     {
       "step": "Augmented Dragonsung",
-      "material": "Frantoio",
+      "material": "Vampire Cup Vine",
       "perUnit": 36,
       "jobs": [
         false,
@@ -1617,12 +1678,13 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Glue"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1640,7 +1702,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Augmented Dragonsung",
+      "material": "Oddly Specific Aloe",
+      "perUnit": 18,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Oil"
+    },
+    {
+      "step": "Augmented Dragonsung",
+      "material": "Frantoio",
+      "perUnit": 36,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Oil"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1734,6 +1836,25 @@
     },
     {
       "step": "Skysung",
+      "material": "Oddly Specific Cedar Plank",
+      "perUnit": 21,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skysung",
       "material": "Oddly Specific Cedar Log",
       "perUnit": 21,
       "jobs": [
@@ -1748,7 +1869,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Cedar Plank"
     },
     {
       "step": "Skysung",
@@ -1766,79 +1889,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Skysung",
-      "material": "Oddly Specific Cedar Plank",
-      "perUnit": 21,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skysung",
-      "material": "Oddly Specific Coerthan Iron Ore",
-      "perUnit": 21,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skysung",
-      "material": "Dimythrite Ore",
-      "perUnit": 84,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skysung",
-      "material": "Mythrite Ore",
-      "perUnit": 21,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Oddly Specific Cedar Plank"
     },
     {
       "step": "Skysung",
@@ -1856,14 +1908,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Mythrite Sand",
+      "material": "Oddly Specific Coerthan Iron Ore",
       "perUnit": 21,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -1873,8 +1925,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Iron Ingot"
     },
     {
       "step": "Skysung",
@@ -1882,7 +1937,6 @@
       "perUnit": 84,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -1891,8 +1945,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Iron Ingot"
     },
     {
       "step": "Skysung",
@@ -1900,7 +1956,6 @@
       "perUnit": 21,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -1909,8 +1964,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Iron Ingot"
     },
     {
       "step": "Skysung",
@@ -1928,14 +1985,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Silver Ore",
+      "material": "Oddly Specific Mythrite Sand",
       "perUnit": 21,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -1945,17 +2002,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Mythril Plate"
     },
     {
       "step": "Skysung",
-      "material": "Dimythrite Sand",
+      "material": "Dimythrite Ore",
       "perUnit": 84,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -1963,17 +2022,18 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Mythril Plate"
     },
     {
       "step": "Skysung",
-      "material": "Mythrite Sand",
+      "material": "Mythrite Ore",
       "perUnit": 21,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -1981,8 +2041,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Mythril Plate"
     },
     {
       "step": "Skysung",
@@ -2000,14 +2062,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Gagana Skin",
+      "material": "Oddly Specific Silver Ore",
       "perUnit": 21,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -2017,44 +2079,49 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Silver Ingot"
     },
     {
       "step": "Skysung",
-      "material": "Sea Swallow Skin",
+      "material": "Dimythrite Sand",
       "perUnit": 84,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Silver Ingot"
     },
     {
       "step": "Skysung",
-      "material": "Yellow Alumen",
+      "material": "Mythrite Sand",
       "perUnit": 21,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Silver Ingot"
     },
     {
       "step": "Skysung",
@@ -2072,43 +2139,66 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Fleece",
+      "material": "Oddly Specific Gagana Skin",
       "perUnit": 21,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Gagana Leather"
     },
     {
       "step": "Skysung",
-      "material": "Dwarven Cotton Boll",
+      "material": "Sea Swallow Skin",
       "perUnit": 84,
       "jobs": [
         false,
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Gagana Leather"
+    },
+    {
+      "step": "Skysung",
+      "material": "Yellow Alumen",
+      "perUnit": 21,
+      "jobs": [
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Gagana Leather"
     },
     {
       "step": "Skysung",
@@ -2126,14 +2216,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Sap",
+      "material": "Oddly Specific Fleece",
       "perUnit": 21,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -2143,15 +2233,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Undyed Woolen Cloth"
     },
     {
       "step": "Skysung",
-      "material": "Extra Effervescent Water",
-      "perUnit": 21,
+      "material": "Dwarven Cotton Boll",
+      "perUnit": 84,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -2161,26 +2253,10 @@
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Skysung",
-      "material": "Ala Mhigan Salt Crystal",
-      "perUnit": 21,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Undyed Woolen Cloth"
     },
     {
       "step": "Skysung",
@@ -2198,11 +2274,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skysung",
-      "material": "Oddly Specific Aloe",
+      "material": "Oddly Specific Sap",
       "perUnit": 21,
       "jobs": [
         false,
@@ -2211,17 +2288,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Rubber"
     },
     {
       "step": "Skysung",
-      "material": "Royal Grapes",
-      "perUnit": 35,
+      "material": "Extra Effervescent Water",
+      "perUnit": 21,
       "jobs": [
         false,
         false,
@@ -2229,12 +2308,32 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Rubber"
+    },
+    {
+      "step": "Skysung",
+      "material": "Ala Mhigan Salt Crystal",
+      "perUnit": 21,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Specific Rubber"
     },
     {
       "step": "Skysung",
@@ -2252,7 +2351,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skysung",
+      "material": "Oddly Specific Aloe",
+      "perUnit": 21,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Specific Paste"
+    },
+    {
+      "step": "Skysung",
+      "material": "Royal Grapes",
+      "perUnit": 35,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Specific Paste"
     },
     {
       "step": "Skysung",
@@ -2346,6 +2485,25 @@
     },
     {
       "step": "Skybuilders'",
+      "material": "Oddly Delicate Pine Lumber",
+      "perUnit": 20,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skybuilders'",
       "material": "Oddly Delicate Pine Log",
       "perUnit": 20,
       "jobs": [
@@ -2360,7 +2518,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Pine Lumber"
     },
     {
       "step": "Skybuilders'",
@@ -2378,7 +2538,8 @@
         false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Pine Lumber"
     },
     {
       "step": "Skybuilders'",
@@ -2396,79 +2557,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Skybuilders'",
-      "material": "Oddly Delicate Pine Lumber",
-      "perUnit": 20,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skybuilders'",
-      "material": "Oddly Delicate Silvergrace Ore",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Cloudstone",
-      "perUnit": 100,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Silex",
-      "perUnit": 100,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Pine Lumber"
     },
     {
       "step": "Skybuilders'",
@@ -2486,14 +2576,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Scheelite",
+      "material": "Oddly Delicate Silvergrace Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -2503,8 +2593,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Silver Gear"
     },
     {
       "step": "Skybuilders'",
@@ -2512,7 +2605,6 @@
       "perUnit": 100,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -2521,15 +2613,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Silver Gear"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Prismstone",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Silex",
       "perUnit": 100,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -2539,8 +2632,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Silver Gear"
     },
     {
       "step": "Skybuilders'",
@@ -2558,16 +2653,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Raw Celestine",
+      "material": "Oddly Delicate Scheelite",
       "perUnit": 20,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -2575,17 +2670,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Wolfram Square"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Silex",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Cloudstone",
       "perUnit": 100,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -2593,17 +2690,18 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Wolfram Square"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Barbgrass",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Prismstone",
       "perUnit": 100,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -2611,8 +2709,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Wolfram Square"
     },
     {
       "step": "Skybuilders'",
@@ -2630,61 +2730,66 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Gazelle Hide",
+      "material": "Oddly Delicate Raw Celestine",
       "perUnit": 20,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Celestine"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Log",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Silex",
       "perUnit": 100,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Celestine"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Caiman",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Barbgrass",
       "perUnit": 100,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Celestine"
     },
     {
       "step": "Skybuilders'",
@@ -2702,61 +2807,66 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Rhea",
+      "material": "Oddly Delicate Gazelle Hide",
       "perUnit": 20,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Gazelle Leather"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Cocoon",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Log",
       "perUnit": 100,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Gazelle Leather"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Ice Stalagmite",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Caiman",
       "perUnit": 100,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Gazelle Leather"
     },
     {
       "step": "Skybuilders'",
@@ -2774,11 +2884,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Mistletoe",
+      "material": "Oddly Delicate Rhea",
       "perUnit": 20,
       "jobs": [
         false,
@@ -2786,17 +2897,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Rhea Cloth"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Spring Water",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Cocoon",
       "perUnit": 100,
       "jobs": [
         false,
@@ -2804,17 +2917,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Rhea Cloth"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Raspberry",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Ice Stalagmite",
       "perUnit": 100,
       "jobs": [
         false,
@@ -2822,13 +2936,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Rhea Cloth"
     },
     {
       "step": "Skybuilders'",
@@ -2846,14 +2961,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Skybuilders'",
-      "material": "Oddly Delicate Hammerhead Shark",
+      "material": "Oddly Delicate Mistletoe",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -2863,8 +2978,11 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Holy Water"
     },
     {
       "step": "Skybuilders'",
@@ -2877,16 +2995,17 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Holy Water"
     },
     {
       "step": "Skybuilders'",
-      "material": "Approved Grade 4 Artisanal Skybuilders' Ice Stalagmite",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Raspberry",
       "perUnit": 100,
       "jobs": [
         false,
@@ -2895,12 +3014,13 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oddly Delicate Holy Water"
     },
     {
       "step": "Skybuilders'",
@@ -2918,7 +3038,66 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Skybuilders'",
+      "material": "Oddly Delicate Hammerhead Shark",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Oddly Delicate Shark Oil"
+    },
+    {
+      "step": "Skybuilders'",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Spring Water",
+      "perUnit": 100,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Delicate Shark Oil"
+    },
+    {
+      "step": "Skybuilders'",
+      "material": "Approved Grade 4 Artisanal Skybuilders' Ice Stalagmite",
+      "perUnit": 100,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Oddly Delicate Shark Oil"
     },
     {
       "step": "Skybuilders'",
@@ -3030,6 +3209,25 @@
     },
     {
       "step": "Augmented",
+      "material": "Connoisseur's Chair",
+      "perUnit": 20,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Augmented",
       "material": "Select Ironwood Lumber",
       "perUnit": 20,
       "jobs": [
@@ -3044,7 +3242,9 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Chair"
     },
     {
       "step": "Augmented",
@@ -3062,61 +3262,8 @@
         false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Augmented",
-      "material": "Connoisseur's Chair",
-      "perUnit": 20,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Augmented",
-      "material": "Select Manganese Ingot",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Augmented",
-      "material": "Phrygian Gold Ore",
-      "perUnit": 40,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Connoisseur's Chair"
     },
     {
       "step": "Augmented",
@@ -3134,15 +3281,15 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Titanium Plate",
+      "material": "Select Manganese Ingot",
       "perUnit": 20,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -3151,15 +3298,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Wall Lantern"
     },
     {
       "step": "Augmented",
-      "material": "Ironwood Log",
+      "material": "Phrygian Gold Ore",
       "perUnit": 40,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -3169,8 +3318,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Wall Lantern"
     },
     {
       "step": "Augmented",
@@ -3188,16 +3339,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Crystal Glass",
+      "material": "Select Titanium Plate",
       "perUnit": 20,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -3205,17 +3356,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Ornate Door"
     },
     {
       "step": "Augmented",
-      "material": "Bismuth Ore",
+      "material": "Ironwood Log",
       "perUnit": 40,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -3223,8 +3376,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Ornate Door"
     },
     {
       "step": "Augmented",
@@ -3242,43 +3397,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Smilodon Leather",
+      "material": "Select Crystal Glass",
       "perUnit": 20,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Vanity Mirror"
     },
     {
       "step": "Augmented",
-      "material": "Almasty Fur",
+      "material": "Bismuth Ore",
       "perUnit": 40,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Vanity Mirror"
     },
     {
       "step": "Augmented",
@@ -3296,14 +3455,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Scarlet Moko Cloth",
+      "material": "Select Smilodon Leather",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -3313,8 +3472,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Rug"
     },
     {
       "step": "Augmented",
@@ -3325,14 +3487,15 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Rug"
     },
     {
       "step": "Augmented",
@@ -3350,11 +3513,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Hoptrap Leaf",
+      "material": "Select Scarlet Moko Cloth",
       "perUnit": 20,
       "jobs": [
         false,
@@ -3362,17 +3526,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Swag Valance"
     },
     {
       "step": "Augmented",
-      "material": "Petalouda Scales",
+      "material": "Almasty Fur",
       "perUnit": 40,
       "jobs": [
         false,
@@ -3380,13 +3546,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Swag Valance"
     },
     {
       "step": "Augmented",
@@ -3404,11 +3571,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Augmented",
-      "material": "Select Pixieberry",
+      "material": "Select Hoptrap Leaf",
       "perUnit": 20,
       "jobs": [
         false,
@@ -3417,16 +3585,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Cosmetics Box"
     },
     {
       "step": "Augmented",
-      "material": "Sideritis Leaves",
+      "material": "Petalouda Scales",
       "perUnit": 40,
       "jobs": [
         false,
@@ -3435,12 +3605,13 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Cosmetics Box"
     },
     {
       "step": "Augmented",
@@ -3458,79 +3629,47 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
-      "step": "Crystalline",
-      "material": "Select Ironwood Lumber",
-      "perUnit": 30,
+      "step": "Augmented",
+      "material": "Select Pixieberry",
+      "perUnit": 20,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Pixieberry Tea"
     },
     {
-      "step": "Crystalline",
-      "material": "Integral Log",
-      "perUnit": 150,
+      "step": "Augmented",
+      "material": "Sideritis Leaves",
+      "perUnit": 40,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
-    },
-    {
-      "step": "Crystalline",
-      "material": "Chondrite",
-      "perUnit": 150,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Crystalline",
-      "material": "Dimythrite Ore",
-      "perUnit": 30,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Connoisseur's Pixieberry Tea"
     },
     {
       "step": "Crystalline",
@@ -3548,14 +3687,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Manganese Ingot",
+      "material": "Select Ironwood Lumber",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -3565,15 +3704,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Marimba"
     },
     {
       "step": "Crystalline",
-      "material": "Raw Star Quartz",
-      "perUnit": 90,
+      "material": "Integral Lumber",
+      "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -3583,15 +3724,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Marimba"
     },
     {
       "step": "Crystalline",
-      "material": "Annite",
-      "perUnit": 120,
+      "material": "Integral Log",
+      "perUnit": 150,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -3601,15 +3744,36 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Integral Lumber"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Marimba"
     },
     {
       "step": "Crystalline",
       "material": "Chondrite",
       "perUnit": 150,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -3619,15 +3783,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
       "material": "Dimythrite Ore",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -3637,8 +3802,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3656,15 +3823,15 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Titanium Plate",
+      "material": "Select Manganese Ingot",
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -3673,15 +3840,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Coffee Brewer"
     },
     {
       "step": "Crystalline",
-      "material": "Integral Log",
-      "perUnit": 150,
+      "material": "Star Quartz",
+      "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -3691,8 +3860,69 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Coffee Brewer"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Raw Star Quartz",
+      "perUnit": 90,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Star Quartz"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Annite",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Star Quartz"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Coffee Brewer"
     },
     {
       "step": "Crystalline",
@@ -3700,7 +3930,6 @@
       "perUnit": 150,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -3709,8 +3938,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3718,7 +3949,6 @@
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -3727,8 +3957,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3746,16 +3978,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Crystal Glass",
+      "material": "Select Titanium Plate",
       "perUnit": 30,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -3763,15 +3995,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Bench"
     },
     {
       "step": "Crystalline",
-      "material": "Raw Star Quartz",
-      "perUnit": 90,
+      "material": "Integral Lumber",
+      "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -3781,15 +4015,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Bench"
     },
     {
       "step": "Crystalline",
-      "material": "Annite",
-      "perUnit": 120,
+      "material": "Integral Log",
+      "perUnit": 150,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -3799,8 +4035,30 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Integral Lumber"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Bench"
     },
     {
       "step": "Crystalline",
@@ -3809,7 +4067,6 @@
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -3817,8 +4074,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3827,7 +4086,6 @@
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -3835,8 +4093,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3854,16 +4114,36 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Smilodon Leather",
+      "material": "Select Crystal Glass",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Astroscope"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Star Quartz",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
         false,
         true,
         false,
@@ -3871,44 +4151,107 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Astroscope"
     },
     {
       "step": "Crystalline",
-      "material": "Integral Log",
+      "material": "Raw Star Quartz",
+      "perUnit": 90,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Star Quartz"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Annite",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Star Quartz"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Astroscope"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Chondrite",
       "perUnit": 150,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
-      "material": "AR-Caean Cotton Boll",
-      "perUnit": 150,
+      "material": "Dimythrite Ore",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Crystalline",
@@ -3926,14 +4269,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Scarlet Moko Cloth",
+      "material": "Select Smilodon Leather",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -3943,8 +4286,70 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Leather Sofa"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Integral Lumber",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Leather Sofa"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Integral Log",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Integral Lumber"
+    },
+    {
+      "step": "Crystalline",
+      "material": "AR-Caean Velvet",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Leather Sofa"
     },
     {
       "step": "Crystalline",
@@ -3955,50 +4360,15 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Crystalline",
-      "material": "Ophiotauros Hide",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Crystalline",
-      "material": "Eblan Alumen",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "AR-Caean Velvet"
     },
     {
       "step": "Crystalline",
@@ -4016,11 +4386,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Hoptrap Leaf",
+      "material": "Select Scarlet Moko Cloth",
       "perUnit": 30,
       "jobs": [
         false,
@@ -4028,85 +4399,112 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Red Carpet"
     },
     {
       "step": "Crystalline",
-      "material": "Underground Spring Water",
-      "perUnit": 80,
+      "material": "AR-Caean Velvet",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Red Carpet"
     },
     {
       "step": "Crystalline",
-      "material": "Lunatender Blossom",
-      "perUnit": 40,
+      "material": "AR-Caean Cotton Boll",
+      "perUnit": 150,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "AR-Caean Velvet"
     },
     {
       "step": "Crystalline",
-      "material": "Lime Basil",
-      "perUnit": 40,
+      "material": "Ophiotauros Leather",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Red Carpet"
     },
     {
       "step": "Crystalline",
-      "material": "Tiger Lily",
-      "perUnit": 40,
+      "material": "Ophiotauros Hide",
+      "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Ophiotauros Leather"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Eblan Alumen",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Ophiotauros Leather"
     },
     {
       "step": "Crystalline",
@@ -4124,11 +4522,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Crystalline",
-      "material": "Select Pixieberry",
+      "material": "Select Hoptrap Leaf",
       "perUnit": 30,
       "jobs": [
         false,
@@ -4137,16 +4536,38 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Elixir Bottle"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Grade 5 Vitality Alkahest",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Elixir Bottle"
     },
     {
       "step": "Crystalline",
-      "material": "Dark Rye",
+      "material": "Underground Spring Water",
       "perUnit": 120,
       "jobs": [
         false,
@@ -4155,17 +4576,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
     },
     {
       "step": "Crystalline",
-      "material": "Palm Syrup",
-      "perUnit": 120,
+      "material": "Lime Basil",
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -4173,12 +4595,71 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Tiger Lily",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Grade 5 Mind Alkahest",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Elixir Bottle"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Lunatender Blossom",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Mind Alkahest"
     },
     {
       "step": "Crystalline",
@@ -4196,97 +4677,106 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
-      "step": "Chora-Zoi's",
-      "material": "Select Dark Chestnut Lumber",
+      "step": "Crystalline",
+      "material": "Select Pixieberry",
       "perUnit": 30,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Pixieberry Tart"
     },
     {
-      "step": "Chora-Zoi's",
-      "material": "Red Pine Log",
-      "perUnit": 150,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Flax",
+      "step": "Crystalline",
+      "material": "Dark Rye Flour",
       "perUnit": 60,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Pixieberry Tart"
     },
     {
-      "step": "Chora-Zoi's",
-      "material": "Cotton Boll",
-      "perUnit": 30,
+      "step": "Crystalline",
+      "material": "Dark Rye",
+      "perUnit": 180,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "craftOf": "Dark Rye Flour"
     },
     {
-      "step": "Chora-Zoi's",
-      "material": "Beehive Chip",
-      "perUnit": 90,
+      "step": "Crystalline",
+      "material": "Palm Sugar",
+      "perUnit": 60,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Pixieberry Tart"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Palm Syrup",
+      "perUnit": 180,
+      "jobs": [
         false,
         false,
         false,
         false,
         false,
+        false,
+        false,
+        true,
         false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Palm Sugar"
     },
     {
       "step": "Chora-Zoi's",
@@ -4304,14 +4794,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Bismuth Ingot",
+      "material": "Select Dark Chestnut Lumber",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -4321,15 +4811,37 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Picture Frame"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Pewter Ore",
+      "material": "Red Pine Lumber",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Picture Frame"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Red Pine Log",
       "perUnit": 150,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -4339,15 +4851,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Red Pine Lumber"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Tin Ore",
+      "material": "Linen Canvas",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -4357,15 +4870,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Picture Frame"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Doman Iron Ore",
-      "perUnit": 120,
+      "material": "Flax",
+      "perUnit": 60,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -4375,15 +4890,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Linen Canvas"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Iron Ore",
+      "material": "Cotton Boll",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -4393,8 +4909,29 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Linen Canvas"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Beehive Chip",
+      "perUnit": 90,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Linen Canvas"
     },
     {
       "step": "Chora-Zoi's",
@@ -4412,14 +4949,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Cobalt Plate",
+      "material": "Select Bismuth Ingot",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -4429,16 +4966,38 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Samurai Blade"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Manganese Ore",
+      "material": "Pewter Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Samurai Blade"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Pewter Ore",
       "perUnit": 150,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -4447,16 +5006,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Pewter Ingot"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Molybdenum Ore",
+      "material": "Tin Ore",
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -4465,34 +5025,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Pewter Ingot"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Silex",
-      "perUnit": 90,
-      "jobs": [
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Effervescent Water",
+      "material": "Oroshigane Ingot",
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -4501,15 +5044,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Samurai Blade"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Rock Salt",
-      "perUnit": 30,
+      "material": "Doman Iron Ore",
+      "perUnit": 120,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -4519,15 +5064,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oroshigane Ingot"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Minium",
+      "material": "Iron Ore",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -4537,8 +5083,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Oroshigane Ingot"
     },
     {
       "step": "Chora-Zoi's",
@@ -4556,14 +5104,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Bluespirit Tile",
+      "material": "Select Cobalt Plate",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -4573,17 +5121,39 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Aquarium"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Pewter Ore",
+      "material": "Manganese Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Aquarium"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Manganese Ore",
       "perUnit": 150,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -4591,17 +5161,18 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Tin Ore",
+      "material": "Molybdenum Ore",
       "perUnit": 30,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -4609,34 +5180,37 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Manasilver Sand",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Silver Ore",
+      "material": "Crystal Glass",
       "perUnit": 30,
       "jobs": [
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Aquarium"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Silex",
+      "perUnit": 90,
+      "jobs": [
+        false,
         false,
         true,
         false,
@@ -4645,8 +5219,67 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Crystal Glass"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Effervescent Water",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Crystal Glass"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Rock Salt",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Crystal Glass"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Minium",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Crystal Glass"
     },
     {
       "step": "Chora-Zoi's",
@@ -4664,14 +5297,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Green Glider Leather",
+      "material": "Select Bluespirit Tile",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -4681,80 +5314,127 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Glaives"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Kumbhira Skin",
+      "material": "Pewter Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Glaives"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Pewter Ore",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Pewter Ingot"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Tin Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Pewter Ingot"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Manasilver Nugget",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Glaives"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Manasilver Sand",
       "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manasilver Nugget"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Eblan Alumen",
+      "material": "Silver Ore",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Iridescent Cocoon",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Effervescent Water",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Manasilver Nugget"
     },
     {
       "step": "Chora-Zoi's",
@@ -4772,115 +5452,144 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Waterproof Cloth",
+      "material": "Select Green Glider Leather",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Varsity Shoes"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Manganese Ore",
-      "perUnit": 150,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Molybdenum Ore",
+      "material": "Kumbhira Leather",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Varsity Shoes"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Flax",
-      "perUnit": 60,
+      "material": "Kumbhira Skin",
+      "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Kumbhira Leather"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Cotton Boll",
+      "material": "Eblan Alumen",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Kumbhira Leather"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Beehive Chip",
-      "perUnit": 90,
+      "material": "Iridescent Silk",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Varsity Shoes"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Iridescent Cocoon",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Iridescent Silk"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Effervescent Water",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Iridescent Silk"
     },
     {
       "step": "Chora-Zoi's",
@@ -4898,14 +5607,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Rak'tika Seedling",
+      "material": "Select Waterproof Cloth",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -4915,12 +5624,131 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Linen Parasol"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Underground Spring Water",
+      "material": "Manganese Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Linen Parasol"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Manganese Ore",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Manganese Ingot"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Molybdenum Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Manganese Ingot"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Linen Canvas",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Linen Parasol"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Flax",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Linen Canvas"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Cotton Boll",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Linen Canvas"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Beehive Chip",
       "perUnit": 90,
       "jobs": [
         false,
@@ -4928,85 +5756,14 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Lunatender Blossom",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Fernleaf Lavender",
-      "perUnit": 60,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Hoptrap Leaf",
-      "perUnit": 60,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Vampire Vine Sap",
-      "perUnit": 60,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Linen Canvas"
     },
     {
       "step": "Chora-Zoi's",
@@ -5024,11 +5781,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Select Squid Ink",
+      "material": "Select Rak'tika Seedling",
       "perUnit": 30,
       "jobs": [
         false,
@@ -5037,17 +5795,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Topiary Moogle"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Sharlayan Rock Salt",
-      "perUnit": 180,
+      "material": "Grade 5 Intelligence Alkahest",
+      "perUnit": 90,
       "jobs": [
         false,
         false,
@@ -5055,17 +5815,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Topiary Moogle"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Ovibos Milk",
-      "perUnit": 150,
+      "material": "Underground Spring Water",
+      "perUnit": 90,
       "jobs": [
         false,
         false,
@@ -5073,17 +5835,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Intelligence Alkahest"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Highland Wheat",
-      "perUnit": 100,
+      "material": "Lunatender Blossom",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
@@ -5091,17 +5854,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Intelligence Alkahest"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Dravanian Spring Water",
-      "perUnit": 20,
+      "material": "Fernleaf Lavender",
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -5109,17 +5873,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Intelligence Alkahest"
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Abalathian Rock Salt",
-      "perUnit": 20,
+      "material": "Hoptrap Leaf",
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -5127,12 +5892,52 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Intelligence Alkahest"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Growth Formula Kappa",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Topiary Moogle"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Vampire Vine Sap",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa"
     },
     {
       "step": "Chora-Zoi's",
@@ -5150,97 +5955,163 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
-      "step": "Brilliant",
-      "material": "Select Dark Chestnut Lumber",
+      "step": "Chora-Zoi's",
+      "material": "Select Squid Ink",
       "perUnit": 30,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Squid Baguette"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Northern Sea Salt",
+      "perUnit": 90,
+      "jobs": [
         false,
         false,
         false,
         false,
         false,
+        false,
+        false,
+        true,
         false,
         false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Squid Baguette"
     },
     {
-      "step": "Brilliant",
-      "material": "Integral Log",
+      "step": "Chora-Zoi's",
+      "material": "Sharlayan Rock Salt",
+      "perUnit": 180,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Northern Sea Salt"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Upland Wheat Flour",
+      "perUnit": 90,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Squid Baguette"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Highland Wheat",
+      "perUnit": 100,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Upland Wheat Flour"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Dravanian Spring Water",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Upland Wheat Flour"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Abalathian Rock Salt",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Upland Wheat Flour"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Ovibos Milk",
       "perUnit": 150,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Ironwood Log",
-      "perUnit": 150,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Manganese Ore",
-      "perUnit": 150,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Molybdenum Ore",
-      "perUnit": 30,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Upland Wheat Flour"
     },
     {
       "step": "Brilliant",
@@ -5258,14 +6129,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Bismuth Ingot",
+      "material": "Select Dark Chestnut Lumber",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -5275,15 +6146,37 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Bookshelf"
     },
     {
       "step": "Brilliant",
-      "material": "Chondrite",
+      "material": "Integral Lumber",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Bookshelf"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Integral Log",
       "perUnit": 150,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -5293,15 +6186,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Integral Lumber"
     },
     {
       "step": "Brilliant",
-      "material": "Dimythrite Ore",
+      "material": "Ironwood Lumber",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -5311,15 +6205,56 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Bookshelf"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Ironwood Log",
+      "perUnit": 150,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Ironwood Lumber"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Manganese Ingot",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Bookshelf"
     },
     {
       "step": "Brilliant",
       "material": "Manganese Ore",
       "perUnit": 150,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -5329,15 +6264,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
       "material": "Molybdenum Ore",
       "perUnit": 30,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -5347,44 +6283,10 @@
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Phrygian Gold Ore",
-      "perUnit": 150,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false,
         false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Zinc Ore",
-      "perUnit": 30,
-      "jobs": [
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
@@ -5402,14 +6304,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Cobalt Plate",
+      "material": "Select Bismuth Ingot",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -5419,8 +6321,31 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Chandelier"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Chandelier"
     },
     {
       "step": "Brilliant",
@@ -5428,7 +6353,6 @@
       "perUnit": 150,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -5437,8 +6361,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Brilliant",
@@ -5446,6 +6372,24 @@
       "perUnit": 30,
       "jobs": [
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Chondrite Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Manganese Ingot",
+      "perUnit": 30,
+      "jobs": [
         false,
         true,
         false,
@@ -5455,8 +6399,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Chandelier"
     },
     {
       "step": "Brilliant",
@@ -5464,7 +6411,6 @@
       "perUnit": 150,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -5473,8 +6419,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
@@ -5482,7 +6430,6 @@
       "perUnit": 30,
       "jobs": [
         false,
-        false,
         true,
         false,
         false,
@@ -5491,15 +6438,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
-      "material": "Ironwood Log",
-      "perUnit": 150,
+      "material": "Phrygian Gold Ingot",
+      "perUnit": 30,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -5509,8 +6457,49 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Chandelier"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Phrygian Gold Ore",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Phrygian Gold Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Zinc Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Phrygian Gold Ingot"
     },
     {
       "step": "Brilliant",
@@ -5528,16 +6517,16 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Bluespirit Tile",
+      "material": "Select Cobalt Plate",
       "perUnit": 30,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -5545,17 +6534,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Escutcheon"
     },
     {
       "step": "Brilliant",
-      "material": "Raw Star Quartz",
-      "perUnit": 90,
+      "material": "Chondrite Ingot",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -5563,35 +6554,19 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Escutcheon"
     },
     {
       "step": "Brilliant",
-      "material": "Annite",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Phrygian Gold Ore",
+      "material": "Chondrite",
       "perUnit": 150,
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -5599,16 +6574,36 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Chondrite Ingot"
     },
     {
       "step": "Brilliant",
-      "material": "Zinc Ore",
+      "material": "Dimythrite Ore",
       "perUnit": 30,
       "jobs": [
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Chondrite Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Manganese Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
         false,
         true,
         false,
@@ -5617,8 +6612,11 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Escutcheon"
     },
     {
       "step": "Brilliant",
@@ -5627,7 +6625,6 @@
       "jobs": [
         false,
         false,
-        false,
         true,
         false,
         false,
@@ -5635,8 +6632,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
@@ -5645,6 +6644,24 @@
       "jobs": [
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Manganese Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Ironwood Lumber",
+      "perUnit": 30,
+      "jobs": [
+        false,
         false,
         true,
         false,
@@ -5653,8 +6670,30 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Escutcheon"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Ironwood Log",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Ironwood Lumber"
     },
     {
       "step": "Brilliant",
@@ -5672,14 +6711,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Green Glider Leather",
+      "material": "Select Bluespirit Tile",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -5689,44 +6728,89 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Baghnakhs"
     },
     {
       "step": "Brilliant",
-      "material": "Ophiotauros Hide",
+      "material": "Star Quartz",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Baghnakhs"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Raw Star Quartz",
+      "perUnit": 90,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Star Quartz"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Annite",
       "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Star Quartz"
     },
     {
       "step": "Brilliant",
-      "material": "Eblan Alumen",
+      "material": "Phrygian Gold Ingot",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Baghnakhs"
     },
     {
       "step": "Brilliant",
@@ -5736,15 +6820,16 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Phrygian Gold Ingot"
     },
     {
       "step": "Brilliant",
@@ -5754,24 +6839,44 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Phrygian Gold Ingot"
     },
     {
       "step": "Brilliant",
-      "material": "Apkallu Down",
-      "perUnit": 60,
+      "material": "Manganese Ingot",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Baghnakhs"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Manganese Ore",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
         false,
         true,
         false,
@@ -5779,8 +6884,29 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Manganese Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Molybdenum Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Manganese Ingot"
     },
     {
       "step": "Brilliant",
@@ -5798,79 +6924,67 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Waterproof Cloth",
+      "material": "Select Green Glider Leather",
       "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Drinking Apkallu"
     },
     {
       "step": "Brilliant",
-      "material": "AR-Caean Cotton Boll",
-      "perUnit": 150,
+      "material": "Ophiotauros Leather",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Drinking Apkallu"
     },
     {
       "step": "Brilliant",
-      "material": "Scarlet Moko Grass",
-      "perUnit": 150,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Saiga Hide",
+      "material": "Ophiotauros Hide",
       "perUnit": 120,
       "jobs": [
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Ophiotauros Leather"
     },
     {
       "step": "Brilliant",
@@ -5881,14 +6995,92 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Ophiotauros Leather"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Phrygian Gold Ingot",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Drinking Apkallu"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Phrygian Gold Ore",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Phrygian Gold Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Zinc Ore",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Phrygian Gold Ingot"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Apkallu Down",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Connoisseur's Drinking Apkallu"
     },
     {
       "step": "Brilliant",
@@ -5906,14 +7098,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Rak'tika Seedling",
+      "material": "Select Waterproof Cloth",
       "perUnit": 30,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -5923,12 +7115,35 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Jacket"
     },
     {
       "step": "Brilliant",
-      "material": "Ironwood Log",
+      "material": "AR-Caean Velvet",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Jacket"
+    },
+    {
+      "step": "Brilliant",
+      "material": "AR-Caean Cotton Boll",
       "perUnit": 150,
       "jobs": [
         false,
@@ -5936,35 +7151,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "AR-Caean Velvet"
     },
     {
       "step": "Brilliant",
-      "material": "Underground Spring Water",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    {
-      "step": "Brilliant",
-      "material": "Lunatender Blossom",
+      "material": "Scarlet Moko Cloth",
       "perUnit": 30,
       "jobs": [
         false,
@@ -5972,35 +7170,58 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Jacket"
     },
     {
       "step": "Brilliant",
-      "material": "Lime Basil",
-      "perUnit": 60,
+      "material": "Scarlet Moko Grass",
+      "perUnit": 150,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Scarlet Moko Cloth"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Saiga Leather",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Jacket"
     },
     {
       "step": "Brilliant",
-      "material": "Hoptrap Leaf",
+      "material": "Saiga Hide",
       "perUnit": 120,
       "jobs": [
         false,
@@ -6008,31 +7229,33 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Saiga Leather"
     },
     {
       "step": "Brilliant",
-      "material": "Vampire Vine Sap",
-      "perUnit": 120,
+      "material": "Eblan Alumen",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Saiga Leather"
     },
     {
       "step": "Brilliant",
@@ -6050,11 +7273,12 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Brilliant",
-      "material": "Select Squid Ink",
+      "material": "Select Rak'tika Seedling",
       "perUnit": 30,
       "jobs": [
         false,
@@ -6063,17 +7287,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Planter Partition"
     },
     {
       "step": "Brilliant",
-      "material": "Thavnairian Perilla Leaf",
-      "perUnit": 180,
+      "material": "Ironwood Lumber",
+      "perUnit": 30,
       "jobs": [
         false,
         false,
@@ -6081,16 +7307,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Planter Partition"
     },
     {
       "step": "Brilliant",
-      "material": "Ovibos Milk",
+      "material": "Ironwood Log",
       "perUnit": 150,
       "jobs": [
         false,
@@ -6099,17 +7327,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Ironwood Lumber"
     },
     {
       "step": "Brilliant",
-      "material": "Highland Wheat",
-      "perUnit": 100,
+      "material": "Grade 5 Vitality Alkahest",
+      "perUnit": 90,
       "jobs": [
         false,
         false,
@@ -6117,17 +7346,19 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Planter Partition"
     },
     {
       "step": "Brilliant",
-      "material": "Dravanian Spring Water",
-      "perUnit": 20,
+      "material": "Underground Spring Water",
+      "perUnit": 120,
       "jobs": [
         false,
         false,
@@ -6135,17 +7366,18 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
     },
     {
       "step": "Brilliant",
-      "material": "Abalathian Rock Salt",
-      "perUnit": 20,
+      "material": "Lime Basil",
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -6153,12 +7385,90 @@
         false,
         false,
         false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Hoptrap Leaf",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
         false,
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Growth Formula Kappa",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Planter Partition"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Lunatender Blossom",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Vampire Vine Sap",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa"
     },
     {
       "step": "Brilliant",
@@ -6176,61 +7486,183 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
-      "step": "Vrandtic",
-      "material": "Select Bamboo Stick",
-      "perUnit": 20,
+      "step": "Brilliant",
+      "material": "Select Squid Ink",
+      "perUnit": 30,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Spaghetti al Nero"
     },
     {
-      "step": "Vrandtic",
-      "material": "Integral Log",
-      "perUnit": 20,
+      "step": "Brilliant",
+      "material": "Perilla Oil",
+      "perUnit": 90,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Spaghetti al Nero"
     },
     {
-      "step": "Vrandtic",
-      "material": "Limestone",
-      "perUnit": 20,
+      "step": "Brilliant",
+      "material": "Thavnairian Perilla Leaf",
+      "perUnit": 180,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
+        false
+      ],
+      "craftOf": "Perilla Oil"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Garlean Cheese",
+      "perUnit": 90,
+      "jobs": [
         false,
         false,
         false,
         false,
         false,
+        false,
+        false,
+        true,
         false,
         false,
         false
-      ]
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Spaghetti al Nero"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Ovibos Milk",
+      "perUnit": 150,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Garlean Cheese"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Vermicelli",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Connoisseur's Spaghetti al Nero"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Highland Wheat",
+      "perUnit": 100,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Vermicelli"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Dravanian Spring Water",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Vermicelli"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Abalathian Rock Salt",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Vermicelli"
     },
     {
       "step": "Vrandtic",
@@ -6248,14 +7680,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Duraluminum Ingot",
+      "material": "Select Bamboo Stick",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6265,15 +7697,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Bamboo Fence"
     },
     {
       "step": "Vrandtic",
-      "material": "Chondrite",
+      "material": "Integral Log",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6283,15 +7717,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Bamboo Fence"
     },
     {
       "step": "Vrandtic",
-      "material": "Raw Star Quartz",
+      "material": "Limestone",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6301,8 +7736,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Bamboo Fence"
     },
     {
       "step": "Vrandtic",
@@ -6320,14 +7757,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Brashgold Plate",
+      "material": "Select Duraluminum Ingot",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6337,15 +7774,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Rousing Chronometer"
     },
     {
       "step": "Vrandtic",
-      "material": "Truegold Ore",
+      "material": "Chondrite",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6355,15 +7794,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Rousing Chronometer"
     },
     {
       "step": "Vrandtic",
-      "material": "Horse Chestnut Log",
+      "material": "Raw Star Quartz",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6373,8 +7813,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Rousing Chronometer"
     },
     {
       "step": "Vrandtic",
@@ -6392,14 +7834,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Marble",
+      "material": "Select Brashgold Plate",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -6409,15 +7851,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Trumpet"
     },
     {
       "step": "Vrandtic",
-      "material": "Pewter Ore",
+      "material": "Truegold Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -6427,15 +7871,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Trumpet"
     },
     {
       "step": "Vrandtic",
-      "material": "Bismuth Ore",
+      "material": "Horse Chestnut Log",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -6445,8 +7890,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Trumpet"
     },
     {
       "step": "Vrandtic",
@@ -6464,14 +7911,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Chalicotherium Leather",
+      "material": "Select Marble",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6481,15 +7928,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Washbasin"
     },
     {
       "step": "Vrandtic",
-      "material": "Horse Chestnut Log",
+      "material": "Pewter Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6499,15 +7948,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Washbasin"
     },
     {
       "step": "Vrandtic",
-      "material": "Manganese Ore",
+      "material": "Bismuth Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6517,8 +7967,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Washbasin"
     },
     {
       "step": "Vrandtic",
@@ -6536,14 +7988,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Duskcourt Cloth",
+      "material": "Select Chalicotherium Leather",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6553,15 +8005,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Targe"
     },
     {
       "step": "Vrandtic",
-      "material": "Ruby Cotton Boll",
+      "material": "Horse Chestnut Log",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6571,15 +8025,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Targe"
     },
     {
       "step": "Vrandtic",
-      "material": "AR-Caean Cotton Boll",
+      "material": "Manganese Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6589,8 +8044,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Targe"
     },
     {
       "step": "Vrandtic",
@@ -6608,14 +8065,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Cudweed",
+      "material": "Select Duskcourt Cloth",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6625,15 +8082,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Petasos"
     },
     {
       "step": "Vrandtic",
-      "material": "Lunatender Blossom",
+      "material": "Ruby Cotton Boll",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6643,15 +8102,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Petasos"
     },
     {
       "step": "Vrandtic",
-      "material": "Mousse Flesh",
+      "material": "AR-Caean Cotton Boll",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6661,8 +8121,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Petasos"
     },
     {
       "step": "Vrandtic",
@@ -6680,14 +8142,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Vrandtic",
-      "material": "Select Blue Crab",
+      "material": "Select Cudweed",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6697,15 +8159,17 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Lunar Curtain"
     },
     {
       "step": "Vrandtic",
-      "material": "Upland Wheat",
+      "material": "Lunatender Blossom",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6715,15 +8179,16 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Lunar Curtain"
     },
     {
       "step": "Vrandtic",
-      "material": "Egg of Elpis",
+      "material": "Mousse Flesh",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -6733,8 +8198,10 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Lunar Curtain"
     },
     {
       "step": "Vrandtic",
@@ -6752,79 +8219,66 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
-      "step": "Lodestar",
-      "material": "Select Bamboo Stick",
+      "step": "Vrandtic",
+      "material": "Select Blue Crab",
       "perUnit": 20,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Crab Cakes"
     },
     {
-      "step": "Lodestar",
-      "material": "Ambrosial Water",
+      "step": "Vrandtic",
+      "material": "Upland Wheat",
       "perUnit": 20,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Crab Cakes"
     },
     {
-      "step": "Lodestar",
-      "material": "Siltstone",
+      "step": "Vrandtic",
+      "material": "Egg of Elpis",
       "perUnit": 20,
       "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
         true,
         false,
         false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
         false
-      ]
-    },
-    {
-      "step": "Lodestar",
-      "material": "Granite",
-      "perUnit": 20,
-      "jobs": [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      ],
+      "craftOf": "Connoisseur's Crab Cakes"
     },
     {
       "step": "Lodestar",
@@ -6842,14 +8296,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Duraluminum Ingot",
+      "material": "Select Bamboo Stick",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6859,15 +8313,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Shishi-odoshi"
     },
     {
       "step": "Lodestar",
-      "material": "Integral Log",
+      "material": "Ambrosial Water",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6877,15 +8333,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Shishi-odoshi"
     },
     {
       "step": "Lodestar",
-      "material": "Pewter Ore",
+      "material": "Siltstone",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6895,15 +8352,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Shishi-odoshi"
     },
     {
       "step": "Lodestar",
-      "material": "Wildfowl Feather",
+      "material": "Granite",
       "perUnit": 20,
       "jobs": [
-        false,
         true,
         false,
         false,
@@ -6913,8 +8371,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Shishi-odoshi"
     },
     {
       "step": "Lodestar",
@@ -6932,14 +8392,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Brashgold Plate",
+      "material": "Select Duraluminum Ingot",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6949,15 +8409,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Retainer Bell"
     },
     {
       "step": "Lodestar",
-      "material": "Mahogany Log",
+      "material": "Integral Log",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6967,15 +8429,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Retainer Bell"
     },
     {
       "step": "Lodestar",
-      "material": "Bismuth Ore",
+      "material": "Pewter Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -6985,15 +8448,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Retainer Bell"
     },
     {
       "step": "Lodestar",
-      "material": "Manganese Ore",
+      "material": "Wildfowl Feather",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         true,
         false,
@@ -7003,8 +8467,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Retainer Bell"
     },
     {
       "step": "Lodestar",
@@ -7022,14 +8488,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Marble",
+      "material": "Select Brashgold Plate",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -7039,15 +8505,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Marching Horn"
     },
     {
       "step": "Lodestar",
-      "material": "Ambrosial Water",
+      "material": "Mahogany Log",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -7057,15 +8525,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marching Horn"
     },
     {
       "step": "Lodestar",
-      "material": "Annite",
+      "material": "Bismuth Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -7075,15 +8544,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marching Horn"
     },
     {
       "step": "Lodestar",
-      "material": "Granite",
+      "material": "Manganese Ore",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         true,
@@ -7093,8 +8563,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marching Horn"
     },
     {
       "step": "Lodestar",
@@ -7112,14 +8584,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Chalicotherium Leather",
+      "material": "Select Marble",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7129,15 +8601,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Marble Fountain"
     },
     {
       "step": "Lodestar",
-      "material": "Ruby Cotton Boll",
+      "material": "Ambrosial Water",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7147,15 +8621,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marble Fountain"
     },
     {
       "step": "Lodestar",
-      "material": "Almasty Fur",
+      "material": "Annite",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7165,15 +8640,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marble Fountain"
     },
     {
       "step": "Lodestar",
-      "material": "AR-Caean Cotton Boll",
+      "material": "Granite",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7183,8 +8659,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Marble Fountain"
     },
     {
       "step": "Lodestar",
@@ -7202,14 +8680,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Duskcourt Cloth",
+      "material": "Select Chalicotherium Leather",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7219,8 +8697,30 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Leather Jacket"
+    },
+    {
+      "step": "Lodestar",
+      "material": "Ruby Cotton Boll",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Connoisseur's Leather Jacket"
     },
     {
       "step": "Lodestar",
@@ -7231,14 +8731,15 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Leather Jacket"
     },
     {
       "step": "Lodestar",
@@ -7249,32 +8750,15 @@
         false,
         false,
         false,
-        false,
         true,
         false,
         false,
         false,
         false,
-        false
-      ]
-    },
-    {
-      "step": "Lodestar",
-      "material": "Scarlet Moko Grass",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
         false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Leather Jacket"
     },
     {
       "step": "Lodestar",
@@ -7292,14 +8776,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Cudweed",
+      "material": "Select Duskcourt Cloth",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7309,15 +8793,17 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Fat Cat Sofa"
     },
     {
       "step": "Lodestar",
-      "material": "Petalouda Scales",
+      "material": "Almasty Fur",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7327,15 +8813,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Fat Cat Sofa"
     },
     {
       "step": "Lodestar",
-      "material": "Berkanan Sap",
+      "material": "AR-Caean Cotton Boll",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7345,15 +8832,16 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Fat Cat Sofa"
     },
     {
       "step": "Lodestar",
-      "material": "Amra",
+      "material": "Scarlet Moko Grass",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7363,8 +8851,10 @@
         false,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Fat Cat Sofa"
     },
     {
       "step": "Lodestar",
@@ -7382,14 +8872,14 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
     },
     {
       "step": "Lodestar",
-      "material": "Select Blue Crab",
+      "material": "Select Cudweed",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7399,15 +8889,17 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Tincture of Vitality"
     },
     {
       "step": "Lodestar",
-      "material": "Thavnairian Perilla Leaf",
+      "material": "Petalouda Scales",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7417,15 +8909,16 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Tincture of Vitality"
     },
     {
       "step": "Lodestar",
-      "material": "Blood Tomato",
+      "material": "Berkanan Sap",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7435,15 +8928,16 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Tincture of Vitality"
     },
     {
       "step": "Lodestar",
-      "material": "Pearl Ginger",
+      "material": "Amra",
       "perUnit": 20,
       "jobs": [
-        false,
         false,
         false,
         false,
@@ -7453,8 +8947,10 @@
         true,
         false,
         false,
+        false,
         false
-      ]
+      ],
+      "craftOf": "Connoisseur's Tincture of Vitality"
     },
     {
       "step": "Lodestar",
@@ -7472,7 +8968,85 @@
         false,
         false,
         false
-      ]
+      ],
+      "role": "craft"
+    },
+    {
+      "step": "Lodestar",
+      "material": "Select Blue Crab",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "scrip",
+      "craftOf": "Connoisseur's Chili Crab"
+    },
+    {
+      "step": "Lodestar",
+      "material": "Thavnairian Perilla Leaf",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Connoisseur's Chili Crab"
+    },
+    {
+      "step": "Lodestar",
+      "material": "Blood Tomato",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Connoisseur's Chili Crab"
+    },
+    {
+      "step": "Lodestar",
+      "material": "Pearl Ginger",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Connoisseur's Chili Crab"
     },
     {
       "step": "Augmented",
