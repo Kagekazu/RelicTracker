@@ -35,6 +35,14 @@ public sealed class ExpansionMaterialRow
     /// <summary>Optional vendor price for a purchasable material (e.g. GC seals), for display only.</summary>
     [JsonPropertyName("purchase")]
     public MaterialPurchase? Purchase { get; set; }
+
+    /// <summary>When <c>craft</c>, this row is the collectable; when <c>precraft</c>, an intermediate crafted item.</summary>
+    [JsonPropertyName("role")]
+    public string? Role { get; set; }
+
+    /// <summary>Parent item name — collectable for precrafts/scrip, precraft for raw materials.</summary>
+    [JsonPropertyName("craftOf")]
+    public string? CraftOf { get; set; }
 }
 
 /// <summary>A material's vendor purchase price (currency + per-unit cost), shown as a tooltip.</summary>

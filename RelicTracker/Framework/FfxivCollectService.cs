@@ -5,6 +5,7 @@ public sealed class FfxivCollectService
     private readonly object gate = new();
     private bool isLoading;
     private DateTime? lastAttemptUtc;
+    private int refreshGeneration;
 
     public FfxivCollectSnapshot Snapshot { get; private set; } = FfxivCollectSnapshot.Empty;
 
@@ -23,7 +24,12 @@ public sealed class FfxivCollectService
 
     public DateTime? LastRefreshUtc { get; private set; }
 
-    public void Refresh(ulong characterId)
+    public void Refresh(ulong characterId) => Refresh(characterId, force: false);
+
+    /// <summary>Starts a new fetch even if one is already in progress (supersedes stale requests).</summary>
+    public void ForceRefresh(ulong characterId) => Refresh(characterId, force: true);
+
+    private void Refresh(ulong characterId, bool force)
     {
         if (characterId == 0)
         {
@@ -31,15 +37,17 @@ public sealed class FfxivCollectService
             return;
         }
 
+        int generation;
         lock (gate)
         {
-            if (isLoading)
+            if (isLoading && !force)
             {
                 return;
             }
 
             isLoading = true;
             lastAttemptUtc = DateTime.UtcNow;
+            generation = ++refreshGeneration;
         }
 
         StatusMessage = "Fetching from FFXIV Collect…";
@@ -51,6 +59,11 @@ public sealed class FfxivCollectService
                 FfxivCollectSnapshot snapshot = await FfxivCollectClient.FetchCharacterRelicsAsync(characterId).ConfigureAwait(false);
                 lock (gate)
                 {
+                    if (generation != refreshGeneration)
+                    {
+                        return;
+                    }
+
                     Snapshot = snapshot;
                     LastRefreshUtc = DateTime.UtcNow;
                     StatusMessage = null;
@@ -64,24 +77,54 @@ public sealed class FfxivCollectService
             }
             catch (FfxivCollectException ex)
             {
-                StatusMessage = ex.Message;
+                lock (gate)
+                {
+                    if (generation != refreshGeneration)
+                    {
+                        return;
+                    }
+
+                    StatusMessage = ex.Message;
+                }
+
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect: {Message}", ex.Message);
             }
             catch (TaskCanceledException)
             {
-                StatusMessage = "FFXIV Collect timed out. Allagan Tools inventory progress still works — try Refresh again later.";
+                lock (gate)
+                {
+                    if (generation != refreshGeneration)
+                    {
+                        return;
+                    }
+
+                    StatusMessage = "FFXIV Collect timed out. Allagan Tools inventory progress still works — try Recheck again later.";
+                }
+
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect timed out for character {CharacterId}.", characterId);
             }
             catch (Exception ex)
             {
-                StatusMessage = "Could not reach FFXIV Collect. Allagan Tools inventory progress still works.";
+                lock (gate)
+                {
+                    if (generation != refreshGeneration)
+                    {
+                        return;
+                    }
+
+                    StatusMessage = "Could not reach FFXIV Collect. Allagan Tools inventory progress still works.";
+                }
+
                 Svc.Log.Warning(ex, "[RelicTracker] FFXIV Collect request failed.");
             }
             finally
             {
                 lock (gate)
                 {
-                    isLoading = false;
+                    if (generation == refreshGeneration)
+                    {
+                        isLoading = false;
+                    }
                 }
             }
         });

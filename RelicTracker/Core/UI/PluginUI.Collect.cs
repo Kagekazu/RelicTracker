@@ -1,3 +1,4 @@
+using RelicTracker.IPC;
 using static ECommons.GenericHelpers;
 namespace RelicTracker;
 
@@ -48,12 +49,11 @@ public sealed partial class PluginUI
         }
 
         ImGui.SameLine();
-        using (ImRaii.Disabled(ffxivCollect.IsLoading || config.FfxivCollectCharacterId == 0))
+        using (ImRaii.Disabled(config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady))
         {
-            if (ImGui.Button("Refresh"))
+            if (ImGui.Button("Recheck"))
             {
-                InvalidateOwnershipCache();
-                ffxivCollect.Refresh(config.FfxivCollectCharacterId);
+                TriggerProgressRecheck();
             }
         }
 
@@ -175,5 +175,45 @@ public sealed partial class PluginUI
         }
 
         return [.. query];
+    }
+
+    private void TriggerProgressRecheck()
+    {
+        bool collectLinked = config.FfxivCollectCharacterId != 0;
+        if (!collectLinked && !AllaganToolsIpc.IsReady)
+        {
+            return;
+        }
+
+        InvalidateOwnershipCache();
+
+        if (collectLinked)
+        {
+            ffxivCollect.ForceRefresh(config.FfxivCollectCharacterId);
+        }
+    }
+
+    private void DrawProgressRecheckButton()
+    {
+        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
+        {
+            return;
+        }
+
+        ImGui.SameLine();
+        if (ImGui.Button("Recheck"))
+        {
+            TriggerProgressRecheck();
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            string tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
+                ? "Fetch the latest relic progress from FFXIV Collect and refresh Allagan Tools inventory counts."
+                : config.FfxivCollectCharacterId != 0
+                    ? "Fetch the latest relic progress from FFXIV Collect."
+                    : "Re-read owned relic items from Allagan Tools inventory.";
+            ImGui.SetTooltip(tooltip);
+        }
     }
 }

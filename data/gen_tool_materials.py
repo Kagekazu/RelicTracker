@@ -1,10 +1,12 @@
 """
 Generates data/extracted/tool_extra_materials.json — the curated material source for relic
 weapons and DoH/DoL relic tools. One row per (step, material, discipline);
-the `jobs` flag picks the relic job slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH). For each crafter
-step we capture all three items the wiki lists: the Purple-Scrip currency item, the gathered
-input(s), and the trade/collectable turn-in. Collectability-gated steps use best-case (max
-collectability) counts. Re-run this after adding a tool chain; do not hand-edit the JSON.
+the `jobs` flag picks the relic job slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH).
+For crafter steps, `craft_tree()` emits a hierarchical tree: collectable, optional scrip row,
+precrafts with raw materials, and/or direct gathered materials. `crafter()` is shorthand for
+steps with scrip + direct only (no named precrafts).
+Collect and `craftOf` link rows. Collectability-gated steps use best-case (max collectability) counts.
+a tool chain; do not hand-edit the JSON.
 """
 import json, os
 
@@ -15,8 +17,12 @@ def flags(*slots):
     return a
 ALL=[True]*11
 rows=[]
-def add(step, material, per, *slots):
-    rows.append({"step":step,"material":material,"perUnit":per,"jobs":flags(*slots)})
+def add(step, material, per, *slots, role=None, craft_of=None, purchase=None):
+    row={"step":step,"material":material,"perUnit":per,"jobs":flags(*slots)}
+    if role: row["role"]=role
+    if craft_of: row["craftOf"]=craft_of
+    if purchase: row["purchase"]=purchase
+    rows.append(row)
 
 # ---------------- ARR Lucis shared currencies (kept) ----------------
 rows.append({"step":"Supra","material":"Fieldcraft Demimateria III","perUnit":2,"jobs":ALL})
@@ -24,14 +30,30 @@ rows.append({"step":"Supra","material":"Mastercraft Demimateria","perUnit":1,"jo
 rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL,"purchase":{"currency":"GC seals","unit":4000}})
 
 C=["CRP","BSM","ARM","GSM","LTW","WVR","ALC","CUL"]
-def crafter(step, cur_cnt, trade_cnt, data):
+def crafter(step, craft_cnt, trade_cnt, data):
+    """Two-level tree: collectable, scrip currency, then direct gathered materials."""
+    craft_tree(step, craft_cnt, {
+        cls: {"collectable": trade, "scrip": (cur, craft_cnt), "direct": gaths}
+        for cls, (cur, gaths, trade) in data.items()
+    })
+
+def craft_tree(step, craft_cnt, data):
+    """Three-level tree: collectable -> precrafts -> raw materials (plus optional scrip row)."""
     for cls in C:
-        cur, gaths, trade = data[cls]
-        s=SLOT[cls]
-        add(step, cur, cur_cnt, s)
-        for gname,gcnt in gaths:
-            add(step, gname, gcnt, s)
-        add(step, trade, trade_cnt, s)
+        if cls not in data:
+            continue
+        entry = data[cls]
+        s = SLOT[cls]
+        coll = entry["collectable"]
+        add(step, coll, craft_cnt, s, role="craft")
+        if scrip := entry.get("scrip"):
+            add(step, scrip[0], scrip[1], s, role="scrip", craft_of=coll)
+        for pname, ptotal, raws in entry.get("precrafts", []):
+            add(step, pname, ptotal, s, role="precraft", craft_of=coll)
+            for rname, rtotal in raws:
+                add(step, rname, rtotal, s, craft_of=pname)
+        for dname, dtotal in entry.get("direct", []):
+            add(step, dname, dtotal, s, craft_of=coll)
 
 # ===== Skysteel +1 (IL455) — craft 20 =====
 crafter("Skysteel +1",20,20,{
@@ -123,39 +145,214 @@ crafter("Augmented",20,20,{
  "CUL":("Select Pixieberry",[("Sideritis Leaves",40)],"Connoisseur's Pixieberry Tea"),
 })
 # Crystalline (IL620): craft 30 second-tier collectables -> 90 adaptive components. Best case 30.
-# (Intermediate "crafted" column skipped, same as Skysung.)
-crafter("Crystalline",30,30,{
- "CRP":("Select Ironwood Lumber",[("Integral Log",150),("Chondrite",150),("Dimythrite Ore",30)],"Connoisseur's Marimba"),
- "BSM":("Select Manganese Ingot",[("Raw Star Quartz",90),("Annite",120),("Chondrite",150),("Dimythrite Ore",30)],"Connoisseur's Coffee Brewer"),
- "ARM":("Select Titanium Plate",[("Integral Log",150),("Chondrite",150),("Dimythrite Ore",30)],"Connoisseur's Bench"),
- "GSM":("Select Crystal Glass",[("Raw Star Quartz",90),("Annite",120),("Chondrite",150),("Dimythrite Ore",30)],"Connoisseur's Astroscope"),
- "LTW":("Select Smilodon Leather",[("Integral Log",150),("AR-Caean Cotton Boll",150)],"Connoisseur's Leather Sofa"),
- "WVR":("Select Scarlet Moko Cloth",[("AR-Caean Cotton Boll",150),("Ophiotauros Hide",120),("Eblan Alumen",30)],"Connoisseur's Red Carpet"),
- "ALC":("Select Hoptrap Leaf",[("Underground Spring Water",80),("Lunatender Blossom",40),("Lime Basil",40),("Tiger Lily",40)],"Connoisseur's Elixir Bottle"),
- "CUL":("Select Pixieberry",[("Dark Rye",120),("Palm Syrup",120)],"Connoisseur's Pixieberry Tart"),
+craft_tree("Crystalline", 30, {
+ "CRP": {
+  "collectable": "Connoisseur's Marimba",
+  "scrip": ("Select Ironwood Lumber", 30),
+  "precrafts": [
+   ("Integral Lumber", 30, [("Integral Log", 150)]),
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+  ],
+ },
+ "BSM": {
+  "collectable": "Connoisseur's Coffee Brewer",
+  "scrip": ("Select Manganese Ingot", 30),
+  "precrafts": [
+   ("Star Quartz", 30, [("Raw Star Quartz", 90), ("Annite", 120)]),
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+  ],
+ },
+ "ARM": {
+  "collectable": "Connoisseur's Bench",
+  "scrip": ("Select Titanium Plate", 30),
+  "precrafts": [
+   ("Integral Lumber", 30, [("Integral Log", 150)]),
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+  ],
+ },
+ "GSM": {
+  "collectable": "Connoisseur's Astroscope",
+  "scrip": ("Select Crystal Glass", 30),
+  "precrafts": [
+   ("Star Quartz", 30, [("Raw Star Quartz", 90), ("Annite", 120)]),
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+  ],
+ },
+ "LTW": {
+  "collectable": "Connoisseur's Leather Sofa",
+  "scrip": ("Select Smilodon Leather", 30),
+  "precrafts": [
+   ("Integral Lumber", 30, [("Integral Log", 150)]),
+   ("AR-Caean Velvet", 30, [("AR-Caean Cotton Boll", 150)]),
+  ],
+ },
+ "WVR": {
+  "collectable": "Connoisseur's Red Carpet",
+  "scrip": ("Select Scarlet Moko Cloth", 30),
+  "precrafts": [
+   ("AR-Caean Velvet", 30, [("AR-Caean Cotton Boll", 150)]),
+   ("Ophiotauros Leather", 30, [("Ophiotauros Hide", 120), ("Eblan Alumen", 30)]),
+  ],
+ },
+ "ALC": {
+  "collectable": "Connoisseur's Elixir Bottle",
+  "scrip": ("Select Hoptrap Leaf", 30),
+  "precrafts": [
+   ("Grade 5 Vitality Alkahest", 60, [("Underground Spring Water", 120), ("Lime Basil", 60), ("Tiger Lily", 60)]),
+   ("Grade 5 Mind Alkahest", 60, [("Lunatender Blossom", 60)]),
+  ],
+ },
+ "CUL": {
+  "collectable": "Connoisseur's Pixieberry Tart",
+  "scrip": ("Select Pixieberry", 30),
+  "precrafts": [
+   ("Dark Rye Flour", 60, [("Dark Rye", 180)]),
+   ("Palm Sugar", 60, [("Palm Syrup", 180)]),
+  ],
+ },
 })
 
 # Chora-Zoi's (IL625): craft 30 -> 90 customized components. Best case 30.
-crafter("Chora-Zoi's",30,30,{
- "CRP":("Select Dark Chestnut Lumber",[("Red Pine Log",150),("Flax",60),("Cotton Boll",30),("Beehive Chip",90)],"Connoisseur's Picture Frame"),
- "BSM":("Select Bismuth Ingot",[("Pewter Ore",150),("Tin Ore",30),("Doman Iron Ore",120),("Iron Ore",30)],"Connoisseur's Samurai Blade"),
- "ARM":("Select Cobalt Plate",[("Manganese Ore",150),("Molybdenum Ore",30),("Silex",90),("Effervescent Water",30),("Rock Salt",30),("Minium",30)],"Connoisseur's Aquarium"),
- "GSM":("Select Bluespirit Tile",[("Pewter Ore",150),("Tin Ore",30),("Manasilver Sand",120),("Silver Ore",30)],"Connoisseur's Glaives"),
- "LTW":("Select Green Glider Leather",[("Kumbhira Skin",120),("Eblan Alumen",30),("Iridescent Cocoon",120),("Effervescent Water",30)],"Connoisseur's Varsity Shoes"),
- "WVR":("Select Waterproof Cloth",[("Manganese Ore",150),("Molybdenum Ore",30),("Flax",60),("Cotton Boll",30),("Beehive Chip",90)],"Connoisseur's Linen Parasol"),
- "ALC":("Select Rak'tika Seedling",[("Underground Spring Water",90),("Lunatender Blossom",30),("Fernleaf Lavender",60),("Hoptrap Leaf",60),("Vampire Vine Sap",60)],"Connoisseur's Topiary Moogle"),
- "CUL":("Select Squid Ink",[("Sharlayan Rock Salt",180),("Ovibos Milk",150),("Highland Wheat",100),("Dravanian Spring Water",20),("Abalathian Rock Salt",20)],"Connoisseur's Squid Baguette"),
+craft_tree("Chora-Zoi's", 30, {
+ "CRP": {
+  "collectable": "Connoisseur's Picture Frame",
+  "scrip": ("Select Dark Chestnut Lumber", 30),
+  "precrafts": [
+   ("Red Pine Lumber", 30, [("Red Pine Log", 150)]),
+   ("Linen Canvas", 30, [("Flax", 60), ("Cotton Boll", 30), ("Beehive Chip", 90)]),
+  ],
+ },
+ "BSM": {
+  "collectable": "Connoisseur's Samurai Blade",
+  "scrip": ("Select Bismuth Ingot", 30),
+  "precrafts": [
+   ("Pewter Ingot", 30, [("Pewter Ore", 150), ("Tin Ore", 30)]),
+   ("Oroshigane Ingot", 30, [("Doman Iron Ore", 120), ("Iron Ore", 30)]),
+  ],
+ },
+ "ARM": {
+  "collectable": "Connoisseur's Aquarium",
+  "scrip": ("Select Cobalt Plate", 30),
+  "precrafts": [
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+   ("Crystal Glass", 30, [("Silex", 90), ("Effervescent Water", 30), ("Rock Salt", 30), ("Minium", 30)]),
+  ],
+ },
+ "GSM": {
+  "collectable": "Connoisseur's Glaives",
+  "scrip": ("Select Bluespirit Tile", 30),
+  "precrafts": [
+   ("Pewter Ingot", 30, [("Pewter Ore", 150), ("Tin Ore", 30)]),
+   ("Manasilver Nugget", 30, [("Manasilver Sand", 120), ("Silver Ore", 30)]),
+  ],
+ },
+ "LTW": {
+  "collectable": "Connoisseur's Varsity Shoes",
+  "scrip": ("Select Green Glider Leather", 30),
+  "precrafts": [
+   ("Kumbhira Leather", 30, [("Kumbhira Skin", 120), ("Eblan Alumen", 30)]),
+   ("Iridescent Silk", 30, [("Iridescent Cocoon", 120), ("Effervescent Water", 30)]),
+  ],
+ },
+ "WVR": {
+  "collectable": "Connoisseur's Linen Parasol",
+  "scrip": ("Select Waterproof Cloth", 30),
+  "precrafts": [
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+   ("Linen Canvas", 30, [("Flax", 60), ("Cotton Boll", 30), ("Beehive Chip", 90)]),
+  ],
+ },
+ "ALC": {
+  "collectable": "Connoisseur's Topiary Moogle",
+  "scrip": ("Select Rak'tika Seedling", 30),
+  "precrafts": [
+   ("Grade 5 Intelligence Alkahest", 90, [("Underground Spring Water", 90), ("Lunatender Blossom", 30), ("Fernleaf Lavender", 60), ("Hoptrap Leaf", 60)]),
+   ("Growth Formula Kappa", 30, [("Vampire Vine Sap", 60)]),
+  ],
+ },
+ "CUL": {
+  "collectable": "Connoisseur's Squid Baguette",
+  "scrip": ("Select Squid Ink", 30),
+  "precrafts": [
+   ("Northern Sea Salt", 90, [("Sharlayan Rock Salt", 180)]),
+   ("Upland Wheat Flour", 90, [("Highland Wheat", 100), ("Dravanian Spring Water", 20), ("Abalathian Rock Salt", 20), ("Ovibos Milk", 150)]),
+  ],
+ },
 })
 # Brilliant (IL630): craft 30 -> 90 brilliant components. Best case 30.
-crafter("Brilliant",30,30,{
- "CRP":("Select Dark Chestnut Lumber",[("Integral Log",150),("Ironwood Log",150),("Manganese Ore",150),("Molybdenum Ore",30)],"Connoisseur's Bookshelf"),
- "BSM":("Select Bismuth Ingot",[("Chondrite",150),("Dimythrite Ore",30),("Manganese Ore",150),("Molybdenum Ore",30),("Phrygian Gold Ore",150),("Zinc Ore",30)],"Connoisseur's Chandelier"),
- "ARM":("Select Cobalt Plate",[("Chondrite",150),("Dimythrite Ore",30),("Manganese Ore",150),("Molybdenum Ore",30),("Ironwood Log",150)],"Connoisseur's Escutcheon"),
- "GSM":("Select Bluespirit Tile",[("Raw Star Quartz",90),("Annite",120),("Phrygian Gold Ore",150),("Zinc Ore",30),("Manganese Ore",150),("Molybdenum Ore",30)],"Connoisseur's Baghnakhs"),
- "LTW":("Select Green Glider Leather",[("Ophiotauros Hide",120),("Eblan Alumen",30),("Phrygian Gold Ore",150),("Zinc Ore",30),("Apkallu Down",60)],"Connoisseur's Drinking Apkallu"),
- "WVR":("Select Waterproof Cloth",[("AR-Caean Cotton Boll",150),("Scarlet Moko Grass",150),("Saiga Hide",120),("Eblan Alumen",30)],"Connoisseur's Jacket"),
- "ALC":("Select Rak'tika Seedling",[("Ironwood Log",150),("Underground Spring Water",120),("Lunatender Blossom",30),("Lime Basil",60),("Hoptrap Leaf",120),("Vampire Vine Sap",120)],"Connoisseur's Planter Partition"),
- "CUL":("Select Squid Ink",[("Thavnairian Perilla Leaf",180),("Ovibos Milk",150),("Highland Wheat",100),("Dravanian Spring Water",20),("Abalathian Rock Salt",20)],"Connoisseur's Spaghetti al Nero"),
+craft_tree("Brilliant", 30, {
+ "CRP": {
+  "collectable": "Connoisseur's Bookshelf",
+  "scrip": ("Select Dark Chestnut Lumber", 30),
+  "precrafts": [
+   ("Integral Lumber", 30, [("Integral Log", 150)]),
+   ("Ironwood Lumber", 30, [("Ironwood Log", 150)]),
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+  ],
+ },
+ "BSM": {
+  "collectable": "Connoisseur's Chandelier",
+  "scrip": ("Select Bismuth Ingot", 30),
+  "precrafts": [
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+   ("Phrygian Gold Ingot", 30, [("Phrygian Gold Ore", 150), ("Zinc Ore", 30)]),
+  ],
+ },
+ "ARM": {
+  "collectable": "Connoisseur's Escutcheon",
+  "scrip": ("Select Cobalt Plate", 30),
+  "precrafts": [
+   ("Chondrite Ingot", 30, [("Chondrite", 150), ("Dimythrite Ore", 30)]),
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+   ("Ironwood Lumber", 30, [("Ironwood Log", 150)]),
+  ],
+ },
+ "GSM": {
+  "collectable": "Connoisseur's Baghnakhs",
+  "scrip": ("Select Bluespirit Tile", 30),
+  "precrafts": [
+   ("Star Quartz", 30, [("Raw Star Quartz", 90), ("Annite", 120)]),
+   ("Phrygian Gold Ingot", 30, [("Phrygian Gold Ore", 150), ("Zinc Ore", 30)]),
+   ("Manganese Ingot", 30, [("Manganese Ore", 150), ("Molybdenum Ore", 30)]),
+  ],
+ },
+ "LTW": {
+  "collectable": "Connoisseur's Drinking Apkallu",
+  "scrip": ("Select Green Glider Leather", 30),
+  "precrafts": [
+   ("Ophiotauros Leather", 30, [("Ophiotauros Hide", 120), ("Eblan Alumen", 30)]),
+   ("Phrygian Gold Ingot", 30, [("Phrygian Gold Ore", 150), ("Zinc Ore", 30)]),
+  ],
+  "direct": [("Apkallu Down", 60)],
+ },
+ "WVR": {
+  "collectable": "Connoisseur's Jacket",
+  "scrip": ("Select Waterproof Cloth", 30),
+  "precrafts": [
+   ("AR-Caean Velvet", 30, [("AR-Caean Cotton Boll", 150)]),
+   ("Scarlet Moko Cloth", 30, [("Scarlet Moko Grass", 150)]),
+   ("Saiga Leather", 30, [("Saiga Hide", 120), ("Eblan Alumen", 30)]),
+  ],
+ },
+ "ALC": {
+  "collectable": "Connoisseur's Planter Partition",
+  "scrip": ("Select Rak'tika Seedling", 30),
+  "precrafts": [
+   ("Ironwood Lumber", 30, [("Ironwood Log", 150)]),
+   ("Grade 5 Vitality Alkahest", 90, [("Underground Spring Water", 120), ("Lime Basil", 60), ("Hoptrap Leaf", 120)]),
+   ("Growth Formula Kappa", 60, [("Lunatender Blossom", 30), ("Vampire Vine Sap", 120)]),
+  ],
+ },
+ "CUL": {
+  "collectable": "Connoisseur's Spaghetti al Nero",
+  "scrip": ("Select Squid Ink", 30),
+  "precrafts": [
+   ("Perilla Oil", 90, [("Thavnairian Perilla Leaf", 180)]),
+   ("Garlean Cheese", 90, [("Ovibos Milk", 150)]),
+   ("Vermicelli", 60, [("Highland Wheat", 100), ("Dravanian Spring Water", 20), ("Abalathian Rock Salt", 20)]),
+  ],
+ },
 })
 # Vrandtic Visionary's (IL635): craft 20 -> 60 inspirational components. Best case 20. Expert recipes.
 crafter("Vrandtic",20,20,{
