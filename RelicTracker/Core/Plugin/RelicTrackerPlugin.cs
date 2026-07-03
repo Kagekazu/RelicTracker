@@ -21,6 +21,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         Configuration.Initialize(Svc.PluginInterface);
 
         AllaganToolsIpc.Init();
+        ArtisanIpc.Init();
 
         relicData.Load();
         relicCatalog.Load();
@@ -59,6 +60,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         Svc.PluginInterface.UiBuilder.OpenMainUi -= ToggleUi;
         windowSystem.RemoveAllWindows();
         AllaganToolsIpc.Dispose();
+        ArtisanIpc.Dispose();
         ECommonsMain.Dispose();
     }
 
