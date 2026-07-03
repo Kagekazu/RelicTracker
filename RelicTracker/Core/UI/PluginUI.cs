@@ -218,6 +218,12 @@ public sealed partial class PluginUI : Window
         ImGui.Separator();
         ImGui.Spacing();
 
+        DrawArtisanSettingsSection();
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
         ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
         ImGui.TextColored(MutedColor, "Link an ID to auto-fill finished relics. Without it, tick steps and armor pieces manually on the Relic tab.");
         ImGui.Spacing();

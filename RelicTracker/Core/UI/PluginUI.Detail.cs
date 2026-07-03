@@ -578,6 +578,8 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
+        DrawArtisanCraftButton(line, stepName, slotIndex);
+
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
         if (items.Count == 0)
         {
