@@ -42,8 +42,3 @@ left.
 2. Open RelicTracker with `/relictracker` (or `/rtracker`).
 3. (Optional) Add your FFXIV Collect ID on the **Settings** tab to auto-fill
    finished relics. Otherwise, tick steps yourself on the **Relic** tab.
-
-## Commands
-
-- `/relictracker` — open the window
-- `/rtracker` — short alias
