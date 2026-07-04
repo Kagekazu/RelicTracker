@@ -50,9 +50,9 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (!ArtisanIpc.IsReady)
+        if (!ArtisanIpc.SupportsRelicToolLists)
         {
-            ImGui.TextColored(WarningColor, "Artisan is loading…");
+            ImGui.TextColored(MutedColor, "Artisan found — relic craft lists need a newer Artisan build.");
             return;
         }
 
