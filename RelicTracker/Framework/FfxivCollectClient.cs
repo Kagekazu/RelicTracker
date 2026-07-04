@@ -17,15 +17,12 @@ internal static class FfxivCollectClient
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    static FfxivCollectClient()
-    {
-        Http.DefaultRequestHeaders.UserAgent.ParseAdd("RelicTracker/0.1");
-    }
+    static FfxivCollectClient() => Http.DefaultRequestHeaders.UserAgent.ParseAdd("RelicTracker/0.1");
 
     public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId)
     {
-        Task<List<FfxivCollectRelic>> ownedTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
-        Task<List<FfxivCollectRelic>> missingTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
+        var ownedTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
+        var missingTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
         await Task.WhenAll(ownedTask, missingTask).ConfigureAwait(false);
 
         return new()
@@ -38,8 +35,8 @@ internal static class FfxivCollectClient
 
     private static async Task<List<FfxivCollectRelic>> FetchRelicListAsync(string url)
     {
-        using HttpResponseMessage response = await Http.GetAsync(url).ConfigureAwait(false);
-        string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        using var response = await Http.GetAsync(url).ConfigureAwait(false);
+        var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -56,8 +53,8 @@ internal static class FfxivCollectClient
 
     private static List<FfxivCollectRelic> ParseRelicList(string body)
     {
-        using JsonDocument document = JsonDocument.Parse(body);
-        JsonElement root = document.RootElement;
+        using var document = JsonDocument.Parse(body);
+        var root = document.RootElement;
 
         if (root.ValueKind == JsonValueKind.Array)
         {
@@ -65,7 +62,7 @@ internal static class FfxivCollectClient
         }
 
         if (root.ValueKind == JsonValueKind.Object
-            && root.TryGetProperty("results", out JsonElement results)
+            && root.TryGetProperty("results", out var results)
             && results.ValueKind == JsonValueKind.Array)
         {
             return DeserializeRelicList(results.GetRawText());
@@ -90,7 +87,7 @@ internal static class FfxivCollectClient
     {
         try
         {
-            FfxivCollectApiError? error = JsonSerializer.Deserialize<FfxivCollectApiError>(body, JsonOptions);
+            var error = JsonSerializer.Deserialize<FfxivCollectApiError>(body, JsonOptions);
             if (!string.IsNullOrWhiteSpace(error?.Error))
             {
                 return error.Error;

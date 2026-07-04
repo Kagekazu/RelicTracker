@@ -31,7 +31,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         pluginUi = new(Configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
-        foreach (string commandName in RelicTrackerConstants.CommandNames)
+        foreach (var commandName in RelicTrackerConstants.CommandNames)
         {
             Svc.Commands.AddHandler(commandName, new(OnCommand)
             {
@@ -51,7 +51,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
     public void Dispose()
     {
         Configuration.PersistIfDirty();
-        foreach (string commandName in RelicTrackerConstants.CommandNames)
+        foreach (var commandName in RelicTrackerConstants.CommandNames)
         {
             Svc.Commands.RemoveHandler(commandName);
         }
@@ -64,13 +64,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         ECommonsMain.Dispose();
     }
 
-    private void OnCommand(string command, string args)
-    {
-        ToggleUi();
-    }
+    private void OnCommand(string command, string args) => ToggleUi();
 
-    private void ToggleUi()
-    {
-        pluginUi.IsOpen = !pluginUi.IsOpen;
-    }
+    private void ToggleUi() => pluginUi.IsOpen = !pluginUi.IsOpen;
 }

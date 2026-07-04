@@ -1,4 +1,3 @@
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 namespace RelicTracker.Framework;
 
@@ -10,11 +9,11 @@ public sealed class JobAbbrevResolver
     {
         abbrevByToken.Clear();
 
-        ExcelSheet<ClassJob> sheet = Svc.Data.GetExcelSheet<ClassJob>();
-        foreach (ClassJob row in sheet)
+        var sheet = Svc.Data.GetExcelSheet<ClassJob>();
+        foreach (var row in sheet)
         {
-            string abbrev = row.Abbreviation.ToString().Trim();
-            string name = row.Name.ToString().Trim();
+            var abbrev = row.Abbreviation.ToString().Trim();
+            var name = row.Name.ToString().Trim();
             if (string.IsNullOrEmpty(abbrev))
             {
                 continue;
@@ -27,12 +26,12 @@ public sealed class JobAbbrevResolver
             }
         }
 
-        foreach (string abbrev in JobColumnDefaults.CombatJobs)
+        foreach (var abbrev in JobColumnDefaults.CombatJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
 
-        foreach (string abbrev in JobColumnDefaults.DoHDoLJobs)
+        foreach (var abbrev in JobColumnDefaults.DoHDoLJobs)
         {
             abbrevByToken.TryAdd(abbrev, abbrev);
         }
@@ -47,8 +46,8 @@ public sealed class JobAbbrevResolver
             return "?";
         }
 
-        string trimmed = name.Trim();
-        if (abbrevByToken.TryGetValue(trimmed, out string? abbrev))
+        var trimmed = name.Trim();
+        if (abbrevByToken.TryGetValue(trimmed, out var abbrev))
         {
             return abbrev;
         }
@@ -87,12 +86,12 @@ internal static class JobColumnDefaults
             return [];
         }
 
-        string[] source = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal)
+        var source = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal)
             ? DoHDoLJobs
             : CombatJobs;
 
         List<string> names = new(jobCount);
-        for (int index = 0; index < jobCount; index++)
+        for (var index = 0; index < jobCount; index++)
         {
             names.Add(index < source.Length ? source[index] : $"J{index + 1}");
         }

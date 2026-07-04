@@ -1,6 +1,5 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
-using RelicTracker.IPC;
 using System.Numerics;
 using static ECommons.GenericHelpers;
 namespace RelicTracker;
@@ -25,7 +24,7 @@ public sealed partial class PluginUI : Window
     private string materialFilter = string.Empty;
 
     public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
-        : base($"RelicTracker###{WindowId}")
+        : base($"Relic Tracker###{WindowId}")
     {
         this.config = config;
         this.data = data;
@@ -53,9 +52,6 @@ public sealed partial class PluginUI : Window
 
     public override void Draw()
     {
-        DrawHeader();
-        ImGui.Spacing();
-
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {
             if (ImGui.BeginTabItem("Overview"))
@@ -90,34 +86,6 @@ public sealed partial class PluginUI : Window
             AllowPinning || AllowClickthrough);
     }
 
-    private void DrawHeader()
-    {
-        DrawDependencyStatus();
-    }
-
-    private void DrawDependencyStatus()
-    {
-        if (!AllaganToolsIpc.IsInstalled)
-        {
-            ImGui.TextColored(WarningColor, "Allagan Tools is not installed.");
-            return;
-        }
-
-        if (!AllaganToolsIpc.IsEnabled)
-        {
-            ImGui.TextColored(WarningColor, "Allagan Tools is installed but not enabled.");
-            return;
-        }
-
-        if (!AllaganToolsIpc.IsReady)
-        {
-            ImGui.TextColored(WarningColor, "Allagan Tools is loading inventory data…");
-            return;
-        }
-
-        ImGui.TextColored(GoodColor, "Allagan Tools connected");
-    }
-
     private void DrawTrackerTab()
     {
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
@@ -125,7 +93,7 @@ public sealed partial class PluginUI : Window
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
         {
-            foreach (string expansionId in data.Manifest.Expansions)
+            foreach (var expansionId in data.Manifest.Expansions)
             {
                 if (ImGui.Selectable(expansionId, expansionId == config.SelectedExpansionId))
                 {
@@ -140,7 +108,7 @@ public sealed partial class PluginUI : Window
 
         // DoH/DoL has several tool lines per expansion; weapon expansions have one line each.
         List<RelicLine> lines = [.. catalog.LinesFor(config.SelectedExpansionId)];
-        bool multiLine = lines.Count > 1;
+        var multiLine = lines.Count > 1;
         if (!multiLine)
         {
             if (!string.IsNullOrEmpty(config.TrackerLineFilter))
@@ -158,7 +126,7 @@ public sealed partial class PluginUI : Window
 
             ImGui.SameLine();
             ImGui.SetNextItemWidth(190);
-            string focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
+            var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
             if (ImGui.BeginCombo("Line", focusLabel))
             {
                 if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
@@ -167,7 +135,7 @@ public sealed partial class PluginUI : Window
                     config.OnSettingChanged();
                 }
 
-                foreach (RelicLine line in lines)
+                foreach (var line in lines)
                 {
                     if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
                     {
@@ -182,7 +150,7 @@ public sealed partial class PluginUI : Window
 
         ImGui.Spacing();
 
-        bool hideComplete = config.HideCompleteMaterials;
+        var hideComplete = config.HideCompleteMaterials;
         if (ImGui.Checkbox("Still needed only", ref hideComplete))
         {
             config.HideCompleteMaterials = hideComplete;
@@ -204,7 +172,7 @@ public sealed partial class PluginUI : Window
     private void DrawSettingsTab()
     {
         ImGui.TextColored(HeaderColor, "Inventory");
-        bool activeOnly = config.ActiveCharacterOnly;
+        var activeOnly = config.ActiveCharacterOnly;
         if (ImGui.Checkbox("Active character + retainers only", ref activeOnly))
         {
             config.ActiveCharacterOnly = activeOnly;
@@ -213,6 +181,12 @@ public sealed partial class PluginUI : Window
         }
 
         ImGui.TextColored(MutedColor, "When off, counts all characters tracked by Allagan Tools.");
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        DrawAllaganToolsSettingsSection();
 
         ImGui.Spacing();
         ImGui.Separator();

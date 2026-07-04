@@ -24,10 +24,10 @@ public sealed class FfxivCollectService
 
     public DateTime? LastRefreshUtc { get; private set; }
 
-    public void Refresh(ulong characterId) => Refresh(characterId, force: false);
+    public void Refresh(ulong characterId) => Refresh(characterId, false);
 
     /// <summary>Starts a new fetch even if one is already in progress (supersedes stale requests).</summary>
-    public void ForceRefresh(ulong characterId) => Refresh(characterId, force: true);
+    public void ForceRefresh(ulong characterId) => Refresh(characterId, true);
 
     private void Refresh(ulong characterId, bool force)
     {
@@ -56,7 +56,7 @@ public sealed class FfxivCollectService
         {
             try
             {
-                FfxivCollectSnapshot snapshot = await FfxivCollectClient.FetchCharacterRelicsAsync(characterId).ConfigureAwait(false);
+                var snapshot = await FfxivCollectClient.FetchCharacterRelicsAsync(characterId).ConfigureAwait(false);
                 lock (gate)
                 {
                     if (generation != refreshGeneration)
@@ -137,7 +137,7 @@ public sealed class FfxivCollectService
             return;
         }
 
-        DateTime now = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
         if (lastAttemptUtc is not null && now - lastAttemptUtc.Value < maxAge)
         {
             return;

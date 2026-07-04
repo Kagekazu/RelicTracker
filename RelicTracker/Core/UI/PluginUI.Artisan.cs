@@ -1,9 +1,35 @@
 using RelicTracker.IPC;
-
 namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
+    private void DrawAllaganToolsSettingsSection()
+    {
+        ImGui.TextColored(HeaderColor, "Allagan Tools");
+        ImGui.TextColored(MutedColor, "Required for material and relic-item counts across the plugin.");
+        ImGui.Spacing();
+
+        if (!AllaganToolsIpc.IsInstalled)
+        {
+            ImGui.TextColored(WarningColor, "Allagan Tools is not installed.");
+            return;
+        }
+
+        if (!AllaganToolsIpc.IsEnabled)
+        {
+            ImGui.TextColored(WarningColor, "Allagan Tools is installed but not enabled.");
+            return;
+        }
+
+        if (!AllaganToolsIpc.IsReady)
+        {
+            ImGui.TextColored(WarningColor, "Allagan Tools is loading inventory data…");
+            return;
+        }
+
+        ImGui.TextColored(GoodColor, "Allagan Tools connected");
+    }
+
     private void DrawArtisanSettingsSection()
     {
         ImGui.TextColored(HeaderColor, "Artisan (optional)");
@@ -45,7 +71,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (!ArtisanIpc.TryGetRelicToolListId(stepName, slotIndex, out _))
+        if (!ArtisanIpc.TryGetRelicToolListId(stepName, slotIndex, out var _))
         {
             return;
         }
@@ -54,7 +80,7 @@ public sealed partial class PluginUI
         {
             if (ImGui.Button("Craft with Artisan"))
             {
-                if (ArtisanIpc.TryStartRelicToolList(stepName, slotIndex, out string? error))
+                if (ArtisanIpc.TryStartRelicToolList(stepName, slotIndex, out var error))
                 {
                     Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", stepName);
                 }

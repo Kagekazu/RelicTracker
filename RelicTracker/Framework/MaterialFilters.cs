@@ -21,7 +21,7 @@ internal static class MaterialFilters
             return false;
         }
 
-        string trimmed = name.Trim();
+        var trimmed = name.Trim();
         if (trimmed.Contains('\n', StringComparison.Ordinal))
         {
             return false;
@@ -48,7 +48,7 @@ internal static class MaterialFilters
             return false;
         }
 
-        string trimmed = name.Trim();
+        var trimmed = name.Trim();
         return !trimmed.Contains("calculations", StringComparison.OrdinalIgnoreCase)
                && !trimmed.Contains("Crystal Sand", StringComparison.OrdinalIgnoreCase);
     }
