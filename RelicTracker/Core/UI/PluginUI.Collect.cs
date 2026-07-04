@@ -33,7 +33,7 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         if (ImGui.Button("Save ID"))
         {
-            if (ulong.TryParse(collectCharacterIdInput.Trim(), out ulong parsed) && parsed > 0)
+            if (ulong.TryParse(collectCharacterIdInput.Trim(), out var parsed) && parsed > 0)
             {
                 config.FfxivCollectCharacterId = parsed;
                 config.OnSettingChanged();
@@ -93,7 +93,7 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(140);
         if (ImGui.BeginCombo("Category", CollectCategories[collectCategoryIndex]))
         {
-            for (int i = 0; i < CollectCategories.Length; i++)
+            for (var i = 0; i < CollectCategories.Length; i++)
             {
                 if (ImGui.Selectable(CollectCategories[i], i == collectCategoryIndex))
                 {
@@ -116,14 +116,14 @@ public sealed partial class PluginUI
 
     private void DrawCollectTable(List<FfxivCollectRelic> relics)
     {
-        List<FfxivCollectRelic> rows = FilterCollectRelics(relics);
+        var rows = FilterCollectRelics(relics);
         if (rows.Count == 0)
         {
             ImGui.TextColored(MutedColor, collectShowMissing ? "No missing relics in this category." : "No owned relics in this category.");
             return;
         }
 
-        using ImRaii.TableDisposable table = ImRaii.Table(
+        using var table = ImRaii.Table(
             "CollectRelics",
             3,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY,
@@ -139,7 +139,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
-        foreach (FfxivCollectRelic relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
+        foreach (var relic in rows.OrderBy(r => r.TypeName, StringComparer.OrdinalIgnoreCase).ThenBy(r => r.Name, StringComparer.OrdinalIgnoreCase))
         {
             ImGui.TableNextRow();
 
@@ -161,7 +161,7 @@ public sealed partial class PluginUI
     {
         IEnumerable<FfxivCollectRelic> query = relics;
 
-        string category = CollectCategories[collectCategoryIndex];
+        var category = CollectCategories[collectCategoryIndex];
         if (category != "all")
         {
             query = query.Where(r => r.Category.Equals(category, StringComparison.OrdinalIgnoreCase));
@@ -179,7 +179,7 @@ public sealed partial class PluginUI
 
     private void TriggerProgressRecheck()
     {
-        bool collectLinked = config.FfxivCollectCharacterId != 0;
+        var collectLinked = config.FfxivCollectCharacterId != 0;
         if (!collectLinked && !AllaganToolsIpc.IsReady)
         {
             return;
@@ -208,7 +208,7 @@ public sealed partial class PluginUI
 
         if (ImGui.IsItemHovered())
         {
-            string tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
+            var tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
                 ? "Fetch the latest relic progress from FFXIV Collect and refresh Allagan Tools inventory counts."
                 : config.FfxivCollectCharacterId != 0
                     ? "Fetch the latest relic progress from FFXIV Collect."

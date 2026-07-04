@@ -23,7 +23,7 @@ public sealed class RelicDataService
 
     public void Load()
     {
-        string baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
+        var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
         Manifest = ReadJson<RelicManifest>(Path.Combine(baseDir, "manifest.json")) ?? new RelicManifest();
         MaterialSources = ReadJson<Dictionary<string, string>>(Path.Combine(baseDir, "material_sources.json"))
                           ?? new(StringComparer.OrdinalIgnoreCase);
@@ -42,18 +42,18 @@ public sealed class RelicDataService
     /// </summary>
     private void MergeExtraMaterials(string path)
     {
-        Dictionary<string, List<ExpansionMaterialRow>>? extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
+        var extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
         if (extra is null)
         {
             return;
         }
 
-        foreach ((string expansionId, List<ExpansionMaterialRow> materials) in extra)
+        foreach ((var expansionId, var materials) in extra)
         {
-            if (!Expansions.TryGetValue(expansionId, out ExpansionSheet? sheet))
+            if (!Expansions.TryGetValue(expansionId, out var sheet))
             {
                 sheet = new()
-                { Id = expansionId };
+                    { Id = expansionId };
                 Expansions[expansionId] = sheet;
             }
 
@@ -70,7 +70,7 @@ public sealed class RelicDataService
         ItemResolver items,
         Func<uint, uint> ownedLookup,
         string? lineFilter = null) =>
-        Expansions.TryGetValue(expansionId, out ExpansionSheet? sheet)
+        Expansions.TryGetValue(expansionId, out var sheet)
             ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources, lineFilter)
             : [];
 
@@ -84,7 +84,7 @@ public sealed class RelicDataService
 
         try
         {
-            string json = File.ReadAllText(path);
+            var json = File.ReadAllText(path);
             return JsonSerializer.Deserialize<T>(json, JsonOptions);
         }
         catch (Exception ex)

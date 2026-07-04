@@ -18,7 +18,7 @@ internal static class AllaganToolsIpc
         PluginNames.Any(name => Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.Name == name));
 
     public static bool IsEnabled =>
-        PluginNames.Any(name => DalamudReflector.TryGetDalamudPlugin(name, out object _, false, true));
+        PluginNames.Any(name => DalamudReflector.TryGetDalamudPlugin(name, out var _, false, true));
 
     public static bool IsReady =>
         IsEnabled && _ipcBound && _itemCountOwned != null && InvokeIsInitialized();

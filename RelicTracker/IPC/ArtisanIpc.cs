@@ -1,6 +1,5 @@
 using Dalamud.Plugin.Ipc;
 using ECommons.Reflection;
-
 namespace RelicTracker.IPC;
 
 internal static class ArtisanIpc
@@ -11,11 +10,11 @@ internal static class ArtisanIpc
     private static bool _ipcBound;
 
     public static bool IsInstalled =>
-        DalamudReflector.TryGetDalamudPlugin("Artisan", out _, false, true)
+        DalamudReflector.TryGetDalamudPlugin("Artisan", out var _, false, true)
         || Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.InternalName == "Artisan");
 
     public static bool IsEnabled =>
-        DalamudReflector.TryGetDalamudPlugin("Artisan", out _, false, true);
+        DalamudReflector.TryGetDalamudPlugin("Artisan", out var _, false, true);
 
     public static bool IsReady
     {
@@ -26,10 +25,7 @@ internal static class ArtisanIpc
         }
     }
 
-    public static void Init()
-    {
-        EnsureBound();
-    }
+    public static void Init() => EnsureBound();
 
     public static void Dispose()
     {
@@ -62,7 +58,7 @@ internal static class ArtisanIpc
     public static bool TryStartRelicToolList(string stepName, int craftSlot, out string? error)
     {
         error = null;
-        if (!TryGetRelicToolListId(stepName, craftSlot, out int listId))
+        if (!TryGetRelicToolListId(stepName, craftSlot, out var listId))
         {
             error = "No Artisan premade list for this step.";
             return false;

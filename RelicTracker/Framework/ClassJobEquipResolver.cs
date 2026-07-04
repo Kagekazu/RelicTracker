@@ -1,5 +1,3 @@
-using System.Reflection;
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 namespace RelicTracker.Framework;
 
@@ -15,7 +13,7 @@ internal static class ClassJobEquipResolver
 
     public static bool TryResolve(ClassJobCategory category, out string jobAbbrev)
     {
-        foreach ((string abbrev, Func<ClassJobCategory, bool> has) in JobAccessors)
+        foreach ((var abbrev, var has) in JobAccessors)
         {
             if (!has(category))
             {
@@ -33,23 +31,23 @@ internal static class ClassJobEquipResolver
     private static (string Abbrev, Func<ClassJobCategory, bool> Has)[] BuildJobAccessors()
     {
         string[] priority = [.. JobColumnDefaults.CombatJobs, .. JobColumnDefaults.DoHDoLJobs];
-        Dictionary<string, int> order = priority
+        var order = priority
             .Select((abbrev, index) => (abbrev, index))
             .ToDictionary(entry => entry.abbrev, entry => entry.index, StringComparer.Ordinal);
 
-        ExcelSheet<ClassJob> sheet = Svc.Data.GetExcelSheet<ClassJob>();
+        var sheet = Svc.Data.GetExcelSheet<ClassJob>();
         List<(string Abbrev, Func<ClassJobCategory, bool> Has)> accessors = [];
         HashSet<string> seen = new(StringComparer.Ordinal);
 
-        foreach (ClassJob job in sheet)
+        foreach (var job in sheet)
         {
-            string abbrev = job.Abbreviation.ToString().Trim();
+            var abbrev = job.Abbreviation.ToString().Trim();
             if (string.IsNullOrEmpty(abbrev) || BaseClassAbbrevs.Contains(abbrev) || !seen.Add(abbrev))
             {
                 continue;
             }
 
-            PropertyInfo? property = typeof(ClassJobCategory).GetProperty(abbrev);
+            var property = typeof(ClassJobCategory).GetProperty(abbrev);
             if (property?.PropertyType != typeof(bool))
             {
                 continue;

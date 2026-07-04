@@ -1,4 +1,3 @@
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 namespace RelicTracker.Framework;
 
@@ -13,10 +12,10 @@ public sealed class ItemResolver
         byName.Clear();
         aliasToNames.Clear();
 
-        ExcelSheet<Item> sheet = Svc.Data.GetExcelSheet<Item>();
-        foreach (Item row in sheet)
+        var sheet = Svc.Data.GetExcelSheet<Item>();
+        foreach (var row in sheet)
         {
-            string name = row.Name.ToString().Trim();
+            var name = row.Name.ToString().Trim();
             if (string.IsNullOrEmpty(name))
             {
                 continue;
@@ -41,18 +40,18 @@ public sealed class ItemResolver
     public bool TryResolveEquipJob(string itemName, out string jobAbbrev)
     {
         jobAbbrev = string.Empty;
-        if (!byName.TryGetValue(itemName.Trim(), out uint rowId))
+        if (!byName.TryGetValue(itemName.Trim(), out var rowId))
         {
             return false;
         }
 
-        Item? item = Svc.Data.GetExcelSheet<Item>().GetRowOrDefault(rowId);
+        var item = Svc.Data.GetExcelSheet<Item>().GetRowOrDefault(rowId);
         if (item is null)
         {
             return false;
         }
 
-        ClassJobCategory? category = item.Value.ClassJobCategory.ValueNullable;
+        var category = item.Value.ClassJobCategory.ValueNullable;
         if (category is null)
         {
             return false;
@@ -63,7 +62,7 @@ public sealed class ItemResolver
 
     public bool TryResolve(string materialName, out uint itemId)
     {
-        IReadOnlyList<uint> ids = ResolveItemIds(materialName);
+        var ids = ResolveItemIds(materialName);
         if (ids.Count == 0)
         {
             itemId = 0;
@@ -80,9 +79,9 @@ public sealed class ItemResolver
     public IReadOnlyList<uint> ResolveItemIds(string materialName)
     {
         List<uint> ids = [];
-        foreach (string candidate in GetCandidateNames(materialName))
+        foreach (var candidate in GetCandidateNames(materialName))
         {
-            if (byName.TryGetValue(candidate, out uint itemId) && ids.All(id => id != itemId))
+            if (byName.TryGetValue(candidate, out var itemId) && ids.All(id => id != itemId))
             {
                 ids.Add(itemId);
             }
@@ -93,10 +92,10 @@ public sealed class ItemResolver
 
     private IEnumerable<string> GetCandidateNames(string materialName)
     {
-        string trimmed = materialName.Trim();
-        if (aliasToNames.TryGetValue(trimmed, out IReadOnlyList<string>? aliasedNames))
+        var trimmed = materialName.Trim();
+        if (aliasToNames.TryGetValue(trimmed, out var aliasedNames))
         {
-            foreach (string aliasedName in aliasedNames)
+            foreach (var aliasedName in aliasedNames)
             {
                 yield return aliasedName;
             }
@@ -104,7 +103,7 @@ public sealed class ItemResolver
             yield break;
         }
 
-        foreach (string candidate in ExpandNameVariants(trimmed))
+        foreach (var candidate in ExpandNameVariants(trimmed))
         {
             yield return candidate;
         }
@@ -140,7 +139,7 @@ public sealed class ItemResolver
 
     private void LoadAliases()
     {
-        string path = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data", "material_aliases.json");
+        var path = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data", "material_aliases.json");
         if (!File.Exists(path))
         {
             Svc.Log.Warning("[RelicTracker] Missing material alias file: {Path}", path);
@@ -149,8 +148,8 @@ public sealed class ItemResolver
 
         try
         {
-            using JsonDocument document = JsonDocument.Parse(File.ReadAllText(path));
-            foreach (JsonProperty property in document.RootElement.EnumerateObject())
+            using var document = JsonDocument.Parse(File.ReadAllText(path));
+            foreach (var property in document.RootElement.EnumerateObject())
             {
                 aliasToNames[property.Name] = ParseAliasNames(property.Value);
             }
@@ -161,9 +160,8 @@ public sealed class ItemResolver
         }
     }
 
-    private static IReadOnlyList<string> ParseAliasNames(JsonElement value)
-    {
-        return value.ValueKind switch
+    private static IReadOnlyList<string> ParseAliasNames(JsonElement value) =>
+        value.ValueKind switch
         {
             JsonValueKind.String => [value.GetString() ?? string.Empty],
             JsonValueKind.Array => value.EnumerateArray()
@@ -173,5 +171,4 @@ public sealed class ItemResolver
                 .ToList(),
             var _ => []
         };
-    }
 }

@@ -3,16 +3,14 @@ namespace RelicTracker.Framework;
 
 internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
 {
-    public override double? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        return reader.TokenType switch
+    public override double? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        reader.TokenType switch
         {
             JsonTokenType.Null => null,
             JsonTokenType.Number => reader.GetDouble(),
             JsonTokenType.String => TryParse(reader.GetString()),
             var _ => null
         };
-    }
 
     public override void Write(Utf8JsonWriter writer, double? value, JsonSerializerOptions options)
     {
@@ -34,6 +32,6 @@ internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
         }
 
         text = text.Trim().Replace(",", string.Empty);
-        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out double value) ? value : null;
+        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var value) ? value : null;
     }
 }

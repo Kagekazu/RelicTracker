@@ -61,7 +61,7 @@ public sealed class RelicLine
             return null;
         }
 
-        int index = (tierIndex * Jobs) + slotIndex;
+        var index = (tierIndex * Jobs) + slotIndex;
         return index >= 0 && index < RelicNames.Count ? RelicNames[index] : null;
     }
 }
@@ -134,8 +134,8 @@ public sealed class RelicCatalog
 
     public void Load()
     {
-        string baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
-        string path = Path.Combine(baseDir, "relic_lines.json");
+        var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
+        var path = Path.Combine(baseDir, "relic_lines.json");
         if (!File.Exists(path))
         {
             Svc.Log.Warning("[RelicTracker] Missing relic catalog: {Path}", path);
@@ -144,11 +144,14 @@ public sealed class RelicCatalog
 
         try
         {
-            string json = File.ReadAllText(path);
+            var json = File.ReadAllText(path);
             Lines = JsonSerializer.Deserialize<List<RelicLine>>(json, JsonOptions) ?? [];
-            Expansions = [.. Lines
-                .Select(line => line.Expansion)
-                .Distinct(StringComparer.Ordinal)];
+            Expansions =
+            [
+                .. Lines
+                    .Select(line => line.Expansion)
+                    .Distinct(StringComparer.Ordinal)
+            ];
             IsLoaded = true;
             Svc.Log.Information("[RelicTracker] Loaded relic catalog: {LineCount} lines.", Lines.Count);
         }
@@ -191,7 +194,7 @@ public sealed class RelicCatalog
 
         try
         {
-            Dictionary<string, Dictionary<string, string>>? parsed = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(path), JsonOptions);
+            var parsed = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(path), JsonOptions);
             if (parsed is not null)
             {
                 stepNotes = parsed;
@@ -206,24 +209,24 @@ public sealed class RelicCatalog
     /// <summary>A curated "what to do" note for a step, falling back to the line-level note.</summary>
     public string? StepNote(string collectType, string stepName)
     {
-        if (!stepNotes.TryGetValue(collectType, out Dictionary<string, string>? byStep))
+        if (!stepNotes.TryGetValue(collectType, out var byStep))
         {
             return null;
         }
 
-        if (byStep.TryGetValue(stepName, out string? note) && !string.IsNullOrWhiteSpace(note))
+        if (byStep.TryGetValue(stepName, out var note) && !string.IsNullOrWhiteSpace(note))
         {
             return note;
         }
 
-        return byStep.TryGetValue("_line", out string? lineNote) && !string.IsNullOrWhiteSpace(lineNote) ? lineNote : null;
+        return byStep.TryGetValue("_line", out var lineNote) && !string.IsNullOrWhiteSpace(lineNote) ? lineNote : null;
     }
 
     /// <summary>Resolves each line's slot -> job order from game data, falling back to the bundled list.</summary>
     public void ResolveJobs(ItemResolver items)
     {
-        int resolvedLines = 0;
-        foreach (RelicLine line in Lines)
+        var resolvedLines = 0;
+        foreach (var line in Lines)
         {
             if (line.Jobs <= 0 || line.SlotRelics.Count != line.Jobs)
             {
@@ -231,9 +234,9 @@ public sealed class RelicCatalog
             }
 
             List<string> resolved = new(line.Jobs);
-            foreach (string relicName in line.SlotRelics)
+            foreach (var relicName in line.SlotRelics)
             {
-                if (!items.TryResolveEquipJob(relicName, out string abbrev))
+                if (!items.TryResolveEquipJob(relicName, out var abbrev))
                 {
                     resolved.Clear();
                     break;

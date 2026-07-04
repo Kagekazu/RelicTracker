@@ -1,5 +1,4 @@
 using RelicTracker.IPC;
-using System.Numerics;
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -33,25 +32,28 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
-        RelicOwnership ownership = GetOwnership();
-        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
+        var ownership = GetOwnership();
+        var statuses = RelicStatusService.Build(ownership, catalog);
         DrawOverviewHeader(statuses);
 
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
 
-        using ImRaii.ChildDisposable scroll = ImRaii.Child("##OverviewScroll", new(0, -1), false);
+        using var scroll = ImRaii.Child("##OverviewScroll", new(0, -1), false);
         if (!scroll)
         {
             return;
         }
 
-        foreach (string expansionId in catalog.Expansions)
+        foreach (var expansionId in catalog.Expansions)
         {
-            List<RelicLineStatus> lines = [.. statuses
-                .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
-                .Where(MatchesOverviewFilter)];
+            List<RelicLineStatus> lines =
+            [
+                .. statuses
+                    .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
+                    .Where(MatchesOverviewFilter)
+            ];
 
             List<ArmorLine> armorLines = [.. catalog.ArmorLinesFor(expansionId).Where(armor => MatchesArmorFilter(armor, ownership))];
 
@@ -66,7 +68,7 @@ public sealed partial class PluginUI
 
     private void DrawOverviewHeader(IReadOnlyList<RelicLineStatus> statuses)
     {
-        RelicProgressSummary summary = RelicStatusService.Summarize(statuses);
+        var summary = RelicStatusService.Summarize(statuses);
 
         ImGui.TextColored(HeaderColor, "Relic collection");
         ImGui.SameLine();
@@ -88,7 +90,7 @@ public sealed partial class PluginUI
         DrawPercentBar(summary.Percent, 260f, $"{summary.Percent * 100f:0}% of all upgrade steps");
 
         ImGui.Spacing();
-        bool incompleteOnly = config.OverviewIncompleteOnly;
+        var incompleteOnly = config.OverviewIncompleteOnly;
         if (ImGui.Checkbox("Hide finished lines", ref incompleteOnly))
         {
             config.OverviewIncompleteOnly = incompleteOnly;
@@ -106,25 +108,25 @@ public sealed partial class PluginUI
         IReadOnlyList<ArmorLine> armorLines,
         RelicOwnership ownership)
     {
-        int jobsComplete = lines.Sum(line => line.JobsComplete);
-        int jobsTotal = lines.Sum(line => line.Line.Jobs);
-        bool allDone = lines.Count > 0 && lines.All(line => line.IsComplete);
+        var jobsComplete = lines.Sum(line => line.JobsComplete);
+        var jobsTotal = lines.Sum(line => line.Line.Jobs);
+        var allDone = lines.Count > 0 && lines.All(line => line.IsComplete);
 
-        string title = $"{ExpansionLongName(expansionId)} ({expansionId})";
-        string header = jobsTotal == 0
+        var title = $"{ExpansionLongName(expansionId)} ({expansionId})";
+        var header = jobsTotal == 0
             ? title
             : allDone
                 ? $"{title} — done"
                 : $"{title} — {jobsComplete}/{jobsTotal} maxed";
 
         // Finished expansions collapse by default; ones you're still working on stay open.
-        ImGuiTreeNodeFlags headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
+        var headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
         if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", headerFlags))
         {
             return;
         }
 
-        using ImRaii.TableDisposable table = ImRaii.Table(
+        using var table = ImRaii.Table(
             $"OverviewLines_{expansionId}",
             4,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
@@ -140,12 +142,12 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
         ImGui.TableHeadersRow();
 
-        foreach (RelicLineStatus status in lines)
+        foreach (var status in lines)
         {
             DrawOverviewLineRow(status);
         }
 
-        foreach (ArmorLine armor in armorLines)
+        foreach (var armor in armorLines)
         {
             DrawOverviewArmorRow(armor, ownership);
         }
@@ -153,11 +155,11 @@ public sealed partial class PluginUI
 
     private void DrawOverviewArmorRow(ArmorLine armor, RelicOwnership ownership)
     {
-        int owned = OwnedPieces(armor, ownership);
-        int total = armor.TotalPieces;
-        int setsDone = armor.Sets.Count(set => IsSetComplete(set, ownership));
-        float fraction = total > 0 ? (float)owned / total : 0f;
-        bool complete = total > 0 && owned >= total;
+        var owned = OwnedPieces(armor, ownership);
+        var total = armor.TotalPieces;
+        var setsDone = armor.Sets.Count(set => IsSetComplete(set, ownership));
+        var fraction = total > 0 ? (float)owned / total : 0f;
+        var complete = total > 0 && owned >= total;
 
         ImGui.TableNextRow();
 
@@ -169,7 +171,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableNextColumn();
-        Vector4 doneColor = complete ? GoodColor : owned > 0 ? WarningColor : MutedColor;
+        var doneColor = complete ? GoodColor : owned > 0 ? WarningColor : MutedColor;
         ImGui.TextColored(doneColor, $"{owned}/{total}");
 
         ImGui.TableNextColumn();
@@ -195,13 +197,13 @@ public sealed partial class PluginUI
     private static string BuildArmorTooltip(ArmorLine armor, RelicOwnership ownership)
     {
         List<string> lines = [$"{armor.LineName} — pieces owned per set:"];
-        foreach (ArmorSet set in armor.Sets)
+        foreach (var set in armor.Sets)
         {
             lines.Add(string.Empty);
             lines.Add(set.Name + ":");
-            foreach (ArmorTier tier in set.Tiers)
+            foreach (var tier in set.Tiers)
             {
-                int tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
+                var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
                 lines.Add($"  {tier.Label}: {tierOwned}/{tier.Pieces}");
             }
         }
@@ -238,7 +240,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableNextColumn();
-        Vector4 doneColor = status.IsComplete ? GoodColor : status.JobsComplete > 0 ? WarningColor : MutedColor;
+        var doneColor = status.IsComplete ? GoodColor : status.JobsComplete > 0 ? WarningColor : MutedColor;
         ImGui.TextColored(doneColor, $"{status.JobsComplete}/{status.Line.Jobs}");
 
         ImGui.TableNextColumn();
@@ -257,8 +259,8 @@ public sealed partial class PluginUI
 
     private void DrawPercentBar(float fraction, float width, string overlay)
     {
-        Vector4 color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
-        using ImRaii.ColorDisposable barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
+        var color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
+        using var barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
         ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new(width, ImGui.GetFrameHeight()), overlay);
     }
 
@@ -272,9 +274,9 @@ public sealed partial class PluginUI
             frontiers.Add((status.JobsNotStarted, status.Line.StepName(0)));
         }
 
-        for (int tier = 0; tier < status.Line.TierCount - 1; tier++)
+        for (var tier = 0; tier < status.Line.TierCount - 1; tier++)
         {
-            int count = status.JobsAtStep(tier);
+            var count = status.JobsAtStep(tier);
             if (count > 0)
             {
                 frontiers.Add((count, status.Line.StepName(tier + 1)));
@@ -302,7 +304,7 @@ public sealed partial class PluginUI
             "Jobs that reached each step:"
         ];
 
-        for (int tier = 0; tier < status.Line.TierCount; tier++)
+        for (var tier = 0; tier < status.Line.TierCount; tier++)
         {
             lines.Add($"  {status.Line.StepName(tier)}: {status.ReachedPerStep[tier]}/{status.Line.Jobs}");
         }
@@ -327,9 +329,8 @@ public sealed partial class PluginUI
         return true;
     }
 
-    private static string ExpansionLongName(string expansionId)
-    {
-        return expansionId switch
+    private static string ExpansionLongName(string expansionId) =>
+        expansionId switch
         {
             "ARR" => ExpansionLongNames[0],
             "HW" => ExpansionLongNames[1],
@@ -340,5 +341,4 @@ public sealed partial class PluginUI
             "DoHDoL" => ExpansionLongNames[6],
             var _ => expansionId
         };
-    }
 }

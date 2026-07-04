@@ -7,7 +7,7 @@ public sealed partial class PluginUI
         ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg;
     private void DrawShoppingList(string expansionId, float regionHeight)
     {
-        using ImRaii.ChildDisposable pane = ImRaii.Child("##TrackerMaterialsPane", new(0, regionHeight), false);
+        using var pane = ImRaii.Child("##TrackerMaterialsPane", new(0, regionHeight), false);
         if (!pane)
         {
             return;
@@ -20,14 +20,14 @@ public sealed partial class PluginUI
             ImGui.Spacing();
         }
 
-        string? lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
+        var lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
 
-        RelicOwnership ownership = GetOwnership();
-        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
+        var ownership = GetOwnership();
+        var statuses = RelicStatusService.Build(ownership, catalog);
         Dictionary<uint, uint> ownedCounts = [];
         uint OwnedLookup(uint itemId)
         {
-            if (!ownedCounts.TryGetValue(itemId, out uint count))
+            if (!ownedCounts.TryGetValue(itemId, out var count))
             {
                 count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
                 ownedCounts[itemId] = count;
@@ -36,13 +36,16 @@ public sealed partial class PluginUI
             return count;
         }
 
-        List<ShoppingMaterialRow> materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, OwnedLookup, lineFilter);
+        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, OwnedLookup, lineFilter);
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
-            materials = [.. materials
-                .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                              || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))];
+            materials =
+            [
+                .. materials
+                    .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
+                                  || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
+            ];
         }
 
         if (config.HideCompleteMaterials)
@@ -53,9 +56,9 @@ public sealed partial class PluginUI
         DrawShoppingSummary(materials);
         ImGui.Spacing();
 
-        data.ArmorCosts.TryGetValue(expansionId, out List<ArmorCostRow>? armorCosts);
-        bool hasArmor = armorCosts is { Count: > 0 };
-        bool drewAny = false;
+        data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
+        var hasArmor = armorCosts is { Count: > 0 };
+        var drewAny = false;
 
         if (materials.Count > 0)
         {
@@ -88,20 +91,20 @@ public sealed partial class PluginUI
 
         // Group by where you get it (zone or step); each group is its own collapsible block so the
         // list stays scannable. The group header is the "where", so rows drop that column.
-        foreach (IGrouping<string, ShoppingMaterialRow> group in materials
+        foreach (var group in materials
             .GroupBy(row => WhereToGet(expansionId, row))
             .OrderBy(g => g.Min(row => row.StepOrder)))
         {
             List<ShoppingMaterialRow> rows = [.. group.OrderBy(row => row.StepOrder)];
-            int shortCount = rows.Count(row => row.Short > 0);
-            string badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
-            string key = $"{expansionId}|W|{group.Key}";
+            var shortCount = rows.Count(row => row.Short > 0);
+            var badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
+            var key = $"{expansionId}|W|{group.Key}";
             if (!DrawCollapsingSection(key, $"{group.Key}  ({badge})###{key}", false))
             {
                 continue;
             }
 
-            using ImRaii.TableDisposable table = ImRaii.Table($"WGrp_{key}", 4, ShoppingTableFlags, new(0, 0));
+            using var table = ImRaii.Table($"WGrp_{key}", 4, ShoppingTableFlags, new(0, 0));
             if (!table)
             {
                 continue;
@@ -113,7 +116,7 @@ public sealed partial class PluginUI
             ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
             ImGui.TableHeadersRow();
 
-            foreach (ShoppingMaterialRow row in rows)
+            foreach (var row in rows)
             {
                 DrawMaterialRow(row);
             }
@@ -135,7 +138,7 @@ public sealed partial class PluginUI
             ImGui.TextColored(WarningColor, row.Material);
             if (ImGui.IsItemHovered())
             {
-                string tooltip = "Couldn't match this to a game item, so owned can't be counted.";
+                var tooltip = "Couldn't match this to a game item, so owned can't be counted.";
                 if (PurchaseSummary(row) is { } cost)
                 {
                     tooltip += $"\n\n{cost}";
@@ -186,8 +189,8 @@ public sealed partial class PluginUI
         }
 
         long unit = purchase.Unit;
-        string currency = purchase.Currency;
-        string summary = $"{unit:N0} {currency} each\nNeed {row.Need:N0} \u2192 {unit * row.Need:N0} {currency}";
+        var currency = purchase.Currency;
+        var summary = $"{unit:N0} {currency} each\nNeed {row.Need:N0} \u2192 {unit * row.Need:N0} {currency}";
         if (row.Short > 0)
         {
             summary += $"\nStill short {row.Short:N0} \u2192 {unit * row.Short:N0} {currency}";
@@ -206,7 +209,7 @@ public sealed partial class PluginUI
         ImGui.TextColored(MutedColor, "Need = every set (all jobs/roles). Hover a stage for per-set / per-piece / slot detail. Short = Need − Owned.");
         ImGui.Spacing();
 
-        using ImRaii.TableDisposable table = ImRaii.Table(
+        using var table = ImRaii.Table(
             $"ArmoursList_{expansionId}",
             5,
             ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
@@ -223,7 +226,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
-        foreach (ArmorCostRow cost in costs)
+        foreach (var cost in costs)
         {
             ImGui.TableNextRow();
 
@@ -231,8 +234,8 @@ public sealed partial class PluginUI
             ImGui.TextUnformatted(cost.Set);
             if (ImGui.IsItemHovered())
             {
-                string perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
-                string detail = $"Per piece: {perPiece}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
+                var perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
+                var detail = $"Per piece: {perPiece}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
                 if (!string.IsNullOrWhiteSpace(cost.Note))
                 {
                     detail += $"\n\n{cost.Note}";
@@ -242,7 +245,7 @@ public sealed partial class PluginUI
             }
 
             ImGui.TableNextColumn();
-            IReadOnlyList<uint> itemIds = itemResolver.ResolveItemIds(cost.Currency);
+            var itemIds = itemResolver.ResolveItemIds(cost.Currency);
             if (itemIds.Count > 0)
             {
                 ImGui.TextUnformatted(cost.Currency);
@@ -255,8 +258,8 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
 
-            bool resolved = itemIds.Count > 0;
-            uint owned = resolved
+            var resolved = itemIds.Count > 0;
+            var owned = resolved
                 ? itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
                 : 0u;
 
@@ -273,7 +276,7 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             if (resolved && cost.AllTotal > 0)
             {
-                uint shortfall = (uint)cost.AllTotal > owned ? (uint)cost.AllTotal - owned : 0;
+                var shortfall = (uint)cost.AllTotal > owned ? (uint)cost.AllTotal - owned : 0;
                 ImGui.TextColored(shortfall == 0 ? GoodColor : BadColor, shortfall.ToString());
             }
             else
@@ -285,12 +288,12 @@ public sealed partial class PluginUI
 
     /// <summary>Where/how to get a material: farm zone (material_sources.json), else the relic step.</summary>
     private string WhereToGet(string expansionId, ShoppingMaterialRow row) =>
-        data.MaterialSources.TryGetValue(row.Material, out string? source) ? source : row.Step;
+        data.MaterialSources.TryGetValue(row.Material, out var source) ? source : row.Step;
 
     private void DrawShoppingSummary(IReadOnlyList<ShoppingMaterialRow> materials)
     {
-        int shortCount = materials.Count(row => row.Short > 0);
-        int unresolved = materials.Count(row => !row.Resolved);
+        var shortCount = materials.Count(row => row.Short > 0);
+        var unresolved = materials.Count(row => !row.Resolved);
 
         if (shortCount == 0)
         {
@@ -312,8 +315,8 @@ public sealed partial class PluginUI
 
     private bool DrawCollapsingSection(string configKey, string header, bool defaultOpen)
     {
-        bool isOpen = config.ExpandedMaterialSections.TryGetValue(configKey, out bool saved) ? saved : defaultOpen;
-        bool nodeOpen = ImGui.CollapsingHeader(header, isOpen ? ImGuiTreeNodeFlags.DefaultOpen : ImGuiTreeNodeFlags.None);
+        var isOpen = config.ExpandedMaterialSections.TryGetValue(configKey, out var saved) ? saved : defaultOpen;
+        var nodeOpen = ImGui.CollapsingHeader(header, isOpen ? ImGuiTreeNodeFlags.DefaultOpen : ImGuiTreeNodeFlags.None);
         if (nodeOpen != isOpen)
         {
             config.ExpandedMaterialSections[configKey] = nodeOpen;
