@@ -13,30 +13,15 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
-        {
-            ImGui.TextColored(MutedColor,
-                "Tick finished steps on the Relic tab to trim this list. Allagan Tools auto-fills steps for owned relics.");
-            ImGui.Spacing();
-        }
+        DrawProgressSourceHint(ProgressHintContext.Tracker);
 
-        var lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
+        string? lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
 
-        var ownership = GetOwnership();
-        var statuses = RelicStatusService.Build(ownership, catalog);
-        Dictionary<uint, uint> ownedCounts = [];
-        uint OwnedLookup(uint itemId)
-        {
-            if (!ownedCounts.TryGetValue(itemId, out var count))
-            {
-                count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
-                ownedCounts[itemId] = count;
-            }
+        RelicOwnership ownership = GetOwnership();
+        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
+        Func<uint, uint> ownedLookup = CreateOwnedLookup();
 
-            return count;
-        }
-
-        var materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, OwnedLookup, lineFilter);
+        List<ShoppingMaterialRow> materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup, lineFilter);
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
@@ -69,7 +54,7 @@ public sealed partial class PluginUI
         if (hasArmor)
         {
             drewAny = true;
-            DrawArmoursList(expansionId, armorCosts!, OwnedLookup);
+            DrawArmoursList(expansionId, armorCosts!, ownedLookup);
         }
 
         if (!drewAny)

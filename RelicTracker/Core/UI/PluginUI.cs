@@ -19,7 +19,6 @@ public sealed partial class PluginUI : Window
     private readonly RelicDataService data;
     private readonly FfxivCollectService ffxivCollect;
     private readonly ItemResolver itemResolver;
-    private readonly JobAbbrevResolver jobAbbrevResolver = new();
 
     private string materialFilter = string.Empty;
 
@@ -31,7 +30,6 @@ public sealed partial class PluginUI : Window
         this.catalog = catalog;
         this.itemResolver = itemResolver;
         this.ffxivCollect = ffxivCollect;
-        jobAbbrevResolver.Build();
 
         SizeCondition = ImGuiCond.FirstUseEver;
         Size = new Vector2(720, 560);
