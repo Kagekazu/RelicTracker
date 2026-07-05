@@ -13,6 +13,7 @@ __pycache__/
 
 # Cached API pull used by data/extract_relics.py
 data/extracted/_relics_index_raw.json
+data/extracted/_item.csv
 
 # OS
 Thumbs.db

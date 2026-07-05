@@ -43,9 +43,6 @@
         <None Include="..\data\extracted\relic_armor.json" Link="Data\relic_armor.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="..\data\extracted\material_aliases.json" Link="Data\material_aliases.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <None Include="..\data\extracted\material_sources.json" Link="Data\material_sources.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

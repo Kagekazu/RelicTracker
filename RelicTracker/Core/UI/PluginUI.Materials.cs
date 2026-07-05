@@ -1,3 +1,4 @@
+using RelicTracker.Framework;
 using RelicTracker.IPC;
 namespace RelicTracker;
 
@@ -21,14 +22,15 @@ public sealed partial class PluginUI
         IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
         Func<uint, uint> ownedLookup = CreateOwnedLookup();
 
-        List<ShoppingMaterialRow> materials = data.GetShoppingMaterials(expansionId, statuses, ownership, itemResolver, ownedLookup, lineFilter);
+        List<ShoppingMaterialRow> materials = data.GetShoppingMaterials(expansionId, statuses, ownership, ownedLookup, lineFilter);
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {
             materials =
             [
                 .. materials
-                    .Where(row => row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
+                    .Where(row => row.DisplayMaterial.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
+                                  || row.Material.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
                                   || row.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
             ];
         }
@@ -115,12 +117,12 @@ public sealed partial class PluginUI
         ImGui.TableNextColumn();
         if (row.Resolved)
         {
-            ImGui.TextUnformatted(row.Material);
+            ImGui.TextUnformatted(row.DisplayMaterial);
             DrawPurchaseTooltip(row);
         }
         else
         {
-            ImGui.TextColored(WarningColor, row.Material);
+            ImGui.TextColored(WarningColor, row.DisplayMaterial);
             if (ImGui.IsItemHovered())
             {
                 var tooltip = "Couldn't match this to a game item, so owned can't be counted.";
@@ -230,22 +232,22 @@ public sealed partial class PluginUI
             }
 
             ImGui.TableNextColumn();
-            var itemIds = itemResolver.ResolveItemIds(cost.Currency);
-            if (itemIds.Count > 0)
+            var resolved = cost.CurrencyIds.Count > 0;
+            var currencyLabel = ItemDisplayNames.Label(cost.CurrencyIds, cost.Currency);
+            if (resolved)
             {
-                ImGui.TextUnformatted(cost.Currency);
+                ImGui.TextUnformatted(currencyLabel);
             }
             else
             {
-                ImGui.TextColored(WarningColor, cost.Currency);
+                ImGui.TextColored(WarningColor, currencyLabel);
             }
 
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
 
-            var resolved = itemIds.Count > 0;
             var owned = resolved
-                ? itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
+                ? cost.CurrencyIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
                 : 0u;
 
             ImGui.TableNextColumn();

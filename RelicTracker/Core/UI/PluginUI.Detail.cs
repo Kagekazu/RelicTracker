@@ -316,8 +316,8 @@ public sealed partial class PluginUI
             if (AllaganToolsIpc.IsReady)
             {
                 Func<uint, uint> ownedLookup = CreateOwnedLookup();
-                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, ownedLookup);
-                inventoryArmorDone = InventoryProgressBuilder.BuildArmorPieceDoneKeys(catalog, itemResolver, ownedLookup);
+                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, ownedLookup);
+                inventoryArmorDone = InventoryProgressBuilder.BuildArmorPieceDoneKeys(catalog, ownedLookup);
                 config.SaveInventorySnapshot(inventoryDone, inventoryArmorDone);
             }
             else
@@ -832,11 +832,12 @@ public sealed partial class PluginUI
             bool isScrip = false)
         {
             var need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
-            var itemIds = itemResolver.ResolveItemIds(name);
+            var itemIds = row.MaterialIds;
             var resolved = itemIds.Count > 0;
             var owned = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+            var displayName = ItemDisplayNames.Label(itemIds, name);
             var where = data.MaterialSources.TryGetValue(name, out var src) ? src : null;
-            return new(name, where, need, owned, resolved, depth, isCraftProduct, isPrecraft, isScrip);
+            return new(displayName, where, need, owned, resolved, depth, isCraftProduct, isPrecraft, isScrip);
         }
     }
 

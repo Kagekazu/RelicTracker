@@ -18,17 +18,15 @@ public sealed partial class PluginUI : Window
     private readonly Configuration config;
     private readonly RelicDataService data;
     private readonly FfxivCollectService ffxivCollect;
-    private readonly ItemResolver itemResolver;
 
     private string materialFilter = string.Empty;
 
-    public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, ItemResolver itemResolver, FfxivCollectService ffxivCollect)
+    public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, FfxivCollectService ffxivCollect)
         : base($"Relic Tracker###{WindowId}")
     {
         this.config = config;
         this.data = data;
         this.catalog = catalog;
-        this.itemResolver = itemResolver;
         this.ffxivCollect = ffxivCollect;
 
         SizeCondition = ImGuiCond.FirstUseEver;

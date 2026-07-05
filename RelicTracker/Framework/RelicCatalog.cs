@@ -36,6 +36,15 @@ public sealed class RelicLine
     [JsonPropertyName("relicNames")]
     public List<string> RelicNames { get; set; } = [];
 
+    [JsonPropertyName("relicIds")]
+    public List<uint> RelicIds { get; set; } = [];
+
+    [JsonPropertyName("slotRelicIds")]
+    public List<uint> SlotRelicIds { get; set; } = [];
+
+    [JsonPropertyName("relicReplicaIds")]
+    public List<List<uint>> RelicReplicaIds { get; set; } = [];
+
     [JsonPropertyName("typeOrder")]
     public int TypeOrder { get; set; }
 
@@ -61,9 +70,33 @@ public sealed class RelicLine
             return null;
         }
 
-        var index = (tierIndex * Jobs) + slotIndex;
+        var index = RelicIndex(slotIndex, tierIndex);
         return index >= 0 && index < RelicNames.Count ? RelicNames[index] : null;
     }
+
+    public uint RelicId(int slotIndex, int tierIndex)
+    {
+        if (Jobs <= 0 || slotIndex < 0 || tierIndex < 0)
+        {
+            return 0;
+        }
+
+        var index = RelicIndex(slotIndex, tierIndex);
+        return index >= 0 && index < RelicIds.Count ? RelicIds[index] : 0;
+    }
+
+    public IReadOnlyList<uint> RelicReplicas(int slotIndex, int tierIndex)
+    {
+        if (Jobs <= 0 || slotIndex < 0 || tierIndex < 0)
+        {
+            return [];
+        }
+
+        var index = RelicIndex(slotIndex, tierIndex);
+        return index >= 0 && index < RelicReplicaIds.Count ? RelicReplicaIds[index] : [];
+    }
+
+    private int RelicIndex(int slotIndex, int tierIndex) => (tierIndex * Jobs) + slotIndex;
 }
 
 /// <summary>One augment tier of an armor set (a FFXIV Collect armor type).</summary>
@@ -80,6 +113,9 @@ public sealed class ArmorTier
 
     [JsonPropertyName("pieceNames")]
     public List<string> PieceNames { get; set; } = [];
+
+    [JsonPropertyName("pieceIds")]
+    public List<uint> PieceIds { get; set; } = [];
 }
 
 /// <summary>A distinct armor set (e.g. Bozjan), with its Base/Augmented/+1/+2 tiers.</summary>
@@ -226,20 +262,20 @@ public sealed class RelicCatalog
     }
 
     /// <summary>Resolves each line's slot -> job order from game data, falling back to the bundled list.</summary>
-    public void ResolveJobs(ItemResolver items)
+    public void ResolveJobs()
     {
         var resolvedLines = 0;
         foreach (var line in Lines)
         {
-            if (line.Jobs <= 0 || line.SlotRelics.Count != line.Jobs)
+            if (line.Jobs <= 0 || line.SlotRelicIds.Count != line.Jobs)
             {
                 continue;
             }
 
             List<string> resolved = new(line.Jobs);
-            foreach (var relicName in line.SlotRelics)
+            foreach (uint itemId in line.SlotRelicIds)
             {
-                if (!items.TryResolveEquipJob(relicName, out var abbrev))
+                if (!ClassJobEquipResolver.TryResolveEquipJobByItemId(itemId, out var abbrev))
                 {
                     resolved.Clear();
                     break;

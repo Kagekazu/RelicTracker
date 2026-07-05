@@ -157,6 +157,26 @@ def main() -> int:
         if len(slot_relics) != jobs:
             fail(errors, f"relic_lines[{index}] slotRelics length does not match jobs")
 
+        relic_ids = line.get("relicIds") or []
+        slot_relic_ids = line.get("slotRelicIds") or []
+        relic_replica_ids = line.get("relicReplicaIds") or []
+        if len(relic_ids) != relic_count:
+            fail(errors, f"relic_lines[{index}] relicIds count does not match relicCount")
+        if len(slot_relic_ids) != jobs:
+            fail(errors, f"relic_lines[{index}] slotRelicIds length does not match jobs")
+        if len(relic_replica_ids) != relic_count:
+            fail(errors, f"relic_lines[{index}] relicReplicaIds count does not match relicCount")
+        if any(not isinstance(item_id, int) or item_id <= 0 for item_id in relic_ids):
+            fail(errors, f"relic_lines[{index}] has invalid relicIds entries")
+        if any(not isinstance(item_id, int) or item_id <= 0 for item_id in slot_relic_ids):
+            fail(errors, f"relic_lines[{index}] has invalid slotRelicIds entries")
+        for replica_index, replicas in enumerate(relic_replica_ids):
+            if not isinstance(replicas, list):
+                fail(errors, f"relic_lines[{index}] relicReplicaIds[{replica_index}] is not a list")
+                continue
+            if any(not isinstance(item_id, int) or item_id <= 0 for item_id in replicas):
+                fail(errors, f"relic_lines[{index}] relicReplicaIds[{replica_index}] has invalid ids")
+
     for index, line in enumerate(relic_armor):
         expansion = line.get("expansion")
         if expansion not in expansions:
@@ -176,6 +196,18 @@ def main() -> int:
                     fail(
                         errors,
                         f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has blank pieceNames entries",
+                    )
+
+                piece_ids = tier.get("pieceIds") or []
+                if len(piece_ids) != pieces:
+                    fail(
+                        errors,
+                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] pieceIds count does not match pieces",
+                    )
+                if any(not isinstance(item_id, int) or item_id <= 0 for item_id in piece_ids):
+                    fail(
+                        errors,
+                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has invalid pieceIds entries",
                     )
 
     material_names: set[str] = set()
@@ -199,6 +231,12 @@ def main() -> int:
         if not isinstance(jobs, list) or not jobs or not all(isinstance(flag, bool) for flag in jobs):
             fail(errors, f"{expansion}[{index}] has invalid jobs flags")
 
+        material_ids = row.get("materialIds") or []
+        if not isinstance(material_ids, list) or not material_ids:
+            fail(errors, f"{expansion}[{index}] has no materialIds")
+        elif any(not isinstance(item_id, int) or item_id <= 0 for item_id in material_ids):
+            fail(errors, f"{expansion}[{index}] has invalid materialIds entries")
+
     source_keys = {key for key in sources if not key.startswith("_")}
     stale_sources = sorted(source_keys - material_names)
     for key in stale_sources:
@@ -221,6 +259,14 @@ def main() -> int:
                 fail(errors, f"armor_costs {expansion}[{index}] has no currency")
             if int(cost.get("allTotal") or 0) < 0:
                 fail(errors, f"armor_costs {expansion}[{index}] has negative allTotal")
+            currency_id = cost.get("currencyId")
+            currency_ids = cost.get("currencyIds") or []
+            if isinstance(currency_id, int) and currency_id > 0 and not currency_ids:
+                currency_ids = [currency_id]
+            if not isinstance(currency_ids, list) or not currency_ids:
+                fail(errors, f"armor_costs {expansion}[{index}] has no currencyIds")
+            elif any(not isinstance(item_id, int) or item_id <= 0 for item_id in currency_ids):
+                fail(errors, f"armor_costs {expansion}[{index}] has invalid currencyIds entries")
 
     item_names, item_warning = load_item_names(args.item_csv)
     if item_warning:
