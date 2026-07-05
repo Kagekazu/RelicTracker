@@ -77,6 +77,9 @@ public sealed class ArmorTier
 
     [JsonPropertyName("pieces")]
     public int Pieces { get; set; }
+
+    [JsonPropertyName("pieceNames")]
+    public List<string> PieceNames { get; set; } = [];
 }
 
 /// <summary>A distinct armor set (e.g. Bozjan), with its Base/Augmented/+1/+2 tiers.</summary>

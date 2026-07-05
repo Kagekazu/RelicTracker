@@ -170,7 +170,7 @@ public sealed partial class PluginUI : Window
     private void DrawSettingsTab()
     {
         ImGui.TextColored(MutedColor,
-            "Progress is saved per logged-in character. Allagan Tools counts use your active character and retainers only.");
+            "Progress is saved per logged-in character. Allagan Tools counts use your active character, retainers, glamour dresser, and armoire.");
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();

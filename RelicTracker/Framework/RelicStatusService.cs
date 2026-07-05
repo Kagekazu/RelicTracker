@@ -54,10 +54,15 @@ public sealed class RelicOwnership
     FfxivCollectSnapshot snapshot,
     HashSet<string>? manualDone = null,
     HashSet<string>? manualArmor = null,
-    HashSet<string>? inventoryDone = null)
+    HashSet<string>? inventoryDone = null,
+    HashSet<string>? inventoryArmor = null)
 {
     /// <summary>Allagan Tools inventory detections, keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> inventoryDone = inventoryDone ?? new(StringComparer.Ordinal);
+
+    /// <summary>Allagan Tools armor detections, keyed CollectType|pieceIndex.</summary>
+    private readonly HashSet<string> inventoryArmor = inventoryArmor ?? new(StringComparer.Ordinal);
+
     /// <summary>Manual armor piece ticks for the active character, keyed CollectType|pieceIndex.</summary>
     private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
 
@@ -77,7 +82,7 @@ public sealed class RelicOwnership
     public int OwnedCount(string collectType) =>
         ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
 
-    /// <summary>How many of an armor tier's pieces are manually ticked (used when Collect isn't linked).</summary>
+    /// <summary>How many of an armor tier's pieces are manually ticked.</summary>
     public int ManualPieceCount(string collectType, int pieces)
     {
         if (manualArmor.Count == 0)
@@ -97,9 +102,31 @@ public sealed class RelicOwnership
         return n;
     }
 
-    /// <summary>Effective owned pieces for an armor tier — FFXIV Collect or manual ticks, whichever is higher.</summary>
+    /// <summary>How many of an armor tier's pieces Allagan Tools shows in inventory.</summary>
+    public int InventoryPieceCount(string collectType, int pieces)
+    {
+        if (inventoryArmor.Count == 0)
+        {
+            return 0;
+        }
+
+        var n = 0;
+        for (var i = 0; i < pieces; i++)
+        {
+            if (inventoryArmor.Contains($"{collectType}|{i}"))
+            {
+                n++;
+            }
+        }
+
+        return n;
+    }
+
+    /// <summary>Effective owned pieces — FFXIV Collect aggregate, manual ticks, or inventory, whichever is highest.</summary>
     public int OwnedPieceCount(string collectType, int pieces) =>
-        Math.Max(Math.Min(pieces, OwnedCount(collectType)), ManualPieceCount(collectType, pieces));
+        Math.Max(
+            Math.Min(pieces, OwnedCount(collectType)),
+            Math.Max(ManualPieceCount(collectType, pieces), InventoryPieceCount(collectType, pieces)));
 
     public bool IsCollectStepDone(RelicLine line, int slotIndex, int tier)
     {

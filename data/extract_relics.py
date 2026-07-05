@@ -183,23 +183,33 @@ def build_lines(relics: list[dict]) -> list[dict]:
     return lines
 
 
-def build_armor(relics: list[dict]) -> list[dict]:
-    counts: dict[str, int] = {}
-    for relic in relics:
-        name = (relic.get("type") or {}).get("name")
-        if name:
-            counts[name] = counts.get(name, 0) + 1
+def piece_names_for_type(relics: list[dict], collect_type: str) -> list[str]:
+    ordered = sorted(
+        (relic.get("order") or 0, relic.get("name") or "")
+        for relic in relics
+        if (relic.get("type") or {}).get("name") == collect_type
+    )
+    if not ordered:
+        raise ValueError(f"Armor type not found in index: {collect_type}")
+    return [name for _, name in ordered]
 
+
+def build_armor(relics: list[dict]) -> list[dict]:
     lines: list[dict] = []
     for expansion, line_name, sets in ARMOR_LINES:
         resolved_sets = []
         for set_name, tiers in sets:
             resolved_tiers = []
             for collect_type, label in tiers:
-                pieces = counts.get(collect_type, 0)
-                if pieces == 0:
-                    raise ValueError(f"Armor type not found in index: {collect_type}")
-                resolved_tiers.append({"collectType": collect_type, "label": label, "pieces": pieces})
+                piece_names = piece_names_for_type(relics, collect_type)
+                resolved_tiers.append(
+                    {
+                        "collectType": collect_type,
+                        "label": label,
+                        "pieces": len(piece_names),
+                        "pieceNames": piece_names,
+                    }
+                )
             resolved_sets.append({"name": set_name, "tiers": resolved_tiers})
         lines.append({"expansion": expansion, "lineName": line_name, "sets": resolved_sets})
     return lines

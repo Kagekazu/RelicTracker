@@ -73,7 +73,7 @@ public sealed class Configuration : IPluginConfiguration
         return progress;
     }
 
-    public void SaveInventorySnapshot(IEnumerable<string> stepKeys)
+    public void SaveInventorySnapshot(IEnumerable<string> stepKeys, IEnumerable<string> armorPieceKeys)
     {
         ulong contentId = CharacterScope.CurrentContentId;
         if (contentId == 0)
@@ -82,15 +82,29 @@ public sealed class Configuration : IPluginConfiguration
         }
 
         CharacterProgress progress = CurrentCharacterProgress();
-        if (progress.InventoryStepDone.SetEquals(stepKeys))
+        bool stepsDirty = !progress.InventoryStepDone.SetEquals(stepKeys);
+        bool armorDirty = !progress.InventoryArmorPieceDone.SetEquals(armorPieceKeys);
+        if (!stepsDirty && !armorDirty)
         {
             return;
         }
 
-        progress.InventoryStepDone.Clear();
-        foreach (string key in stepKeys)
+        if (stepsDirty)
         {
-            progress.InventoryStepDone.Add(key);
+            progress.InventoryStepDone.Clear();
+            foreach (string key in stepKeys)
+            {
+                progress.InventoryStepDone.Add(key);
+            }
+        }
+
+        if (armorDirty)
+        {
+            progress.InventoryArmorPieceDone.Clear();
+            foreach (string key in armorPieceKeys)
+            {
+                progress.InventoryArmorPieceDone.Add(key);
+            }
         }
 
         OnSettingChanged();

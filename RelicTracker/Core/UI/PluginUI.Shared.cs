@@ -84,6 +84,21 @@ public sealed partial class PluginUI
         return "Auto-tracked from FFXIV Collect — for relics no longer in inventory.";
     }
 
+    private static string DescribeArmorProgressSource(bool inventoryLinked, bool collectLinked)
+    {
+        if (inventoryLinked && collectLinked)
+        {
+            return "Auto-tracked from Allagan Tools. FFXIV Collect fills in pieces you no longer have in inventory.";
+        }
+
+        if (inventoryLinked)
+        {
+            return "Auto-tracked from Allagan Tools inventory.";
+        }
+
+        return "Auto-tracked from FFXIV Collect — for pieces no longer in inventory.";
+    }
+
     private void DrawPluginConnectionStatus(string label, bool installed, bool enabled, bool ready)
     {
         if (!installed)
