@@ -7,10 +7,13 @@ public sealed class ItemResolver
 
     private readonly Dictionary<string, uint> byName = new(StringComparer.OrdinalIgnoreCase);
 
+    private readonly Dictionary<string, List<uint>> replicaIdsByRelicName = new(StringComparer.OrdinalIgnoreCase);
+
     public void Build()
     {
         byName.Clear();
         aliasToNames.Clear();
+        replicaIdsByRelicName.Clear();
 
         var sheet = Svc.Data.GetExcelSheet<Item>();
         foreach (var row in sheet)
@@ -26,14 +29,33 @@ public sealed class ItemResolver
             {
                 byName.TryAdd(name[3..].Trim(), row.RowId);
             }
+
+            if (name.StartsWith("Replica ", StringComparison.OrdinalIgnoreCase))
+            {
+                string baseName = name["Replica ".Length..].Trim();
+                if (!string.IsNullOrEmpty(baseName))
+                {
+                    if (!replicaIdsByRelicName.TryGetValue(baseName, out List<uint>? replicas))
+                    {
+                        replicas = [];
+                        replicaIdsByRelicName[baseName] = replicas;
+                    }
+
+                    if (!replicas.Contains(row.RowId))
+                    {
+                        replicas.Add(row.RowId);
+                    }
+                }
+            }
         }
 
         LoadAliases();
 
         Svc.Log.Information(
-            "[RelicTracker] Indexed {ItemCount} item names and {AliasCount} material aliases.",
+            "[RelicTracker] Indexed {ItemCount} item names, {AliasCount} material aliases, {ReplicaCount} relic replica names.",
             byName.Count,
-            aliasToNames.Count);
+            aliasToNames.Count,
+            replicaIdsByRelicName.Count);
     }
 
     /// <summary>Resolves the single job a relic weapon/tool is equippable by, from its item name.</summary>
@@ -75,6 +97,35 @@ public sealed class ItemResolver
 
     public bool TryResolveItem(string itemName, out uint itemId) =>
         byName.TryGetValue(itemName.Trim(), out itemId);
+
+    public IReadOnlyList<uint> GetReplicaIds(string relicName)
+    {
+        if (replicaIdsByRelicName.TryGetValue(relicName.Trim(), out List<uint>? replicas))
+        {
+            return replicas;
+        }
+
+        return [];
+    }
+
+    /// <summary>True if Allagan Tools reports any owned copy of the relic item or a vendor replica with the same base name.</summary>
+    public bool IsRelicOrReplicaOwned(string relicName, Func<uint, uint> ownedLookup)
+    {
+        if (TryResolveItem(relicName, out uint relicId) && ownedLookup(relicId) > 0)
+        {
+            return true;
+        }
+
+        foreach (uint replicaId in GetReplicaIds(relicName))
+        {
+            if (ownedLookup(replicaId) > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public IReadOnlyList<uint> ResolveItemIds(string materialName)
     {

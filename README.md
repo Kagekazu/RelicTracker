@@ -1,44 +1,40 @@
 # RelicTracker
 
-Track your FFXIV relic weapons, tools, and armor across every job — see what is
-finished, what you are working on, and exactly what materials you still need to
-farm, using live inventory data from Allagan Tools.
+Track relic weapons, tools, and armor across every job — see what is finished,
+what you are on now, and what materials you still need.
 
-## What it does
+## Tabs
 
-- **Overview** — every relic line from A Realm Reborn through Dawntrail, plus the
-  Disciple of the Hand & Land tools, with how many jobs are finished and what step
-  the rest are on.
-- **Relic** — pick an expansion, line, and job for a step-by-step checklist. Tick
-  off each upgrade, see the step you're on highlighted, and check the items the
-  next step needs with live owned counts.
-- **Tracker** — everything you still need for an expansion in one shopping list,
-  grouped by where you farm it, plus field-operation armor currency costs. Owned
-  counts come straight from your inventory and retainers.
+- **Overview** — all relic lines at a glance: how far along each one is and which
+  jobs still have work left.
+- **Relic** — pick an expansion, line, and job for a step-by-step checklist. Your
+  current step is highlighted, with notes and a material breakdown when data is
+  available.
+- **Tracker** — a shopping list for an expansion: what you still need, grouped by
+  where to get it, with owned counts from your inventory.
+- **Settings** — inventory scope, plugin connections, and optional extras.
 
-## How it works
+## Progress
 
-RelicTracker reads your inventory through **Allagan Tools**. If it finds a relic
-weapon or tool in your inventory or retainers, that step is marked complete
-automatically. It also uses the same inventory data to show how many materials
-and currencies you already have.
+RelicTracker fills in finished steps when it can see the relic (or a replica) in
+your inventory, and shows live owned counts for materials. You can also tick steps
+and armor pieces yourself on the **Relic** tab — useful when something is not in
+your bags anymore.
 
-Progress can be tracked three ways:
+The **Tracker** list shrinks as you finish jobs or mark steps done, so it stays
+focused on what is still left to farm or craft.
 
-- **Allagan Tools** — owned relic items are detected automatically from inventory.
-- **FFXIV Collect (optional)** — add your [FFXIV Collect](https://ffxivcollect.com/)
-  character ID on the Settings tab and finished relics fill in automatically. Your
-  ID is the number in your profile URL (`ffxivcollect.com/characters/XXXXXXXX`).
-- **Manual** — tick anything that is not currently owned or synced, including armor
-  pieces, on the Relic tab. The Overview and Tracker update to match.
+## Install
 
-The Tracker's "still needed" numbers cover every job that hasn't finished a step
-yet, so as you complete relics (or tick them off) the list shrinks to just what's
-left.
+Add this custom plugin repository in Dalamud:
+
+`https://puni.sh/api/repository/kage`
+
+Then install **RelicTracker** from the plugin installer. **Allagan Tools** is
+recommended for inventory counts and owned-relic detection.
 
 ## Getting started
 
-1. Install and enable **Allagan Tools** for relic detection and inventory counts.
-2. Open RelicTracker with `/relictracker` (or `/rtracker`).
-3. (Optional) Add your FFXIV Collect ID on the **Settings** tab to auto-fill
-   finished relics. Otherwise, tick steps yourself on the **Relic** tab.
+1. Open RelicTracker with `/relictracker` or `/rtracker`.
+2. Use **Overview** for the big picture, **Relic** for per-job detail, and
+   **Tracker** when you want a farm list.

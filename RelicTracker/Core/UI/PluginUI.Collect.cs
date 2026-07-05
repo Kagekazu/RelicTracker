@@ -24,7 +24,7 @@ public sealed partial class PluginUI
 
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
 
-        ImGui.TextColored(MutedColor, "Read-only sync from FFXIV Collect — finished relic weapons, tools, and armor.");
+        ImGui.TextColored(MutedColor, "Read-only profile sync — use when relics are no longer in your inventory.");
         ImGui.Spacing();
 
         ImGui.SetNextItemWidth(180);
@@ -209,10 +209,10 @@ public sealed partial class PluginUI
         if (ImGui.IsItemHovered())
         {
             var tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
-                ? "Fetch the latest relic progress from FFXIV Collect and refresh Allagan Tools inventory counts."
+                ? "Refresh FFXIV Collect and re-read Allagan Tools inventory counts."
                 : config.FfxivCollectCharacterId != 0
                     ? "Fetch the latest relic progress from FFXIV Collect."
-                    : "Re-read owned relic items from Allagan Tools inventory.";
+                    : "Re-read owned relic items (and replicas) from Allagan Tools inventory.";
             ImGui.SetTooltip(tooltip);
         }
     }

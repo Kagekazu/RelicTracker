@@ -198,10 +198,14 @@ public sealed partial class PluginUI : Window
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
-        ImGui.TextColored(MutedColor, "Link an ID to auto-fill finished relics. Without it, tick steps and armor pieces manually on the Relic tab.");
-        ImGui.Spacing();
-
-        DrawCollectSection();
+        if (ImGui.CollapsingHeader("FFXIV Collect (optional)###collectSettings"))
+        {
+            ImGui.TextColored(
+                MutedColor,
+                "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
+                + "Allagan Tools already covers relics and replicas you still own.");
+            ImGui.Spacing();
+            DrawCollectSection();
+        }
     }
 }

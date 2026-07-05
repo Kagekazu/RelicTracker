@@ -187,7 +187,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Link FFXIV Collect on the Settings tab to auto-track instead.");
+            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Allagan Tools or FFXIV Collect on the Settings tab can auto-track instead.");
         }
 
         ImGui.Separator();
@@ -330,6 +330,8 @@ public sealed partial class PluginUI
             return done;
         }
 
+        Func<uint, uint> ownedLookup = id => AllaganToolsIpc.GetOwnedCount(id, config.ActiveCharacterOnly);
+
         foreach (var line in catalog.Lines)
         {
             var jobs = line.EffectiveJobList;
@@ -339,8 +341,7 @@ public sealed partial class PluginUI
                 {
                     var relicName = line.RelicName(slot, tier);
                     if (string.IsNullOrWhiteSpace(relicName)
-                        || !itemResolver.TryResolveItem(relicName, out var itemId)
-                        || AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly) == 0)
+                        || !itemResolver.IsRelicOrReplicaOwned(relicName, ownedLookup))
                     {
                         continue;
                     }
@@ -386,7 +387,7 @@ public sealed partial class PluginUI
         if (!collectLinked && !inventoryLinked)
         {
             ImGui.TextColored(MutedColor,
-                "Set a FFXIV Collect ID on the Settings tab to auto-fill finished steps. Until then, tick steps manually.");
+                "Tick steps manually, or connect Allagan Tools on the Settings tab to auto-fill steps for relics (and replicas) you still own.");
             return;
         }
 
@@ -399,11 +400,11 @@ public sealed partial class PluginUI
             }
         }
 
-        var source = collectLinked && inventoryLinked
-            ? "Auto-tracked from FFXIV Collect and Allagan Tools."
-            : collectLinked
-                ? "Auto-tracked from FFXIV Collect."
-                : "Auto-tracked from Allagan Tools.";
+        string source = inventoryLinked && collectLinked
+            ? "Auto-tracked from Allagan Tools (replicas count). FFXIV Collect fills in steps you no longer have in inventory."
+            : inventoryLinked
+                ? "Auto-tracked from Allagan Tools inventory (replicas count too)."
+                : "Auto-tracked from FFXIV Collect — for relics no longer in inventory.";
         ImGui.TextColored(GoodColor, source);
         ImGui.SameLine();
         ImGui.TextColored(complete == line.Jobs ? GoodColor : MutedColor, $"({complete}/{line.Jobs} jobs complete)");
@@ -538,11 +539,11 @@ public sealed partial class PluginUI
                 ImGui.TextColored(GoodColor, "✓");
                 if (ImGui.IsItemHovered())
                 {
-                    var source = collectDone && inventoryDone
-                        ? "FFXIV Collect + Allagan Tools inventory"
+                    string source = collectDone && inventoryDone
+                        ? "FFXIV Collect + Allagan Tools (replicas count)"
                         : collectDone
                             ? "FFXIV Collect"
-                            : "Allagan Tools inventory";
+                            : "Allagan Tools inventory (replicas count)";
                     ImGui.SetTooltip($"Completed ({source})");
                 }
             }

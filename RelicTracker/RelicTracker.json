@@ -2,7 +2,7 @@
   "Author": "Kagekazu",
   "Name": "RelicTracker",
   "Punchline": "Track relic progress and materials across inventory and retainers.",
-  "Description": "Track relic weapon, tool, and armor progress across every job, with owned relic detection and live material counts from Allagan Tools plus optional FFXIV Collect sync.",
+  "Description": "Track relic weapon, tool, and armor progress across every job. Owned relic detection and live material counts from Allagan Tools (replicas included). Optional FFXIV Collect sync for relics you no longer have.",
   "InternalName": "RelicTracker",
   "IconUrl": "https://raw.githubusercontent.com/Kagekazu/RelicTracker/main/images/icon.png",
   "RepoUrl": "https://github.com/Kagekazu/RelicTracker",

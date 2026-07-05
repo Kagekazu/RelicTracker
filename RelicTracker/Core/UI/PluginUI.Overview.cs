@@ -27,8 +27,8 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(MutedColor,
                 AllaganToolsIpc.IsReady
-                    ? "Owned relic items are auto-tracked from Allagan Tools. Link FFXIV Collect on the Settings tab or tick missing steps manually."
-                    : "Standalone mode — tick steps on the Relic tab to fill this in. Link FFXIV Collect on the Settings tab to auto-fill finished relics.");
+                    ? "Owned relics are auto-tracked from Allagan Tools (replicas count). Tick any missing steps on the Relic tab."
+                    : "Tick steps on the Relic tab to fill this in. Connect Allagan Tools on Settings for owned-relic detection.");
             ImGui.Spacing();
         }
 
