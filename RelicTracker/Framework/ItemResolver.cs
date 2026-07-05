@@ -15,8 +15,7 @@ public sealed class ItemResolver
         aliasToNames.Clear();
         replicaIdsByRelicName.Clear();
 
-        // English sheet: bundled data files store English names, so the index must be
-        // English-keyed even on DE/FR/JA clients (see GameSheets.English).
+        // English sheet: bundled relic/armor/material data stores English item names.
         var sheet = GameSheets.English<Item>();
         foreach (var row in sheet)
         {
