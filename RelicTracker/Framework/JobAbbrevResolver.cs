@@ -9,7 +9,8 @@ public sealed class JobAbbrevResolver
     {
         abbrevByToken.Clear();
 
-        var sheet = Svc.Data.GetExcelSheet<ClassJob>();
+        // English sheet: emitted abbreviations key progress data, which is English-only.
+        var sheet = GameSheets.English<ClassJob>();
         foreach (var row in sheet)
         {
             var abbrev = row.Abbreviation.ToString().Trim();
