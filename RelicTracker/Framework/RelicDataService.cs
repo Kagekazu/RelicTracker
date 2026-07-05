@@ -52,8 +52,7 @@ public sealed class RelicDataService
         {
             if (!Expansions.TryGetValue(expansionId, out var sheet))
             {
-                sheet = new()
-                    { Id = expansionId };
+                sheet = new() { Id = expansionId };
                 Expansions[expansionId] = sheet;
             }
 
