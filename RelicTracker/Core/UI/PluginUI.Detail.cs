@@ -690,7 +690,7 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Per-weapon materials for a step, from Wyn's per-expansion data, with live owned counts.</summary>
+    /// <summary>Per-weapon materials for a step from bundled expansion data, with live owned counts.</summary>
     private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName, int slotIndex)
     {
         if (!data.Expansions.TryGetValue(line.Expansion, out var sheet))

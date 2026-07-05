@@ -2,14 +2,12 @@ using Dalamud.Game;
 using Lumina.Excel;
 namespace RelicTracker.Framework;
 
-/// <summary>Excel sheet access pinned to English, independent of the game client's language.</summary>
+/// <summary>Excel sheet access pinned to English — bundled data stores English names only.</summary>
 internal static class GameSheets
 {
     /// <summary>
-    ///     The English sheet when the client ships English data, otherwise the client-language
-    ///     sheet. Bundled relic data stores English names only, so all name-to-id matching must
-    ///     run against English rows regardless of client language; only clients without English
-    ///     data (CN/KR) fall back.
+    ///     English rows for DE/FR/JA clients. CN/KR clients without English data fall back to the
+    ///     client-language sheet (name matching may still fail there).
     /// </summary>
     public static ExcelSheet<T> English<T>() where T : struct, IExcelRow<T>
     {

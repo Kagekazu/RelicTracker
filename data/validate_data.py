@@ -150,6 +150,13 @@ def main() -> int:
         if any(not isinstance(name, str) or not name.strip() for name in relic_names):
             fail(errors, f"relic_lines[{index}] has blank relicNames entries")
 
+        job_list = line.get("jobList") or []
+        slot_relics = line.get("slotRelics") or []
+        if len(job_list) != jobs:
+            fail(errors, f"relic_lines[{index}] jobList length does not match jobs")
+        if len(slot_relics) != jobs:
+            fail(errors, f"relic_lines[{index}] slotRelics length does not match jobs")
+
     for index, line in enumerate(relic_armor):
         expansion = line.get("expansion")
         if expansion not in expansions:
