@@ -15,7 +15,9 @@ public sealed class ItemResolver
         aliasToNames.Clear();
         replicaIdsByRelicName.Clear();
 
-        var sheet = Svc.Data.GetExcelSheet<Item>();
+        // English sheet: bundled data files store English names, so the index must be
+        // English-keyed even on DE/FR/JA clients (see GameSheets.English).
+        var sheet = GameSheets.English<Item>();
         foreach (var row in sheet)
         {
             var name = row.Name.ToString().Trim();
@@ -67,7 +69,7 @@ public sealed class ItemResolver
             return false;
         }
 
-        var item = Svc.Data.GetExcelSheet<Item>().GetRowOrDefault(rowId);
+        var item = GameSheets.English<Item>().GetRowOrDefault(rowId);
         if (item is null)
         {
             return false;

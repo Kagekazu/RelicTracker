@@ -35,7 +35,9 @@ internal static class ClassJobEquipResolver
             .Select((abbrev, index) => (abbrev, index))
             .ToDictionary(entry => entry.abbrev, entry => entry.index, StringComparer.Ordinal);
 
-        var sheet = Svc.Data.GetExcelSheet<ClassJob>();
+        // English sheet: abbreviations are matched against ClassJobCategory's English-named
+        // bool columns, and localized clients (DE/FR/JA) localize ClassJob.Abbreviation.
+        var sheet = GameSheets.English<ClassJob>();
         List<(string Abbrev, Func<ClassJobCategory, bool> Has)> accessors = [];
         HashSet<string> seen = new(StringComparer.Ordinal);
 

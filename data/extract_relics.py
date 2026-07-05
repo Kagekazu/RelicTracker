@@ -58,16 +58,19 @@ STEP_NAMES = {
     "Cosmic Tools": ["Cosmic", "Stellar", "Hyper", "Stellar (final)"],
 }
 
-# Per-line job slot lists, ordered to match FFXIV Collect's within-tier slot order
-# (classic relic order — verified against tier-0 relic names). Length must equal `jobs`.
+# Per-line job slot lists, ordered to match FFXIV Collect's within-tier slot order,
+# verified against tier-0 relic names (weapon types identify the job: DT slot 12 is the
+# "Star Globe" = AST, slot 9 the "Staff" = BLM; EW slot 17 "Milpreves" = SGE nouliths,
+# slot 18 "Scythe" = RPR). Casters run WHM, BLM, SMN, SCH, then AST — classic class
+# order with AST appended — and SGE sits before RPR. Length must equal `jobs`.
 DOH_DOL = ["CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL", "MIN", "BTN", "FSH"]
 JOB_LISTS = {
     "A Relic Reborn": ["PLD", "MNK", "WAR", "DRG", "BRD", "WHM", "BLM", "SMN", "SCH", "NIN"],
-    "Anima Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH"],
-    "Eureka Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH", "SAM", "RDM"],
-    "Resistance Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH", "SAM", "RDM", "GNB", "DNC"],
-    "Manderville Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH", "SAM", "RDM", "GNB", "DNC", "RPR", "SGE"],
-    "Phantom Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "AST", "BLM", "SMN", "SCH", "SAM", "RDM", "GNB", "DNC", "RPR", "SGE", "VPR", "PCT"],
+    "Anima Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST"],
+    "Eureka Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST", "SAM", "RDM"],
+    "Resistance Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST", "SAM", "RDM", "GNB", "DNC"],
+    "Manderville Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST", "SAM", "RDM", "GNB", "DNC", "SGE", "RPR"],
+    "Phantom Weapons": ["PLD", "MNK", "WAR", "DRG", "BRD", "NIN", "DRK", "MCH", "WHM", "BLM", "SMN", "SCH", "AST", "SAM", "RDM", "GNB", "DNC", "SGE", "RPR", "VPR", "PCT"],
     "Lucis Tools": DOH_DOL,
     "Skysteel Tools": DOH_DOL,
     "Resplendent Tools": DOH_DOL,

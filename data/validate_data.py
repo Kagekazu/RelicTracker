@@ -34,7 +34,8 @@ def bundled_data_files() -> list[Path]:
         include = node.attrib.get("Include")
         if not include or not include.startswith("..\\data\\extracted\\"):
             continue
-        files.append((PROJECT.parent / include).resolve())
+        # csproj paths use Windows separators; normalize so this also runs on Linux CI.
+        files.append((PROJECT.parent / include.replace("\\", "/")).resolve())
     return files
 
 
