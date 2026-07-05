@@ -1,10 +1,11 @@
+using RelicTracker.Framework;
 using RelicTracker.IPC;
 namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
     private RelicOwnership? cachedOwnership;
-    private bool cachedOwnershipActiveCharacterOnly;
+    private ulong cachedLocalContentId;
     private ulong cachedOwnershipCharacterId;
     private long cachedOwnershipInventoryStamp;
     private DateTime? cachedOwnershipStamp;
@@ -265,7 +266,7 @@ public sealed partial class PluginUI
                         ImGui.SameLine();
                     }
 
-                    var done = config.ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
+                    bool done = config.CurrentCharacterProgress().ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
                     if (ImGui.Checkbox($"##{tier.CollectType}_{i}", ref done))
                     {
                         SetArmorPieceDone(tier.CollectType, i, done);
@@ -278,14 +279,15 @@ public sealed partial class PluginUI
     /// <summary>Manual armor piece tick (used when FFXIV Collect isn't linked).</summary>
     private void SetArmorPieceDone(string collectType, int piece, bool done)
     {
-        var key = $"{collectType}|{piece}";
+        string key = $"{collectType}|{piece}";
+        HashSet<string> armor = config.CurrentCharacterProgress().ArmorPieceDone;
         if (done)
         {
-            config.ArmorPieceDone.Add(key);
+            armor.Add(key);
         }
         else
         {
-            config.ArmorPieceDone.Remove(key);
+            armor.Remove(key);
         }
 
         InvalidateOwnershipCache();
@@ -294,28 +296,38 @@ public sealed partial class PluginUI
 
     private RelicOwnership GetOwnership()
     {
-        var characterId = config.FfxivCollectCharacterId;
-        var stamp = ffxivCollect.LastRefreshUtc;
-        var inventoryStamp = InventoryCacheStamp();
+        ulong collectCharacterId = config.FfxivCollectCharacterId;
+        ulong localContentId = CharacterScope.CurrentContentId;
+        DateTime? stamp = ffxivCollect.LastRefreshUtc;
+        long inventoryStamp = InventoryCacheStamp();
         if (cachedOwnership is null
             || cachedOwnershipStamp != stamp
-            || cachedOwnershipCharacterId != characterId
-            || cachedOwnershipInventoryStamp != inventoryStamp
-            || cachedOwnershipActiveCharacterOnly != config.ActiveCharacterOnly)
+            || cachedOwnershipCharacterId != collectCharacterId
+            || cachedLocalContentId != localContentId
+            || cachedOwnershipInventoryStamp != inventoryStamp)
         {
-            var snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
-            HashSet<string> inventoryDone = AllaganToolsIpc.IsReady
-                ? InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, CreateOwnedLookup())
-                : [];
+            FfxivCollectSnapshot snapshot = collectCharacterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
+            CharacterProgress progress = config.CurrentCharacterProgress();
+            HashSet<string> inventoryDone;
+            if (AllaganToolsIpc.IsReady)
+            {
+                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, CreateOwnedLookup());
+                config.SaveInventorySnapshot(inventoryDone);
+            }
+            else
+            {
+                inventoryDone = new HashSet<string>(progress.InventoryStepDone, StringComparer.Ordinal);
+            }
+
             cachedOwnership = new(
                 snapshot,
-                config.RelicStepDone,
-                config.ArmorPieceDone,
+                progress.RelicStepDone,
+                progress.ArmorPieceDone,
                 inventoryDone);
             cachedOwnershipStamp = stamp;
-            cachedOwnershipCharacterId = characterId;
+            cachedOwnershipCharacterId = collectCharacterId;
+            cachedLocalContentId = localContentId;
             cachedOwnershipInventoryStamp = inventoryStamp;
-            cachedOwnershipActiveCharacterOnly = config.ActiveCharacterOnly;
         }
 
         return cachedOwnership;
@@ -326,9 +338,17 @@ public sealed partial class PluginUI
         cachedOwnership = null;
         cachedOwnershipStamp = null;
         cachedOwnershipCharacterId = 0;
+        cachedLocalContentId = 0;
         cachedOwnershipInventoryStamp = 0;
-        cachedOwnershipActiveCharacterOnly = false;
     }
+
+    public void OnCharacterChanged()
+    {
+        config.MigrateLegacyProgressIfNeeded();
+        InvalidateOwnershipCache();
+    }
+
+    public void OnCharacterLoggedOut(int type, int code) => InvalidateOwnershipCache();
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
     {
@@ -856,7 +876,7 @@ public sealed partial class PluginUI
         $"{line.CollectType}|{job}|{tier}";
 
     private bool IsManualStepDone(RelicLine line, string job, int tier) =>
-        config.RelicStepDone.Contains(StepKey(line, job, tier));
+        config.CurrentCharacterProgress().RelicStepDone.Contains(StepKey(line, job, tier));
 
     /// <summary>First tier not yet done (auto from Collect or manual) — the step the job is working on.</summary>
     private int CurrentStepTier(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
@@ -875,18 +895,19 @@ public sealed partial class PluginUI
     /// <summary>Manual steps are sequential: ticking fills everything below, unticking clears everything above.</summary>
     private void SetManualStepDone(RelicLine line, string job, int tier, bool done)
     {
+        HashSet<string> steps = config.CurrentCharacterProgress().RelicStepDone;
         if (done)
         {
-            for (var lower = 0; lower <= tier; lower++)
+            for (int lower = 0; lower <= tier; lower++)
             {
-                config.RelicStepDone.Add(StepKey(line, job, lower));
+                steps.Add(StepKey(line, job, lower));
             }
         }
         else
         {
-            for (var upper = tier; upper < line.TierCount; upper++)
+            for (int upper = tier; upper < line.TierCount; upper++)
             {
-                config.RelicStepDone.Remove(StepKey(line, job, upper));
+                steps.Remove(StepKey(line, job, upper));
             }
         }
 

@@ -31,6 +31,9 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         pluginUi = new(Configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
+        Svc.ClientState.Login += pluginUi.OnCharacterChanged;
+        Svc.ClientState.Logout += pluginUi.OnCharacterLoggedOut;
+
         foreach (var commandName in RelicTrackerConstants.CommandNames)
         {
             Svc.Commands.AddHandler(commandName, new(OnCommand)
@@ -50,6 +53,8 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
 
     public void Dispose()
     {
+        Svc.ClientState.Login -= pluginUi.OnCharacterChanged;
+        Svc.ClientState.Logout -= pluginUi.OnCharacterLoggedOut;
         Configuration.PersistIfDirty();
         foreach (var commandName in RelicTrackerConstants.CommandNames)
         {

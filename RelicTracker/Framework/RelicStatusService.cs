@@ -58,10 +58,10 @@ public sealed class RelicOwnership
 {
     /// <summary>Allagan Tools inventory detections, keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> inventoryDone = inventoryDone ?? new(StringComparer.Ordinal);
-    /// <summary>Live reference to manual armor piece ticks (Configuration.ArmorPieceDone), keyed CollectType|pieceIndex.</summary>
+    /// <summary>Manual armor piece ticks for the active character, keyed CollectType|pieceIndex.</summary>
     private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
 
-    /// <summary>Live reference to manual step ticks (Configuration.RelicStepDone), keyed CollectType|job|tier.</summary>
+    /// <summary>Manual step ticks for the active character, keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> manualDone = manualDone ?? new(StringComparer.Ordinal);
 
     private readonly HashSet<string> owned = snapshot.Owned

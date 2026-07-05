@@ -32,7 +32,7 @@ public sealed partial class PluginUI
         {
             if (!cache.TryGetValue(itemId, out uint count))
             {
-                count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
+                count = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
                 cache[itemId] = count;
             }
 
