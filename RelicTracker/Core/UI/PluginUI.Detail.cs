@@ -3,10 +3,6 @@ namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
-    // Catalog step name -> Wyn material-sheet step name, for the few that differ.
-    // All relic lines now use their catalog step names directly (materials come from the curated
-    // tool_extra_materials supplement), so no Wyn step-name aliasing is needed here anymore.
-    private static readonly Dictionary<string, string> WynStepAliases = new(StringComparer.OrdinalIgnoreCase);
     private RelicOwnership? cachedOwnership;
     private bool cachedOwnershipActiveCharacterOnly;
     private ulong cachedOwnershipCharacterId;
@@ -187,7 +183,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            ImGui.TextColored(MutedColor, "Tick the pieces you own below. Allagan Tools or FFXIV Collect on the Settings tab can auto-track instead.");
+            ImGui.TextColored(MutedColor, "Tick the pieces you own below, or link FFXIV Collect on Settings to auto-track.");
         }
 
         ImGui.Separator();
@@ -300,7 +296,7 @@ public sealed partial class PluginUI
     {
         var characterId = config.FfxivCollectCharacterId;
         var stamp = ffxivCollect.LastRefreshUtc;
-        var inventoryStamp = AllaganToolsIpc.IsReady ? Environment.TickCount64 / 10_000 : 0;
+        var inventoryStamp = InventoryCacheStamp();
         if (cachedOwnership is null
             || cachedOwnershipStamp != stamp
             || cachedOwnershipCharacterId != characterId
@@ -308,11 +304,14 @@ public sealed partial class PluginUI
             || cachedOwnershipActiveCharacterOnly != config.ActiveCharacterOnly)
         {
             var snapshot = characterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
+            HashSet<string> inventoryDone = AllaganToolsIpc.IsReady
+                ? InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, CreateOwnedLookup())
+                : [];
             cachedOwnership = new(
                 snapshot,
                 config.RelicStepDone,
                 config.ArmorPieceDone,
-                BuildInventoryStepDone());
+                inventoryDone);
             cachedOwnershipStamp = stamp;
             cachedOwnershipCharacterId = characterId;
             cachedOwnershipInventoryStamp = inventoryStamp;
@@ -320,41 +319,6 @@ public sealed partial class PluginUI
         }
 
         return cachedOwnership;
-    }
-
-    private HashSet<string> BuildInventoryStepDone()
-    {
-        HashSet<string> done = new(StringComparer.Ordinal);
-        if (!AllaganToolsIpc.IsReady)
-        {
-            return done;
-        }
-
-        Func<uint, uint> ownedLookup = id => AllaganToolsIpc.GetOwnedCount(id, config.ActiveCharacterOnly);
-
-        foreach (var line in catalog.Lines)
-        {
-            var jobs = line.EffectiveJobList;
-            for (var slot = 0; slot < line.Jobs && slot < jobs.Count; slot++)
-            {
-                for (var tier = 0; tier < line.TierCount; tier++)
-                {
-                    var relicName = line.RelicName(slot, tier);
-                    if (string.IsNullOrWhiteSpace(relicName)
-                        || !itemResolver.IsRelicOrReplicaOwned(relicName, ownedLookup))
-                    {
-                        continue;
-                    }
-
-                    for (var completedTier = 0; completedTier <= tier; completedTier++)
-                    {
-                        done.Add(StepKey(line, jobs[slot], completedTier));
-                    }
-                }
-            }
-        }
-
-        return done;
     }
 
     private void InvalidateOwnershipCache()
@@ -381,18 +345,17 @@ public sealed partial class PluginUI
 
     private void DrawDetailCollectContext(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
     {
-        var collectLinked = config.FfxivCollectCharacterId != 0;
-        var inventoryLinked = AllaganToolsIpc.IsReady;
+        bool collectLinked = CollectIdLinked;
+        bool inventoryLinked = AllaganToolsIpc.IsReady;
 
         if (!collectLinked && !inventoryLinked)
         {
-            ImGui.TextColored(MutedColor,
-                "Tick steps manually, or connect Allagan Tools on the Settings tab to auto-fill steps for relics (and replicas) you still own.");
+            DrawProgressSourceHint(ProgressHintContext.RelicDisconnected);
             return;
         }
 
-        var complete = 0;
-        for (var slot = 0; slot < jobList.Count; slot++)
+        int complete = 0;
+        for (int slot = 0; slot < jobList.Count; slot++)
         {
             if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
             {
@@ -400,12 +363,7 @@ public sealed partial class PluginUI
             }
         }
 
-        string source = inventoryLinked && collectLinked
-            ? "Auto-tracked from Allagan Tools (replicas count). FFXIV Collect fills in steps you no longer have in inventory."
-            : inventoryLinked
-                ? "Auto-tracked from Allagan Tools inventory (replicas count too)."
-                : "Auto-tracked from FFXIV Collect — for relics no longer in inventory.";
-        ImGui.TextColored(GoodColor, source);
+        ImGui.TextColored(GoodColor, DescribeWeaponProgressSource(inventoryLinked, collectLinked));
         ImGui.SameLine();
         ImGui.TextColored(complete == line.Jobs ? GoodColor : MutedColor, $"({complete}/{line.Jobs} jobs complete)");
 
@@ -588,13 +546,22 @@ public sealed partial class PluginUI
             if (string.IsNullOrWhiteSpace(note))
             {
                 ImGui.TextWrapped(
-                    "No item breakdown recorded for this step — it's mostly tomestones, quests or other tasks. It ticks itself off once FFXIV Collect sees the finished weapon.");
+                    "No item breakdown recorded for this step — it's mostly tomestones, quests or other tasks. "
+                    + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually.");
             }
 
             return;
         }
 
-        ImGui.TextColored(MutedColor, "Materials for one weapon/tool (owned counts are live from Allagan Tools):");
+        if (AllaganToolsIpc.IsReady)
+        {
+            ImGui.TextColored(MutedColor, "Materials for one weapon/tool (owned counts from Allagan Tools):");
+        }
+        else
+        {
+            ImGui.TextColored(MutedColor, "Materials for one weapon/tool (connect Allagan Tools on Settings for owned counts):");
+        }
+
         ImGui.Spacing();
 
         using var table = ImRaii.Table(
@@ -708,26 +675,15 @@ public sealed partial class PluginUI
         // artifacts (e.g. every Eureka material is flagged for one stray column), so don't filter.
         var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
 
-        var wynStep = WynStepAliases.TryGetValue(stepName, out var alias) ? alias : stepName;
-        var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, wynStep);
+        var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
-        Dictionary<uint, uint> ownedCounts = [];
-        uint OwnedLookup(uint itemId)
-        {
-            if (!ownedCounts.TryGetValue(itemId, out var count))
-            {
-                count = AllaganToolsIpc.GetOwnedCount(itemId, config.ActiveCharacterOnly);
-                ownedCounts[itemId] = count;
-            }
-
-            return count;
-        }
+        Func<uint, uint> ownedLookup = CreateOwnedLookup();
 
         List<ExpansionMaterialRow> matched = [];
         foreach (var row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
-                || !string.Equals(row.Step.Trim(), wynStep, StringComparison.OrdinalIgnoreCase))
+                || !string.Equals(row.Step.Trim(), stepName, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
@@ -850,7 +806,7 @@ public sealed partial class PluginUI
             var need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
             var itemIds = itemResolver.ResolveItemIds(name);
             var resolved = itemIds.Count > 0;
-            var owned = itemIds.Aggregate(0u, (total, itemId) => total + OwnedLookup(itemId));
+            var owned = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
             var where = data.MaterialSources.TryGetValue(name, out var src) ? src : null;
             return new(name, where, need, owned, resolved, depth, isCraftProduct, isPrecraft, isScrip);
         }

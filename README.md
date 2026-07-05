@@ -31,7 +31,7 @@ Add this custom plugin repository in Dalamud:
 `https://puni.sh/api/repository/kage`
 
 Then install **RelicTracker** from the plugin installer. **Allagan Tools** is
-recommended for inventory counts and owned-relic detection.
+needed for inventory counts and owned-relic detection.
 
 ## Getting started
 

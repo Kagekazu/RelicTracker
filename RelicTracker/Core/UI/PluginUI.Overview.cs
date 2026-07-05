@@ -3,12 +3,6 @@ namespace RelicTracker;
 
 public sealed partial class PluginUI
 {
-    private static readonly string[] ExpansionLongNames =
-    [
-        "A Realm Reborn", "Heavensward", "Stormblood", "Shadowbringers",
-        "Endwalker", "Dawntrail", "Crafters & Gatherers"
-    ];
-
     private string overviewFilter = string.Empty;
 
     private void DrawOverviewTab()
@@ -25,11 +19,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            ImGui.TextColored(MutedColor,
-                AllaganToolsIpc.IsReady
-                    ? "Owned relics are auto-tracked from Allagan Tools (replicas count). Tick any missing steps on the Relic tab."
-                    : "Tick steps on the Relic tab to fill this in. Connect Allagan Tools on Settings for owned-relic detection.");
-            ImGui.Spacing();
+            DrawProgressSourceHint(ProgressHintContext.Overview);
         }
 
         var ownership = GetOwnership();
@@ -257,13 +247,6 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawPercentBar(float fraction, float width, string overlay)
-    {
-        var color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
-        using var barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
-        ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new(width, ImGui.GetFrameHeight()), overlay);
-    }
-
     /// <summary>Concise "what step are you on" summary: how many jobs need each upcoming step next.</summary>
     private static string BuildFrontierText(RelicLineStatus status)
     {
@@ -328,17 +311,4 @@ public sealed partial class PluginUI
 
         return true;
     }
-
-    private static string ExpansionLongName(string expansionId) =>
-        expansionId switch
-        {
-            "ARR" => ExpansionLongNames[0],
-            "HW" => ExpansionLongNames[1],
-            "SB" => ExpansionLongNames[2],
-            "ShB" => ExpansionLongNames[3],
-            "EW" => ExpansionLongNames[4],
-            "DT" => ExpansionLongNames[5],
-            "DoHDoL" => ExpansionLongNames[6],
-            var _ => expansionId
-        };
 }
