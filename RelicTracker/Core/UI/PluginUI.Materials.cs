@@ -13,10 +13,10 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (config.FfxivCollectCharacterId == 0)
+        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
         {
             ImGui.TextColored(MutedColor,
-                "Standalone mode — this list covers every job still missing each step. Tick finished steps on the Relic tab (or link FFXIV Collect) to trim it down.");
+                "Tick finished steps on the Relic tab to trim this list. Allagan Tools auto-fills steps for owned relics.");
             ImGui.Spacing();
         }
 
