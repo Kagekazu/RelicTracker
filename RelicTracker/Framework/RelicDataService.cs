@@ -16,6 +16,10 @@ public sealed class RelicDataService
     /// <summary>Material name -> where it is farmed, for grouping the shopping list by source.</summary>
     public Dictionary<string, string> MaterialSources { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>Material name -> item row IDs for owned counts (alias-expanded at build time).</summary>
+    public Dictionary<string, IReadOnlyList<uint>> MaterialIdsByName { get; private set; } =
+        new(StringComparer.OrdinalIgnoreCase);
+
     /// <summary>Expansion id -> field-op relic armor currency costs (per piece).</summary>
     public Dictionary<string, List<ArmorCostRow>> ArmorCosts { get; private set; } = new(StringComparer.Ordinal);
 
@@ -30,6 +34,7 @@ public sealed class RelicDataService
         ArmorCosts = ReadJson<Dictionary<string, List<ArmorCostRow>>>(Path.Combine(baseDir, "armor_costs.json"))
                      ?? new(StringComparer.Ordinal);
         MergeExtraMaterials(Path.Combine(baseDir, "tool_extra_materials.json"));
+        BuildMaterialIdIndex();
         IsLoaded = true;
         Svc.Log.Information(
             "[RelicTracker] Loaded relic materials for {ExpansionCount} expansions.",
@@ -66,12 +71,34 @@ public sealed class RelicDataService
         string expansionId,
         IReadOnlyList<RelicLineStatus> statuses,
         RelicOwnership ownership,
-        ItemResolver items,
         Func<uint, uint> ownedLookup,
         string? lineFilter = null) =>
         Expansions.TryGetValue(expansionId, out var sheet)
-            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, items, ownedLookup, MaterialSources, lineFilter)
+            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, ownedLookup, MaterialSources, MaterialIdsByName, lineFilter)
             : [];
+
+    private void BuildMaterialIdIndex()
+    {
+        Dictionary<string, List<uint>> byName = new(StringComparer.OrdinalIgnoreCase);
+        foreach (var sheet in Expansions.Values)
+        {
+            foreach (var row in sheet.Materials)
+            {
+                var name = row.Material?.Trim();
+                if (string.IsNullOrWhiteSpace(name) || row.MaterialIds.Count == 0 || byName.ContainsKey(name))
+                {
+                    continue;
+                }
+
+                byName[name] = [.. row.MaterialIds];
+            }
+        }
+
+        MaterialIdsByName = byName.ToDictionary(
+            entry => entry.Key,
+            entry => (IReadOnlyList<uint>)entry.Value,
+            StringComparer.OrdinalIgnoreCase);
+    }
 
     private static T? ReadJson<T>(string path)
     {

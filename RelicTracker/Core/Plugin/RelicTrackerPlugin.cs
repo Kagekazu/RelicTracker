@@ -7,7 +7,6 @@ namespace RelicTracker;
 public sealed class RelicTrackerPlugin : IDalamudPlugin
 {
     private readonly FfxivCollectService ffxivCollect = new();
-    private readonly ItemResolver itemResolver = new();
     private readonly PluginUI pluginUi;
     private readonly RelicCatalog relicCatalog = new();
     private readonly RelicDataService relicData = new();
@@ -25,10 +24,9 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
 
         relicData.Load();
         relicCatalog.Load();
-        itemResolver.Build();
-        relicCatalog.ResolveJobs(itemResolver);
+        relicCatalog.ResolveJobs();
 
-        pluginUi = new(Configuration, relicData, relicCatalog, itemResolver, ffxivCollect);
+        pluginUi = new(Configuration, relicData, relicCatalog, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
 
         Svc.ClientState.Login += pluginUi.OnCharacterChanged;

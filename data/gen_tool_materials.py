@@ -9,6 +9,9 @@ Collect and `craftOf` link rows. Collectability-gated steps use best-case (max c
 a tool chain; do not hand-edit the JSON.
 """
 import json, os
+from pathlib import Path
+
+from item_lookup import attach_armor_costs, attach_tool_extra_materials, load_item_index
 
 SLOT = {"CRP":0,"BSM":1,"ARM":2,"GSM":3,"LTW":4,"WVR":5,"ALC":6,"CUL":7,"MIN":8,"BTN":9,"FSH":10}
 def flags(*slots):
@@ -563,6 +566,18 @@ data={
  "EW":ew_rows,
  "DT":dt_rows,
 }
-out=os.path.join(os.path.dirname(__file__),"extracted","tool_extra_materials.json")
-json.dump(data,open(out,"w",encoding="utf-8"),ensure_ascii=False,indent=2)
+data_dir = Path(__file__).resolve().parent / "extracted"
+item_index = load_item_index(data_dir / "_item.csv")
+aliases = json.loads((data_dir / "material_aliases.json").read_text(encoding="utf-8"))
+attach_tool_extra_materials(data, item_index, aliases)
+
+out = data_dir / "tool_extra_materials.json"
+json.dump(data, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+armor_path = data_dir / "armor_costs.json"
+armor = json.loads(armor_path.read_text(encoding="utf-8"))
+armor_aliases = json.loads((data_dir / "armor_currency_aliases.json").read_text(encoding="utf-8"))
+attach_armor_costs(armor, item_index, armor_aliases)
+json.dump(armor, open(armor_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
 print(f"DoHDoL {len(rows)} · ARR {len(arr_rows)} · HW {len(hw_rows)} · SB {len(sb_rows)} · ShB {len(shb_rows)}")

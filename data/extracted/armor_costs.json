@@ -6,7 +6,10 @@
       "perPiece": 50,
       "setTotal": 250,
       "allTotal": 3750,
-      "note": "Eurekan/Anemos line — from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets"
+      "note": "Eurekan/Anemos line — from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets",
+      "currencyIds": [
+        21801
+      ]
     },
     {
       "set": "Artifact +1",
@@ -14,7 +17,10 @@
       "perPiece": 150,
       "setTotal": 750,
       "allTotal": 11250,
-      "note": "150 every slot. All = 15 job sets"
+      "note": "150 every slot. All = 15 job sets",
+      "currencyIds": [
+        21801
+      ]
     },
     {
       "set": "Artifact +2",
@@ -22,7 +28,10 @@
       "perPiece": 400,
       "setTotal": 2000,
       "allTotal": 30000,
-      "note": "400 every slot. All = 15 job sets"
+      "note": "400 every slot. All = 15 job sets",
+      "currencyIds": [
+        21801
+      ]
     },
     {
       "set": "Anemos (final)",
@@ -30,7 +39,10 @@
       "perPiece": 150,
       "setTotal": 750,
       "allTotal": 11250,
-      "note": "final stage — dyeable, 5 materia slots; 150 every slot. All = 15 job sets"
+      "note": "final stage — dyeable, 5 materia slots; 150 every slot. All = 15 job sets",
+      "currencyIds": [
+        21803
+      ]
     },
     {
       "set": "Elemental (base)",
@@ -38,7 +50,10 @@
       "perPiece": 40,
       "setTotal": 200,
       "allTotal": 1400,
-      "note": "40 every slot. All = 7 role sets"
+      "note": "40 every slot. All = 7 role sets",
+      "currencyIds": [
+        24124
+      ]
     },
     {
       "set": "Elemental +1",
@@ -46,7 +61,10 @@
       "perPiece": 50,
       "setTotal": 190,
       "allTotal": 1330,
-      "note": "body/legs 50, head/hands/feet 30. All = 7 role sets"
+      "note": "body/legs 50, head/hands/feet 30. All = 7 role sets",
+      "currencyIds": [
+        24807
+      ]
     },
     {
       "set": "Elemental +2",
@@ -54,7 +72,10 @@
       "perPiece": 35,
       "setTotal": 133,
       "allTotal": 931,
-      "note": "body/legs 35, head/hands/feet 21. All = 7 role sets"
+      "note": "body/legs 35, head/hands/feet 21. All = 7 role sets",
+      "currencyIds": [
+        24808
+      ]
     }
   ],
   "ShB": [
@@ -64,7 +85,10 @@
       "perPiece": 28,
       "setTotal": 98,
       "allTotal": 686,
-      "note": "body/legs 28, head/hands/feet 14 — Resistance Supplier, Southern Front. All = 7 role sets"
+      "note": "body/legs 28, head/hands/feet 14 — Resistance Supplier, Southern Front. All = 7 role sets",
+      "currencyIds": [
+        31351
+      ]
     },
     {
       "set": "Augmented Bozjan",
@@ -72,7 +96,14 @@
       "perPiece": 1,
       "setTotal": 5,
       "allTotal": 35,
-      "note": "1 of the MATCHING slot's Bozjan Runner's Secrets per piece (5 slot-specific items), plus the base Bozjan piece. Each = 999 (body/legs) or 500 (small) Bozjan Coin, or rare Castrum Lacus Litore drops. Owned = total across all 5 slots. All = 7 role sets"
+      "note": "1 of the MATCHING slot's Bozjan Runner's Secrets per piece (5 slot-specific items), plus the base Bozjan piece. Each = 999 (body/legs) or 500 (small) Bozjan Coin, or rare Castrum Lacus Litore drops. Owned = total across all 5 slots. All = 7 role sets",
+      "currencyIds": [
+        31352,
+        31353,
+        31354,
+        31355,
+        31356
+      ]
     },
     {
       "set": "Law's Order",
@@ -80,7 +111,10 @@
       "perPiece": 3,
       "setTotal": 12,
       "allTotal": 84,
-      "note": "body/legs 3, others 2 — Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets"
+      "note": "body/legs 3, others 2 — Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets",
+      "currencyIds": [
+        32180
+      ]
     },
     {
       "set": "Aug. Law's Order (Head)",
@@ -88,7 +122,10 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Head Gear Orderly Runner's Secrets. Drops in Delubrum Reginae (Savage). Also needs the matching Law's Order & Augmented Bozjan pieces. All = 7 role sets"
+      "note": "10 → the Head Gear Orderly Runner's Secrets. Drops in Delubrum Reginae (Savage). Also needs the matching Law's Order & Augmented Bozjan pieces. All = 7 role sets",
+      "currencyIds": [
+        32181
+      ]
     },
     {
       "set": "Aug. Law's Order (Body)",
@@ -96,7 +133,10 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Body Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+      "note": "10 → the Body Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "currencyIds": [
+        32182
+      ]
     },
     {
       "set": "Aug. Law's Order (Hands)",
@@ -104,7 +144,10 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Hand Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+      "note": "10 → the Hand Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "currencyIds": [
+        32183
+      ]
     },
     {
       "set": "Aug. Law's Order (Legs)",
@@ -112,7 +155,10 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Leg Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+      "note": "10 → the Leg Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "currencyIds": [
+        32184
+      ]
     },
     {
       "set": "Aug. Law's Order (Feet)",
@@ -120,7 +166,10 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Foot Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets"
+      "note": "10 → the Foot Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "currencyIds": [
+        32185
+      ]
     },
     {
       "set": "Blade's",
@@ -128,7 +177,10 @@
       "perPiece": 9,
       "setTotal": 36,
       "allTotal": 252,
-      "note": "body/legs 9, others 6 — Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets"
+      "note": "body/legs 9, others 6 — Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets",
+      "currencyIds": [
+        33796
+      ]
     }
   ],
   "DT": [
@@ -138,7 +190,10 @@
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (South Horn) — 4,000 every slot. All = 7 role sets"
+      "note": "Occult Crescent (South Horn) — 4,000 every slot. All = 7 role sets",
+      "currencyIds": [
+        45043
+      ]
     },
     {
       "set": "Arcanaut's +1",
@@ -146,7 +201,10 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "needs the base piece; Aetherspun Silver ≈ 1,200 Enlightenment Silver Piece each. All = 7 role sets"
+      "note": "needs the base piece; Aetherspun Silver ≈ 1,200 Enlightenment Silver Piece each. All = 7 role sets",
+      "currencyIds": [
+        47864
+      ]
     },
     {
       "set": "Arcanaut's +1",
@@ -154,7 +212,10 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "Aetherial Fixative ≈ 1,600 Enlightenment Gold Piece each. All = 7 role sets"
+      "note": "Aetherial Fixative ≈ 1,600 Enlightenment Gold Piece each. All = 7 role sets",
+      "currencyIds": [
+        47865
+      ]
     },
     {
       "set": "Arcanaut's +2",
@@ -162,7 +223,10 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "needs the +1 piece; Aetherspun Gold drops from treasure chests. All = 7 role sets"
+      "note": "needs the +1 piece; Aetherspun Gold drops from treasure chests. All = 7 role sets",
+      "currencyIds": [
+        47866
+      ]
     },
     {
       "set": "Arcanaut's +2",
@@ -170,7 +234,10 @@
       "perPiece": 6,
       "setTotal": 30,
       "allTotal": 210,
-      "note": "each X-Fixative = 10 Sanguinite (60 Sanguinite per piece). All = 7 role sets"
+      "note": "each X-Fixative = 10 Sanguinite (60 Sanguinite per piece). All = 7 role sets",
+      "currencyIds": [
+        47867
+      ]
     }
   ]
 }

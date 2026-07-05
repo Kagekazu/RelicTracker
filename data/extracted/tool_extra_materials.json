@@ -16,6 +16,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        8150
       ]
     },
     {
@@ -34,6 +37,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        8155
       ]
     },
     {
@@ -56,7 +62,10 @@
       "purchase": {
         "currency": "GC seals",
         "unit": 4000
-      }
+      },
+      "materialIds": [
+        10124
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -75,7 +84,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29645
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -95,7 +107,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Petrified Orb"
+      "craftOf": "Oddly Specific Petrified Orb",
+      "materialIds": [
+        29661
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -114,7 +129,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Petrified Orb"
+      "craftOf": "Oddly Specific Petrified Orb",
+      "materialIds": [
+        27685
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -133,7 +151,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29646
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -153,7 +174,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Rivets"
+      "craftOf": "Oddly Specific Rivets",
+      "materialIds": [
+        29662
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -172,7 +196,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Rivets"
+      "craftOf": "Oddly Specific Rivets",
+      "materialIds": [
+        27699
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -191,7 +218,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29647
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -211,7 +241,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Wire"
+      "craftOf": "Oddly Specific Wire",
+      "materialIds": [
+        29663
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -230,7 +263,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Wire"
+      "craftOf": "Oddly Specific Wire",
+      "materialIds": [
+        27699
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -249,7 +285,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29648
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -269,7 +308,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Whetstone"
+      "craftOf": "Oddly Specific Whetstone",
+      "materialIds": [
+        29664
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -288,7 +330,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Whetstone"
+      "craftOf": "Oddly Specific Whetstone",
+      "materialIds": [
+        27699
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -307,7 +352,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29649
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -327,7 +375,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Leather"
+      "craftOf": "Oddly Specific Leather",
+      "materialIds": [
+        29665
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -346,7 +397,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Leather"
+      "craftOf": "Oddly Specific Leather",
+      "materialIds": [
+        27734
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -365,7 +419,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29650
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -385,7 +442,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Moonbeam Silk"
+      "craftOf": "Oddly Specific Moonbeam Silk",
+      "materialIds": [
+        29666
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -404,7 +464,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Moonbeam Silk"
+      "craftOf": "Oddly Specific Moonbeam Silk",
+      "materialIds": [
+        27753
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -423,7 +486,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29651
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -443,7 +509,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Synthetic Resin"
+      "craftOf": "Oddly Specific Synthetic Resin",
+      "materialIds": [
+        29667
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -462,7 +531,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Synthetic Resin"
+      "craftOf": "Oddly Specific Synthetic Resin",
+      "materialIds": [
+        27774
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -481,7 +553,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29652
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -501,7 +576,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Seed Extract"
+      "craftOf": "Oddly Specific Seed Extract",
+      "materialIds": [
+        29668
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -520,7 +598,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Seed Extract"
+      "craftOf": "Oddly Specific Seed Extract",
+      "materialIds": [
+        27968
+      ]
     },
     {
       "step": "Skysteel +1",
@@ -538,6 +619,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        29671
       ]
     },
     {
@@ -556,6 +640,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        29672
       ]
     },
     {
@@ -574,6 +661,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        29669
       ]
     },
     {
@@ -592,6 +682,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        29670
       ]
     },
     {
@@ -610,6 +703,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        29673
       ]
     },
     {
@@ -629,7 +725,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29653
+      ]
     },
     {
       "step": "Dragonsung",
@@ -649,7 +748,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Shaft"
+      "craftOf": "Oddly Specific Shaft",
+      "materialIds": [
+        29661
+      ]
     },
     {
       "step": "Dragonsung",
@@ -668,7 +770,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Shaft"
+      "craftOf": "Oddly Specific Shaft",
+      "materialIds": [
+        27686
+      ]
     },
     {
       "step": "Dragonsung",
@@ -687,7 +792,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29654
+      ]
     },
     {
       "step": "Dragonsung",
@@ -707,7 +815,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Fitting"
+      "craftOf": "Oddly Specific Fitting",
+      "materialIds": [
+        29662
+      ]
     },
     {
       "step": "Dragonsung",
@@ -726,7 +837,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Fitting"
+      "craftOf": "Oddly Specific Fitting",
+      "materialIds": [
+        27701
+      ]
     },
     {
       "step": "Dragonsung",
@@ -745,7 +859,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Fitting"
+      "craftOf": "Oddly Specific Fitting",
+      "materialIds": [
+        12537
+      ]
     },
     {
       "step": "Dragonsung",
@@ -764,7 +881,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29655
+      ]
     },
     {
       "step": "Dragonsung",
@@ -784,7 +904,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Chainmail Sheet"
+      "craftOf": "Oddly Specific Chainmail Sheet",
+      "materialIds": [
+        29663
+      ]
     },
     {
       "step": "Dragonsung",
@@ -803,7 +926,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Chainmail Sheet"
+      "craftOf": "Oddly Specific Chainmail Sheet",
+      "materialIds": [
+        27701
+      ]
     },
     {
       "step": "Dragonsung",
@@ -822,7 +948,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Chainmail Sheet"
+      "craftOf": "Oddly Specific Chainmail Sheet",
+      "materialIds": [
+        12537
+      ]
     },
     {
       "step": "Dragonsung",
@@ -841,7 +970,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29656
+      ]
     },
     {
       "step": "Dragonsung",
@@ -861,7 +993,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Gemstone"
+      "craftOf": "Oddly Specific Gemstone",
+      "materialIds": [
+        29664
+      ]
     },
     {
       "step": "Dragonsung",
@@ -880,7 +1015,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Gemstone"
+      "craftOf": "Oddly Specific Gemstone",
+      "materialIds": [
+        27803
+      ]
     },
     {
       "step": "Dragonsung",
@@ -899,7 +1037,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29657
+      ]
     },
     {
       "step": "Dragonsung",
@@ -919,7 +1060,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Vellum"
+      "craftOf": "Oddly Specific Vellum",
+      "materialIds": [
+        29665
+      ]
     },
     {
       "step": "Dragonsung",
@@ -938,7 +1082,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Vellum"
+      "craftOf": "Oddly Specific Vellum",
+      "materialIds": [
+        27735
+      ]
     },
     {
       "step": "Dragonsung",
@@ -957,7 +1104,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Vellum"
+      "craftOf": "Oddly Specific Vellum",
+      "materialIds": [
+        27817
+      ]
     },
     {
       "step": "Dragonsung",
@@ -976,7 +1126,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29658
+      ]
     },
     {
       "step": "Dragonsung",
@@ -996,7 +1149,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Velvet"
+      "craftOf": "Oddly Specific Velvet",
+      "materialIds": [
+        29666
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1015,7 +1171,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Velvet"
+      "craftOf": "Oddly Specific Velvet",
+      "materialIds": [
+        27756
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1034,7 +1193,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Velvet"
+      "craftOf": "Oddly Specific Velvet",
+      "materialIds": [
+        27776
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1053,7 +1215,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Velvet"
+      "craftOf": "Oddly Specific Velvet",
+      "materialIds": [
+        19907
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1072,7 +1237,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29659
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1092,7 +1260,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Glass"
+      "craftOf": "Oddly Specific Glass",
+      "materialIds": [
+        29667
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1111,7 +1282,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Glass"
+      "craftOf": "Oddly Specific Glass",
+      "materialIds": [
+        27776
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1130,7 +1304,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Glass"
+      "craftOf": "Oddly Specific Glass",
+      "materialIds": [
+        19907
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1149,7 +1326,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        29660
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1169,7 +1349,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Seed Flour"
+      "craftOf": "Oddly Specific Seed Flour",
+      "materialIds": [
+        29668
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1188,7 +1371,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Seed Flour"
+      "craftOf": "Oddly Specific Seed Flour",
+      "materialIds": [
+        27826
+      ]
     },
     {
       "step": "Dragonsung",
@@ -1206,6 +1392,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        29676
       ]
     },
     {
@@ -1224,6 +1413,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        29677
       ]
     },
     {
@@ -1242,6 +1434,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        29674
       ]
     },
     {
@@ -1260,6 +1455,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        29675
       ]
     },
     {
@@ -1278,6 +1476,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        29678
       ]
     },
     {
@@ -1297,7 +1498,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31101
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1317,7 +1521,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Cedar Lumber"
+      "craftOf": "Oddly Specific Cedar Lumber",
+      "materialIds": [
+        31117
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1336,7 +1543,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Cedar Lumber"
+      "craftOf": "Oddly Specific Cedar Lumber",
+      "materialIds": [
+        27687
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1355,7 +1565,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31102
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1375,7 +1588,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Iron Nails"
+      "craftOf": "Oddly Specific Iron Nails",
+      "materialIds": [
+        31118
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1394,7 +1610,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Iron Nails"
+      "craftOf": "Oddly Specific Iron Nails",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1413,7 +1632,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31103
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1433,7 +1655,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Mythril Rings"
+      "craftOf": "Oddly Specific Mythril Rings",
+      "materialIds": [
+        31119
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1452,7 +1677,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Mythril Rings"
+      "craftOf": "Oddly Specific Mythril Rings",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1471,7 +1699,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31104
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1491,7 +1722,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Silver Nugget"
+      "craftOf": "Oddly Specific Silver Nugget",
+      "materialIds": [
+        31120
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1510,7 +1744,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Silver Nugget"
+      "craftOf": "Oddly Specific Silver Nugget",
+      "materialIds": [
+        27702
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1529,7 +1766,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31105
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1549,7 +1789,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Gaganaskin Strap"
+      "craftOf": "Oddly Specific Gaganaskin Strap",
+      "materialIds": [
+        31121
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1568,7 +1811,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Gaganaskin Strap"
+      "craftOf": "Oddly Specific Gaganaskin Strap",
+      "materialIds": [
+        27817
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1587,7 +1833,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31106
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1607,7 +1856,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Cloth"
+      "craftOf": "Oddly Specific Cloth",
+      "materialIds": [
+        31122
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1626,7 +1878,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Cloth"
+      "craftOf": "Oddly Specific Cloth",
+      "materialIds": [
+        27759
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1645,7 +1900,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31107
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1665,7 +1923,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Glue"
+      "craftOf": "Oddly Specific Glue",
+      "materialIds": [
+        31123
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1684,7 +1945,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Glue"
+      "craftOf": "Oddly Specific Glue",
+      "materialIds": [
+        27773
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1703,7 +1967,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31108
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1723,7 +1990,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Oil"
+      "craftOf": "Oddly Specific Oil",
+      "materialIds": [
+        31124
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1742,7 +2012,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Oil"
+      "craftOf": "Oddly Specific Oil",
+      "materialIds": [
+        27820
+      ]
     },
     {
       "step": "Augmented Dragonsung",
@@ -1760,6 +2033,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31127
       ]
     },
     {
@@ -1778,6 +2054,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31128
       ]
     },
     {
@@ -1796,6 +2075,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31125
       ]
     },
     {
@@ -1814,6 +2096,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31126
       ]
     },
     {
@@ -1832,6 +2117,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        31129
       ]
     },
     {
@@ -1851,7 +2139,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31109
+      ]
     },
     {
       "step": "Skysung",
@@ -1871,7 +2162,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Cedar Plank"
+      "craftOf": "Oddly Specific Cedar Plank",
+      "materialIds": [
+        31117
+      ]
     },
     {
       "step": "Skysung",
@@ -1890,7 +2184,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Cedar Plank"
+      "craftOf": "Oddly Specific Cedar Plank",
+      "materialIds": [
+        27687
+      ]
     },
     {
       "step": "Skysung",
@@ -1909,7 +2206,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31110
+      ]
     },
     {
       "step": "Skysung",
@@ -1929,7 +2229,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Iron Ingot"
+      "craftOf": "Oddly Specific Iron Ingot",
+      "materialIds": [
+        31118
+      ]
     },
     {
       "step": "Skysung",
@@ -1948,7 +2251,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Iron Ingot"
+      "craftOf": "Oddly Specific Iron Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Skysung",
@@ -1967,7 +2273,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Iron Ingot"
+      "craftOf": "Oddly Specific Iron Ingot",
+      "materialIds": [
+        12534
+      ]
     },
     {
       "step": "Skysung",
@@ -1986,7 +2295,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31111
+      ]
     },
     {
       "step": "Skysung",
@@ -2006,7 +2318,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Mythril Plate"
+      "craftOf": "Oddly Specific Mythril Plate",
+      "materialIds": [
+        31119
+      ]
     },
     {
       "step": "Skysung",
@@ -2025,7 +2340,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Mythril Plate"
+      "craftOf": "Oddly Specific Mythril Plate",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Skysung",
@@ -2044,7 +2362,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Mythril Plate"
+      "craftOf": "Oddly Specific Mythril Plate",
+      "materialIds": [
+        12534
+      ]
     },
     {
       "step": "Skysung",
@@ -2063,7 +2384,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31112
+      ]
     },
     {
       "step": "Skysung",
@@ -2083,7 +2407,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Silver Ingot"
+      "craftOf": "Oddly Specific Silver Ingot",
+      "materialIds": [
+        31120
+      ]
     },
     {
       "step": "Skysung",
@@ -2102,7 +2429,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Silver Ingot"
+      "craftOf": "Oddly Specific Silver Ingot",
+      "materialIds": [
+        27702
+      ]
     },
     {
       "step": "Skysung",
@@ -2121,7 +2451,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Silver Ingot"
+      "craftOf": "Oddly Specific Silver Ingot",
+      "materialIds": [
+        12531
+      ]
     },
     {
       "step": "Skysung",
@@ -2140,7 +2473,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31113
+      ]
     },
     {
       "step": "Skysung",
@@ -2160,7 +2496,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Gagana Leather"
+      "craftOf": "Oddly Specific Gagana Leather",
+      "materialIds": [
+        31121
+      ]
     },
     {
       "step": "Skysung",
@@ -2179,7 +2518,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Gagana Leather"
+      "craftOf": "Oddly Specific Gagana Leather",
+      "materialIds": [
+        27736
+      ]
     },
     {
       "step": "Skysung",
@@ -2198,7 +2540,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Gagana Leather"
+      "craftOf": "Oddly Specific Gagana Leather",
+      "materialIds": [
+        27817
+      ]
     },
     {
       "step": "Skysung",
@@ -2217,7 +2562,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31114
+      ]
     },
     {
       "step": "Skysung",
@@ -2237,7 +2585,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Undyed Woolen Cloth"
+      "craftOf": "Oddly Specific Undyed Woolen Cloth",
+      "materialIds": [
+        31122
+      ]
     },
     {
       "step": "Skysung",
@@ -2256,7 +2607,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Undyed Woolen Cloth"
+      "craftOf": "Oddly Specific Undyed Woolen Cloth",
+      "materialIds": [
+        27759
+      ]
     },
     {
       "step": "Skysung",
@@ -2275,7 +2629,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31115
+      ]
     },
     {
       "step": "Skysung",
@@ -2295,7 +2652,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Rubber"
+      "craftOf": "Oddly Specific Rubber",
+      "materialIds": [
+        31123
+      ]
     },
     {
       "step": "Skysung",
@@ -2314,7 +2674,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Rubber"
+      "craftOf": "Oddly Specific Rubber",
+      "materialIds": [
+        27776
+      ]
     },
     {
       "step": "Skysung",
@@ -2333,7 +2696,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Rubber"
+      "craftOf": "Oddly Specific Rubber",
+      "materialIds": [
+        19907
+      ]
     },
     {
       "step": "Skysung",
@@ -2352,7 +2718,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31116
+      ]
     },
     {
       "step": "Skysung",
@@ -2372,7 +2741,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Specific Paste"
+      "craftOf": "Oddly Specific Paste",
+      "materialIds": [
+        31124
+      ]
     },
     {
       "step": "Skysung",
@@ -2391,7 +2763,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Specific Paste"
+      "craftOf": "Oddly Specific Paste",
+      "materialIds": [
+        27826
+      ]
     },
     {
       "step": "Skysung",
@@ -2409,6 +2784,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31132
       ]
     },
     {
@@ -2427,6 +2805,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31133
       ]
     },
     {
@@ -2445,6 +2826,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31130
       ]
     },
     {
@@ -2463,6 +2847,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31131
       ]
     },
     {
@@ -2481,6 +2868,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        31134
       ]
     },
     {
@@ -2500,7 +2890,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31750
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2520,7 +2913,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Pine Lumber"
+      "craftOf": "Oddly Delicate Pine Lumber",
+      "materialIds": [
+        31758
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2539,7 +2935,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Pine Lumber"
+      "craftOf": "Oddly Delicate Pine Lumber",
+      "materialIds": [
+        31991
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2558,7 +2957,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Pine Lumber"
+      "craftOf": "Oddly Delicate Pine Lumber",
+      "materialIds": [
+        31995
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2577,7 +2979,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31751
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2597,7 +3002,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Silver Gear"
+      "craftOf": "Oddly Delicate Silver Gear",
+      "materialIds": [
+        31759
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2616,7 +3024,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Silver Gear"
+      "craftOf": "Oddly Delicate Silver Gear",
+      "materialIds": [
+        31996
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2635,7 +3046,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Silver Gear"
+      "craftOf": "Oddly Delicate Silver Gear",
+      "materialIds": [
+        31999
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2654,7 +3068,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31752
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2674,7 +3091,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Wolfram Square"
+      "craftOf": "Oddly Delicate Wolfram Square",
+      "materialIds": [
+        31760
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2693,7 +3113,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Wolfram Square"
+      "craftOf": "Oddly Delicate Wolfram Square",
+      "materialIds": [
+        31996
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2712,7 +3135,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Wolfram Square"
+      "craftOf": "Oddly Delicate Wolfram Square",
+      "materialIds": [
+        32000
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2731,7 +3157,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31753
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2751,7 +3180,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Celestine"
+      "craftOf": "Oddly Delicate Celestine",
+      "materialIds": [
+        31761
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2770,7 +3202,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Celestine"
+      "craftOf": "Oddly Delicate Celestine",
+      "materialIds": [
+        31999
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2789,7 +3224,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Celestine"
+      "craftOf": "Oddly Delicate Celestine",
+      "materialIds": [
+        31995
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2808,7 +3246,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31754
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2828,7 +3269,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Gazelle Leather"
+      "craftOf": "Oddly Delicate Gazelle Leather",
+      "materialIds": [
+        31762
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2847,7 +3291,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Gazelle Leather"
+      "craftOf": "Oddly Delicate Gazelle Leather",
+      "materialIds": [
+        31991
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2866,7 +3313,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Gazelle Leather"
+      "craftOf": "Oddly Delicate Gazelle Leather",
+      "materialIds": [
+        31993
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2885,7 +3335,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31755
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2905,7 +3358,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Rhea Cloth"
+      "craftOf": "Oddly Delicate Rhea Cloth",
+      "materialIds": [
+        31763
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2924,7 +3380,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Rhea Cloth"
+      "craftOf": "Oddly Delicate Rhea Cloth",
+      "materialIds": [
+        31994
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2943,7 +3402,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Rhea Cloth"
+      "craftOf": "Oddly Delicate Rhea Cloth",
+      "materialIds": [
+        31998
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2962,7 +3424,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31756
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -2982,7 +3447,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Holy Water"
+      "craftOf": "Oddly Delicate Holy Water",
+      "materialIds": [
+        31764
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3001,7 +3469,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Holy Water"
+      "craftOf": "Oddly Delicate Holy Water",
+      "materialIds": [
+        31997
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3020,7 +3491,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Holy Water"
+      "craftOf": "Oddly Delicate Holy Water",
+      "materialIds": [
+        31992
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3039,7 +3513,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        31757
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3059,7 +3536,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Oddly Delicate Shark Oil"
+      "craftOf": "Oddly Delicate Shark Oil",
+      "materialIds": [
+        31765
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3078,7 +3558,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Shark Oil"
+      "craftOf": "Oddly Delicate Shark Oil",
+      "materialIds": [
+        31997
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3097,7 +3580,10 @@
         false,
         false
       ],
-      "craftOf": "Oddly Delicate Shark Oil"
+      "craftOf": "Oddly Delicate Shark Oil",
+      "materialIds": [
+        31998
+      ]
     },
     {
       "step": "Skybuilders'",
@@ -3115,6 +3601,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31768
       ]
     },
     {
@@ -3133,6 +3622,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        31769
       ]
     },
     {
@@ -3151,6 +3643,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31766
       ]
     },
     {
@@ -3169,6 +3664,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        31767
       ]
     },
     {
@@ -3187,6 +3685,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        31770
       ]
     },
     {
@@ -3205,6 +3706,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        31771
       ]
     },
     {
@@ -3224,7 +3728,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38756
+      ]
     },
     {
       "step": "Augmented",
@@ -3244,7 +3751,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Chair"
+      "craftOf": "Connoisseur's Chair",
+      "materialIds": [
+        38748
+      ]
     },
     {
       "step": "Augmented",
@@ -3263,7 +3773,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Chair"
+      "craftOf": "Connoisseur's Chair",
+      "materialIds": [
+        36193
+      ]
     },
     {
       "step": "Augmented",
@@ -3282,7 +3795,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38757
+      ]
     },
     {
       "step": "Augmented",
@@ -3302,7 +3818,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Wall Lantern"
+      "craftOf": "Connoisseur's Wall Lantern",
+      "materialIds": [
+        38749
+      ]
     },
     {
       "step": "Augmented",
@@ -3321,7 +3840,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Wall Lantern"
+      "craftOf": "Connoisseur's Wall Lantern",
+      "materialIds": [
+        36176
+      ]
     },
     {
       "step": "Augmented",
@@ -3340,7 +3862,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38758
+      ]
     },
     {
       "step": "Augmented",
@@ -3360,7 +3885,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Ornate Door"
+      "craftOf": "Connoisseur's Ornate Door",
+      "materialIds": [
+        38750
+      ]
     },
     {
       "step": "Augmented",
@@ -3379,7 +3907,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Ornate Door"
+      "craftOf": "Connoisseur's Ornate Door",
+      "materialIds": [
+        36193
+      ]
     },
     {
       "step": "Augmented",
@@ -3398,7 +3929,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38759
+      ]
     },
     {
       "step": "Augmented",
@@ -3418,7 +3952,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Vanity Mirror"
+      "craftOf": "Connoisseur's Vanity Mirror",
+      "materialIds": [
+        38751
+      ]
     },
     {
       "step": "Augmented",
@@ -3437,7 +3974,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Vanity Mirror"
+      "craftOf": "Connoisseur's Vanity Mirror",
+      "materialIds": [
+        36164
+      ]
     },
     {
       "step": "Augmented",
@@ -3456,7 +3996,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38760
+      ]
     },
     {
       "step": "Augmented",
@@ -3476,7 +4019,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Rug"
+      "craftOf": "Connoisseur's Rug",
+      "materialIds": [
+        38752
+      ]
     },
     {
       "step": "Augmented",
@@ -3495,7 +4041,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Rug"
+      "craftOf": "Connoisseur's Rug",
+      "materialIds": [
+        36203
+      ]
     },
     {
       "step": "Augmented",
@@ -3514,7 +4063,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38761
+      ]
     },
     {
       "step": "Augmented",
@@ -3534,7 +4086,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Swag Valance"
+      "craftOf": "Connoisseur's Swag Valance",
+      "materialIds": [
+        38753
+      ]
     },
     {
       "step": "Augmented",
@@ -3553,7 +4108,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Swag Valance"
+      "craftOf": "Connoisseur's Swag Valance",
+      "materialIds": [
+        36203
+      ]
     },
     {
       "step": "Augmented",
@@ -3572,7 +4130,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38762
+      ]
     },
     {
       "step": "Augmented",
@@ -3592,7 +4153,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Cosmetics Box"
+      "craftOf": "Connoisseur's Cosmetics Box",
+      "materialIds": [
+        38754
+      ]
     },
     {
       "step": "Augmented",
@@ -3611,7 +4175,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Cosmetics Box"
+      "craftOf": "Connoisseur's Cosmetics Box",
+      "materialIds": [
+        36260
+      ]
     },
     {
       "step": "Augmented",
@@ -3630,7 +4197,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38763
+      ]
     },
     {
       "step": "Augmented",
@@ -3650,7 +4220,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Pixieberry Tea"
+      "craftOf": "Connoisseur's Pixieberry Tea",
+      "materialIds": [
+        38755
+      ]
     },
     {
       "step": "Augmented",
@@ -3669,7 +4242,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Pixieberry Tea"
+      "craftOf": "Connoisseur's Pixieberry Tea",
+      "materialIds": [
+        36094
+      ]
     },
     {
       "step": "Crystalline",
@@ -3688,7 +4264,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38764
+      ]
     },
     {
       "step": "Crystalline",
@@ -3708,7 +4287,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Marimba"
+      "craftOf": "Connoisseur's Marimba",
+      "materialIds": [
+        38748
+      ]
     },
     {
       "step": "Crystalline",
@@ -3728,7 +4310,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Marimba"
+      "craftOf": "Connoisseur's Marimba",
+      "materialIds": [
+        36200
+      ]
     },
     {
       "step": "Crystalline",
@@ -3747,7 +4332,10 @@
         false,
         false
       ],
-      "craftOf": "Integral Lumber"
+      "craftOf": "Integral Lumber",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Crystalline",
@@ -3767,7 +4355,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Marimba"
+      "craftOf": "Connoisseur's Marimba",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Crystalline",
@@ -3786,7 +4377,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Crystalline",
@@ -3805,7 +4399,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Crystalline",
@@ -3824,7 +4421,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38765
+      ]
     },
     {
       "step": "Crystalline",
@@ -3844,7 +4444,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Coffee Brewer"
+      "craftOf": "Connoisseur's Coffee Brewer",
+      "materialIds": [
+        38749
+      ]
     },
     {
       "step": "Crystalline",
@@ -3864,7 +4467,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Coffee Brewer"
+      "craftOf": "Connoisseur's Coffee Brewer",
+      "materialIds": [
+        36186
+      ]
     },
     {
       "step": "Crystalline",
@@ -3883,7 +4489,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36178
+      ]
     },
     {
       "step": "Crystalline",
@@ -3902,7 +4511,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36181
+      ]
     },
     {
       "step": "Crystalline",
@@ -3922,7 +4534,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Coffee Brewer"
+      "craftOf": "Connoisseur's Coffee Brewer",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Crystalline",
@@ -3941,7 +4556,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Crystalline",
@@ -3960,7 +4578,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Crystalline",
@@ -3979,7 +4600,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38766
+      ]
     },
     {
       "step": "Crystalline",
@@ -3999,7 +4623,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Bench"
+      "craftOf": "Connoisseur's Bench",
+      "materialIds": [
+        38750
+      ]
     },
     {
       "step": "Crystalline",
@@ -4019,7 +4646,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Bench"
+      "craftOf": "Connoisseur's Bench",
+      "materialIds": [
+        36200
+      ]
     },
     {
       "step": "Crystalline",
@@ -4038,7 +4668,10 @@
         false,
         false
       ],
-      "craftOf": "Integral Lumber"
+      "craftOf": "Integral Lumber",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Crystalline",
@@ -4058,7 +4691,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Bench"
+      "craftOf": "Connoisseur's Bench",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Crystalline",
@@ -4077,7 +4713,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Crystalline",
@@ -4096,7 +4735,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Crystalline",
@@ -4115,7 +4757,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38767
+      ]
     },
     {
       "step": "Crystalline",
@@ -4135,7 +4780,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Astroscope"
+      "craftOf": "Connoisseur's Astroscope",
+      "materialIds": [
+        38751
+      ]
     },
     {
       "step": "Crystalline",
@@ -4155,7 +4803,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Astroscope"
+      "craftOf": "Connoisseur's Astroscope",
+      "materialIds": [
+        36186
+      ]
     },
     {
       "step": "Crystalline",
@@ -4174,7 +4825,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36178
+      ]
     },
     {
       "step": "Crystalline",
@@ -4193,7 +4847,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36181
+      ]
     },
     {
       "step": "Crystalline",
@@ -4213,7 +4870,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Astroscope"
+      "craftOf": "Connoisseur's Astroscope",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Crystalline",
@@ -4232,7 +4892,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Crystalline",
@@ -4251,7 +4914,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Crystalline",
@@ -4270,7 +4936,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38768
+      ]
     },
     {
       "step": "Crystalline",
@@ -4290,7 +4959,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Leather Sofa"
+      "craftOf": "Connoisseur's Leather Sofa",
+      "materialIds": [
+        38752
+      ]
     },
     {
       "step": "Crystalline",
@@ -4310,7 +4982,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Leather Sofa"
+      "craftOf": "Connoisseur's Leather Sofa",
+      "materialIds": [
+        36200
+      ]
     },
     {
       "step": "Crystalline",
@@ -4329,7 +5004,10 @@
         false,
         false
       ],
-      "craftOf": "Integral Lumber"
+      "craftOf": "Integral Lumber",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Crystalline",
@@ -4349,7 +5027,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Leather Sofa"
+      "craftOf": "Connoisseur's Leather Sofa",
+      "materialIds": [
+        36212
+      ]
     },
     {
       "step": "Crystalline",
@@ -4368,7 +5049,10 @@
         false,
         false
       ],
-      "craftOf": "AR-Caean Velvet"
+      "craftOf": "AR-Caean Velvet",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Crystalline",
@@ -4387,7 +5071,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38769
+      ]
     },
     {
       "step": "Crystalline",
@@ -4407,7 +5094,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Red Carpet"
+      "craftOf": "Connoisseur's Red Carpet",
+      "materialIds": [
+        38753
+      ]
     },
     {
       "step": "Crystalline",
@@ -4427,7 +5117,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Red Carpet"
+      "craftOf": "Connoisseur's Red Carpet",
+      "materialIds": [
+        36212
+      ]
     },
     {
       "step": "Crystalline",
@@ -4446,7 +5139,10 @@
         false,
         false
       ],
-      "craftOf": "AR-Caean Velvet"
+      "craftOf": "AR-Caean Velvet",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Crystalline",
@@ -4466,7 +5162,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Red Carpet"
+      "craftOf": "Connoisseur's Red Carpet",
+      "materialIds": [
+        36251
+      ]
     },
     {
       "step": "Crystalline",
@@ -4485,7 +5184,10 @@
         false,
         false
       ],
-      "craftOf": "Ophiotauros Leather"
+      "craftOf": "Ophiotauros Leather",
+      "materialIds": [
+        36246
+      ]
     },
     {
       "step": "Crystalline",
@@ -4504,7 +5206,10 @@
         false,
         false
       ],
-      "craftOf": "Ophiotauros Leather"
+      "craftOf": "Ophiotauros Leather",
+      "materialIds": [
+        36241
+      ]
     },
     {
       "step": "Crystalline",
@@ -4523,7 +5228,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38770
+      ]
     },
     {
       "step": "Crystalline",
@@ -4543,7 +5251,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Elixir Bottle"
+      "craftOf": "Connoisseur's Elixir Bottle",
+      "materialIds": [
+        38754
+      ]
     },
     {
       "step": "Crystalline",
@@ -4563,7 +5274,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Elixir Bottle"
+      "craftOf": "Connoisseur's Elixir Bottle",
+      "materialIds": [
+        36229
+      ]
     },
     {
       "step": "Crystalline",
@@ -4582,7 +5296,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27782
+      ]
     },
     {
       "step": "Crystalline",
@@ -4601,7 +5318,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27783
+      ]
     },
     {
       "step": "Crystalline",
@@ -4620,7 +5340,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27784
+      ]
     },
     {
       "step": "Crystalline",
@@ -4640,7 +5363,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Elixir Bottle"
+      "craftOf": "Connoisseur's Elixir Bottle",
+      "materialIds": [
+        36231
+      ]
     },
     {
       "step": "Crystalline",
@@ -4659,7 +5385,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Mind Alkahest"
+      "craftOf": "Grade 5 Mind Alkahest",
+      "materialIds": [
+        36258
+      ]
     },
     {
       "step": "Crystalline",
@@ -4678,7 +5407,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        38771
+      ]
     },
     {
       "step": "Crystalline",
@@ -4698,7 +5430,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Pixieberry Tart"
+      "craftOf": "Connoisseur's Pixieberry Tart",
+      "materialIds": [
+        38755
+      ]
     },
     {
       "step": "Crystalline",
@@ -4718,7 +5453,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Pixieberry Tart"
+      "craftOf": "Connoisseur's Pixieberry Tart",
+      "materialIds": [
+        36077
+      ]
     },
     {
       "step": "Crystalline",
@@ -4737,7 +5475,10 @@
         false,
         false
       ],
-      "craftOf": "Dark Rye Flour"
+      "craftOf": "Dark Rye Flour",
+      "materialIds": [
+        36083
+      ]
     },
     {
       "step": "Crystalline",
@@ -4757,7 +5498,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Pixieberry Tart"
+      "craftOf": "Connoisseur's Pixieberry Tart",
+      "materialIds": [
+        36080
+      ]
     },
     {
       "step": "Crystalline",
@@ -4776,7 +5520,10 @@
         false,
         false
       ],
-      "craftOf": "Palm Sugar"
+      "craftOf": "Palm Sugar",
+      "materialIds": [
+        36086
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4795,7 +5542,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39773
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4815,7 +5565,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Picture Frame"
+      "craftOf": "Connoisseur's Picture Frame",
+      "materialIds": [
+        39765
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4835,7 +5588,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Picture Frame"
+      "craftOf": "Connoisseur's Picture Frame",
+      "materialIds": [
+        36198
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4854,7 +5610,10 @@
         false,
         false
       ],
-      "craftOf": "Red Pine Lumber"
+      "craftOf": "Red Pine Lumber",
+      "materialIds": [
+        36192
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4874,7 +5633,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Picture Frame"
+      "craftOf": "Connoisseur's Picture Frame",
+      "materialIds": [
+        7026
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4893,7 +5655,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5346
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4912,7 +5677,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5343
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4931,7 +5699,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5516
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4950,7 +5721,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39774
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4970,7 +5744,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Samurai Blade"
+      "craftOf": "Connoisseur's Samurai Blade",
+      "materialIds": [
+        39766
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -4990,7 +5767,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Samurai Blade"
+      "craftOf": "Connoisseur's Samurai Blade",
+      "materialIds": [
+        36183
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5009,7 +5789,10 @@
         false,
         false
       ],
-      "craftOf": "Pewter Ingot"
+      "craftOf": "Pewter Ingot",
+      "materialIds": [
+        36175
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5028,7 +5811,10 @@
         false,
         false
       ],
-      "craftOf": "Pewter Ingot"
+      "craftOf": "Pewter Ingot",
+      "materialIds": [
+        5107
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5048,7 +5834,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Samurai Blade"
+      "craftOf": "Connoisseur's Samurai Blade",
+      "materialIds": [
+        19943
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5067,7 +5856,10 @@
         false,
         false
       ],
-      "craftOf": "Oroshigane Ingot"
+      "craftOf": "Oroshigane Ingot",
+      "materialIds": [
+        19953
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5086,7 +5878,10 @@
         false,
         false
       ],
-      "craftOf": "Oroshigane Ingot"
+      "craftOf": "Oroshigane Ingot",
+      "materialIds": [
+        5111
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5105,7 +5900,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39775
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5125,7 +5923,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Aquarium"
+      "craftOf": "Connoisseur's Aquarium",
+      "materialIds": [
+        39767
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5145,7 +5946,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Aquarium"
+      "craftOf": "Connoisseur's Aquarium",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5164,7 +5968,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5183,7 +5990,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5203,7 +6013,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Aquarium"
+      "craftOf": "Connoisseur's Aquarium",
+      "materialIds": [
+        12610
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5222,7 +6035,10 @@
         false,
         false
       ],
-      "craftOf": "Crystal Glass"
+      "craftOf": "Crystal Glass",
+      "materialIds": [
+        5523
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5241,7 +6057,10 @@
         false,
         false
       ],
-      "craftOf": "Crystal Glass"
+      "craftOf": "Crystal Glass",
+      "materialIds": [
+        5491
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5260,7 +6079,10 @@
         false,
         false
       ],
-      "craftOf": "Crystal Glass"
+      "craftOf": "Crystal Glass",
+      "materialIds": [
+        5518
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5279,7 +6101,10 @@
         false,
         false
       ],
-      "craftOf": "Crystal Glass"
+      "craftOf": "Crystal Glass",
+      "materialIds": [
+        5274
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5298,7 +6123,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39776
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5318,7 +6146,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Glaives"
+      "craftOf": "Connoisseur's Glaives",
+      "materialIds": [
+        39768
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5338,7 +6169,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Glaives"
+      "craftOf": "Connoisseur's Glaives",
+      "materialIds": [
+        36183
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5357,7 +6191,10 @@
         false,
         false
       ],
-      "craftOf": "Pewter Ingot"
+      "craftOf": "Pewter Ingot",
+      "materialIds": [
+        36175
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5376,7 +6213,10 @@
         false,
         false
       ],
-      "craftOf": "Pewter Ingot"
+      "craftOf": "Pewter Ingot",
+      "materialIds": [
+        5107
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5396,7 +6236,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Glaives"
+      "craftOf": "Connoisseur's Glaives",
+      "materialIds": [
+        27710
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5415,7 +6258,10 @@
         false,
         false
       ],
-      "craftOf": "Manasilver Nugget"
+      "craftOf": "Manasilver Nugget",
+      "materialIds": [
+        27699
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5434,7 +6280,10 @@
         false,
         false
       ],
-      "craftOf": "Manasilver Nugget"
+      "craftOf": "Manasilver Nugget",
+      "materialIds": [
+        5113
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5453,7 +6302,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39777
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5473,7 +6325,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Varsity Shoes"
+      "craftOf": "Connoisseur's Varsity Shoes",
+      "materialIds": [
+        39769
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5493,7 +6348,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Varsity Shoes"
+      "craftOf": "Connoisseur's Varsity Shoes",
+      "materialIds": [
+        36250
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5512,7 +6370,10 @@
         false,
         false
       ],
-      "craftOf": "Kumbhira Leather"
+      "craftOf": "Kumbhira Leather",
+      "materialIds": [
+        36245
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5531,7 +6392,10 @@
         false,
         false
       ],
-      "craftOf": "Kumbhira Leather"
+      "craftOf": "Kumbhira Leather",
+      "materialIds": [
+        36241
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5551,7 +6415,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Varsity Shoes"
+      "craftOf": "Connoisseur's Varsity Shoes",
+      "materialIds": [
+        27748
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5570,7 +6437,10 @@
         false,
         false
       ],
-      "craftOf": "Iridescent Silk"
+      "craftOf": "Iridescent Silk",
+      "materialIds": [
+        27750
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5589,7 +6459,10 @@
         false,
         false
       ],
-      "craftOf": "Iridescent Silk"
+      "craftOf": "Iridescent Silk",
+      "materialIds": [
+        5491
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5608,7 +6481,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39778
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5628,7 +6504,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Linen Parasol"
+      "craftOf": "Connoisseur's Linen Parasol",
+      "materialIds": [
+        39770
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5648,7 +6527,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Linen Parasol"
+      "craftOf": "Connoisseur's Linen Parasol",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5667,7 +6549,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5686,7 +6571,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5706,7 +6594,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Linen Parasol"
+      "craftOf": "Connoisseur's Linen Parasol",
+      "materialIds": [
+        7026
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5725,7 +6616,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5346
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5744,7 +6638,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5343
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5763,7 +6660,10 @@
         false,
         false
       ],
-      "craftOf": "Linen Canvas"
+      "craftOf": "Linen Canvas",
+      "materialIds": [
+        5516
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5782,7 +6682,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39779
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5802,7 +6705,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Topiary Moogle"
+      "craftOf": "Connoisseur's Topiary Moogle",
+      "materialIds": [
+        39771
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5822,7 +6728,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Topiary Moogle"
+      "craftOf": "Connoisseur's Topiary Moogle",
+      "materialIds": [
+        36230
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5841,7 +6750,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Intelligence Alkahest"
+      "craftOf": "Grade 5 Intelligence Alkahest",
+      "materialIds": [
+        27782
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5860,7 +6772,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Intelligence Alkahest"
+      "craftOf": "Grade 5 Intelligence Alkahest",
+      "materialIds": [
+        36258
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5879,7 +6794,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Intelligence Alkahest"
+      "craftOf": "Grade 5 Intelligence Alkahest",
+      "materialIds": [
+        27780
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5898,7 +6816,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Intelligence Alkahest"
+      "craftOf": "Grade 5 Intelligence Alkahest",
+      "materialIds": [
+        27763
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5918,7 +6839,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Topiary Moogle"
+      "craftOf": "Connoisseur's Topiary Moogle",
+      "materialIds": [
+        27778
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5937,7 +6861,10 @@
         false,
         false
       ],
-      "craftOf": "Growth Formula Kappa"
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        27774
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5956,7 +6883,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39780
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5976,7 +6906,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Squid Baguette"
+      "craftOf": "Connoisseur's Squid Baguette",
+      "materialIds": [
+        39772
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -5996,7 +6929,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Squid Baguette"
+      "craftOf": "Connoisseur's Squid Baguette",
+      "materialIds": [
+        36078
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6015,7 +6951,10 @@
         false,
         false
       ],
-      "craftOf": "Northern Sea Salt"
+      "craftOf": "Northern Sea Salt",
+      "materialIds": [
+        36084
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6035,7 +6974,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Squid Baguette"
+      "craftOf": "Connoisseur's Squid Baguette",
+      "materialIds": [
+        27841
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6054,7 +6996,10 @@
         false,
         false
       ],
-      "craftOf": "Upland Wheat Flour"
+      "craftOf": "Upland Wheat Flour",
+      "materialIds": [
+        12880
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6073,7 +7018,10 @@
         false,
         false
       ],
-      "craftOf": "Upland Wheat Flour"
+      "craftOf": "Upland Wheat Flour",
+      "materialIds": [
+        12631
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6092,7 +7040,10 @@
         false,
         false
       ],
-      "craftOf": "Upland Wheat Flour"
+      "craftOf": "Upland Wheat Flour",
+      "materialIds": [
+        12901
+      ]
     },
     {
       "step": "Chora-Zoi's",
@@ -6111,7 +7062,10 @@
         false,
         false
       ],
-      "craftOf": "Upland Wheat Flour"
+      "craftOf": "Upland Wheat Flour",
+      "materialIds": [
+        36255
+      ]
     },
     {
       "step": "Brilliant",
@@ -6130,7 +7084,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39781
+      ]
     },
     {
       "step": "Brilliant",
@@ -6150,7 +7107,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Bookshelf"
+      "craftOf": "Connoisseur's Bookshelf",
+      "materialIds": [
+        39765
+      ]
     },
     {
       "step": "Brilliant",
@@ -6170,7 +7130,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Bookshelf"
+      "craftOf": "Connoisseur's Bookshelf",
+      "materialIds": [
+        36200
+      ]
     },
     {
       "step": "Brilliant",
@@ -6189,7 +7152,10 @@
         false,
         false
       ],
-      "craftOf": "Integral Lumber"
+      "craftOf": "Integral Lumber",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Brilliant",
@@ -6209,7 +7175,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Bookshelf"
+      "craftOf": "Connoisseur's Bookshelf",
+      "materialIds": [
+        36199
+      ]
     },
     {
       "step": "Brilliant",
@@ -6228,7 +7197,10 @@
         false,
         false
       ],
-      "craftOf": "Ironwood Lumber"
+      "craftOf": "Ironwood Lumber",
+      "materialIds": [
+        36193
+      ]
     },
     {
       "step": "Brilliant",
@@ -6248,7 +7220,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Bookshelf"
+      "craftOf": "Connoisseur's Bookshelf",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Brilliant",
@@ -6267,7 +7242,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Brilliant",
@@ -6286,7 +7264,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Brilliant",
@@ -6305,7 +7286,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39782
+      ]
     },
     {
       "step": "Brilliant",
@@ -6325,7 +7309,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Chandelier"
+      "craftOf": "Connoisseur's Chandelier",
+      "materialIds": [
+        39766
+      ]
     },
     {
       "step": "Brilliant",
@@ -6345,7 +7332,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Chandelier"
+      "craftOf": "Connoisseur's Chandelier",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Brilliant",
@@ -6364,7 +7354,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Brilliant",
@@ -6383,7 +7376,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Brilliant",
@@ -6403,7 +7399,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Chandelier"
+      "craftOf": "Connoisseur's Chandelier",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Brilliant",
@@ -6422,7 +7421,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Brilliant",
@@ -6441,7 +7443,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Brilliant",
@@ -6461,7 +7466,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Chandelier"
+      "craftOf": "Connoisseur's Chandelier",
+      "materialIds": [
+        36184
+      ]
     },
     {
       "step": "Brilliant",
@@ -6480,7 +7488,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        36176
+      ]
     },
     {
       "step": "Brilliant",
@@ -6499,7 +7510,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        5110
+      ]
     },
     {
       "step": "Brilliant",
@@ -6518,7 +7532,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39783
+      ]
     },
     {
       "step": "Brilliant",
@@ -6538,7 +7555,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Escutcheon"
+      "craftOf": "Connoisseur's Escutcheon",
+      "materialIds": [
+        39767
+      ]
     },
     {
       "step": "Brilliant",
@@ -6558,7 +7578,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Escutcheon"
+      "craftOf": "Connoisseur's Escutcheon",
+      "materialIds": [
+        36172
+      ]
     },
     {
       "step": "Brilliant",
@@ -6577,7 +7600,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Brilliant",
@@ -6596,7 +7622,10 @@
         false,
         false
       ],
-      "craftOf": "Chondrite Ingot"
+      "craftOf": "Chondrite Ingot",
+      "materialIds": [
+        27703
+      ]
     },
     {
       "step": "Brilliant",
@@ -6616,7 +7645,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Escutcheon"
+      "craftOf": "Connoisseur's Escutcheon",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Brilliant",
@@ -6635,7 +7667,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Brilliant",
@@ -6654,7 +7689,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Brilliant",
@@ -6674,7 +7712,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Escutcheon"
+      "craftOf": "Connoisseur's Escutcheon",
+      "materialIds": [
+        36199
+      ]
     },
     {
       "step": "Brilliant",
@@ -6693,7 +7734,10 @@
         false,
         false
       ],
-      "craftOf": "Ironwood Lumber"
+      "craftOf": "Ironwood Lumber",
+      "materialIds": [
+        36193
+      ]
     },
     {
       "step": "Brilliant",
@@ -6712,7 +7756,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39784
+      ]
     },
     {
       "step": "Brilliant",
@@ -6732,7 +7779,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Baghnakhs"
+      "craftOf": "Connoisseur's Baghnakhs",
+      "materialIds": [
+        39768
+      ]
     },
     {
       "step": "Brilliant",
@@ -6752,7 +7802,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Baghnakhs"
+      "craftOf": "Connoisseur's Baghnakhs",
+      "materialIds": [
+        36186
+      ]
     },
     {
       "step": "Brilliant",
@@ -6771,7 +7824,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36178
+      ]
     },
     {
       "step": "Brilliant",
@@ -6790,7 +7846,10 @@
         false,
         false
       ],
-      "craftOf": "Star Quartz"
+      "craftOf": "Star Quartz",
+      "materialIds": [
+        36181
+      ]
     },
     {
       "step": "Brilliant",
@@ -6810,7 +7869,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Baghnakhs"
+      "craftOf": "Connoisseur's Baghnakhs",
+      "materialIds": [
+        36184
+      ]
     },
     {
       "step": "Brilliant",
@@ -6829,7 +7891,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        36176
+      ]
     },
     {
       "step": "Brilliant",
@@ -6848,7 +7913,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        5110
+      ]
     },
     {
       "step": "Brilliant",
@@ -6868,7 +7936,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Baghnakhs"
+      "craftOf": "Connoisseur's Baghnakhs",
+      "materialIds": [
+        36171
+      ]
     },
     {
       "step": "Brilliant",
@@ -6887,7 +7958,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Brilliant",
@@ -6906,7 +7980,10 @@
         false,
         false
       ],
-      "craftOf": "Manganese Ingot"
+      "craftOf": "Manganese Ingot",
+      "materialIds": [
+        19957
+      ]
     },
     {
       "step": "Brilliant",
@@ -6925,7 +8002,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39785
+      ]
     },
     {
       "step": "Brilliant",
@@ -6945,7 +8025,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Drinking Apkallu"
+      "craftOf": "Connoisseur's Drinking Apkallu",
+      "materialIds": [
+        39769
+      ]
     },
     {
       "step": "Brilliant",
@@ -6965,7 +8048,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Drinking Apkallu"
+      "craftOf": "Connoisseur's Drinking Apkallu",
+      "materialIds": [
+        36251
+      ]
     },
     {
       "step": "Brilliant",
@@ -6984,7 +8070,10 @@
         false,
         false
       ],
-      "craftOf": "Ophiotauros Leather"
+      "craftOf": "Ophiotauros Leather",
+      "materialIds": [
+        36246
+      ]
     },
     {
       "step": "Brilliant",
@@ -7003,7 +8092,10 @@
         false,
         false
       ],
-      "craftOf": "Ophiotauros Leather"
+      "craftOf": "Ophiotauros Leather",
+      "materialIds": [
+        36241
+      ]
     },
     {
       "step": "Brilliant",
@@ -7023,7 +8115,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Drinking Apkallu"
+      "craftOf": "Connoisseur's Drinking Apkallu",
+      "materialIds": [
+        36184
+      ]
     },
     {
       "step": "Brilliant",
@@ -7042,7 +8137,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        36176
+      ]
     },
     {
       "step": "Brilliant",
@@ -7061,7 +8159,10 @@
         false,
         false
       ],
-      "craftOf": "Phrygian Gold Ingot"
+      "craftOf": "Phrygian Gold Ingot",
+      "materialIds": [
+        5110
+      ]
     },
     {
       "step": "Brilliant",
@@ -7080,7 +8181,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Drinking Apkallu"
+      "craftOf": "Connoisseur's Drinking Apkallu",
+      "materialIds": [
+        5348
+      ]
     },
     {
       "step": "Brilliant",
@@ -7099,7 +8203,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39786
+      ]
     },
     {
       "step": "Brilliant",
@@ -7119,7 +8226,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Jacket"
+      "craftOf": "Connoisseur's Jacket",
+      "materialIds": [
+        39770
+      ]
     },
     {
       "step": "Brilliant",
@@ -7139,7 +8249,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Jacket"
+      "craftOf": "Connoisseur's Jacket",
+      "materialIds": [
+        36212
+      ]
     },
     {
       "step": "Brilliant",
@@ -7158,7 +8271,10 @@
         false,
         false
       ],
-      "craftOf": "AR-Caean Velvet"
+      "craftOf": "AR-Caean Velvet",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Brilliant",
@@ -7178,7 +8294,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Jacket"
+      "craftOf": "Connoisseur's Jacket",
+      "materialIds": [
+        36211
+      ]
     },
     {
       "step": "Brilliant",
@@ -7197,7 +8316,10 @@
         false,
         false
       ],
-      "craftOf": "Scarlet Moko Cloth"
+      "craftOf": "Scarlet Moko Cloth",
+      "materialIds": [
+        36205
+      ]
     },
     {
       "step": "Brilliant",
@@ -7217,7 +8339,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Jacket"
+      "craftOf": "Connoisseur's Jacket",
+      "materialIds": [
+        36249
+      ]
     },
     {
       "step": "Brilliant",
@@ -7236,7 +8361,10 @@
         false,
         false
       ],
-      "craftOf": "Saiga Leather"
+      "craftOf": "Saiga Leather",
+      "materialIds": [
+        36244
+      ]
     },
     {
       "step": "Brilliant",
@@ -7255,7 +8383,10 @@
         false,
         false
       ],
-      "craftOf": "Saiga Leather"
+      "craftOf": "Saiga Leather",
+      "materialIds": [
+        36241
+      ]
     },
     {
       "step": "Brilliant",
@@ -7274,7 +8405,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39787
+      ]
     },
     {
       "step": "Brilliant",
@@ -7294,7 +8428,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Planter Partition"
+      "craftOf": "Connoisseur's Planter Partition",
+      "materialIds": [
+        39771
+      ]
     },
     {
       "step": "Brilliant",
@@ -7314,7 +8451,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Planter Partition"
+      "craftOf": "Connoisseur's Planter Partition",
+      "materialIds": [
+        36199
+      ]
     },
     {
       "step": "Brilliant",
@@ -7333,7 +8473,10 @@
         false,
         false
       ],
-      "craftOf": "Ironwood Lumber"
+      "craftOf": "Ironwood Lumber",
+      "materialIds": [
+        36193
+      ]
     },
     {
       "step": "Brilliant",
@@ -7353,7 +8496,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Planter Partition"
+      "craftOf": "Connoisseur's Planter Partition",
+      "materialIds": [
+        36229
+      ]
     },
     {
       "step": "Brilliant",
@@ -7372,7 +8518,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27782
+      ]
     },
     {
       "step": "Brilliant",
@@ -7391,7 +8540,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27783
+      ]
     },
     {
       "step": "Brilliant",
@@ -7410,7 +8562,10 @@
         false,
         false
       ],
-      "craftOf": "Grade 5 Vitality Alkahest"
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        27763
+      ]
     },
     {
       "step": "Brilliant",
@@ -7430,7 +8585,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Planter Partition"
+      "craftOf": "Connoisseur's Planter Partition",
+      "materialIds": [
+        27778
+      ]
     },
     {
       "step": "Brilliant",
@@ -7449,7 +8607,10 @@
         false,
         false
       ],
-      "craftOf": "Growth Formula Kappa"
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        36258
+      ]
     },
     {
       "step": "Brilliant",
@@ -7468,7 +8629,10 @@
         false,
         false
       ],
-      "craftOf": "Growth Formula Kappa"
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        27774
+      ]
     },
     {
       "step": "Brilliant",
@@ -7487,7 +8651,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        39788
+      ]
     },
     {
       "step": "Brilliant",
@@ -7507,7 +8674,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Spaghetti al Nero"
+      "craftOf": "Connoisseur's Spaghetti al Nero",
+      "materialIds": [
+        39772
+      ]
     },
     {
       "step": "Brilliant",
@@ -7527,7 +8697,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Spaghetti al Nero"
+      "craftOf": "Connoisseur's Spaghetti al Nero",
+      "materialIds": [
+        36079
+      ]
     },
     {
       "step": "Brilliant",
@@ -7546,7 +8719,10 @@
         false,
         false
       ],
-      "craftOf": "Perilla Oil"
+      "craftOf": "Perilla Oil",
+      "materialIds": [
+        36085
+      ]
     },
     {
       "step": "Brilliant",
@@ -7566,7 +8742,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Spaghetti al Nero"
+      "craftOf": "Connoisseur's Spaghetti al Nero",
+      "materialIds": [
+        36081
+      ]
     },
     {
       "step": "Brilliant",
@@ -7585,7 +8764,10 @@
         false,
         false
       ],
-      "craftOf": "Garlean Cheese"
+      "craftOf": "Garlean Cheese",
+      "materialIds": [
+        36255
+      ]
     },
     {
       "step": "Brilliant",
@@ -7605,7 +8787,10 @@
         false
       ],
       "role": "precraft",
-      "craftOf": "Connoisseur's Spaghetti al Nero"
+      "craftOf": "Connoisseur's Spaghetti al Nero",
+      "materialIds": [
+        12908
+      ]
     },
     {
       "step": "Brilliant",
@@ -7624,7 +8809,10 @@
         false,
         false
       ],
-      "craftOf": "Vermicelli"
+      "craftOf": "Vermicelli",
+      "materialIds": [
+        12880
+      ]
     },
     {
       "step": "Brilliant",
@@ -7643,7 +8831,10 @@
         false,
         false
       ],
-      "craftOf": "Vermicelli"
+      "craftOf": "Vermicelli",
+      "materialIds": [
+        12631
+      ]
     },
     {
       "step": "Brilliant",
@@ -7662,7 +8853,10 @@
         false,
         false
       ],
-      "craftOf": "Vermicelli"
+      "craftOf": "Vermicelli",
+      "materialIds": [
+        12901
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7681,7 +8875,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41254
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7701,7 +8898,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Bamboo Fence"
+      "craftOf": "Connoisseur's Bamboo Fence",
+      "materialIds": [
+        41246
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7720,7 +8920,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Bamboo Fence"
+      "craftOf": "Connoisseur's Bamboo Fence",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7739,7 +8942,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Bamboo Fence"
+      "craftOf": "Connoisseur's Bamboo Fence",
+      "materialIds": [
+        5230
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7758,7 +8964,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41255
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7778,7 +8987,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Rousing Chronometer"
+      "craftOf": "Connoisseur's Rousing Chronometer",
+      "materialIds": [
+        41247
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7797,7 +9009,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Rousing Chronometer"
+      "craftOf": "Connoisseur's Rousing Chronometer",
+      "materialIds": [
+        36166
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7816,7 +9031,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Rousing Chronometer"
+      "craftOf": "Connoisseur's Rousing Chronometer",
+      "materialIds": [
+        36178
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7835,7 +9053,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41256
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7855,7 +9076,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Trumpet"
+      "craftOf": "Connoisseur's Trumpet",
+      "materialIds": [
+        41248
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7874,7 +9098,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Trumpet"
+      "craftOf": "Connoisseur's Trumpet",
+      "materialIds": [
+        27697
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7893,7 +9120,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Trumpet"
+      "craftOf": "Connoisseur's Trumpet",
+      "materialIds": [
+        36190
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7912,7 +9142,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41257
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7932,7 +9165,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Washbasin"
+      "craftOf": "Connoisseur's Washbasin",
+      "materialIds": [
+        41249
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7951,7 +9187,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Washbasin"
+      "craftOf": "Connoisseur's Washbasin",
+      "materialIds": [
+        36175
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7970,7 +9209,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Washbasin"
+      "craftOf": "Connoisseur's Washbasin",
+      "materialIds": [
+        36164
+      ]
     },
     {
       "step": "Vrandtic",
@@ -7989,7 +9231,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41258
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8009,7 +9254,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Targe"
+      "craftOf": "Connoisseur's Targe",
+      "materialIds": [
+        41250
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8028,7 +9276,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Targe"
+      "craftOf": "Connoisseur's Targe",
+      "materialIds": [
+        36190
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8047,7 +9298,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Targe"
+      "craftOf": "Connoisseur's Targe",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8066,7 +9320,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41259
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8086,7 +9343,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Petasos"
+      "craftOf": "Connoisseur's Petasos",
+      "materialIds": [
+        41251
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8105,7 +9365,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Petasos"
+      "craftOf": "Connoisseur's Petasos",
+      "materialIds": [
+        19979
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8124,7 +9387,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Petasos"
+      "craftOf": "Connoisseur's Petasos",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8143,7 +9409,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41260
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8163,7 +9432,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Lunar Curtain"
+      "craftOf": "Connoisseur's Lunar Curtain",
+      "materialIds": [
+        41252
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8182,7 +9454,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Lunar Curtain"
+      "craftOf": "Connoisseur's Lunar Curtain",
+      "materialIds": [
+        36258
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8201,7 +9476,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Lunar Curtain"
+      "craftOf": "Connoisseur's Lunar Curtain",
+      "materialIds": [
+        36257
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8220,7 +9498,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41261
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8240,7 +9521,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Crab Cakes"
+      "craftOf": "Connoisseur's Crab Cakes",
+      "materialIds": [
+        41253
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8259,7 +9543,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Crab Cakes"
+      "craftOf": "Connoisseur's Crab Cakes",
+      "materialIds": [
+        27832
+      ]
     },
     {
       "step": "Vrandtic",
@@ -8278,7 +9565,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Crab Cakes"
+      "craftOf": "Connoisseur's Crab Cakes",
+      "materialIds": [
+        36256
+      ]
     },
     {
       "step": "Lodestar",
@@ -8297,7 +9587,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41262
+      ]
     },
     {
       "step": "Lodestar",
@@ -8317,7 +9610,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Shishi-odoshi"
+      "craftOf": "Connoisseur's Shishi-odoshi",
+      "materialIds": [
+        41246
+      ]
     },
     {
       "step": "Lodestar",
@@ -8336,7 +9632,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Shishi-odoshi"
+      "craftOf": "Connoisseur's Shishi-odoshi",
+      "materialIds": [
+        36263
+      ]
     },
     {
       "step": "Lodestar",
@@ -8355,7 +9654,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Shishi-odoshi"
+      "craftOf": "Connoisseur's Shishi-odoshi",
+      "materialIds": [
+        5231
+      ]
     },
     {
       "step": "Lodestar",
@@ -8374,7 +9676,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Shishi-odoshi"
+      "craftOf": "Connoisseur's Shishi-odoshi",
+      "materialIds": [
+        7008
+      ]
     },
     {
       "step": "Lodestar",
@@ -8393,7 +9698,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41263
+      ]
     },
     {
       "step": "Lodestar",
@@ -8413,7 +9721,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Retainer Bell"
+      "craftOf": "Connoisseur's Retainer Bell",
+      "materialIds": [
+        41247
+      ]
     },
     {
       "step": "Lodestar",
@@ -8432,7 +9743,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Retainer Bell"
+      "craftOf": "Connoisseur's Retainer Bell",
+      "materialIds": [
+        36194
+      ]
     },
     {
       "step": "Lodestar",
@@ -8451,7 +9765,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Retainer Bell"
+      "craftOf": "Connoisseur's Retainer Bell",
+      "materialIds": [
+        36175
+      ]
     },
     {
       "step": "Lodestar",
@@ -8470,7 +9787,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Retainer Bell"
+      "craftOf": "Connoisseur's Retainer Bell",
+      "materialIds": [
+        5360
+      ]
     },
     {
       "step": "Lodestar",
@@ -8489,7 +9809,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41264
+      ]
     },
     {
       "step": "Lodestar",
@@ -8509,7 +9832,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Marching Horn"
+      "craftOf": "Connoisseur's Marching Horn",
+      "materialIds": [
+        41248
+      ]
     },
     {
       "step": "Lodestar",
@@ -8528,7 +9854,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marching Horn"
+      "craftOf": "Connoisseur's Marching Horn",
+      "materialIds": [
+        5391
+      ]
     },
     {
       "step": "Lodestar",
@@ -8547,7 +9876,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marching Horn"
+      "craftOf": "Connoisseur's Marching Horn",
+      "materialIds": [
+        36164
+      ]
     },
     {
       "step": "Lodestar",
@@ -8566,7 +9898,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marching Horn"
+      "craftOf": "Connoisseur's Marching Horn",
+      "materialIds": [
+        36165
+      ]
     },
     {
       "step": "Lodestar",
@@ -8585,7 +9920,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41265
+      ]
     },
     {
       "step": "Lodestar",
@@ -8605,7 +9943,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Marble Fountain"
+      "craftOf": "Connoisseur's Marble Fountain",
+      "materialIds": [
+        41249
+      ]
     },
     {
       "step": "Lodestar",
@@ -8624,7 +9965,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marble Fountain"
+      "craftOf": "Connoisseur's Marble Fountain",
+      "materialIds": [
+        36263
+      ]
     },
     {
       "step": "Lodestar",
@@ -8643,7 +9987,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marble Fountain"
+      "craftOf": "Connoisseur's Marble Fountain",
+      "materialIds": [
+        36181
+      ]
     },
     {
       "step": "Lodestar",
@@ -8662,7 +10009,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Marble Fountain"
+      "craftOf": "Connoisseur's Marble Fountain",
+      "materialIds": [
+        7008
+      ]
     },
     {
       "step": "Lodestar",
@@ -8681,7 +10031,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41266
+      ]
     },
     {
       "step": "Lodestar",
@@ -8701,7 +10054,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Leather Jacket"
+      "craftOf": "Connoisseur's Leather Jacket",
+      "materialIds": [
+        41250
+      ]
     },
     {
       "step": "Lodestar",
@@ -8720,7 +10076,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Leather Jacket"
+      "craftOf": "Connoisseur's Leather Jacket",
+      "materialIds": [
+        19979
+      ]
     },
     {
       "step": "Lodestar",
@@ -8739,7 +10098,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Leather Jacket"
+      "craftOf": "Connoisseur's Leather Jacket",
+      "materialIds": [
+        36203
+      ]
     },
     {
       "step": "Lodestar",
@@ -8758,7 +10120,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Leather Jacket"
+      "craftOf": "Connoisseur's Leather Jacket",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Lodestar",
@@ -8777,7 +10142,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41267
+      ]
     },
     {
       "step": "Lodestar",
@@ -8797,7 +10165,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Fat Cat Sofa"
+      "craftOf": "Connoisseur's Fat Cat Sofa",
+      "materialIds": [
+        41251
+      ]
     },
     {
       "step": "Lodestar",
@@ -8816,7 +10187,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Fat Cat Sofa"
+      "craftOf": "Connoisseur's Fat Cat Sofa",
+      "materialIds": [
+        36203
+      ]
     },
     {
       "step": "Lodestar",
@@ -8835,7 +10209,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Fat Cat Sofa"
+      "craftOf": "Connoisseur's Fat Cat Sofa",
+      "materialIds": [
+        36206
+      ]
     },
     {
       "step": "Lodestar",
@@ -8854,7 +10231,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Fat Cat Sofa"
+      "craftOf": "Connoisseur's Fat Cat Sofa",
+      "materialIds": [
+        36205
+      ]
     },
     {
       "step": "Lodestar",
@@ -8873,7 +10253,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41268
+      ]
     },
     {
       "step": "Lodestar",
@@ -8893,7 +10276,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Tincture of Vitality"
+      "craftOf": "Connoisseur's Tincture of Vitality",
+      "materialIds": [
+        41252
+      ]
     },
     {
       "step": "Lodestar",
@@ -8912,7 +10298,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Tincture of Vitality"
+      "craftOf": "Connoisseur's Tincture of Vitality",
+      "materialIds": [
+        36260
+      ]
     },
     {
       "step": "Lodestar",
@@ -8931,7 +10320,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Tincture of Vitality"
+      "craftOf": "Connoisseur's Tincture of Vitality",
+      "materialIds": [
+        36261
+      ]
     },
     {
       "step": "Lodestar",
@@ -8950,7 +10342,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Tincture of Vitality"
+      "craftOf": "Connoisseur's Tincture of Vitality",
+      "materialIds": [
+        36264
+      ]
     },
     {
       "step": "Lodestar",
@@ -8969,7 +10364,10 @@
         false,
         false
       ],
-      "role": "craft"
+      "role": "craft",
+      "materialIds": [
+        41269
+      ]
     },
     {
       "step": "Lodestar",
@@ -8989,7 +10387,10 @@
         false
       ],
       "role": "scrip",
-      "craftOf": "Connoisseur's Chili Crab"
+      "craftOf": "Connoisseur's Chili Crab",
+      "materialIds": [
+        41253
+      ]
     },
     {
       "step": "Lodestar",
@@ -9008,7 +10409,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Chili Crab"
+      "craftOf": "Connoisseur's Chili Crab",
+      "materialIds": [
+        36085
+      ]
     },
     {
       "step": "Lodestar",
@@ -9027,7 +10431,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Chili Crab"
+      "craftOf": "Connoisseur's Chili Crab",
+      "materialIds": [
+        27825
+      ]
     },
     {
       "step": "Lodestar",
@@ -9046,7 +10453,10 @@
         false,
         false
       ],
-      "craftOf": "Connoisseur's Chili Crab"
+      "craftOf": "Connoisseur's Chili Crab",
+      "materialIds": [
+        4836
+      ]
     },
     {
       "step": "Augmented",
@@ -9064,6 +10474,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        38790
       ]
     },
     {
@@ -9082,6 +10495,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        38788
       ]
     },
     {
@@ -9100,6 +10516,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        38796
       ]
     },
     {
@@ -9118,6 +10537,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        38794
       ]
     },
     {
@@ -9136,6 +10558,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        39805
       ]
     },
     {
@@ -9154,6 +10579,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        39807
       ]
     },
     {
@@ -9172,6 +10600,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        39811
       ]
     },
     {
@@ -9190,6 +10621,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        39813
       ]
     },
     {
@@ -9208,6 +10642,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        41286
       ]
     },
     {
@@ -9226,6 +10663,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        41288
       ]
     },
     {
@@ -9244,6 +10684,9 @@
         true,
         false,
         false
+      ],
+      "materialIds": [
+        41290
       ]
     },
     {
@@ -9262,6 +10705,9 @@
         false,
         true,
         false
+      ],
+      "materialIds": [
+        41292
       ]
     },
     {
@@ -9280,6 +10726,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        38792
       ]
     },
     {
@@ -9298,6 +10747,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        38793
       ]
     },
     {
@@ -9316,6 +10768,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        38798
       ]
     },
     {
@@ -9334,6 +10789,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        38799
       ]
     },
     {
@@ -9352,6 +10810,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        39809
       ]
     },
     {
@@ -9370,6 +10831,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        39810
       ]
     },
     {
@@ -9388,6 +10852,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        39815
       ]
     },
     {
@@ -9406,6 +10873,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        39816
       ]
     },
     {
@@ -9424,6 +10894,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        41298
       ]
     },
     {
@@ -9442,6 +10915,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        41299
       ]
     },
     {
@@ -9460,6 +10936,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        41300
       ]
     },
     {
@@ -9478,6 +10957,9 @@
         false,
         false,
         true
+      ],
+      "materialIds": [
+        41301
       ]
     },
     {
@@ -9496,6 +10978,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33186
       ]
     },
     {
@@ -9514,6 +10999,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33210
       ]
     },
     {
@@ -9532,6 +11020,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33187
       ]
     },
     {
@@ -9550,6 +11041,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33211
       ]
     },
     {
@@ -9568,6 +11062,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33188
       ]
     },
     {
@@ -9586,6 +11083,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33212
       ]
     },
     {
@@ -9604,6 +11104,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33189
       ]
     },
     {
@@ -9622,6 +11125,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33213
       ]
     },
     {
@@ -9640,6 +11146,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33190
       ]
     },
     {
@@ -9658,6 +11167,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33214
       ]
     },
     {
@@ -9676,6 +11188,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33191
       ]
     },
     {
@@ -9694,6 +11209,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33215
       ]
     },
     {
@@ -9712,6 +11230,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33192
       ]
     },
     {
@@ -9730,6 +11251,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33216
       ]
     },
     {
@@ -9748,6 +11272,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33193
       ]
     },
     {
@@ -9766,6 +11293,9 @@
         false,
         false,
         false
+      ],
+      "materialIds": [
+        33217
       ]
     }
   ],
@@ -9785,6 +11315,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        6267
       ]
     },
     {
@@ -9802,6 +11335,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        6268
       ]
     },
     {
@@ -9819,6 +11355,20 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        7860,
+        7855,
+        7862,
+        7859,
+        7854,
+        7858,
+        7851,
+        7856,
+        7861,
+        7852,
+        7857,
+        7853
       ]
     },
     {
@@ -9836,6 +11386,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        7885
       ]
     },
     {
@@ -9853,6 +11406,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        7883
       ]
     },
     {
@@ -9874,7 +11430,10 @@
       "purchase": {
         "currency": "GC seals",
         "unit": 20000
-      }
+      },
+      "materialIds": [
+        9539
+      ]
     },
     {
       "step": "Zodiac",
@@ -9891,6 +11450,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9540
       ]
     },
     {
@@ -9908,6 +11470,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9543
       ]
     },
     {
@@ -9925,6 +11490,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9542
       ]
     },
     {
@@ -9942,6 +11510,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9538
       ]
     },
     {
@@ -9959,6 +11530,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9544
       ]
     },
     {
@@ -9976,6 +11550,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9511
       ]
     },
     {
@@ -9993,6 +11570,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9513
       ]
     },
     {
@@ -10010,6 +11590,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9512
       ]
     },
     {
@@ -10027,6 +11610,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9510
       ]
     },
     {
@@ -10044,6 +11630,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9514
       ]
     },
     {
@@ -10061,6 +11650,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9517
       ]
     },
     {
@@ -10078,6 +11670,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9515
       ]
     },
     {
@@ -10095,6 +11690,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        9516
       ]
     }
   ],
@@ -10117,6 +11715,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13570
       ]
     },
     {
@@ -10137,6 +11738,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13571
       ]
     },
     {
@@ -10157,6 +11761,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13573
       ]
     },
     {
@@ -10177,6 +11784,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13569
       ]
     },
     {
@@ -10197,6 +11807,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13572
       ]
     },
     {
@@ -10217,6 +11830,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13574
       ]
     },
     {
@@ -10237,6 +11853,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13582
       ]
     },
     {
@@ -10257,6 +11876,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13584
       ]
     },
     {
@@ -10277,6 +11899,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13586
       ]
     },
     {
@@ -10297,6 +11922,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13588
       ]
     },
     {
@@ -10317,6 +11945,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13589
       ]
     },
     {
@@ -10337,6 +11968,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13591
       ]
     },
     {
@@ -10357,6 +11991,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13593
       ]
     },
     {
@@ -10377,6 +12014,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        13595
       ]
     },
     {
@@ -10397,6 +12037,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        14899
       ]
     },
     {
@@ -10417,6 +12060,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        15840
       ]
     },
     {
@@ -10437,6 +12083,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        15841
       ]
     },
     {
@@ -10457,6 +12106,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        16064
       ]
     },
     {
@@ -10477,6 +12129,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        16933
       ]
     },
     {
@@ -10497,6 +12152,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        16934
       ]
     }
   ],
@@ -10521,6 +12179,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        21801
       ]
     },
     {
@@ -10543,6 +12204,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        21801
       ]
     },
     {
@@ -10565,6 +12229,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        21801
       ]
     },
     {
@@ -10587,6 +12254,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        21802
       ]
     },
     {
@@ -10609,6 +12279,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        23309
       ]
     },
     {
@@ -10631,6 +12304,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        23309
       ]
     },
     {
@@ -10653,6 +12329,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        22976
       ]
     },
     {
@@ -10675,6 +12354,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        23309
       ]
     },
     {
@@ -10697,6 +12379,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        22975
       ]
     },
     {
@@ -10719,6 +12404,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24124
       ]
     },
     {
@@ -10741,6 +12429,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24124
       ]
     },
     {
@@ -10763,6 +12454,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24124
       ]
     },
     {
@@ -10785,6 +12479,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24123
       ]
     },
     {
@@ -10807,6 +12504,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24807
       ]
     },
     {
@@ -10829,6 +12529,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24807
       ]
     },
     {
@@ -10851,6 +12554,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24807
       ]
     },
     {
@@ -10873,6 +12579,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24807
       ]
     },
     {
@@ -10895,6 +12604,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24806
       ]
     },
     {
@@ -10917,6 +12629,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        24808
       ]
     }
   ],
@@ -10943,6 +12658,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        30273
       ]
     },
     {
@@ -10967,6 +12685,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        31573
       ]
     },
     {
@@ -10991,6 +12712,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        31574
       ]
     },
     {
@@ -11015,6 +12739,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        31575
       ]
     },
     {
@@ -11039,6 +12766,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        31576
       ]
     },
     {
@@ -11063,6 +12793,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        32956
       ]
     },
     {
@@ -11087,6 +12820,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        32959
       ]
     },
     {
@@ -11111,6 +12847,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        33767
       ]
     }
   ],
@@ -11139,6 +12878,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        38420
       ]
     },
     {
@@ -11165,6 +12907,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        38940
       ]
     },
     {
@@ -11191,6 +12936,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        40322
       ]
     },
     {
@@ -11217,6 +12965,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        41032
       ]
     }
   ],
@@ -11247,6 +12998,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        47750
       ]
     },
     {
@@ -11275,6 +13029,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        46850
       ]
     },
     {
@@ -11303,6 +13060,9 @@
         true,
         true,
         true
+      ],
+      "materialIds": [
+        50058
       ]
     }
   ]

@@ -18,9 +18,12 @@ import json
 import urllib.request
 from pathlib import Path
 
+from item_lookup import ItemIndex, load_item_index
+
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "extracted" / "relic_lines.json"
 RAW_CACHE = ROOT / "extracted" / "_relics_index_raw.json"
+ITEM_CSV = ROOT / "extracted" / "_item.csv"
 API_URL = "https://ffxivcollect.com/api/relics?limit=3000"
 
 # Map FFXIV Collect's numeric expansion + type into Wyn's expansion tabs.
@@ -186,6 +189,20 @@ def build_lines(relics: list[dict]) -> list[dict]:
     return lines
 
 
+def attach_relic_ids(lines: list[dict], index: ItemIndex) -> None:
+    for line in lines:
+        relic_names = line["relicNames"]
+        relic_ids: list[int] = []
+        relic_replica_ids: list[list[int]] = []
+        for name in relic_names:
+            relic_ids.append(index.resolve(name))
+            relic_replica_ids.append(index.replicas_for(name))
+
+        line["relicIds"] = relic_ids
+        line["relicReplicaIds"] = relic_replica_ids
+        line["slotRelicIds"] = [index.resolve(name) for name in line["slotRelics"]]
+
+
 def piece_names_for_type(relics: list[dict], collect_type: str) -> list[str]:
     ordered = sorted(
         (relic.get("order") or 0, relic.get("name") or "")
@@ -195,6 +212,13 @@ def piece_names_for_type(relics: list[dict], collect_type: str) -> list[str]:
     if not ordered:
         raise ValueError(f"Armor type not found in index: {collect_type}")
     return [name for _, name in ordered]
+
+
+def attach_armor_ids(lines: list[dict], index: ItemIndex) -> None:
+    for line in lines:
+        for armor_set in line["sets"]:
+            for tier in armor_set["tiers"]:
+                tier["pieceIds"] = [index.resolve(name) for name in tier["pieceNames"]]
 
 
 def build_armor(relics: list[dict]) -> list[dict]:
@@ -220,13 +244,16 @@ def build_armor(relics: list[dict]) -> list[dict]:
 
 def main() -> None:
     relics = load_index()
+    item_index = load_item_index(ITEM_CSV)
     lines = build_lines(relics)
+    attach_relic_ids(lines, item_index)
     OUT.write_text(json.dumps(lines, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {len(lines)} relic lines to {OUT}")
     for line in lines:
         print(f"  {line['expansion']:7} {line['collectType']:20} jobs={line['jobs']:2} tiers={line['tierCount']}")
 
     armor = build_armor(relics)
+    attach_armor_ids(armor, item_index)
     armor_out = OUT.parent / "relic_armor.json"
     armor_out.write_text(json.dumps(armor, indent=2) + "\n", encoding="utf-8")
     print(f"\nWrote {len(armor)} armor lines to {armor_out}")

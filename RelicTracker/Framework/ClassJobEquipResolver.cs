@@ -28,6 +28,30 @@ internal static class ClassJobEquipResolver
         return false;
     }
 
+    /// <summary>Resolves the single job a relic weapon/tool is equippable by, from its item row ID.</summary>
+    public static bool TryResolveEquipJobByItemId(uint itemId, out string jobAbbrev)
+    {
+        jobAbbrev = string.Empty;
+        if (itemId == 0)
+        {
+            return false;
+        }
+
+        var item = GameSheets.English<Item>().GetRowOrDefault(itemId);
+        if (item is null)
+        {
+            return false;
+        }
+
+        var category = item.Value.ClassJobCategory.ValueNullable;
+        if (category is null)
+        {
+            return false;
+        }
+
+        return TryResolve(category.Value, out jobAbbrev);
+    }
+
     private static (string Abbrev, Func<ClassJobCategory, bool> Has)[] Accessors() =>
         jobAccessors ??= BuildJobAccessors();
 

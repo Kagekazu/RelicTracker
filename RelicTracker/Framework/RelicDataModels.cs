@@ -24,6 +24,10 @@ public sealed class ExpansionMaterialRow
     [JsonPropertyName("material")]
     public string? Material { get; set; }
 
+    /// <summary>Item row IDs that count toward owned (alias-expanded at build time).</summary>
+    [JsonPropertyName("materialIds")]
+    public List<uint> MaterialIds { get; set; } = [];
+
     /// <summary>Per-job flags (used only on DoH/DoL tool lines for the per-discipline split).</summary>
     [JsonPropertyName("jobs")]
     public List<bool?> Jobs { get; set; } = [];
@@ -70,6 +74,9 @@ public sealed class ArmorCostRow
 
     [JsonPropertyName("currency")]
     public string Currency { get; set; } = string.Empty;
+
+    [JsonPropertyName("currencyIds")]
+    public List<uint> CurrencyIds { get; set; } = [];
 
     [JsonPropertyName("perPiece")]
     public int PerPiece { get; set; }
