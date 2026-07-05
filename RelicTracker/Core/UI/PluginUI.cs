@@ -169,17 +169,8 @@ public sealed partial class PluginUI : Window
 
     private void DrawSettingsTab()
     {
-        ImGui.TextColored(HeaderColor, "Inventory");
-        var activeOnly = config.ActiveCharacterOnly;
-        if (ImGui.Checkbox("Active character + retainers only", ref activeOnly))
-        {
-            config.ActiveCharacterOnly = activeOnly;
-            InvalidateOwnershipCache();
-            config.OnSettingChanged();
-        }
-
-        ImGui.TextColored(MutedColor, "When off, counts all characters tracked by Allagan Tools.");
-
+        ImGui.TextColored(MutedColor,
+            "Progress is saved per logged-in character. Allagan Tools counts use your active character and retainers only.");
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
