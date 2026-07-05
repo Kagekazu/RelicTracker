@@ -1,6 +1,6 @@
 namespace RelicTracker.Framework;
 
-/// <summary>Marks relic weapon/tool steps done from Allagan Tools inventory (replicas included).</summary>
+/// <summary>Marks relic weapon/tool steps and armor pieces done from Allagan Tools inventory.</summary>
 public static class InventoryProgressBuilder
 {
     public static HashSet<string> BuildStepDoneKeys(
@@ -27,6 +27,34 @@ public static class InventoryProgressBuilder
                     {
                         done.Add($"{line.CollectType}|{jobs[slot]}|{completedTier}");
                     }
+                }
+            }
+        }
+
+        return done;
+    }
+
+    public static HashSet<string> BuildArmorPieceDoneKeys(
+        RelicCatalog catalog,
+        ItemResolver items,
+        Func<uint, uint> ownedLookup)
+    {
+        HashSet<string> done = new(StringComparer.Ordinal);
+        foreach (ArmorLine armorLine in catalog.ArmorLines)
+        {
+            foreach (ArmorTier tier in armorLine.AllTiers)
+            {
+                int pieceCount = Math.Min(tier.Pieces, tier.PieceNames.Count);
+                for (int index = 0; index < pieceCount; index++)
+                {
+                    string pieceName = tier.PieceNames[index];
+                    if (string.IsNullOrWhiteSpace(pieceName)
+                        || !items.IsItemOwned(pieceName, ownedLookup))
+                    {
+                        continue;
+                    }
+
+                    done.Add($"{tier.CollectType}|{index}");
                 }
             }
         }

@@ -13,6 +13,8 @@ public sealed partial class PluginUI
     private bool CollectActive =>
         config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
 
+    private bool ArmorAutoTracked => CollectActive || AllaganToolsIpc.IsReady;
+
     private void DrawRelicTab()
     {
         if (!catalog.IsLoaded || catalog.Lines.Count == 0)
@@ -176,15 +178,16 @@ public sealed partial class PluginUI
         var total = armor.TotalPieces;
         var complete = total > 0 && owned >= total;
 
-        if (CollectActive)
+        if (ArmorAutoTracked)
         {
-            ImGui.TextColored(GoodColor, "Auto-tracked from FFXIV Collect — no ticking needed.");
+            bool inventory = AllaganToolsIpc.IsReady;
+            ImGui.TextColored(GoodColor, DescribeArmorProgressSource(inventory, CollectActive));
             ImGui.SameLine();
             ImGui.TextColored(complete ? GoodColor : MutedColor, $"({owned}/{total} pieces)");
         }
         else
         {
-            ImGui.TextColored(MutedColor, "Tick the pieces you own below, or link FFXIV Collect on Settings to auto-track.");
+            ImGui.TextColored(MutedColor, "Tick the pieces you own below, or connect Allagan Tools on Settings to auto-track.");
         }
 
         ImGui.Separator();
@@ -252,7 +255,7 @@ public sealed partial class PluginUI
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, $"{tierOwned}/{tier.Pieces}");
 
             ImGui.TableNextColumn();
-            if (CollectActive)
+            if (ArmorAutoTracked)
             {
                 DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
             }
@@ -309,21 +312,26 @@ public sealed partial class PluginUI
             FfxivCollectSnapshot snapshot = collectCharacterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
             CharacterProgress progress = config.CurrentCharacterProgress();
             HashSet<string> inventoryDone;
+            HashSet<string> inventoryArmorDone;
             if (AllaganToolsIpc.IsReady)
             {
-                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, CreateOwnedLookup());
-                config.SaveInventorySnapshot(inventoryDone);
+                Func<uint, uint> ownedLookup = CreateOwnedLookup();
+                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, itemResolver, ownedLookup);
+                inventoryArmorDone = InventoryProgressBuilder.BuildArmorPieceDoneKeys(catalog, itemResolver, ownedLookup);
+                config.SaveInventorySnapshot(inventoryDone, inventoryArmorDone);
             }
             else
             {
                 inventoryDone = new HashSet<string>(progress.InventoryStepDone, StringComparer.Ordinal);
+                inventoryArmorDone = new HashSet<string>(progress.InventoryArmorPieceDone, StringComparer.Ordinal);
             }
 
             cachedOwnership = new(
                 snapshot,
                 progress.RelicStepDone,
                 progress.ArmorPieceDone,
-                inventoryDone);
+                inventoryDone,
+                inventoryArmorDone);
             cachedOwnershipStamp = stamp;
             cachedOwnershipCharacterId = collectCharacterId;
             cachedLocalContentId = localContentId;

@@ -12,4 +12,7 @@ public sealed class CharacterProgress
 
     /// <summary>Last inventory scan for this character: collectType|job|tier (includes replicas).</summary>
     public HashSet<string> InventoryStepDone { get; set; } = new(StringComparer.Ordinal);
+
+    /// <summary>Last inventory scan for armor: collectType|pieceIndex.</summary>
+    public HashSet<string> InventoryArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
 }

@@ -108,6 +108,10 @@ public sealed class ItemResolver
         return [];
     }
 
+    /// <summary>True if Allagan Tools reports any owned copy of the named item.</summary>
+    public bool IsItemOwned(string itemName, Func<uint, uint> ownedLookup) =>
+        TryResolveItem(itemName, out uint itemId) && ownedLookup(itemId) > 0;
+
     /// <summary>True if Allagan Tools reports any owned copy of the relic item or a vendor replica with the same base name.</summary>
     public bool IsRelicOrReplicaOwned(string relicName, Func<uint, uint> ownedLookup)
     {

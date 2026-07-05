@@ -7,7 +7,15 @@ internal static class AllaganToolsIpc
 {
     private static readonly string[] PluginNames = ["Allagan Tools", "InventoryTools", "AllaganTools"];
 
-    private static readonly uint[] AllInventoryTypes = [.. Enum.GetValues<InventoryType>().Select(static t => (uint)t)];
+    /// <summary>
+    ///     Allagan Tools stores armoire and glamour dresser items under CriticalCommonLib container IDs
+    ///     that are not part of FFXIVClientStructs' <see cref="InventoryType"/> enum.
+    /// </summary>
+    private const uint ArmoireContainer = 2500;
+
+    private const uint GlamourChestContainer = 2501;
+
+    private static readonly uint[] TrackedInventoryTypes = BuildTrackedInventoryTypes();
 
     private static ICallGateSubscriber<bool, bool>? _initialized;
     private static ICallGateSubscriber<bool>? _isInitialized;
@@ -49,7 +57,7 @@ internal static class AllaganToolsIpc
 
         try
         {
-            return _itemCountOwned.InvokeFunc(itemId, activeCharacterOnly, AllInventoryTypes);
+            return _itemCountOwned.InvokeFunc(itemId, activeCharacterOnly, TrackedInventoryTypes);
         }
         catch (Exception ex)
         {
@@ -92,5 +100,18 @@ internal static class AllaganToolsIpc
         {
             return false;
         }
+    }
+
+    private static uint[] BuildTrackedInventoryTypes()
+    {
+        HashSet<uint> types = new(Enum.GetValues<InventoryType>().Length + 2);
+        foreach (InventoryType inventoryType in Enum.GetValues<InventoryType>())
+        {
+            types.Add((uint)inventoryType);
+        }
+
+        types.Add(ArmoireContainer);
+        types.Add(GlamourChestContainer);
+        return [.. types];
     }
 }

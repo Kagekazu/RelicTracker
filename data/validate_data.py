@@ -120,6 +120,7 @@ def main() -> int:
 
     manifest = load_json(DATA / "manifest.json")
     relic_lines = load_json(DATA / "relic_lines.json")
+    relic_armor = load_json(DATA / "relic_armor.json")
     extra = load_json(DATA / "tool_extra_materials.json")
     sources = load_json(DATA / "material_sources.json")
     aliases = load_json(DATA / "material_aliases.json")
@@ -147,6 +148,27 @@ def main() -> int:
             fail(errors, f"relic_lines[{index}] relicNames count does not match relicCount")
         if any(not isinstance(name, str) or not name.strip() for name in relic_names):
             fail(errors, f"relic_lines[{index}] has blank relicNames entries")
+
+    for index, line in enumerate(relic_armor):
+        expansion = line.get("expansion")
+        if expansion not in expansions:
+            fail(errors, f"relic_armor[{index}] uses expansion not in manifest: {expansion}")
+        for set_index, armor_set in enumerate(line.get("sets") or []):
+            for tier_index, tier in enumerate(armor_set.get("tiers") or []):
+                pieces = int(tier.get("pieces") or 0)
+                piece_names = tier.get("pieceNames") or []
+                if pieces <= 0:
+                    fail(errors, f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has invalid pieces")
+                if len(piece_names) != pieces:
+                    fail(
+                        errors,
+                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] pieceNames count does not match pieces",
+                    )
+                if any(not isinstance(name, str) or not name.strip() for name in piece_names):
+                    fail(
+                        errors,
+                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has blank pieceNames entries",
+                    )
 
     material_names: set[str] = set()
     for expansion, index, row in iter_material_rows(extra):
