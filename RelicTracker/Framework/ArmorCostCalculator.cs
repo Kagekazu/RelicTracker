@@ -33,7 +33,7 @@ public static class ArmorCostCalculator
         RelicCatalog catalog,
         Func<uint, uint> ownedLookup)
     {
-        if (!TryResolveTier(expansionId, cost.Set, catalog, out ArmorTier? tier, out int? slotFilter))
+        if (!TryResolveTier(expansionId, cost.Set, catalog, out ArmorTier tier, out int? slotFilter))
         {
             return 0;
         }
@@ -64,10 +64,10 @@ public static class ArmorCostCalculator
         string expansionId,
         string? costSet,
         RelicCatalog catalog,
-        out ArmorTier? tier,
+        out ArmorTier tier,
         out int? slotFilter)
     {
-        tier = null;
+        tier = null!;
         slotFilter = null;
         if (string.IsNullOrWhiteSpace(costSet) || !CostLinks.TryGetValue(costSet.Trim(), out var link))
         {
