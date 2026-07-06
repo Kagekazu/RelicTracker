@@ -219,14 +219,18 @@ def main() -> int:
         material = (row.get("material") or "").strip()
         per_unit = row.get("perUnit")
         jobs = row.get("jobs")
+        role = (row.get("role") or "").strip().lower()
 
         if not step:
             fail(errors, f"{expansion}[{index}] has no step")
         if not material:
             fail(errors, f"{expansion}[{index}] has no material")
-        else:
+        elif role != "covers":
             material_names.add(material)
-        if not isinstance(per_unit, (int, float)) or per_unit <= 0:
+        if role == "quest":
+            if not isinstance(per_unit, (int, float)) or per_unit < 0:
+                fail(errors, f"{expansion}[{index}] has invalid perUnit: {per_unit!r}")
+        elif not isinstance(per_unit, (int, float)) or per_unit <= 0:
             fail(errors, f"{expansion}[{index}] has invalid perUnit: {per_unit!r}")
         if not isinstance(jobs, list) or not jobs or not all(isinstance(flag, bool) for flag in jobs):
             fail(errors, f"{expansion}[{index}] has invalid jobs flags")

@@ -427,8 +427,18 @@ for cls in C:
 # flags are ignored (the Tracker scales by all jobs; the Relic tab shows all step items), so the
 # flag array is just a placeholder. Books are held one at a time -> note only, not a row.
 arr_rows=[]
-def arr_add(step, material, per):
-    arr_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*10})
+def arr_add(step, material, per, role=None, craft_of=None, purchase=None):
+    row={"step":step,"material":material,"perUnit":per,"jobs":[True]*10}
+    if role: row["role"]=role
+    if craft_of: row["craftOf"]=craft_of
+    if purchase: row["purchase"]=purchase
+    arr_rows.append(row)
+
+def zodiac_reward(product, *components):
+    """Prefarmable sub-quest reward; owned copies credit covered materials in the Tracker."""
+    arr_add("Zodiac", product, 0, role="quest")
+    for mat in components:
+        arr_add("Zodiac", mat, 1, role="covers", craft_of=product)
 # Relic: base quest turn-in (1 Radz-at-Han Quenching Oil, 15 Poetics).
 arr_add("Relic", "Radz-at-Han Quenching Oil", 1)
 # Zenith: 3 Thavnairian Mist (20 Poetics each).
@@ -451,6 +461,15 @@ arr_add("Zodiac", "Brass Kettle", 1)          # 100,000 gil
 for craft in ["Perfect Firewood","Perfect Pestle","Perfect Mortar","Furnace Ring",
               "Perfect Vellum","Perfect Cloth","Perfect Pounce","Tailor-made Eel Pie"]:
     arr_add("Zodiac", craft, 1)               # HQ Master Recipe I crafts (desynth ingredients)
+# Sub-quest rewards (repeatable before Nexus) — owning one credits its turn-in materials.
+zodiac_reward("Book of Skylight",
+    "Bombard Core", "Sacred Spring Water", "Bronze Lake Crystal", "Furnace Ring", "Perfect Firewood")
+zodiac_reward("Zodium",
+    "Bombard Core", "Sacred Spring Water", "Allagan Resin", "Perfect Mortar", "Perfect Pestle")
+zodiac_reward("Flawless Alexandrite",
+    "Bombard Core", "Sacred Spring Water", "Brass Kettle", "Tailor-made Eel Pie", "Perfect Cloth")
+zodiac_reward("Zodiac Scroll",
+    "Bombard Core", "Sacred Spring Water", "Furite Sand", "Perfect Vellum", "Perfect Pounce")
 # Zeta: 12 Mahatma Light grind (held one at a time) -> note only.
 
 # ===== HW Anima weapons — part 1: Animated / Awoken / Anima / Hyperconductive =====

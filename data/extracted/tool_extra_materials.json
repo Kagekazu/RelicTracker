@@ -11694,6 +11694,530 @@
       "materialIds": [
         9516
       ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Book of Skylight",
+      "perUnit": 0,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        9506
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Bombard Core",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Book of Skylight",
+      "materialIds": [
+        9539
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Sacred Spring Water",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Book of Skylight",
+      "materialIds": [
+        9540
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Bronze Lake Crystal",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Book of Skylight",
+      "materialIds": [
+        9538
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Furnace Ring",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Book of Skylight",
+      "materialIds": [
+        9510
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Firewood",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Book of Skylight",
+      "materialIds": [
+        9511
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Zodium",
+      "perUnit": 0,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        9507
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Bombard Core",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodium",
+      "materialIds": [
+        9539
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Sacred Spring Water",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodium",
+      "materialIds": [
+        9540
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Allagan Resin",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodium",
+      "materialIds": [
+        9542
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Mortar",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodium",
+      "materialIds": [
+        9512
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Pestle",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodium",
+      "materialIds": [
+        9513
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Flawless Alexandrite",
+      "perUnit": 0,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        9509
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Bombard Core",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Flawless Alexandrite",
+      "materialIds": [
+        9539
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Sacred Spring Water",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Flawless Alexandrite",
+      "materialIds": [
+        9540
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Brass Kettle",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Flawless Alexandrite",
+      "materialIds": [
+        9544
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Tailor-made Eel Pie",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Flawless Alexandrite",
+      "materialIds": [
+        9516
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Cloth",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Flawless Alexandrite",
+      "materialIds": [
+        9517
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Zodiac Scroll",
+      "perUnit": 0,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        9508
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Bombard Core",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodiac Scroll",
+      "materialIds": [
+        9539
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Sacred Spring Water",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodiac Scroll",
+      "materialIds": [
+        9540
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Furite Sand",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodiac Scroll",
+      "materialIds": [
+        9543
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Vellum",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodiac Scroll",
+      "materialIds": [
+        9514
+      ]
+    },
+    {
+      "step": "Zodiac",
+      "material": "Perfect Pounce",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Zodiac Scroll",
+      "materialIds": [
+        9515
+      ]
     }
   ],
   "HW": [
