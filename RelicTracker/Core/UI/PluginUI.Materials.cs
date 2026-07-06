@@ -50,7 +50,7 @@ public sealed partial class PluginUI
         if (materials.Count > 0)
         {
             drewAny = true;
-            DrawWeaponsList(expansionId, materials);
+            DrawWeaponsList(expansionId, materials, ownedLookup);
         }
 
         if (hasArmor)
@@ -69,11 +69,18 @@ public sealed partial class PluginUI
 
     private void DrawWeaponsList(
         string expansionId,
-        IReadOnlyList<ShoppingMaterialRow> materials)
+        IReadOnlyList<ShoppingMaterialRow> materials,
+        Func<uint, uint> ownedLookup)
     {
         if (!DrawCollapsingSection($"{expansionId}|Weapons", "Weapons & tools", true))
         {
             return;
+        }
+
+        ShoppingListBuilder.QuestRewardIndex? questRewards = null;
+        if (data.Expansions.TryGetValue(expansionId, out var sheet))
+        {
+            questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
         }
 
         // Group by where you get it (zone or step); each group is its own collapsible block so the
@@ -89,6 +96,13 @@ public sealed partial class PluginUI
             if (!DrawCollapsingSection(key, $"{group.Key}  ({badge})###{key}", false))
             {
                 continue;
+            }
+
+            if (questRewards is not null)
+            {
+                DrawQuestRewardsSubsection(
+                    $"{key}|Rewards",
+                    ShoppingListBuilder.GetQuestRewards(group.Key, questRewards, ownedLookup));
             }
 
             using var table = ImRaii.Table($"WGrp_{key}", 4, ShoppingTableFlags, new(0, 0));
@@ -141,7 +155,13 @@ public sealed partial class PluginUI
         ImGui.TableNextColumn();
         if (row.Resolved)
         {
-            ImGui.Text(row.Owned.ToString());
+            ImGui.Text(row.OwnedInventory.ToString());
+            if (row.OwnedQuestCredit > 0 && ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(
+                    $"+{row.OwnedQuestCredit} counted from prefarmed quest rewards in inventory.\n"
+                    + $"Effective owned: {row.Owned} (inventory {row.OwnedInventory} + quest credit {row.OwnedQuestCredit}).");
+            }
         }
         else
         {
@@ -184,6 +204,66 @@ public sealed partial class PluginUI
         }
 
         return summary;
+    }
+
+    private void DrawQuestRewardsSubsection(string configKey, IReadOnlyList<ShoppingQuestRewardRow> rewards)
+    {
+        if (rewards.Count == 0)
+        {
+            return;
+        }
+
+        var ownedCount = rewards.Count(row => row.Owned > 0);
+        var badge = ownedCount > 0 ? $"{ownedCount}/{rewards.Count} in inventory" : $"{rewards.Count} rewards";
+        if (!DrawCollapsingSection(configKey, $"Prefarmed quest rewards  ({badge})###{configKey}", ownedCount > 0))
+        {
+            return;
+        }
+
+        ImGui.TextColored(MutedColor,
+            "Repeatable sub-quest turn-ins. Owning these credits their materials in the table below.");
+        ImGui.Spacing();
+
+        using var table = ImRaii.Table($"QuestRewards_{configKey}", 2, ShoppingTableFlags, new(0, 0));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch, 0.75f);
+        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableHeadersRow();
+
+        foreach (var reward in rewards)
+        {
+            ImGui.TableNextRow();
+
+            ImGui.TableNextColumn();
+            if (reward.Resolved)
+            {
+                ImGui.TextUnformatted(reward.DisplayMaterial);
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Counts toward component materials for this step when still in inventory.");
+                }
+            }
+            else
+            {
+                ImGui.TextColored(WarningColor, reward.DisplayMaterial);
+            }
+
+            ImGui.TableNextColumn();
+            if (reward.Resolved)
+            {
+                ImGui.TextColored(reward.Owned > 0 ? GoodColor : MutedColor, reward.Owned.ToString());
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "—");
+            }
+        }
+
+        ImGui.Spacing();
     }
 
     private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs, Func<uint, uint> ownedLookup)
@@ -297,7 +377,8 @@ public sealed partial class PluginUI
             ImGui.TextColored(WarningColor, $"({unresolved} not linked to an item)");
         }
 
-        ImGui.TextColored(MutedColor, "Needs cover every job still missing the weapon. Owned counts are your live inventory.");
+        ImGui.TextColored(MutedColor,
+            "Needs cover every job still missing the weapon. Owned is inventory; prefarmed quest rewards can count toward Short.");
     }
 
     private bool DrawCollapsingSection(string configKey, string header, bool defaultOpen)
