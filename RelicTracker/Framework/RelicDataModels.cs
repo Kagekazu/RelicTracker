@@ -40,7 +40,7 @@ public sealed class ExpansionMaterialRow
     [JsonPropertyName("purchase")]
     public MaterialPurchase? Purchase { get; set; }
 
-    /// <summary>When <c>craft</c>, this row is the collectable; when <c>precraft</c>, an intermediate crafted item.</summary>
+    /// <summary>When <c>craft</c>, collectable; <c>precraft</c>, intermediate; <c>quest</c>/<c>covers</c>, prefarmable quest rewards.</summary>
     [JsonPropertyName("role")]
     public string? Role { get; set; }
 

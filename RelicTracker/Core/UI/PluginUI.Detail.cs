@@ -568,6 +568,14 @@ public sealed partial class PluginUI
 
         DrawArtisanCraftButton(line, stepName, slotIndex);
 
+        if (data.Expansions.TryGetValue(line.Expansion, out var expansionSheet))
+        {
+            var questIndex = ShoppingListBuilder.BuildQuestRewardIndex(expansionSheet);
+            DrawStepQuestRewards(
+                $"{line.CollectType}|{stepName}|Rewards",
+                ShoppingListBuilder.GetQuestRewards(stepName, questIndex, CreateOwnedLookup()));
+        }
+
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
         if (items.Count == 0)
         {
@@ -677,7 +685,13 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             if (item.Resolved)
             {
-                ImGui.Text(item.Owned.ToString());
+                ImGui.Text(item.OwnedInventory.ToString());
+                if (item.OwnedQuestCredit > 0 && ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(
+                        $"+{item.OwnedQuestCredit} from prefarmed quest rewards in inventory.\n"
+                        + $"Effective owned: {item.Owned}.");
+                }
             }
             else
             {
@@ -706,12 +720,18 @@ public sealed partial class PluginUI
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
         Func<uint, uint> ownedLookup = CreateOwnedLookup();
+        var questIndex = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
 
         List<ExpansionMaterialRow> matched = [];
         foreach (var row in sheet.Materials)
         {
             if (string.IsNullOrWhiteSpace(row.Step)
                 || !string.Equals(row.Step.Trim(), stepName, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (ShoppingListBuilder.IsQuestMetadataRow(row))
             {
                 continue;
             }
@@ -834,11 +854,76 @@ public sealed partial class PluginUI
             var need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
             var itemIds = row.MaterialIds;
             var resolved = itemIds.Count > 0;
-            var owned = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+            var ownedInventory = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+            var ownedQuestCredit = ShoppingListBuilder.QuestCreditFor(
+                stepName,
+                name,
+                weaponsCap: 1,
+                questIndex,
+                ownedLookup);
             var displayName = ItemDisplayNames.Label(itemIds, name);
             var where = data.MaterialSources.TryGetValue(name, out var src) ? src : null;
-            return new(displayName, where, need, owned, resolved, depth, isCraftProduct, isPrecraft, isScrip);
+            return new(
+                displayName,
+                where,
+                need,
+                ownedInventory,
+                ownedQuestCredit,
+                resolved,
+                depth,
+                isCraftProduct,
+                isPrecraft,
+                isScrip);
         }
+    }
+
+    private void DrawStepQuestRewards(string configKey, IReadOnlyList<ShoppingQuestRewardRow> rewards)
+    {
+        if (rewards.Count == 0)
+        {
+            return;
+        }
+
+        var ownedCount = rewards.Count(row => row.Owned > 0);
+        if (!DrawCollapsingSection(
+                configKey,
+                $"Prefarmed quest rewards ({ownedCount}/{rewards.Count} in inventory)",
+                ownedCount > 0))
+        {
+            return;
+        }
+
+        ImGui.TextColored(MutedColor, "Owning these credits their turn-in materials below (one weapon).");
+        ImGui.Spacing();
+
+        using var table = ImRaii.Table($"RelicQuestRewards_{configKey}", 2, ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg, new(0, 0));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 52);
+        ImGui.TableHeadersRow();
+
+        foreach (var reward in rewards)
+        {
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            if (reward.Resolved)
+            {
+                ImGui.TextUnformatted(reward.DisplayMaterial);
+            }
+            else
+            {
+                ImGui.TextColored(WarningColor, reward.DisplayMaterial);
+            }
+
+            ImGui.TableNextColumn();
+            ImGui.TextColored(reward.Owned > 0 ? GoodColor : MutedColor, reward.Resolved ? reward.Owned.ToString() : "—");
+        }
+
+        ImGui.Spacing();
     }
 
     /// <summary>
@@ -929,10 +1014,14 @@ public sealed partial class PluginUI
         string Name,
         string? Where,
         uint Need,
-        uint Owned,
+        uint OwnedInventory,
+        uint OwnedQuestCredit,
         bool Resolved,
         int Depth = 0,
         bool IsCraftProduct = false,
         bool IsPrecraft = false,
-        bool IsScrip = false);
+        bool IsScrip = false)
+    {
+        public uint Owned => OwnedInventory + OwnedQuestCredit;
+    }
 }
