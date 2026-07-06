@@ -40,10 +40,10 @@ public sealed partial class PluginUI
             materials = [.. materials.Where(row => row.Short > 0)];
         }
 
-        DrawShoppingSummary(materials);
+        data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
+        DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup, catalog);
         ImGui.Spacing();
 
-        data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
         var hasArmor = armorCosts is { Count: > 0 };
         var drewAny = false;
 
@@ -326,14 +326,24 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
 
-            var owned = resolved
+            var ownedInventory = resolved
                 ? cost.CurrencyIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
                 : 0u;
+            var ownedArmorCredit = resolved
+                ? ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup)
+                : 0u;
+            var owned = ownedInventory + ownedArmorCredit;
 
             ImGui.TableNextColumn();
             if (resolved)
             {
-                ImGui.Text(owned.ToString());
+                ImGui.Text(ownedInventory.ToString());
+                if (ownedArmorCredit > 0 && ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip(
+                        $"+{ownedArmorCredit} counted from owned armor pieces.\n"
+                        + $"Effective owned: {owned} (inventory {ownedInventory} + armor {ownedArmorCredit}).");
+                }
             }
             else
             {
@@ -357,18 +367,53 @@ public sealed partial class PluginUI
     private string WhereToGet(string expansionId, ShoppingMaterialRow row) =>
         data.MaterialSources.TryGetValue(row.Material, out var source) ? source : row.Step;
 
-    private void DrawShoppingSummary(IReadOnlyList<ShoppingMaterialRow> materials)
+    private void DrawShoppingSummary(
+        IReadOnlyList<ShoppingMaterialRow> materials,
+        IReadOnlyList<ArmorCostRow>? armorCosts,
+        string expansionId,
+        Func<uint, uint> ownedLookup,
+        RelicCatalog catalog)
     {
-        var shortCount = materials.Count(row => row.Short > 0);
+        var weaponShort = materials.Count(row => row.Short > 0);
+        var armorShort = 0;
+        if (armorCosts is not null)
+        {
+            foreach (var cost in armorCosts)
+            {
+                if (cost.CurrencyIds.Count == 0 || cost.AllTotal <= 0)
+                {
+                    continue;
+                }
+
+                var ownedInventory = cost.CurrencyIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+                var owned = ownedInventory + ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup);
+                if ((uint)cost.AllTotal > owned)
+                {
+                    armorShort++;
+                }
+            }
+        }
+
+        var shortCount = weaponShort + armorShort;
         var unresolved = materials.Count(row => !row.Resolved);
 
         if (shortCount == 0)
         {
-            ImGui.TextColored(GoodColor, "You have enough of every tracked material for your remaining weapons.");
+            ImGui.TextColored(GoodColor, "You have enough of every tracked material and armor currency for your remaining sets.");
+        }
+        else if (weaponShort > 0 && armorShort > 0)
+        {
+            ImGui.TextColored(BadColor,
+                $"{weaponShort} weapon material{(weaponShort == 1 ? string.Empty : "s")} and {armorShort} armor currency row{(armorShort == 1 ? string.Empty : "s")} still needed.");
+        }
+        else if (armorShort > 0)
+        {
+            ImGui.TextColored(BadColor,
+                $"{armorShort} armor currency row{(armorShort == 1 ? string.Empty : "s")} still needed.");
         }
         else
         {
-            ImGui.TextColored(BadColor, $"{shortCount} material{(shortCount == 1 ? string.Empty : "s")} still needed.");
+            ImGui.TextColored(BadColor, $"{weaponShort} material{(weaponShort == 1 ? string.Empty : "s")} still needed.");
         }
 
         if (unresolved > 0)
@@ -378,7 +423,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TextColored(MutedColor,
-            "Needs cover every job still missing the weapon. Owned is inventory; prefarmed quest rewards can count toward Short.");
+            "Weapon needs cover every job still missing the step. Armor owned includes currency in inventory plus finished pieces already bought.");
     }
 
     private bool DrawCollapsingSection(string configKey, string header, bool defaultOpen)
