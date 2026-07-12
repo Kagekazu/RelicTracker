@@ -19,15 +19,27 @@ public sealed partial class PluginUI
     ];
 
     private const long InventoryCacheBucketMs = 10_000;
+    private const long TrackerInventoryRefreshMs = 500;
 
     private bool CollectIdLinked => config.FfxivCollectCharacterId != 0;
 
     private static long InventoryCacheStamp() =>
         AllaganToolsIpc.IsReady ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
 
+    private long OwnedCountRefreshStamp()
+    {
+        if (!AllaganToolsIpc.IsReady)
+        {
+            return 0;
+        }
+
+        long interval = trackerTabVisible ? TrackerInventoryRefreshMs : InventoryCacheBucketMs;
+        return Environment.TickCount64 / interval;
+    }
+
     private Func<uint, uint> CreateOwnedLookup()
     {
-        long stamp = InventoryCacheStamp();
+        long stamp = OwnedCountRefreshStamp();
         if (ownedCountCache is null || ownedCountCacheStamp != stamp)
         {
             ownedCountCache = new Dictionary<uint, uint>();
