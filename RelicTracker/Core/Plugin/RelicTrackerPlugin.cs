@@ -6,6 +6,7 @@ namespace RelicTracker;
 
 public sealed class RelicTrackerPlugin : IDalamudPlugin
 {
+    private readonly RelicContextMenu contextMenu;
     private readonly FfxivCollectService ffxivCollect = new();
     private readonly PluginUI pluginUi;
     private readonly RelicCatalog relicCatalog = new();
@@ -28,9 +29,11 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
 
         pluginUi = new(Configuration, relicData, relicCatalog, ffxivCollect);
         windowSystem.AddWindow(pluginUi);
+        contextMenu = new RelicContextMenu(pluginUi, new RelicItemNavigationIndex(relicData, relicCatalog));
 
         Svc.ClientState.Login += pluginUi.OnCharacterChanged;
         Svc.ClientState.Logout += pluginUi.OnCharacterLoggedOut;
+        Svc.GameInventory.InventoryChanged += pluginUi.OnInventoryChanged;
 
         foreach (var commandName in RelicTrackerConstants.CommandNames)
         {
@@ -53,6 +56,8 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
     {
         Svc.ClientState.Login -= pluginUi.OnCharacterChanged;
         Svc.ClientState.Logout -= pluginUi.OnCharacterLoggedOut;
+        Svc.GameInventory.InventoryChanged -= pluginUi.OnInventoryChanged;
+        contextMenu.Dispose();
         Configuration.PersistIfDirty();
         foreach (var commandName in RelicTrackerConstants.CommandNames)
         {

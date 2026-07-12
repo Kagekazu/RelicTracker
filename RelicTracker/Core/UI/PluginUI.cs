@@ -50,20 +50,23 @@ public sealed partial class PluginUI : Window
     {
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {
-            if (ImGui.BeginTabItem("Overview"))
+            if (ImGui.BeginTabItem("Overview", TabOpenFlags(RelicTrackerDestinationTab.Overview)))
             {
+                ConsumePendingTab(RelicTrackerDestinationTab.Overview);
                 DrawOverviewTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Relic"))
+            if (ImGui.BeginTabItem("Relic", TabOpenFlags(RelicTrackerDestinationTab.Relic)))
             {
+                ConsumePendingTab(RelicTrackerDestinationTab.Relic);
                 DrawRelicTab();
                 ImGui.EndTabItem();
             }
 
-            if (ImGui.BeginTabItem("Tracker"))
+            if (ImGui.BeginTabItem("Tracker", TabOpenFlags(RelicTrackerDestinationTab.Tracker)))
             {
+                ConsumePendingTab(RelicTrackerDestinationTab.Tracker);
                 DrawTrackerTab();
                 ImGui.EndTabItem();
             }
