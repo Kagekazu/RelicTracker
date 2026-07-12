@@ -1,11 +1,12 @@
 using Dalamud.Game.Gui.ContextMenu;
 using Dalamud.Game.Inventory;
-using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using Dalamud.Game.Text.SeStringHandling;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 
 namespace RelicTracker;
 
-internal sealed class RelicContextMenu : IDisposable
+internal sealed unsafe class RelicContextMenu : IDisposable
 {
     private readonly RelicItemNavigationIndex index;
     private readonly PluginUI ui;
@@ -31,23 +32,55 @@ internal sealed class RelicContextMenu : IDisposable
             return;
         }
 
-        GameInventoryItem? item = inventory.TargetItem;
-        if (item is null || item.Value.IsEmpty)
+        if (!TryResolveInventoryItem(args, inventory, out GameInventoryItem item))
         {
             return;
         }
 
-        uint itemId = item.Value.BaseItemId;
-        if (!index.TryGet(itemId, out RelicItemTarget? target))
+        if (!index.TryGet(item, out RelicItemTarget navigation))
         {
             return;
         }
 
-        RelicItemTarget navigation = target;
         args.AddMenuItem(new MenuItem
         {
             Name = new SeStringBuilder().Append(navigation.MenuLabel).BuiltString,
+            UseDefaultPrefix = true,
             OnClicked = _ => ui.OpenTo(navigation),
         });
+    }
+
+    private static bool TryResolveInventoryItem(
+        IMenuOpenedArgs args,
+        MenuTargetInventory inventory,
+        out GameInventoryItem item)
+    {
+        if (inventory.TargetItem is { IsEmpty: false } target)
+        {
+            item = target;
+            return true;
+        }
+
+        AgentInventoryContext* agent = (AgentInventoryContext*)args.AgentPtr;
+        return TryGetSlotItem(agent->TargetInventoryId, agent->TargetInventorySlotId, out item);
+    }
+
+    private static bool TryGetSlotItem(InventoryType inventoryType, int slot, out GameInventoryItem item)
+    {
+        item = default;
+        if (slot < 0)
+        {
+            return false;
+        }
+
+        ReadOnlySpan<GameInventoryItem> items =
+            Svc.GameInventory.GetInventoryItems((GameInventoryType)(uint)inventoryType);
+        if (slot >= items.Length)
+        {
+            return false;
+        }
+
+        item = items[slot];
+        return !item.IsEmpty;
     }
 }

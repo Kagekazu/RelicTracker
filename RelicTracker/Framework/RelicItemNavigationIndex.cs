@@ -1,5 +1,7 @@
 namespace RelicTracker.Framework;
 
+using Dalamud.Game.Inventory;
+
 public enum RelicTrackerDestinationTab
 {
     Overview,
@@ -36,6 +38,22 @@ public sealed class RelicItemNavigationIndex
 
     public bool TryGet(uint itemId, out RelicItemTarget target) =>
         byItemId.TryGetValue(itemId, out target!);
+
+    public bool TryGet(GameInventoryItem item, out RelicItemTarget target)
+    {
+        target = null!;
+        if (item.IsEmpty)
+        {
+            return false;
+        }
+
+        if (TryGet(item.BaseItemId, out target))
+        {
+            return true;
+        }
+
+        return item.ItemId != item.BaseItemId && TryGet(item.ItemId, out target);
+    }
 
     private void IndexMaterials(RelicDataService data)
     {
