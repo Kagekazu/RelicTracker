@@ -27,7 +27,14 @@ public sealed partial class PluginUI
 
     private Func<uint, uint> CreateOwnedLookup()
     {
-        Dictionary<uint, uint> cache = [];
+        long stamp = InventoryCacheStamp();
+        if (ownedCountCache is null || ownedCountCacheStamp != stamp)
+        {
+            ownedCountCache = new Dictionary<uint, uint>();
+            ownedCountCacheStamp = stamp;
+        }
+
+        Dictionary<uint, uint> cache = ownedCountCache;
         return itemId =>
         {
             if (!cache.TryGetValue(itemId, out uint count))
@@ -38,6 +45,12 @@ public sealed partial class PluginUI
 
             return count;
         };
+    }
+
+    private void InvalidateOwnedCountCache()
+    {
+        ownedCountCache = null;
+        ownedCountCacheStamp = 0;
     }
 
     private void DrawProgressSourceHint(ProgressHintContext context)

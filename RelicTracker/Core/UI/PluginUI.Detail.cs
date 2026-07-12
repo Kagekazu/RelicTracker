@@ -1,5 +1,6 @@
 using RelicTracker.Framework;
 using RelicTracker.IPC;
+using Dalamud.Game.Inventory.InventoryEventArgTypes;
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -9,6 +10,9 @@ public sealed partial class PluginUI
     private ulong cachedOwnershipCharacterId;
     private long cachedOwnershipInventoryStamp;
     private DateTime? cachedOwnershipStamp;
+    private Dictionary<uint, uint>? ownedCountCache;
+    private long ownedCountCacheStamp;
+    private RelicTrackerDestinationTab? pendingTab;
 
     private bool CollectActive =>
         config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
@@ -348,6 +352,33 @@ public sealed partial class PluginUI
         cachedOwnershipCharacterId = 0;
         cachedLocalContentId = 0;
         cachedOwnershipInventoryStamp = 0;
+        InvalidateOwnedCountCache();
+    }
+
+    public void OnInventoryChanged(IReadOnlyCollection<InventoryEventArgs> _) => InvalidateOwnershipCache();
+
+    public void OpenTo(RelicItemTarget target)
+    {
+        config.SelectedExpansionId = target.ExpansionId;
+        config.DetailExpansionId = target.ExpansionId;
+        if (!string.IsNullOrEmpty(target.CollectType))
+        {
+            config.DetailCollectType = target.CollectType;
+        }
+
+        if (!string.IsNullOrEmpty(target.Job))
+        {
+            config.DetailJob = target.Job;
+        }
+
+        if (target.Tab == RelicTrackerDestinationTab.Tracker)
+        {
+            config.TrackerLineFilter = string.Empty;
+        }
+
+        pendingTab = target.Tab;
+        config.OnSettingChanged();
+        IsOpen = true;
     }
 
     public void OnCharacterChanged()
@@ -357,6 +388,17 @@ public sealed partial class PluginUI
     }
 
     public void OnCharacterLoggedOut(int type, int code) => InvalidateOwnershipCache();
+
+    private ImGuiTabItemFlags TabOpenFlags(RelicTrackerDestinationTab tab) =>
+        pendingTab == tab ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
+
+    private void ConsumePendingTab(RelicTrackerDestinationTab tab)
+    {
+        if (pendingTab == tab)
+        {
+            pendingTab = null;
+        }
+    }
 
     private static int IndexOfJob(IReadOnlyList<string> jobList, string job)
     {
