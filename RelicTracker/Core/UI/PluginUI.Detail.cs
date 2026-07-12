@@ -13,6 +13,7 @@ public sealed partial class PluginUI
     private Dictionary<uint, uint>? ownedCountCache;
     private long ownedCountCacheStamp;
     private RelicTrackerDestinationTab? pendingTab;
+    private int cacheGeneration;
 
     private bool CollectActive =>
         config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
@@ -352,6 +353,8 @@ public sealed partial class PluginUI
         cachedOwnershipCharacterId = 0;
         cachedLocalContentId = 0;
         cachedOwnershipInventoryStamp = 0;
+        cacheGeneration++;
+        InvalidateShoppingCache();
         InvalidateOwnedCountCache();
     }
 

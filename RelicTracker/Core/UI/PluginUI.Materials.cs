@@ -6,6 +6,50 @@ public sealed partial class PluginUI
 {
     private const ImGuiTableFlags ShoppingTableFlags =
         ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg;
+
+    private string? cachedShoppingExpansionId;
+    private string? cachedShoppingLineFilter;
+    private int cachedShoppingGeneration;
+    private long cachedShoppingOwnedStamp;
+    private List<ShoppingMaterialRow>? cachedShoppingMaterials;
+
+    private void InvalidateShoppingCache()
+    {
+        cachedShoppingMaterials = null;
+        cachedShoppingExpansionId = null;
+        cachedShoppingLineFilter = null;
+        cachedShoppingGeneration = 0;
+        cachedShoppingOwnedStamp = 0;
+    }
+
+    private List<ShoppingMaterialRow> GetTrackerShoppingMaterials(
+        string expansionId,
+        string? lineFilter,
+        Func<uint, uint> ownedLookup)
+    {
+        long ownedStamp = OwnedCountRefreshStamp();
+        if (cachedShoppingMaterials is not null
+            && cachedShoppingExpansionId == expansionId
+            && cachedShoppingLineFilter == lineFilter
+            && cachedShoppingGeneration == cacheGeneration
+            && cachedShoppingOwnedStamp == ownedStamp)
+        {
+            return cachedShoppingMaterials;
+        }
+
+        RelicOwnership ownership = GetOwnership();
+        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
+        List<ShoppingMaterialRow> materials =
+            data.GetShoppingMaterials(expansionId, statuses, ownership, ownedLookup, lineFilter);
+
+        cachedShoppingMaterials = materials;
+        cachedShoppingExpansionId = expansionId;
+        cachedShoppingLineFilter = lineFilter;
+        cachedShoppingGeneration = cacheGeneration;
+        cachedShoppingOwnedStamp = ownedStamp;
+        return materials;
+    }
+
     private void DrawShoppingList(string expansionId, float regionHeight)
     {
         using var pane = ImRaii.Child("##TrackerMaterialsPane", new(0, regionHeight), false);
@@ -17,12 +61,8 @@ public sealed partial class PluginUI
         DrawProgressSourceHint(ProgressHintContext.Tracker);
 
         string? lineFilter = string.IsNullOrEmpty(config.TrackerLineFilter) ? null : config.TrackerLineFilter;
-
-        RelicOwnership ownership = GetOwnership();
-        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
         Func<uint, uint> ownedLookup = CreateOwnedLookup();
-
-        List<ShoppingMaterialRow> materials = data.GetShoppingMaterials(expansionId, statuses, ownership, ownedLookup, lineFilter);
+        List<ShoppingMaterialRow> materials = GetTrackerShoppingMaterials(expansionId, lineFilter, ownedLookup);
 
         if (!string.IsNullOrWhiteSpace(materialFilter))
         {

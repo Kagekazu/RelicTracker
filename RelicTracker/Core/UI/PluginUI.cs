@@ -20,6 +20,7 @@ public sealed partial class PluginUI : Window
     private readonly FfxivCollectService ffxivCollect;
 
     private string materialFilter = string.Empty;
+    private bool trackerTabVisible;
 
     public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, FfxivCollectService ffxivCollect)
         : base($"Relic Tracker###{WindowId}")
@@ -48,6 +49,7 @@ public sealed partial class PluginUI : Window
 
     public override void Draw()
     {
+        trackerTabVisible = false;
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {
             if (ImGui.BeginTabItem("Overview", TabOpenFlags(RelicTrackerDestinationTab.Overview)))
@@ -87,6 +89,7 @@ public sealed partial class PluginUI : Window
 
     private void DrawTrackerTab()
     {
+        trackerTabVisible = true;
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
 
         ImGui.SetNextItemWidth(150);
