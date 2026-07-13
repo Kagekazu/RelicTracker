@@ -45,7 +45,8 @@ internal sealed unsafe class RelicContextMenu : IDisposable
         args.AddMenuItem(new MenuItem
         {
             Name = new SeStringBuilder().Append(navigation.MenuLabel).BuiltString,
-            UseDefaultPrefix = true,
+            PrefixChar = 'R',
+            PrefixColor = IMenuItem.DalamudDefaultPrefixColor,
             OnClicked = _ => ui.OpenTo(navigation),
         });
     }
