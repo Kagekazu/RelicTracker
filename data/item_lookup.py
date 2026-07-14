@@ -63,8 +63,15 @@ class ItemIndex:
             index._by_name.setdefault(name.casefold(), item_id)
             if name.lower().startswith("hq "):
                 index._by_name.setdefault(name[3:].strip().casefold(), item_id)
+            lowered = name.casefold()
             if name.startswith("Replica "):
                 base = name[len("Replica ") :].strip()
+                if base:
+                    replicas = index._replicas_by_base.setdefault(base.casefold(), [])
+                    if item_id not in replicas:
+                        replicas.append(item_id)
+            elif name.endswith(" Replica"):
+                base = name[: -len(" Replica")].strip()
                 if base:
                     replicas = index._replicas_by_base.setdefault(base.casefold(), [])
                     if item_id not in replicas:
