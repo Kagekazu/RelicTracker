@@ -13588,6 +13588,37 @@
       "materialIds": [
         50058
       ]
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Ecliptic Arcanite",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        50977
+      ]
     }
   ]
 }

@@ -562,17 +562,19 @@ ew_add("Majestic", "Amplifying Achondrite")
 ew_add("Mandervillous", "Cosmic Crystallite")
 EW_STEPS=["Manderville","Amazing","Majestic","Mandervillous"]
 
-# ===== DT Phantom weapons (Occult Crescent) — 3 tiers, each 3 of an "Arcanite" per weapon. =====
-# Per weapon: exchange 1,500 Allagan Tomestones of Mathematics for 3 arcanites (Ermina, Phantom
-# Village) + the previous tier's weapon, traded to Dodokkuli. Each tier has a one-time unlock grind
-# (demiatmas / 5 items + aether array / 4 items + crystal paste) -> notes. 21 jobs (flags ignored).
-# Wyn's weapon rows were correct; "Step 4"/"Arcanaut" Wyn rows are leaked future/armor data -> dropped.
+# ===== DT Phantom weapons (Occult Crescent) — 5 tiers; tomestone arcanites on the first four. =====
+# Per weapon (tiers 1-4): exchange 1,500 Allagan Tomestones of Mathematics for 3 arcanites (Ermina,
+# Phantom Village) + the previous tier's weapon, traded to Dodokkuli. Occultum (IL795) is a free
+# conversion from Eclipticum via 'Final Phantasm' / Dodokkuli — no tracked material. Each earlier
+# tier has a one-time unlock grind (demiatmas / aether array / crystal paste / North Horn
+# dispellers) -> notes. 21 jobs (flags ignored).
 dt_rows=[]
 def dt_add(step, material):
     dt_rows.append({"step":step,"material":material,"perUnit":3,"jobs":[True]*21})
 dt_add("Penumbrae", "Arcanite")
 dt_add("Umbrae", "Waxing Arcanite")
 dt_add("Obscurum", "Waning Arcanite")
+dt_add("Eclipticum", "Ecliptic Arcanite")
 
 # The curated JSON is now the sole source of relic materials;
 # RelicDataService loads each expansion's rows wholesale, so no replaceSteps is needed.

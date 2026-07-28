@@ -2931,12 +2931,14 @@
     "category": "weapons",
     "expansion": "DT",
     "jobs": 21,
-    "tierCount": 3,
-    "relicCount": 63,
+    "tierCount": 5,
+    "relicCount": 105,
     "steps": [
       "Penumbrae",
       "Umbrae",
-      "Obscurum"
+      "Obscurum",
+      "Eclipticum",
+      "Occultum"
     ],
     "jobList": [
       "PLD",
@@ -3047,7 +3049,49 @@
       "Phantom Wings Obscurum",
       "Phantom War Scythe Obscurum",
       "Phantom Twinfangs Obscurum",
-      "Phantom Round Brush Obscurum"
+      "Phantom Round Brush Obscurum",
+      "Phantom Sword Eclipticum",
+      "Phantom Tonfa Eclipticum",
+      "Phantom War Hammer Eclipticum",
+      "Phantom Spear Eclipticum",
+      "Phantom Harp Bow Eclipticum",
+      "Phantom Knives Eclipticum",
+      "Phantom Guillotine Eclipticum",
+      "Phantom Revolver Eclipticum",
+      "Phantom Cane Eclipticum",
+      "Phantom Staff Eclipticum",
+      "Phantom Index Eclipticum",
+      "Phantom Codex Eclipticum",
+      "Phantom Star Globe Eclipticum",
+      "Phantom Blade Eclipticum",
+      "Phantom Degen Eclipticum",
+      "Phantom Gunblade Eclipticum",
+      "Phantom Fans Eclipticum",
+      "Phantom Pendulums Eclipticum",
+      "Phantom War Scythe Eclipticum",
+      "Phantom Twinfangs Eclipticum",
+      "Phantom Round Brush Eclipticum",
+      "Phantom Sword Occultum",
+      "Phantom Tonfa Occultum",
+      "Phantom War Hammer Occultum",
+      "Phantom Spear Occultum",
+      "Phantom Harp Bow Occultum",
+      "Phantom Knives Occultum",
+      "Phantom Guillotine Occultum",
+      "Phantom Revolver Occultum",
+      "Phantom Cane Occultum",
+      "Phantom Staff Occultum",
+      "Phantom Index Occultum",
+      "Phantom Codex Occultum",
+      "Phantom Star Globe Occultum",
+      "Phantom Blade Occultum",
+      "Phantom Degen Occultum",
+      "Phantom Gunblade Occultum",
+      "Phantom Fans Occultum",
+      "Phantom Pendulums Occultum",
+      "Phantom War Scythe Occultum",
+      "Phantom Twinfangs Occultum",
+      "Phantom Round Brush Occultum"
     ],
     "typeOrder": 10,
     "relicIds": [
@@ -3113,7 +3157,49 @@
       50050,
       50049,
       50051,
-      50052
+      50052,
+      50978,
+      50979,
+      50980,
+      50981,
+      50982,
+      50987,
+      50988,
+      50989,
+      50983,
+      50984,
+      50985,
+      50986,
+      50990,
+      50991,
+      50992,
+      50993,
+      50994,
+      50996,
+      50995,
+      50997,
+      50998,
+      51000,
+      51001,
+      51002,
+      51003,
+      51004,
+      51009,
+      51010,
+      51011,
+      51005,
+      51006,
+      51007,
+      51008,
+      51012,
+      51013,
+      51014,
+      51015,
+      51016,
+      51018,
+      51017,
+      51019,
+      51020
     ],
     "relicReplicaIds": [
       [
@@ -3242,27 +3328,195 @@
       [
         50080
       ],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      []
+      [
+        51044
+      ],
+      [
+        51045
+      ],
+      [
+        51046
+      ],
+      [
+        51047
+      ],
+      [
+        51048
+      ],
+      [
+        51053
+      ],
+      [
+        51054
+      ],
+      [
+        51055
+      ],
+      [
+        51049
+      ],
+      [
+        51050
+      ],
+      [
+        51051
+      ],
+      [
+        51052
+      ],
+      [
+        51056
+      ],
+      [
+        51057
+      ],
+      [
+        51058
+      ],
+      [
+        51059
+      ],
+      [
+        51060
+      ],
+      [
+        51062
+      ],
+      [
+        51061
+      ],
+      [
+        51063
+      ],
+      [
+        51064
+      ],
+      [
+        51066
+      ],
+      [
+        51067
+      ],
+      [
+        51068
+      ],
+      [
+        51069
+      ],
+      [
+        51070
+      ],
+      [
+        51075
+      ],
+      [
+        51076
+      ],
+      [
+        51077
+      ],
+      [
+        51071
+      ],
+      [
+        51072
+      ],
+      [
+        51073
+      ],
+      [
+        51074
+      ],
+      [
+        51078
+      ],
+      [
+        51079
+      ],
+      [
+        51080
+      ],
+      [
+        51081
+      ],
+      [
+        51082
+      ],
+      [
+        51084
+      ],
+      [
+        51083
+      ],
+      [
+        51085
+      ],
+      [
+        51086
+      ],
+      [
+        51088
+      ],
+      [
+        51089
+      ],
+      [
+        51090
+      ],
+      [
+        51091
+      ],
+      [
+        51092
+      ],
+      [
+        51097
+      ],
+      [
+        51098
+      ],
+      [
+        51099
+      ],
+      [
+        51093
+      ],
+      [
+        51094
+      ],
+      [
+        51095
+      ],
+      [
+        51096
+      ],
+      [
+        51100
+      ],
+      [
+        51101
+      ],
+      [
+        51102
+      ],
+      [
+        51103
+      ],
+      [
+        51104
+      ],
+      [
+        51106
+      ],
+      [
+        51105
+      ],
+      [
+        51107
+      ],
+      [
+        51108
+      ]
     ],
     "slotRelicIds": [
       47869,
