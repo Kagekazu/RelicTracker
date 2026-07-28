@@ -53,7 +53,7 @@ STEP_NAMES = {
     ],
     "Resistance Weapons": ["Resistance", "Augmented", "Recollection", "Law's Order", "Augmented Law's Order", "Blade's"],
     "Manderville Weapons": ["Manderville", "Amazing", "Majestic", "Mandervillous"],
-    "Phantom Weapons": ["Penumbrae", "Umbrae", "Obscurum"],
+    "Phantom Weapons": ["Penumbrae", "Umbrae", "Obscurum", "Eclipticum", "Occultum"],
     "Lucis Tools": ["Mastercraft", "Supra", "Lucis"],
     "Skysteel Tools": ["Skysteel", "Skysteel +1", "Dragonsung", "Augmented Dragonsung", "Skysung", "Skybuilders'"],
     "Resplendent Tools": ["Resplendent"],
