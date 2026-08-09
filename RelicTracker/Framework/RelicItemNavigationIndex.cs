@@ -19,12 +19,6 @@ public sealed record RelicItemTarget(
 /// <summary>Maps item row IDs to the Relic Tracker tab/expansion to open from a context menu.</summary>
 public sealed class RelicItemNavigationIndex
 {
-    private static readonly string[] ExpansionLongNames =
-    [
-        "A Realm Reborn", "Heavensward", "Stormblood", "Shadowbringers",
-        "Endwalker", "Dawntrail", "Crafters & Gatherers"
-    ];
-
     private readonly Dictionary<uint, RelicItemTarget> byItemId = [];
 
     public RelicItemNavigationIndex(RelicDataService data, RelicCatalog catalog)
@@ -71,7 +65,7 @@ public sealed class RelicItemNavigationIndex
                 var label = !string.IsNullOrWhiteSpace(material)
                             && data.MaterialSources.TryGetValue(material, out string? source)
                     ? $"Open Tracker — {source}"
-                    : $"Open Tracker — {ExpansionLongName(expansionId)}";
+                    : $"Open Tracker — {ExpansionNames.LongName(expansionId)}";
 
                 var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
                 foreach (uint itemId in row.MaterialIds)
@@ -98,7 +92,7 @@ public sealed class RelicItemNavigationIndex
 
                 var label = data.MaterialSources.TryGetValue(cost.Currency, out string? source)
                     ? $"Open Tracker — {source}"
-                    : $"Open Tracker — {ExpansionLongName(expansionId)}";
+                    : $"Open Tracker — {ExpansionNames.LongName(expansionId)}";
                 var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
                 foreach (uint itemId in cost.CurrencyIds)
                 {
@@ -186,17 +180,4 @@ public sealed class RelicItemNavigationIndex
 
         byItemId[itemId] = target;
     }
-
-    private static string ExpansionLongName(string expansionId) =>
-        expansionId switch
-        {
-            "ARR" => ExpansionLongNames[0],
-            "HW" => ExpansionLongNames[1],
-            "SB" => ExpansionLongNames[2],
-            "ShB" => ExpansionLongNames[3],
-            "EW" => ExpansionLongNames[4],
-            "DT" => ExpansionLongNames[5],
-            "DoHDoL" => ExpansionLongNames[6],
-            _ => expansionId
-        };
 }

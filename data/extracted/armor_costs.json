@@ -238,6 +238,50 @@
       "currencyIds": [
         47867
       ]
+    },
+    {
+      "set": "Phantom Vision (base)",
+      "currency": "Enlightenment Silver Piece",
+      "perPiece": 4000,
+      "setTotal": 20000,
+      "allTotal": 140000,
+      "note": "Occult Crescent (North Horn) — 4,000 every slot. All = 7 role sets",
+      "currencyIds": [
+        45043
+      ]
+    },
+    {
+      "set": "Phantom Vision +1",
+      "currency": "Final Final Fixative",
+      "perPiece": 3,
+      "setTotal": 15,
+      "allTotal": 105,
+      "note": "needs the base piece, or exchange Arcanaut's +1 1:1 (no mats). Fixatives from North Horn currencies/coffers/Forked Tower: Magic. All = 7 role sets",
+      "currencyIds": [
+        51978
+      ]
+    },
+    {
+      "set": "Phantom Vision +2",
+      "currency": "Final Final Fixative",
+      "perPiece": 4,
+      "setTotal": 20,
+      "allTotal": 140,
+      "note": "needs the +1 piece, or exchange Arcanaut's +2 1:1 (no mats). All = 7 role sets",
+      "currencyIds": [
+        51978
+      ]
+    },
+    {
+      "set": "Phantom Vision +3",
+      "currency": "Final Final Fixative",
+      "perPiece": 8,
+      "setTotal": 40,
+      "allTotal": 280,
+      "note": "needs the +2 piece. All = 7 role sets",
+      "currencyIds": [
+        51978
+      ]
     }
   ]
 }

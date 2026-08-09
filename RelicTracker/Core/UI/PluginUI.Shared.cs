@@ -12,12 +12,6 @@ public sealed partial class PluginUI
         RelicDisconnected,
     }
 
-    private static readonly string[] ExpansionLongNames =
-    [
-        "A Realm Reborn", "Heavensward", "Stormblood", "Shadowbringers",
-        "Endwalker", "Dawntrail", "Crafters & Gatherers"
-    ];
-
     private const long InventoryCacheBucketMs = 10_000;
     private const long TrackerInventoryRefreshMs = 500;
 
@@ -156,17 +150,4 @@ public sealed partial class PluginUI
         using var barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
         ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new Vector2(width, ImGui.GetFrameHeight()), overlay);
     }
-
-    private static string ExpansionLongName(string expansionId) =>
-        expansionId switch
-        {
-            "ARR" => ExpansionLongNames[0],
-            "HW" => ExpansionLongNames[1],
-            "SB" => ExpansionLongNames[2],
-            "ShB" => ExpansionLongNames[3],
-            "EW" => ExpansionLongNames[4],
-            "DT" => ExpansionLongNames[5],
-            "DoHDoL" => ExpansionLongNames[6],
-            _ => expansionId
-        };
 }

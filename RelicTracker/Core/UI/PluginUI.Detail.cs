@@ -1,6 +1,6 @@
-using RelicTracker.Framework;
 using RelicTracker.IPC;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
+
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -41,11 +41,11 @@ public sealed partial class PluginUI
         ImGui.TextUnformatted("Expansion");
         ImGui.SameLine();
         ImGui.SetNextItemWidth(150);
-        if (ImGui.BeginCombo("##expansion-detail", ExpansionLongName(expansionId)))
+        if (ImGui.BeginCombo("##expansion-detail", ExpansionNames.LongName(expansionId)))
         {
             foreach (var candidate in catalog.Expansions)
             {
-                if (ImGui.Selectable(ExpansionLongName(candidate), candidate == expansionId))
+                if (ImGui.Selectable(ExpansionNames.LongName(candidate), candidate == expansionId))
                 {
                     config.DetailExpansionId = candidate;
                     config.OnSettingChanged();
@@ -776,7 +776,7 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            if (ShoppingListBuilder.IsQuestMetadataRow(row))
+            if (ShoppingListBuilder.IsQuestRewardRow(row))
             {
                 continue;
             }

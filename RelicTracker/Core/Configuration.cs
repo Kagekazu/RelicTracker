@@ -1,6 +1,5 @@
 using Dalamud.Configuration;
 using Dalamud.Plugin;
-using RelicTracker.Framework;
 
 namespace RelicTracker;
 
@@ -41,8 +40,6 @@ public sealed class Configuration : IPluginConfiguration
     public int Version { get; set; } = 6;
 
     // Legacy (v5) — migrated into ProgressByCharacter on load.
-    public bool ActiveCharacterOnly { get; set; }
-
     public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
 
     public HashSet<string> ArmorPieceDone { get; set; } = new(StringComparer.Ordinal);

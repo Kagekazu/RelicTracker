@@ -28,12 +28,6 @@ public sealed class FfxivCollectRelic
 
     [JsonPropertyName("type")]
     public FfxivCollectRelicType? Type { get; set; }
-
-    [JsonIgnore]
-    public string Category => Type?.Category ?? "unknown";
-
-    [JsonIgnore]
-    public string TypeName => Type?.Name ?? "Unknown";
 }
 
 public sealed class FfxivCollectRelicType
@@ -52,12 +46,6 @@ public sealed class FfxivCollectRelicType
 
     [JsonPropertyName("expansion")]
     public int? Expansion { get; set; }
-}
-
-internal sealed class FfxivCollectIndexResponse
-{
-    [JsonPropertyName("results")]
-    public List<FfxivCollectRelic>? Results { get; set; }
 }
 
 internal sealed class FfxivCollectApiError

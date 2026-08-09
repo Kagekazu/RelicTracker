@@ -23,8 +23,6 @@ public sealed class RelicDataService
     /// <summary>Expansion id -> field-op relic armor currency costs (per piece).</summary>
     public Dictionary<string, List<ArmorCostRow>> ArmorCosts { get; private set; } = new(StringComparer.Ordinal);
 
-    public bool IsLoaded { get; private set; }
-
     public void Load()
     {
         var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
@@ -35,7 +33,6 @@ public sealed class RelicDataService
                      ?? new(StringComparer.Ordinal);
         MergeExtraMaterials(Path.Combine(baseDir, "tool_extra_materials.json"));
         BuildMaterialIdIndex();
-        IsLoaded = true;
         Svc.Log.Information(
             "[RelicTracker] Loaded relic materials for {ExpansionCount} expansions.",
             Expansions.Count);
