@@ -1,4 +1,6 @@
 using RelicTracker.IPC;
+using System.Numerics;
+
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -9,7 +11,7 @@ public sealed partial class PluginUI
     {
         if (!catalog.IsLoaded || catalog.Lines.Count == 0)
         {
-            ImGui.TextColored(WarningColor, "Relic catalog failed to load. Rebuild the plugin or check /xllog.");
+            ImGui.TextColored(WarningColor, "Relic data failed to load. Reload RelicTracker in /xlplugins, or check Dalamud's log.");
             return;
         }
 
@@ -17,18 +19,12 @@ public sealed partial class PluginUI
         {
             ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
         }
-        else
-        {
-            DrawProgressSourceHint(ProgressHintContext.Overview);
-        }
 
         var ownership = GetOwnership();
         var statuses = RelicStatusService.Build(ownership, catalog);
-        DrawOverviewHeader(statuses);
 
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
+        DrawOverviewStickyHeader(statuses);
+        EndStickyHeader();
 
         using var scroll = ImRaii.Child("##OverviewScroll", new(0, -1), false);
         if (!scroll)
@@ -36,6 +32,12 @@ public sealed partial class PluginUI
             return;
         }
 
+        if (config.FfxivCollectCharacterId == 0)
+        {
+            DrawProgressSourceHint(ProgressHintContext.Overview);
+        }
+
+        var anyExpansion = false;
         foreach (var expansionId in catalog.Expansions)
         {
             List<RelicLineStatus> lines =
@@ -52,11 +54,21 @@ public sealed partial class PluginUI
                 continue;
             }
 
+            anyExpansion = true;
             DrawOverviewExpansion(expansionId, lines, armorLines, ownership);
+        }
+
+        if (!anyExpansion)
+        {
+            if (BeginPanel("overview_empty"))
+            {
+                ImGui.TextColored(MutedColor, "No lines match this filter.");
+                EndPanel();
+            }
         }
     }
 
-    private void DrawOverviewHeader(IReadOnlyList<RelicLineStatus> statuses)
+    private void DrawOverviewStickyHeader(IReadOnlyList<RelicLineStatus> statuses)
     {
         var summary = RelicStatusService.Summarize(statuses);
 
@@ -64,11 +76,11 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         if (ffxivCollect.IsLoading)
         {
-            ImGui.TextColored(MutedColor, "(syncing…)");
+            DrawStatusChip("Syncing…", StatusChipKind.Warn);
         }
         else if (ffxivCollect.LastRefreshUtc is DateTime refreshed)
         {
-            ImGui.TextColored(MutedColor, $"(updated {refreshed.ToLocalTime():t})");
+            DrawStatusChip($"Updated {refreshed.ToLocalTime():t}", StatusChipKind.Muted);
         }
 
         DrawProgressRecheckButton();
@@ -77,7 +89,7 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         ImGui.TextColored(MutedColor, $"·  {summary.JobsComplete}/{summary.JobsTotal} job relics maxed");
 
-        DrawPercentBar(summary.Percent, 260f, $"{summary.Percent * 100f:0}% of all upgrade steps");
+        DrawPercentBar(summary.Percent, Math.Min(320f, ImGui.GetContentRegionAvail().X), $"{summary.Percent * 100f:0}% of all upgrade steps");
 
         ImGui.Spacing();
         var incompleteOnly = config.OverviewIncompleteOnly;
@@ -102,7 +114,7 @@ public sealed partial class PluginUI
         var jobsTotal = lines.Sum(line => line.Line.Jobs);
         var allDone = lines.Count > 0 && lines.All(line => line.IsComplete);
 
-        var title = $"{ExpansionNames.LongName(expansionId)} ({expansionId})";
+        var title = ExpansionNames.LongName(expansionId);
         var header = jobsTotal == 0
             ? title
             : allDone
@@ -116,31 +128,39 @@ public sealed partial class PluginUI
             return;
         }
 
-        using var table = ImRaii.Table(
-            $"OverviewLines_{expansionId}",
-            4,
-            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-            new(0, 0));
-        if (!table)
+        if (!BeginPanel($"overview_{expansionId}"))
         {
             return;
         }
 
-        ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
-        ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
-        ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        ImGui.TableHeadersRow();
-
-        foreach (var status in lines)
+        // Table must End before EndPanel — ending the child first crashes ImGui.
+        using (var table = ImRaii.Table(
+            $"OverviewLines_{expansionId}",
+            4,
+            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
+            new(0, 0)))
         {
-            DrawOverviewLineRow(status);
+            if (table)
+            {
+                ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
+                ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 64);
+                ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
+                ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
+                ImGui.TableHeadersRow();
+
+                foreach (var status in lines)
+                {
+                    DrawOverviewLineRow(status);
+                }
+
+                foreach (var armor in armorLines)
+                {
+                    DrawOverviewArmorRow(armor, ownership);
+                }
+            }
         }
 
-        foreach (var armor in armorLines)
-        {
-            DrawOverviewArmorRow(armor, ownership);
-        }
+        EndPanel();
     }
 
     private void DrawOverviewArmorRow(ArmorLine armor, RelicOwnership ownership)
@@ -271,7 +291,7 @@ public sealed partial class PluginUI
             return "—";
         }
 
-        List<string> parts = [.. frontiers.Select(frontier => $"{frontier.Count} → {frontier.Step}")];
+        List<string> parts = [.. frontiers.Select(frontier => $"{frontier.Count} on {frontier.Step}")];
         return parts.Count <= 3
             ? string.Join(",  ", parts)
             : string.Join(",  ", parts.Take(3)) + $",  +{parts.Count - 3} more";
@@ -281,7 +301,7 @@ public sealed partial class PluginUI
     {
         List<string> lines =
         [
-            $"{status.Line.CollectType} ({status.Line.Category})",
+            status.Line.CollectType,
             $"{status.JobsComplete}/{status.Line.Jobs} jobs fully complete",
             string.Empty,
             "Jobs that reached each step:"
