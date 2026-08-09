@@ -114,6 +114,12 @@ ARMOR_LINES = [
             ("Arcanaut's Armor +1", "+1"),
             ("Arcanaut's Armor +2", "+2"),
         ]),
+        ("Phantom Vision", [
+            ("Phantom Vision", "Base"),
+            ("Phantom Vision +1", "+1"),
+            ("Phantom Vision +2", "+2"),
+            ("Phantom Vision +3", "+3"),
+        ]),
     ]),
 ]
 

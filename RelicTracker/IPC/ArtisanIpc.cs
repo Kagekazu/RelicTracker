@@ -31,8 +31,6 @@ internal static class ArtisanIpc
         }
     }
 
-    public static bool IsReady => SupportsRelicToolLists;
-
     public static void Init() => EnsureBound();
 
     public static void Dispose()
@@ -48,7 +46,7 @@ internal static class ArtisanIpc
     public static bool TryGetRelicToolListId(string stepName, int craftSlot, out int listId)
     {
         listId = 0;
-        if (!IsReady || _getRelicToolListId == null)
+        if (!SupportsRelicToolLists || _getRelicToolListId == null)
         {
             return false;
         }
@@ -100,7 +98,7 @@ internal static class ArtisanIpc
 
     public static bool IsBusy()
     {
-        if (!IsReady || _isBusy == null)
+        if (!SupportsRelicToolLists || _isBusy == null)
         {
             return false;
         }

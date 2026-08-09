@@ -1,5 +1,5 @@
-using RelicTracker.Framework;
 using RelicTracker.IPC;
+
 namespace RelicTracker;
 
 public sealed partial class PluginUI

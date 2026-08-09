@@ -1,0 +1,60 @@
+---
+description: RelicTracker architecture, data pipeline, and UI conventions
+alwaysApply: true
+---
+
+# RelicTracker conventions
+
+Dalamud plugin (C#) for FFXIV relic tracking. Tabs: **Overview**, **Relic**, **Tracker**, **Settings**.
+
+## Stack
+
+- **Lumina** — client sheet for display names; **`GameSheets.English<T>()`** for job resolution only
+- **FFXIVClientStructs** for `InventoryType` in Allagan Tools IPC
+- **ECommons** for `Svc`, `ShellStart`, `DalamudReflector` — utility only; no automation helpers
+- **Allagan Tools IPC** for owned counts and inventory progress (active char + retainers + dresser + armoire)
+- **FFXIV Collect** optional for progress sync (Settings tab)
+
+## Data source of truth
+
+- Materials: `data/extracted/tool_extra_materials.json` via `data/gen_tool_materials.py`
+  - Each row has **`materialIds`** (alias-expanded at build); English **`material`** name kept for authoring and `material_sources.json` keys
+  - Optional `purchase`: `{ "currency": "GC seals", "unit": 4000 }` — display-only tooltip
+- Lines/steps/relics: `data/extracted/relic_lines.json` via `data/extract_relics.py` — **`relicIds`**, **`slotRelicIds`**, **`relicReplicaIds`**
+- Armor pieces: `data/extracted/relic_armor.json` — **`pieceIds`** per tier
+- Armor currency: `data/extracted/armor_costs.json` — **`currencyIds`** (via `armor_currency_aliases.json` for multi-slot currencies)
+- Step notes: `data/extracted/relic_step_notes.json` via `data/gen_tool_notes.py`
+- Farm grouping: `data/extracted/material_sources.json` (keys = English material names)
+- Item ID resolution: `data/item_lookup.py` + cached `data/extracted/_item.csv` (gitignored, xivapi en Item.csv)
+- Build-time aliases only (not bundled): `material_aliases.json`, `armor_currency_aliases.json`
+- Regenerate: `py data/gen_tool_materials.py` (materials + armor IDs); `py data/extract_relics.py` (relic/armor IDs); then `py data/validate_data.py`
+- Bundled via `RelicTracker.csproj`; manifest **`sheetVersion`** bumps on data schema changes (currently **v1.9.1**)
+
+Legacy Wyn outputs (`expansions.json`, `notes.json`) must not live in `data/extracted/`.
+
+## Item IDs at runtime (language-neutral)
+
+- **Owned / shortfall**: always sum Allagan Tools counts by bundled **`materialIds`** / **`currencyIds`** / relic & armor IDs — never resolve English names at runtime
+- **Display labels**: `ItemDisplayNames.Label(ids, bundledName)` — client-language name when exactly one ID; bundled name for alias groups (Atma, Bozjan Runner's Secrets)
+- **Job column order**: `RelicCatalog.ResolveJobs()` from **`slotRelicIds`** via `ClassJobEquipResolver.TryResolveEquipJobByItemId`
+- **Progress keys**: `collectType|job|tier` and `collectType|pieceIndex` — language-neutral
+- **Per-character progress**: `ProgressByCharacter` keyed by `ContentId`; manual ticks + AT inventory snapshot per character
+
+## UI patterns
+
+- **Tracker**: Line dropdown only when expansion has multiple relic lines (DoHDoL). Armours when `armor_costs.json` has data. Material **`purchase`** rows show hover tooltip (GC seals etc. not tracked as Owned).
+- **Tracker owned / short**: **Owned** column = Allagan Tools inventory only. **Short** = Need − (inventory + credits). Weapon materials: prefarmed quest rewards (`role: quest` / `role: covers` / `craftOf` in `tool_extra_materials.json`) credit components via `ShoppingListBuilder.QuestCreditFor`, capped at jobs still needing that step. Show rewards in **Prefarmed quest rewards** subsection (Tracker + Relic tab). Armor currency: `ArmorCostCalculator.ArmorPieceCredit` credits owned armor **`pieceIds`** toward `armor_costs.json` rows (set name → tier via `CostLinks` in code). Summary counts weapon material shorts and armor currency shorts together.
+- **Relic**: Line dropdown only when multiple lines; **Expansion** and **Job** labels left of combos.
+- Progress: FFXIV Collect → Allagan Tools inventory (relics/replicas + armor **pieceIds**) → manual ticks; cache invalidates on ticks, Collect ID changes, character changes, periodic inventory refresh.
+
+## C# style (Debug analyzers)
+
+- Nullable reference types are on in Debug — use non-nullable `out` params when failure paths return before use (`out ArmorTier tier`, not `ArmorTier?`).
+- Do not add defensive null checks the compiler already proves unnecessary; fix the signature or flow instead.
+- Prefer single-pass index builders over duplicate sheet scans (`QuestRewardIndex`, `ArmorCostCalculator.CostLinks`).
+
+## Plugin metadata
+
+- Dalamud icon: **512×512** PNG (`images/icon.png`)
+- Commands: `/relictracker`, `/rtracker`
+- README is end-user focused only

@@ -102,7 +102,7 @@ public sealed partial class PluginUI
         var jobsTotal = lines.Sum(line => line.Line.Jobs);
         var allDone = lines.Count > 0 && lines.All(line => line.IsComplete);
 
-        var title = $"{ExpansionLongName(expansionId)} ({expansionId})";
+        var title = $"{ExpansionNames.LongName(expansionId)} ({expansionId})";
         var header = jobsTotal == 0
             ? title
             : allDone

@@ -40,16 +40,4 @@ internal static class MaterialFilters
 
         return true;
     }
-
-    public static bool IsTrackableCurrency(string? name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return false;
-        }
-
-        var trimmed = name.Trim();
-        return !trimmed.Contains("calculations", StringComparison.OrdinalIgnoreCase)
-               && !trimmed.Contains("Crystal Sand", StringComparison.OrdinalIgnoreCase);
-    }
 }

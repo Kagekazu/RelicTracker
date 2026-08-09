@@ -25,6 +25,10 @@ public static class ArmorCostCalculator
             ["Arcanaut's (base)"] = ("Arcanaut's", "Base", null),
             ["Arcanaut's +1"] = ("Arcanaut's", "+1", null),
             ["Arcanaut's +2"] = ("Arcanaut's", "+2", null),
+            ["Phantom Vision (base)"] = ("Phantom Vision", "Base", null),
+            ["Phantom Vision +1"] = ("Phantom Vision", "+1", null),
+            ["Phantom Vision +2"] = ("Phantom Vision", "+2", null),
+            ["Phantom Vision +3"] = ("Phantom Vision", "+3", null),
         };
 
     public static uint ArmorPieceCredit(

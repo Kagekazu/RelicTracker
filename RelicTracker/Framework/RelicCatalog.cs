@@ -21,20 +21,11 @@ public sealed class RelicLine
     [JsonPropertyName("tierCount")]
     public int TierCount { get; set; }
 
-    [JsonPropertyName("relicCount")]
-    public int RelicCount { get; set; }
-
     [JsonPropertyName("steps")]
     public List<string> Steps { get; set; } = [];
 
     [JsonPropertyName("jobList")]
     public List<string> JobList { get; set; } = [];
-
-    [JsonPropertyName("slotRelics")]
-    public List<string> SlotRelics { get; set; } = [];
-
-    [JsonPropertyName("relicNames")]
-    public List<string> RelicNames { get; set; } = [];
 
     [JsonPropertyName("relicIds")]
     public List<uint> RelicIds { get; set; } = [];
@@ -57,22 +48,8 @@ public sealed class RelicLine
     public IReadOnlyList<string> EffectiveJobList =>
         Jobs > 0 && ResolvedJobs.Count == Jobs ? ResolvedJobs : JobList;
 
-    [JsonIgnore]
-    public string FinalStep => Steps.Count > 0 ? Steps[^1] : "Complete";
-
     public string StepName(int tierIndex) =>
         tierIndex >= 0 && tierIndex < Steps.Count ? Steps[tierIndex] : $"Step {tierIndex + 1}";
-
-    public string? RelicName(int slotIndex, int tierIndex)
-    {
-        if (Jobs <= 0 || slotIndex < 0 || tierIndex < 0)
-        {
-            return null;
-        }
-
-        var index = RelicIndex(slotIndex, tierIndex);
-        return index >= 0 && index < RelicNames.Count ? RelicNames[index] : null;
-    }
 
     public uint RelicId(int slotIndex, int tierIndex)
     {
@@ -111,9 +88,6 @@ public sealed class ArmorTier
     [JsonPropertyName("pieces")]
     public int Pieces { get; set; }
 
-    [JsonPropertyName("pieceNames")]
-    public List<string> PieceNames { get; set; } = [];
-
     [JsonPropertyName("pieceIds")]
     public List<uint> PieceIds { get; set; } = [];
 }
@@ -126,9 +100,6 @@ public sealed class ArmorSet
 
     [JsonPropertyName("tiers")]
     public List<ArmorTier> Tiers { get; set; } = [];
-
-    [JsonIgnore]
-    public int Pieces => Tiers.Sum(tier => tier.Pieces);
 }
 
 /// <summary>A field-operation relic armor line (Eurekan / Resistance / Phantom), per expansion.</summary>
