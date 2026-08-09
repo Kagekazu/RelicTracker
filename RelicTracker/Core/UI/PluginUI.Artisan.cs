@@ -6,6 +6,11 @@ public sealed partial class PluginUI
 {
     private void DrawAllaganToolsSettingsSection()
     {
+        if (!BeginPanel("settings_at"))
+        {
+            return;
+        }
+
         ImGui.TextColored(HeaderColor, "Allagan Tools");
         ImGui.TextColored(MutedColor, "Used for inventory counts, owned relic detection, and material tracking.");
         ImGui.Spacing();
@@ -14,10 +19,16 @@ public sealed partial class PluginUI
             AllaganToolsIpc.IsInstalled,
             AllaganToolsIpc.IsEnabled,
             AllaganToolsIpc.IsReady);
+        EndPanel();
     }
 
     private void DrawArtisanSettingsSection()
     {
+        if (!BeginPanel("settings_artisan"))
+        {
+            return;
+        }
+
         ImGui.TextColored(HeaderColor, "Artisan (optional)");
         ImGui.TextColored(
             MutedColor,
@@ -34,6 +45,8 @@ public sealed partial class PluginUI
             ImGui.SameLine();
             ImGui.TextColored(WarningColor, "(crafting)");
         }
+
+        EndPanel();
     }
 
     private void DrawArtisanCraftButton(RelicLine line, string stepName, int slotIndex)

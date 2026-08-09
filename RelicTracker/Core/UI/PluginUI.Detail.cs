@@ -24,7 +24,7 @@ public sealed partial class PluginUI
     {
         if (!catalog.IsLoaded || catalog.Lines.Count == 0)
         {
-            ImGui.TextColored(WarningColor, "Relic catalog failed to load. Rebuild the plugin or check /xllog.");
+            ImGui.TextColored(WarningColor, "Relic data failed to load. Reload RelicTracker in /xlplugins, or check Dalamud's log.");
             return;
         }
 
@@ -32,6 +32,8 @@ public sealed partial class PluginUI
         {
             ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
         }
+
+        DrawTabIntro("Per-job steps and notes. Tracker lists farm totals for every unfinished job.");
 
         var expansionId = catalog.Expansions.Contains(config.DetailExpansionId, StringComparer.Ordinal)
             ? config.DetailExpansionId
@@ -61,6 +63,7 @@ public sealed partial class PluginUI
         if (weaponLines.Count == 0 && armorLines.Count == 0)
         {
             ImGui.TextColored(MutedColor, "No relic lines for this expansion.");
+            EndStickyHeader();
             return;
         }
 
@@ -124,7 +127,8 @@ public sealed partial class PluginUI
 
         if (armor is not null)
         {
-            ImGui.Spacing();
+            DrawRelicArmorStatusChips(armor, ownership);
+            EndStickyHeader();
             DrawArmorDetail(armor, ownership);
             return;
         }
@@ -132,6 +136,7 @@ public sealed partial class PluginUI
         if (weapon is null)
         {
             ImGui.TextColored(MutedColor, "No relic lines available.");
+            EndStickyHeader();
             return;
         }
 
@@ -160,11 +165,134 @@ public sealed partial class PluginUI
             ImGui.EndCombo();
         }
 
-        var slotIndex = IndexOfJob(jobList, job);
+        DrawRelicWeaponStatusChips(weapon, ownership, jobList);
+        EndStickyHeader();
 
+        var slotIndex = IndexOfJob(jobList, job);
+        DrawWeaponDetailBody(weapon, jobList, job, slotIndex, ownership);
+    }
+
+    private void DrawRelicWeaponStatusChips(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
+    {
         ImGui.Spacing();
-        DrawDetailCollectContext(weapon, ownership, jobList);
-        ImGui.Separator();
+        bool collectLinked = CollectIdLinked;
+        bool inventoryLinked = AllaganToolsIpc.IsReady;
+
+        if (!collectLinked && !inventoryLinked)
+        {
+            DrawStatusChip("Manual", StatusChipKind.Muted);
+            ImGui.SameLine();
+            DrawProgressSourceHint(ProgressHintContext.RelicDisconnected);
+            return;
+        }
+
+        int complete = 0;
+        for (int slot = 0; slot < jobList.Count; slot++)
+        {
+            if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
+            {
+                complete++;
+            }
+        }
+
+        if (inventoryLinked && collectLinked)
+        {
+            DrawStatusChip("Inventory + Collect", StatusChipKind.Ok);
+        }
+        else if (inventoryLinked)
+        {
+            DrawStatusChip("Inventory", StatusChipKind.Ok);
+        }
+        else
+        {
+            DrawStatusChip("Collect", StatusChipKind.Ok);
+        }
+
+        ImGui.SameLine();
+        DrawStatusChip($"{complete}/{line.Jobs} jobs", complete == line.Jobs ? StatusChipKind.Ok : StatusChipKind.Muted);
+
+        if (collectLinked && ffxivCollect.IsLoading)
+        {
+            ImGui.SameLine();
+            DrawStatusChip("Syncing…", StatusChipKind.Warn);
+        }
+
+        DrawProgressRecheckButton();
+        ImGui.SameLine();
+        ImGui.TextColored(MutedColor, DescribeWeaponProgressSource(inventoryLinked, collectLinked));
+    }
+
+    private void DrawRelicArmorStatusChips(ArmorLine armor, RelicOwnership ownership)
+    {
+        ImGui.Spacing();
+        var owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
+        var total = armor.TotalPieces;
+        var complete = total > 0 && owned >= total;
+
+        if (ArmorAutoTracked)
+        {
+            bool inventory = AllaganToolsIpc.IsReady;
+            if (inventory && CollectActive)
+            {
+                DrawStatusChip("Inventory + Collect", StatusChipKind.Ok);
+            }
+            else if (inventory)
+            {
+                DrawStatusChip("Inventory", StatusChipKind.Ok);
+            }
+            else
+            {
+                DrawStatusChip("Collect", StatusChipKind.Ok);
+            }
+
+            ImGui.SameLine();
+            DrawStatusChip($"{owned}/{total} pieces", complete ? StatusChipKind.Ok : StatusChipKind.Muted);
+            ImGui.SameLine();
+            ImGui.TextColored(MutedColor, DescribeArmorProgressSource(inventory, CollectActive));
+        }
+        else
+        {
+            DrawStatusChip("Manual", StatusChipKind.Muted);
+            ImGui.SameLine();
+            ImGui.TextColored(MutedColor, "No auto-tracking yet — expand a set below to tick pieces, or connect Allagan Tools in Settings.");
+        }
+    }
+
+    private void DrawWeaponDetailBody(
+        RelicLine weapon,
+        IReadOnlyList<string> jobList,
+        string job,
+        int slotIndex,
+        RelicOwnership ownership)
+    {
+        var wide = ImGui.GetContentRegionAvail().X >= RelicWideLayoutMinWidth;
+        var currentTier = CurrentStepTier(weapon, job, slotIndex, ownership);
+
+        if (wide)
+        {
+            var gap = 10f;
+            var half = (ImGui.GetContentRegionAvail().X - gap) * 0.48f;
+            using (var left = ImRaii.Child("##relicLeft", new(half, -1), true))
+            {
+                if (left)
+                {
+                    DrawAllJobsGrid(weapon, jobList, job, ownership);
+                    ImGui.Spacing();
+                    DrawDetailStepsLeft(weapon, job, slotIndex, currentTier, ownership);
+                }
+            }
+
+            ImGui.SameLine(0, gap);
+            using (var right = ImRaii.Child("##relicRight", new(0, -1), true))
+            {
+                if (right)
+                {
+                    DrawDetailStepsRight(weapon, currentTier, slotIndex);
+                }
+            }
+
+            return;
+        }
 
         using var scroll = ImRaii.Child("##RelicDetailScroll", new(0, -1), false);
         if (!scroll)
@@ -174,7 +302,11 @@ public sealed partial class PluginUI
 
         DrawAllJobsGrid(weapon, jobList, job, ownership);
         ImGui.Spacing();
-        DrawDetailSteps(weapon, job, slotIndex, ownership);
+        DrawDetailStepsLeft(weapon, job, slotIndex, currentTier, ownership);
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+        DrawDetailStepsRight(weapon, currentTier, slotIndex);
     }
 
     private void DrawArmorDetail(ArmorLine armor, RelicOwnership ownership)
@@ -183,56 +315,80 @@ public sealed partial class PluginUI
         var total = armor.TotalPieces;
         var complete = total > 0 && owned >= total;
 
-        if (ArmorAutoTracked)
+        if (BeginPanel("armor_header"))
         {
-            bool inventory = AllaganToolsIpc.IsReady;
-            ImGui.TextColored(GoodColor, DescribeArmorProgressSource(inventory, CollectActive));
+            ImGui.TextColored(HeaderColor, armor.LineName);
             ImGui.SameLine();
-            ImGui.TextColored(complete ? GoodColor : MutedColor, $"({owned}/{total} pieces)");
-        }
-        else
-        {
-            ImGui.TextColored(MutedColor, "Tick the pieces you own below, or connect Allagan Tools on Settings to auto-track.");
-        }
+            ImGui.TextColored(complete ? GoodColor : MutedColor, $"— {owned}/{total} pieces");
+            if (armor.Sets.Count > 1)
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(MutedColor, $"· {armor.Sets.Count} separate sets");
+            }
 
-        ImGui.Separator();
-        ImGui.Spacing();
-
-        ImGui.TextColored(HeaderColor, armor.LineName);
-        ImGui.SameLine();
-        ImGui.TextColored(complete ? GoodColor : MutedColor, $"— {owned}/{total} pieces");
-        if (armor.Sets.Count > 1)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(MutedColor, $"· {armor.Sets.Count} separate sets");
+            EndPanel();
         }
 
         var note = catalog.StepNote(armor.LineName, string.Empty);
         if (!string.IsNullOrWhiteSpace(note))
         {
-            ImGui.Spacing();
-            ImGui.TextWrapped(note);
+            if (ImGui.CollapsingHeader("About this armor###armor_about"))
+            {
+                if (BeginPanel("armor_about_body"))
+                {
+                    ImGui.TextWrapped(note);
+                    EndPanel();
+                }
+            }
         }
 
-        ImGui.Spacing();
-        using var table = ImRaii.Table(
-            "ArmorSets",
-            3,
-            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-            new(0, 0));
-        if (!table)
+        if (BeginPanel("armor_sets"))
         {
-            return;
+            // Table must End before EndPanel — ending the child first crashes ImGui.
+            using (var table = ImRaii.Table(
+                "ArmorSets",
+                3,
+                ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
+                new(0, 0)))
+            {
+                if (table)
+                {
+                    ImGui.TableSetupColumn("Set", ImGuiTableColumnFlags.WidthStretch, 0.5f);
+                    ImGui.TableSetupColumn("Pieces", ImGuiTableColumnFlags.WidthFixed, 80);
+                    ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 160);
+                    ImGui.TableHeadersRow();
+
+                    foreach (var set in armor.Sets)
+                    {
+                        DrawArmorSetRows(set, ownership);
+                    }
+                }
+            }
+
+            EndPanel();
         }
 
-        ImGui.TableSetupColumn("Set", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        ImGui.TableSetupColumn("Pieces", ImGuiTableColumnFlags.WidthFixed, 80);
-        ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 160);
-        ImGui.TableHeadersRow();
-
-        foreach (var set in armor.Sets)
+        if (!ArmorAutoTracked)
         {
-            DrawArmorSetRows(set, ownership);
+            foreach (var set in armor.Sets)
+            {
+                var multiTier = set.Tiers.Count > 1;
+                foreach (var tier in set.Tiers)
+                {
+                    var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
+                    var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+                    if (!ImGui.CollapsingHeader($"{label} ({tierOwned}/{tier.Pieces})###armor_manual_{tier.CollectType}"))
+                    {
+                        continue;
+                    }
+
+                    if (BeginPanel($"armor_ticks_{tier.CollectType}"))
+                    {
+                        DrawArmorPieceCheckboxes(tier);
+                        EndPanel();
+                    }
+                }
+            }
         }
     }
 
@@ -260,26 +416,38 @@ public sealed partial class PluginUI
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, $"{tierOwned}/{tier.Pieces}");
 
             ImGui.TableNextColumn();
-            if (ArmorAutoTracked)
+            DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
+        }
+    }
+
+    /// <summary>One checkbox per piece, wrapped by role set (5 slots) with role headers.</summary>
+    private void DrawArmorPieceCheckboxes(ArmorTier tier)
+    {
+        const int slotsPerRole = 5;
+        string[] roleLabels = ["Fending", "Maiming", "Striking", "Aiming", "Scouting", "Healing", "Casting"];
+
+        for (var i = 0; i < tier.Pieces; i++)
+        {
+            if (i % slotsPerRole == 0)
             {
-                DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
+                var roleIndex = i / slotsPerRole;
+                var role = roleIndex < roleLabels.Length ? roleLabels[roleIndex] : $"Set {roleIndex + 1}";
+                ImGui.TextColored(MutedColor, role);
             }
             else
             {
-                // Manual: one checkbox per piece, count of ticked = owned.
-                for (var i = 0; i < tier.Pieces; i++)
-                {
-                    if (i > 0)
-                    {
-                        ImGui.SameLine();
-                    }
+                ImGui.SameLine();
+            }
 
-                    bool done = config.CurrentCharacterProgress().ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
-                    if (ImGui.Checkbox($"##{tier.CollectType}_{i}", ref done))
-                    {
-                        SetArmorPieceDone(tier.CollectType, i, done);
-                    }
-                }
+            bool done = config.CurrentCharacterProgress().ArmorPieceDone.Contains($"{tier.CollectType}|{i}");
+            if (ImGui.Checkbox($"##{tier.CollectType}_{i}", ref done))
+            {
+                SetArmorPieceDone(tier.CollectType, i, done);
+            }
+
+            if (ImGui.IsItemHovered() && i < tier.PieceIds.Count && tier.PieceIds[i] != 0)
+            {
+                ImGui.SetTooltip(ItemDisplayNames.Resolve(tier.PieceIds[i], $"Piece {i + 1}"));
             }
         }
     }
@@ -416,39 +584,6 @@ public sealed partial class PluginUI
         return -1;
     }
 
-    private void DrawDetailCollectContext(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
-    {
-        bool collectLinked = CollectIdLinked;
-        bool inventoryLinked = AllaganToolsIpc.IsReady;
-
-        if (!collectLinked && !inventoryLinked)
-        {
-            DrawProgressSourceHint(ProgressHintContext.RelicDisconnected);
-            return;
-        }
-
-        int complete = 0;
-        for (int slot = 0; slot < jobList.Count; slot++)
-        {
-            if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
-            {
-                complete++;
-            }
-        }
-
-        ImGui.TextColored(GoodColor, DescribeWeaponProgressSource(inventoryLinked, collectLinked));
-        ImGui.SameLine();
-        ImGui.TextColored(complete == line.Jobs ? GoodColor : MutedColor, $"({complete}/{line.Jobs} jobs complete)");
-
-        if (collectLinked && ffxivCollect.IsLoading)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(MutedColor, "syncing…");
-        }
-
-        DrawProgressRecheckButton();
-    }
-
     private void DrawAllJobsGrid(RelicLine line, IReadOnlyList<string> jobList, string selectedJob, RelicOwnership ownership)
     {
         // Collapsed by default — it's a wide reference grid; open it when you want the full picture.
@@ -506,9 +641,13 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawDetailSteps(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
+    private void DrawDetailStepsLeft(
+        RelicLine line,
+        string job,
+        int slotIndex,
+        int currentTier,
+        RelicOwnership ownership)
     {
-        var currentTier = CurrentStepTier(line, job, slotIndex, ownership);
         var complete = currentTier >= line.TierCount;
 
         ImGui.TextColored(HeaderColor, $"{job} · {line.CollectType}");
@@ -525,82 +664,15 @@ public sealed partial class PluginUI
         ImGui.Spacing();
         DrawDetailStepChecklist(line, job, slotIndex, currentTier, ownership);
 
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
         if (complete)
         {
+            ImGui.Spacing();
             ImGui.TextColored(GoodColor, $"{job}'s {line.CollectType} relic is finished. Nice.");
             return;
         }
 
-        DrawCurrentStepDetail(line, currentTier, slotIndex);
-    }
-
-    private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership)
-    {
-        using var table = ImRaii.Table(
-            "DetailSteps",
-            2,
-            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
-            new(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 40);
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableHeadersRow();
-
-        for (var tier = 0; tier < line.TierCount; tier++)
-        {
-            ImGui.TableNextRow();
-
-            var collectDone = ownership.IsCollectStepDone(line, slotIndex, tier);
-            var inventoryDone = ownership.IsInventoryStepDone(line, slotIndex, tier);
-            var autoDone = collectDone || inventoryDone;
-            var manualDone = IsManualStepDone(line, job, tier);
-            var done = autoDone || manualDone;
-
-            ImGui.TableNextColumn();
-            if (autoDone)
-            {
-                ImGui.TextColored(GoodColor, "✓");
-                if (ImGui.IsItemHovered())
-                {
-                    string source = collectDone && inventoryDone
-                        ? "FFXIV Collect + Allagan Tools (replicas count)"
-                        : collectDone
-                            ? "FFXIV Collect"
-                            : "Allagan Tools inventory (replicas count)";
-                    ImGui.SetTooltip($"Completed ({source})");
-                }
-            }
-            else
-            {
-                var manual = manualDone;
-                ImGui.PushID(tier);
-                if (ImGui.Checkbox("##stepdone", ref manual))
-                {
-                    SetManualStepDone(line, job, tier, manual);
-                }
-
-                ImGui.PopID();
-            }
-
-            ImGui.TableNextColumn();
-            var isCurrent = tier == currentTier;
-            var color = done ? GoodColor : isCurrent ? WarningColor : MutedColor;
-            var suffix = isCurrent ? "  ← current step" : string.Empty;
-            ImGui.TextColored(color, $"{tier + 1}. {line.StepName(tier)}{suffix}");
-        }
-    }
-
-    private void DrawCurrentStepDetail(RelicLine line, int currentTier, int slotIndex)
-    {
         var stepName = line.StepName(currentTier);
+        ImGui.Spacing();
         ImGui.TextColored(HeaderColor, $"To do now: {stepName}");
         ImGui.Spacing();
 
@@ -608,9 +680,17 @@ public sealed partial class PluginUI
         if (!string.IsNullOrWhiteSpace(note))
         {
             ImGui.TextWrapped(note);
-            ImGui.Spacing();
+        }
+    }
+
+    private void DrawDetailStepsRight(RelicLine line, int currentTier, int slotIndex)
+    {
+        if (currentTier >= line.TierCount)
+        {
+            return;
         }
 
+        var stepName = line.StepName(currentTier);
         DrawArtisanCraftButton(line, stepName, slotIndex);
 
         if (data.Expansions.TryGetValue(line.Expansion, out var expansionSheet))
@@ -624,6 +704,7 @@ public sealed partial class PluginUI
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
         if (items.Count == 0)
         {
+            var note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
             if (string.IsNullOrWhiteSpace(note))
             {
                 ImGui.TextWrapped(
@@ -644,7 +725,11 @@ public sealed partial class PluginUI
         }
 
         ImGui.Spacing();
+        DrawDetailStepItemsTable(items);
+    }
 
+    private void DrawDetailStepItemsTable(IReadOnlyList<StepItem> items)
+    {
         using var table = ImRaii.Table(
             "DetailStepItems",
             5,
@@ -748,6 +833,67 @@ public sealed partial class PluginUI
             ImGui.TextColored(shortfall == 0 && item.Resolved ? GoodColor : BadColor, item.Resolved ? shortfall.ToString() : "?");
         }
     }
+
+    private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership)
+    {
+        using var table = ImRaii.Table(
+            "DetailSteps",
+            2,
+            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
+            new(0, 0));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 40);
+        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableHeadersRow();
+
+        for (var tier = 0; tier < line.TierCount; tier++)
+        {
+            ImGui.TableNextRow();
+
+            var collectDone = ownership.IsCollectStepDone(line, slotIndex, tier);
+            var inventoryDone = ownership.IsInventoryStepDone(line, slotIndex, tier);
+            var autoDone = collectDone || inventoryDone;
+            var manualDone = IsManualStepDone(line, job, tier);
+            var done = autoDone || manualDone;
+
+            ImGui.TableNextColumn();
+            if (autoDone)
+            {
+                ImGui.TextColored(GoodColor, "✓");
+                if (ImGui.IsItemHovered())
+                {
+                    string source = collectDone && inventoryDone
+                        ? "From inventory + Collect"
+                        : collectDone
+                            ? "From FFXIV Collect"
+                            : "From inventory";
+                    ImGui.SetTooltip(source);
+                }
+            }
+            else
+            {
+                var manual = manualDone;
+                ImGui.PushID(tier);
+                if (ImGui.Checkbox("##stepdone", ref manual))
+                {
+                    SetManualStepDone(line, job, tier, manual);
+                }
+
+                ImGui.PopID();
+            }
+
+            ImGui.TableNextColumn();
+            var isCurrent = tier == currentTier;
+            var color = done ? GoodColor : isCurrent ? WarningColor : MutedColor;
+            var suffix = isCurrent ? "  ← current step" : string.Empty;
+            ImGui.TextColored(color, $"{tier + 1}. {line.StepName(tier)}{suffix}");
+        }
+    }
+
 
     /// <summary>Per-weapon materials for a step from bundled expansion data, with live owned counts.</summary>
     private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName, int slotIndex)

@@ -31,7 +31,12 @@ public sealed partial class PluginUI : Window
         this.ffxivCollect = ffxivCollect;
 
         SizeCondition = ImGuiCond.FirstUseEver;
-        Size = new Vector2(720, 560);
+        Size = new Vector2(880, 640);
+        SizeConstraints = new WindowSizeConstraints
+        {
+            MinimumSize = new Vector2(640, 420),
+            MaximumSize = new Vector2(4000, 3000),
+        };
 
         TitleBarButtons.Add(new()
         {
@@ -92,12 +97,17 @@ public sealed partial class PluginUI : Window
         trackerTabVisible = true;
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
 
-        ImGui.SetNextItemWidth(150);
-        if (ImGui.BeginCombo("Expansion", config.SelectedExpansionId))
+        DrawTabIntro("Shopping list for unfinished jobs. Open Relic for per-job steps and notes.");
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("Expansion");
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(180);
+        if (ImGui.BeginCombo("##expansion-tracker", ExpansionNames.LongName(config.SelectedExpansionId)))
         {
             foreach (var expansionId in data.Manifest.Expansions)
             {
-                if (ImGui.Selectable(expansionId, expansionId == config.SelectedExpansionId))
+                if (ImGui.Selectable(ExpansionNames.LongName(expansionId), expansionId == config.SelectedExpansionId))
                 {
                     config.SelectedExpansionId = expansionId;
                     config.TrackerLineFilter = string.Empty; // focus is per-expansion
@@ -127,9 +137,12 @@ public sealed partial class PluginUI : Window
             }
 
             ImGui.SameLine();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted("Line");
+            ImGui.SameLine();
             ImGui.SetNextItemWidth(190);
             var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
-            if (ImGui.BeginCombo("Line", focusLabel))
+            if (ImGui.BeginCombo("##line-tracker", focusLabel))
             {
                 if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
                 {
@@ -153,7 +166,7 @@ public sealed partial class PluginUI : Window
         ImGui.Spacing();
 
         var hideComplete = config.HideCompleteMaterials;
-        if (ImGui.Checkbox("Still needed only", ref hideComplete))
+        if (ImGui.Checkbox("Hide finished materials", ref hideComplete))
         {
             config.HideCompleteMaterials = hideComplete;
             config.OnSettingChanged();
@@ -163,42 +176,43 @@ public sealed partial class PluginUI : Window
         ImGui.SetNextItemWidth(180);
         ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
 
-        ImGui.SameLine();
-        ImGui.TextColored(MutedColor, "Per-job detail is on the Relic tab.");
-
-        ImGui.Spacing();
+        EndStickyHeader();
 
         DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
     }
 
     private void DrawSettingsTab()
     {
-        ImGui.TextColored(MutedColor,
-            "Progress is saved per logged-in character. Allagan Tools counts use your active character, retainers, glamour dresser, and armoire.");
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
+        if (BeginPanel("settings_intro"))
+        {
+            ImGui.TextColored(MutedColor, "Install Allagan Tools for owned counts (bags, retainers, dresser, armoire — including replicas).");
+            ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
+            EndPanel();
+        }
 
         DrawAllaganToolsSettingsSection();
-
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
         DrawArtisanSettingsSection();
 
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
-        if (ImGui.CollapsingHeader("FFXIV Collect (optional)###collectSettings"))
+        if (BeginPanel("settings_collect"))
         {
+            ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
+            ImGui.SameLine();
+            if (config.FfxivCollectCharacterId != 0)
+            {
+                DrawStatusChip(ffxivCollect.IsLoading ? "Syncing…" : "Linked", ffxivCollect.IsLoading ? StatusChipKind.Warn : StatusChipKind.Ok);
+            }
+            else
+            {
+                DrawStatusChip("Off", StatusChipKind.Muted);
+            }
+
             ImGui.TextColored(
                 MutedColor,
                 "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
                 + "Allagan Tools already covers relics and replicas you still own.");
             ImGui.Spacing();
             DrawCollectSection();
+            EndPanel();
         }
     }
 }

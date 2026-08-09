@@ -81,8 +81,12 @@ public sealed partial class PluginUI
         }
 
         data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
-        DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup, catalog);
-        ImGui.Spacing();
+
+        if (BeginPanel("tracker_summary"))
+        {
+            DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup, catalog);
+            EndPanel();
+        }
 
         var hasArmor = armorCosts is { Count: > 0 };
         var drewAny = false;
@@ -101,9 +105,13 @@ public sealed partial class PluginUI
 
         if (!drewAny)
         {
-            ImGui.TextColored(GoodColor, config.HideCompleteMaterials
-                ? "Nothing left to farm for this expansion."
-                : "No tracked materials for this expansion.");
+            if (BeginPanel("tracker_empty"))
+            {
+                ImGui.TextColored(GoodColor, config.HideCompleteMaterials
+                    ? "Nothing left to farm for this expansion."
+                    : "No tracked materials for this expansion.");
+                EndPanel();
+            }
         }
     }
 
@@ -155,7 +163,7 @@ public sealed partial class PluginUI
             ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
             ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
             ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
-            ImGui.TableHeadersRow();
+            DrawNeedOwnedShortHeaders(includeItem: true);
 
             foreach (var row in rows)
             {
@@ -313,7 +321,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TextColored(MutedColor, "Need = every set (all jobs/roles). Hover a stage for per-set / per-piece / slot detail. Short = Need − Owned.");
+        ImGui.TextColored(MutedColor, "Need is for all unfinished sets. Hover a stage for per-set detail.");
         ImGui.Spacing();
 
         using var table = ImRaii.Table(
@@ -331,7 +339,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 76);
         ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 72);
-        ImGui.TableHeadersRow();
+        DrawNeedOwnedShortHeaders(includeItem: false);
 
         foreach (var cost in costs)
         {
@@ -444,26 +452,60 @@ public sealed partial class PluginUI
         else if (weaponShort > 0 && armorShort > 0)
         {
             ImGui.TextColored(BadColor,
-                $"{weaponShort} weapon material{(weaponShort == 1 ? string.Empty : "s")} and {armorShort} armor currency row{(armorShort == 1 ? string.Empty : "s")} still needed.");
+                $"{weaponShort} weapon material{(weaponShort == 1 ? string.Empty : "s")} and {armorShort} armor currenc{(armorShort == 1 ? "y" : "ies")} still short.");
         }
         else if (armorShort > 0)
         {
             ImGui.TextColored(BadColor,
-                $"{armorShort} armor currency row{(armorShort == 1 ? string.Empty : "s")} still needed.");
+                $"{armorShort} armor currenc{(armorShort == 1 ? "y" : "ies")} still short.");
         }
         else
         {
-            ImGui.TextColored(BadColor, $"{weaponShort} material{(weaponShort == 1 ? string.Empty : "s")} still needed.");
+            ImGui.TextColored(BadColor, $"{weaponShort} material{(weaponShort == 1 ? string.Empty : "s")} still short.");
         }
 
         if (unresolved > 0)
         {
             ImGui.SameLine();
-            ImGui.TextColored(WarningColor, $"({unresolved} not linked to an item)");
+            ImGui.TextColored(WarningColor, $"({unresolved} items couldn't be matched — Owned won't count)");
         }
 
         ImGui.TextColored(MutedColor,
             "Weapon needs cover every job still missing the step. Armor owned includes currency in inventory plus finished pieces already bought.");
+    }
+
+    private static void DrawNeedOwnedShortHeaders(bool includeItem)
+    {
+        ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+        if (includeItem)
+        {
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Item");
+        }
+        else
+        {
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Stage");
+            ImGui.TableNextColumn();
+            ImGui.TableHeader("Currency");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Need");
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Owned");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("In bags, retainers, dresser, and armoire (Allagan Tools).");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Short");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Still to farm after counting inventory plus prefarmed quest rewards or owned armor pieces.");
+        }
     }
 
     private bool DrawCollapsingSection(string configKey, string header, bool defaultOpen)
