@@ -21,7 +21,7 @@ public sealed partial class PluginUI
         }
 
         var ownership = GetOwnership();
-        var statuses = RelicStatusService.Build(ownership, catalog);
+        var statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
 
         DrawOverviewStickyHeader(statuses);
         EndStickyHeader();
@@ -272,12 +272,12 @@ public sealed partial class PluginUI
     {
         List<(int Count, string Step)> frontiers = [];
 
-        if (status.JobsNotStarted > 0 && status.Line.TierCount > 0)
+        if (status.JobsNotStarted > 0 && status.TierCount > 0)
         {
             frontiers.Add((status.JobsNotStarted, status.Line.StepName(0)));
         }
 
-        for (var tier = 0; tier < status.Line.TierCount - 1; tier++)
+        for (var tier = 0; tier < status.TierCount - 1; tier++)
         {
             var count = status.JobsAtStep(tier);
             if (count > 0)
@@ -307,7 +307,7 @@ public sealed partial class PluginUI
             "Jobs that reached each step:"
         ];
 
-        for (var tier = 0; tier < status.Line.TierCount; tier++)
+        for (var tier = 0; tier < status.TierCount; tier++)
         {
             lines.Add($"  {status.Line.StepName(tier)}: {status.ReachedPerStep[tier]}/{status.Line.Jobs}");
         }

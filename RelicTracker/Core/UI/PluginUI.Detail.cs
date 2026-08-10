@@ -186,10 +186,11 @@ public sealed partial class PluginUI
             return;
         }
 
+        int tiers = VisibleTierCount(line);
         int complete = 0;
         for (int slot = 0; slot < jobList.Count; slot++)
         {
-            if (line.TierCount > 0 && ownership.IsStepDone(line, slot, line.TierCount - 1))
+            if (tiers > 0 && ownership.IsStepDone(line, slot, tiers - 1))
             {
                 complete++;
             }
@@ -592,13 +593,14 @@ public sealed partial class PluginUI
             return;
         }
 
+        var tiers = VisibleTierCount(line);
         var columns = 1 + jobList.Count;
         using var table = ImRaii.Table(
             "AllJobsGrid",
             columns,
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg
             | ImGuiTableFlags.ScrollX | ImGuiTableFlags.ScrollY,
-            new(0, Math.Min(320f, (line.TierCount + 2) * ImGui.GetTextLineHeightWithSpacing() + 12f)));
+            new(0, Math.Min(320f, (tiers + 2) * ImGui.GetTextLineHeightWithSpacing() + 12f)));
         if (!table)
         {
             return;
@@ -613,7 +615,7 @@ public sealed partial class PluginUI
         ImGui.TableSetupScrollFreeze(1, 1);
         ImGui.TableHeadersRow();
 
-        for (var tier = 0; tier < line.TierCount; tier++)
+        for (var tier = 0; tier < tiers; tier++)
         {
             ImGui.TableNextRow();
 
@@ -648,7 +650,8 @@ public sealed partial class PluginUI
         int currentTier,
         RelicOwnership ownership)
     {
-        var complete = currentTier >= line.TierCount;
+        var tiers = VisibleTierCount(line);
+        var complete = currentTier >= tiers;
 
         ImGui.TextColored(HeaderColor, $"{job} · {line.CollectType}");
         ImGui.SameLine();
@@ -685,7 +688,7 @@ public sealed partial class PluginUI
 
     private void DrawDetailStepsRight(RelicLine line, int currentTier, int slotIndex)
     {
-        if (currentTier >= line.TierCount)
+        if (currentTier >= VisibleTierCount(line))
         {
             return;
         }
@@ -850,7 +853,8 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch);
         ImGui.TableHeadersRow();
 
-        for (var tier = 0; tier < line.TierCount; tier++)
+        var tiers = VisibleTierCount(line);
+        for (var tier = 0; tier < tiers; tier++)
         {
             ImGui.TableNextRow();
 
@@ -1162,10 +1166,13 @@ public sealed partial class PluginUI
     private bool IsManualStepDone(RelicLine line, string job, int tier) =>
         config.CurrentCharacterProgress().RelicStepDone.Contains(StepKey(line, job, tier));
 
+    private int VisibleTierCount(RelicLine line) => line.EffectiveTierCount(config.HidePhyseosRelics);
+
     /// <summary>First tier not yet done (auto from Collect or manual) — the step the job is working on.</summary>
     private int CurrentStepTier(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
     {
-        for (var tier = 0; tier < line.TierCount; tier++)
+        var tiers = VisibleTierCount(line);
+        for (var tier = 0; tier < tiers; tier++)
         {
             if (!ownership.IsStepDone(line, slotIndex, tier) && !IsManualStepDone(line, job, tier))
             {
@@ -1173,7 +1180,7 @@ public sealed partial class PluginUI
             }
         }
 
-        return line.TierCount;
+        return tiers;
     }
 
     /// <summary>Manual steps are sequential: ticking fills everything below, unticking clears everything above.</summary>

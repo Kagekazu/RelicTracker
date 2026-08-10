@@ -40,18 +40,22 @@ public static class InventoryProgressBuilder
         HashSet<string> done = new(StringComparer.Ordinal);
         foreach (ArmorLine armorLine in catalog.ArmorLines)
         {
-            foreach (ArmorTier tier in armorLine.AllTiers)
+            foreach (ArmorSet set in armorLine.Sets)
             {
-                int pieceCount = Math.Min(tier.Pieces, tier.PieceIds.Count);
-                for (int index = 0; index < pieceCount; index++)
+                for (int tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
                 {
-                    uint pieceId = tier.PieceIds[index];
-                    if (pieceId == 0 || !IsOwned(pieceId, ownedLookup))
+                    ArmorTier tier = set.Tiers[tierIndex];
+                    int pieceCount = Math.Min(tier.Pieces, tier.PieceIds.Count);
+                    for (int index = 0; index < pieceCount; index++)
                     {
-                        continue;
-                    }
+                        uint pieceId = tier.PieceIds[index];
+                        if (pieceId == 0 || !IsOwned(pieceId, ownedLookup))
+                        {
+                            continue;
+                        }
 
-                    done.Add($"{tier.CollectType}|{index}");
+                        ArmorUpgradeCredit.AddOwnedPieceKeys(armorLine, set, tierIndex, index, done);
+                    }
                 }
             }
         }

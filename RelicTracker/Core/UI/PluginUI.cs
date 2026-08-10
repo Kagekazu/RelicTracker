@@ -193,6 +193,28 @@ public sealed partial class PluginUI : Window
         DrawAllaganToolsSettingsSection();
         DrawArtisanSettingsSection();
 
+        if (BeginPanel("settings_display"))
+        {
+            ImGui.TextColored(HeaderColor, "Display");
+            ImGui.Spacing();
+            var hidePhyseos = config.HidePhyseosRelics;
+            if (ImGui.Checkbox("Hide Physeos (Eureka Weapons)", ref hidePhyseos))
+            {
+                config.HidePhyseosRelics = hidePhyseos;
+                config.OnSettingChanged();
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(
+                    "Physeos is the Baldesion Arsenal upgrade after Eureka. Same look/stats outside Eureka, "
+                    + "and it does not count as a new relic for achievements. When enabled, Eureka counts as "
+                    + "finished on Overview, Relic, and Tracker.");
+            }
+
+            EndPanel();
+        }
+
         if (BeginPanel("settings_collect"))
         {
             ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
