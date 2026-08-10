@@ -1,17 +1,19 @@
 namespace RelicTracker.Framework;
 
 /// <summary>
-/// Higher armor tiers credit lower ones (same as weapons). Phantom Vision also credits
-/// matching/lower Arcanaut's tiers — same role gear at higher ilvl, nothing locked behind Arcanaut's.
+/// Higher armor tiers credit lower ones (same as weapons). Cross-set rules:
+/// any Phantom Vision piece credits all Arcanaut's ranks; Augmented Law's Order
+/// credits all Bozjan set tiers. Plain Law's Order stays within its own set.
 /// </summary>
 public static class ArmorUpgradeCredit
 {
     public const string ArcanautsSet = "Arcanaut's";
     public const string PhantomVisionSet = "Phantom Vision";
+    public const string BozjanSet = "Bozjan";
+    public const string LawsOrderSet = "Law's Order";
 
     /// <summary>
-    /// Marks the owned piece and every lower tier in its set. Phantom Vision also marks
-    /// Arcanaut's at the same piece index up through the matching upgrade rank.
+    /// Marks the owned piece and every lower tier in its set, plus cross-set credits.
     /// </summary>
     public static void AddOwnedPieceKeys(
         ArmorLine line,
@@ -25,27 +27,22 @@ public static class ArmorUpgradeCredit
             done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
         }
 
-        if (!string.Equals(set.Name, PhantomVisionSet, StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(set.Name, PhantomVisionSet, StringComparison.OrdinalIgnoreCase))
         {
+            MarkAllTiers(FindSet(line, ArcanautsSet), pieceIndex, done);
             return;
         }
 
-        var arcanauts = FindSet(line, ArcanautsSet);
-        if (arcanauts is null)
+        if (string.Equals(set.Name, LawsOrderSet, StringComparison.OrdinalIgnoreCase)
+            && IsAugmentedTier(set, ownedTierIndex))
         {
-            return;
-        }
-
-        var maxTier = Math.Min(ownedTierIndex, arcanauts.Tiers.Count - 1);
-        for (var tierIndex = 0; tierIndex <= maxTier; tierIndex++)
-        {
-            done.Add($"{arcanauts.Tiers[tierIndex].CollectType}|{pieceIndex}");
+            MarkAllTiers(FindSet(line, BozjanSet), pieceIndex, done);
         }
     }
 
     /// <summary>
     /// True if the piece index is owned at the cost tier or any higher tier of the same set,
-    /// or (for Arcanaut's costs) at that rank or higher on Phantom Vision.
+    /// or via cross-set credit (any Phantom Vision for Arcanaut's; Aug. Law's for Bozjan).
     /// </summary>
     public static bool PieceSatisfied(
         ArmorLine line,
@@ -59,14 +56,58 @@ public static class ArmorUpgradeCredit
             return true;
         }
 
-        if (!string.Equals(costSet.Name, ArcanautsSet, StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(costSet.Name, ArcanautsSet, StringComparison.OrdinalIgnoreCase))
         {
-            return false;
+            var vision = FindSet(line, PhantomVisionSet);
+            return vision is not null
+                   && OwnedAtOrAbove(vision, minTierIndex: 0, pieceIndex, ownedLookup);
         }
 
-        var vision = FindSet(line, PhantomVisionSet);
-        return vision is not null
-               && OwnedAtOrAbove(vision, costTierIndex, pieceIndex, ownedLookup);
+        if (string.Equals(costSet.Name, BozjanSet, StringComparison.OrdinalIgnoreCase))
+        {
+            var lawsOrder = FindSet(line, LawsOrderSet);
+            if (lawsOrder is null)
+            {
+                return false;
+            }
+
+            var augTier = FindAugmentedTierIndex(lawsOrder);
+            return augTier >= 0
+                   && OwnedAtOrAbove(lawsOrder, augTier, pieceIndex, ownedLookup);
+        }
+
+        return false;
+    }
+
+    private static void MarkAllTiers(ArmorSet? set, int pieceIndex, HashSet<string> done)
+    {
+        if (set is null)
+        {
+            return;
+        }
+
+        for (var tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
+        {
+            done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
+        }
+    }
+
+    private static bool IsAugmentedTier(ArmorSet set, int tierIndex) =>
+        tierIndex >= 0
+        && tierIndex < set.Tiers.Count
+        && string.Equals(set.Tiers[tierIndex].Label, "Augmented", StringComparison.OrdinalIgnoreCase);
+
+    private static int FindAugmentedTierIndex(ArmorSet set)
+    {
+        for (var i = 0; i < set.Tiers.Count; i++)
+        {
+            if (string.Equals(set.Tiers[i].Label, "Augmented", StringComparison.OrdinalIgnoreCase))
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private static ArmorSet? FindSet(ArmorLine line, string setName)
