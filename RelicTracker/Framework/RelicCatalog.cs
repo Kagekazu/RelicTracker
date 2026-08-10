@@ -51,6 +51,18 @@ public sealed class RelicLine
     public string StepName(int tierIndex) =>
         tierIndex >= 0 && tierIndex < Steps.Count ? Steps[tierIndex] : $"Step {tierIndex + 1}";
 
+    /// <summary>
+    ///     Eureka's final Physeos upgrade (Baldesion Arsenal) — same look/stats as Eureka outside
+    ///     Eureka zones, and does not count as a new relic for achievements.
+    /// </summary>
+    [JsonIgnore]
+    public bool EndsWithOptionalPhyseos =>
+        TierCount > 0
+        && string.Equals(StepName(TierCount - 1), "Physeos", StringComparison.OrdinalIgnoreCase);
+
+    public int EffectiveTierCount(bool hidePhyseos) =>
+        hidePhyseos && EndsWithOptionalPhyseos ? Math.Max(0, TierCount - 1) : TierCount;
+
     public uint RelicId(int slotIndex, int tierIndex)
     {
         if (Jobs <= 0 || slotIndex < 0 || tierIndex < 0)

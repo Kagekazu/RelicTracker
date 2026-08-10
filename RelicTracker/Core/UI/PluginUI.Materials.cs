@@ -38,7 +38,7 @@ public sealed partial class PluginUI
         }
 
         RelicOwnership ownership = GetOwnership();
-        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog);
+        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
         List<ShoppingMaterialRow> materials =
             data.GetShoppingMaterials(expansionId, statuses, ownership, ownedLookup, lineFilter);
 

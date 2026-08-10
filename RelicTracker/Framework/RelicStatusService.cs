@@ -8,15 +8,30 @@ public sealed class RelicLineStatus
     /// <summary>ReachedPerStep[t] = number of jobs that have completed step t (cumulative funnel).</summary>
     public required int[] ReachedPerStep { get; init; }
 
-    public int JobsComplete => Line.TierCount > 0 ? ReachedPerStep[^1] : 0;
+    /// <summary>Required tiers for progress UI (may exclude optional Physeos).</summary>
+    public int TierCount { get; init; }
 
-    public int JobsStarted => Line.TierCount > 0 ? ReachedPerStep[0] : 0;
+    public int JobsComplete => TierCount > 0 ? ReachedPerStep[TierCount - 1] : 0;
+
+    public int JobsStarted => TierCount > 0 ? ReachedPerStep[0] : 0;
 
     public int JobsNotStarted => Math.Max(0, Line.Jobs - JobsStarted);
 
-    public int StepsDone => ReachedPerStep.Sum();
+    public int StepsDone
+    {
+        get
+        {
+            var sum = 0;
+            for (var tier = 0; tier < TierCount; tier++)
+            {
+                sum += ReachedPerStep[tier];
+            }
 
-    public int StepsTotal => Line.Jobs * Line.TierCount;
+            return sum;
+        }
+    }
+
+    public int StepsTotal => Line.Jobs * TierCount;
 
     public float Percent => StepsTotal > 0 ? (float)StepsDone / StepsTotal : 0f;
 
@@ -25,13 +40,13 @@ public sealed class RelicLineStatus
     /// <summary>Jobs whose highest completed step is exactly t (i.e. currently working on step t+1).</summary>
     public int JobsAtStep(int tierIndex)
     {
-        if (tierIndex < 0 || tierIndex >= Line.TierCount)
+        if (tierIndex < 0 || tierIndex >= TierCount)
         {
             return 0;
         }
 
         var atOrBelow = ReachedPerStep[tierIndex];
-        var above = tierIndex + 1 < Line.TierCount ? ReachedPerStep[tierIndex + 1] : 0;
+        var above = tierIndex + 1 < TierCount ? ReachedPerStep[tierIndex + 1] : 0;
         return Math.Max(0, atOrBelow - above);
     }
 }
@@ -182,7 +197,10 @@ public sealed class RelicStatusService
     ///     Builds per-line status from ownership (FFXIV Collect, Allagan Tools inventory, and manual
     ///     ticks), so the Overview and Tracker funnel work without a Collect link.
     /// </summary>
-    public static IReadOnlyList<RelicLineStatus> Build(RelicOwnership ownership, RelicCatalog catalog)
+    public static IReadOnlyList<RelicLineStatus> Build(
+        RelicOwnership ownership,
+        RelicCatalog catalog,
+        bool hidePhyseos = false)
     {
         List<RelicLineStatus> statuses = new(catalog.Lines.Count);
         foreach (var line in catalog.Lines)
@@ -205,7 +223,8 @@ public sealed class RelicStatusService
             statuses.Add(new()
             {
                 Line = line,
-                ReachedPerStep = reached
+                ReachedPerStep = reached,
+                TierCount = line.EffectiveTierCount(hidePhyseos)
             });
         }
 

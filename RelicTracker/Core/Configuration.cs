@@ -32,6 +32,12 @@ public sealed class Configuration : IPluginConfiguration
     /// <summary>On the Overview tab, hide relic lines you have already finished on every job.</summary>
     public bool OverviewIncompleteOnly { get; set; }
 
+    /// <summary>
+    ///     Hide Eureka's optional Physeos step (Baldesion Arsenal). Eureka counts as finished for
+    ///     Overview / Relic / Tracker — Physeos is not a separate achievement relic.
+    /// </summary>
+    public bool HidePhyseosRelics { get; set; }
+
     /// <summary>Tracker focus: a CollectType to scope the shopping list to one relic line ("" = all lines).</summary>
     public string TrackerLineFilter { get; set; } = string.Empty;
 

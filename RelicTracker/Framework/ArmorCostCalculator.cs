@@ -37,13 +37,20 @@ public static class ArmorCostCalculator
         RelicCatalog catalog,
         Func<uint, uint> ownedLookup)
     {
-        if (!TryResolveTier(expansionId, cost.Set, catalog, out ArmorTier tier, out int? slotFilter))
+        if (!TryResolveCostTarget(
+                expansionId,
+                cost.Set,
+                catalog,
+                out ArmorLine line,
+                out ArmorSet set,
+                out int tierIndex,
+                out int? slotFilter))
         {
             return 0;
         }
 
         var credit = 0u;
-        var pieceCount = Math.Min(tier.Pieces, tier.PieceIds.Count);
+        var pieceCount = set.Tiers[tierIndex].Pieces;
         for (var index = 0; index < pieceCount; index++)
         {
             var slot = index % 5;
@@ -52,8 +59,7 @@ public static class ArmorCostCalculator
                 continue;
             }
 
-            var pieceId = tier.PieceIds[index];
-            if (pieceId == 0 || ownedLookup(pieceId) == 0)
+            if (!ArmorUpgradeCredit.PieceSatisfied(line, set, tierIndex, index, ownedLookup))
             {
                 continue;
             }
@@ -64,14 +70,18 @@ public static class ArmorCostCalculator
         return credit;
     }
 
-    private static bool TryResolveTier(
+    private static bool TryResolveCostTarget(
         string expansionId,
         string? costSet,
         RelicCatalog catalog,
-        out ArmorTier tier,
+        out ArmorLine line,
+        out ArmorSet set,
+        out int tierIndex,
         out int? slotFilter)
     {
-        tier = null!;
+        line = null!;
+        set = null!;
+        tierIndex = -1;
         slotFilter = null;
         if (string.IsNullOrWhiteSpace(costSet) || !CostLinks.TryGetValue(costSet.Trim(), out var link))
         {
@@ -79,27 +89,31 @@ public static class ArmorCostCalculator
         }
 
         slotFilter = link.Slot;
-        foreach (var line in catalog.ArmorLines)
+        foreach (var candidateLine in catalog.ArmorLines)
         {
-            if (!string.Equals(line.Expansion, expansionId, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(candidateLine.Expansion, expansionId, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            foreach (var set in line.Sets)
+            foreach (var candidateSet in candidateLine.Sets)
             {
-                if (!string.Equals(set.Name, link.SetName, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(candidateSet.Name, link.SetName, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                foreach (var candidate in set.Tiers)
+                for (var i = 0; i < candidateSet.Tiers.Count; i++)
                 {
-                    if (TierMatches(candidate, link.TierKey))
+                    if (!TierMatches(candidateSet.Tiers[i], link.TierKey))
                     {
-                        tier = candidate;
-                        return true;
+                        continue;
                     }
+
+                    line = candidateLine;
+                    set = candidateSet;
+                    tierIndex = i;
+                    return true;
                 }
             }
         }
