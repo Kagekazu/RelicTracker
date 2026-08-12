@@ -98,29 +98,16 @@ public sealed class RelicOwnership
         ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
 
     /// <summary>How many of an armor tier's pieces are manually ticked.</summary>
-    public int ManualPieceCount(string collectType, int pieces)
-    {
-        if (manualArmor.Count == 0)
-        {
-            return 0;
-        }
-
-        var n = 0;
-        for (var i = 0; i < pieces; i++)
-        {
-            if (manualArmor.Contains($"{collectType}|{i}"))
-            {
-                n++;
-            }
-        }
-
-        return n;
-    }
+    public int ManualPieceCount(string collectType, int pieces) =>
+        CountKeys(manualArmor, collectType, pieces);
 
     /// <summary>How many of an armor tier's pieces Allagan Tools shows in inventory.</summary>
-    public int InventoryPieceCount(string collectType, int pieces)
+    public int InventoryPieceCount(string collectType, int pieces) =>
+        CountKeys(inventoryArmor, collectType, pieces);
+
+    private static int CountKeys(HashSet<string> keys, string collectType, int pieces)
     {
-        if (inventoryArmor.Count == 0)
+        if (keys.Count == 0)
         {
             return 0;
         }
@@ -128,7 +115,7 @@ public sealed class RelicOwnership
         var n = 0;
         for (var i = 0; i < pieces; i++)
         {
-            if (inventoryArmor.Contains($"{collectType}|{i}"))
+            if (keys.Contains($"{collectType}|{i}"))
             {
                 n++;
             }
@@ -142,6 +129,11 @@ public sealed class RelicOwnership
         Math.Max(
             Math.Min(pieces, OwnedCount(collectType)),
             Math.Max(ManualPieceCount(collectType, pieces), InventoryPieceCount(collectType, pieces)));
+
+    /// <summary>True when Allagan Tools or a manual tick names this exact piece (not Collect aggregate).</summary>
+    public bool IsArmorPieceOwned(string collectType, int pieceIndex) =>
+        inventoryArmor.Contains($"{collectType}|{pieceIndex}")
+        || manualArmor.Contains($"{collectType}|{pieceIndex}");
 
     public bool IsCollectStepDone(RelicLine line, int slotIndex, int tier)
     {
