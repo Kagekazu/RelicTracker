@@ -101,7 +101,7 @@ public static class ArmorUpgradeCredit
     {
         for (var i = 0; i < set.Tiers.Count; i++)
         {
-            if (string.Equals(set.Tiers[i].Label, "Augmented", StringComparison.OrdinalIgnoreCase))
+            if (IsAugmentedTier(set, i))
             {
                 return i;
             }

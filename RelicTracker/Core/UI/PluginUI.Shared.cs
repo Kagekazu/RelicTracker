@@ -221,34 +221,29 @@ public sealed partial class PluginUI
         }
     }
 
-    private static string DescribeWeaponProgressSource(bool inventoryLinked, bool collectLinked)
+    private static string DescribeWeaponProgressSource(bool inventoryLinked, bool collectLinked) =>
+        DescribeProgressSource(inventoryLinked, collectLinked, "Steps", "relics");
+
+    private static string DescribeArmorProgressSource(bool inventoryLinked, bool collectLinked) =>
+        DescribeProgressSource(inventoryLinked, collectLinked, "Pieces", "pieces");
+
+    private static string DescribeProgressSource(
+        bool inventoryLinked,
+        bool collectLinked,
+        string fillNoun,
+        string orphanNoun)
     {
         if (inventoryLinked && collectLinked)
         {
-            return "Steps fill from inventory (Allagan Tools). Collect covers sold or desynthed relics.";
+            return $"{fillNoun} fill from inventory (Allagan Tools). Collect covers sold or desynthed {orphanNoun}.";
         }
 
         if (inventoryLinked)
         {
-            return "Steps fill from inventory (Allagan Tools).";
+            return $"{fillNoun} fill from inventory (Allagan Tools).";
         }
 
-        return "Steps fill from FFXIV Collect — for relics no longer in inventory.";
-    }
-
-    private static string DescribeArmorProgressSource(bool inventoryLinked, bool collectLinked)
-    {
-        if (inventoryLinked && collectLinked)
-        {
-            return "Pieces fill from inventory (Allagan Tools). Collect covers sold or desynthed pieces.";
-        }
-
-        if (inventoryLinked)
-        {
-            return "Pieces fill from inventory (Allagan Tools).";
-        }
-
-        return "Pieces fill from FFXIV Collect — for pieces no longer in inventory.";
+        return $"{fillNoun} fill from FFXIV Collect — for {orphanNoun} no longer in inventory.";
     }
 
     private void DrawPluginConnectionStatus(string label, bool installed, bool enabled, bool ready)
@@ -256,7 +251,7 @@ public sealed partial class PluginUI
         if (!installed)
         {
             DrawStatusChip(
-                string.Equals(label, "Artisan", StringComparison.Ordinal) ? "Not installed" : "Not installed",
+                "Not installed",
                 string.Equals(label, "Artisan", StringComparison.Ordinal) ? StatusChipKind.Muted : StatusChipKind.Warn);
             ImGui.SameLine();
             ImGui.TextColored(

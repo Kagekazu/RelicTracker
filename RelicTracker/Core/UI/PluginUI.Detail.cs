@@ -226,7 +226,7 @@ public sealed partial class PluginUI
     private void DrawRelicArmorStatusChips(ArmorLine armor, RelicOwnership ownership)
     {
         ImGui.Spacing();
-        var owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
+        var owned = OwnedPieces(armor, ownership);
         var total = armor.TotalPieces;
         var complete = total > 0 && owned >= total;
 
@@ -312,7 +312,7 @@ public sealed partial class PluginUI
 
     private void DrawArmorDetail(ArmorLine armor, RelicOwnership ownership)
     {
-        var owned = armor.AllTiers.Sum(tier => ownership.OwnedPieceCount(tier.CollectType, tier.Pieces));
+        var owned = OwnedPieces(armor, ownership);
         var total = armor.TotalPieces;
         var complete = total > 0 && owned >= total;
 
@@ -369,7 +369,11 @@ public sealed partial class PluginUI
             EndPanel();
         }
 
-        if (!ArmorAutoTracked)
+        if (ArmorAutoTracked)
+        {
+            DrawArmorMissingPieces(armor, ownership);
+        }
+        else
         {
             foreach (var set in armor.Sets)
             {
@@ -390,6 +394,89 @@ public sealed partial class PluginUI
                     }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    ///     Lists pieces inventory/manual does not name. Collect alone is aggregate-only, so without
+    ///     Allagan Tools we only prompt to connect it.
+    /// </summary>
+    private void DrawArmorMissingPieces(ArmorLine armor, RelicOwnership ownership)
+    {
+        if (!AllaganToolsIpc.IsReady)
+        {
+            if (OwnedPieces(armor, ownership) < armor.TotalPieces)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(
+                    MutedColor,
+                    "Connect Allagan Tools to list which pieces are missing (Collect only tracks totals).");
+            }
+
+            return;
+        }
+
+        foreach (var set in armor.Sets)
+        {
+            var multiTier = set.Tiers.Count > 1;
+            foreach (var tier in set.Tiers)
+            {
+                var missing = MissingArmorPieceIndices(tier, ownership);
+                if (missing.Count == 0)
+                {
+                    continue;
+                }
+
+                var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+                if (!ImGui.CollapsingHeader(
+                        $"Missing — {label} ({missing.Count} left)###armor_missing_{tier.CollectType}"))
+                {
+                    continue;
+                }
+
+                if (BeginPanel($"armor_missing_body_{tier.CollectType}"))
+                {
+                    DrawMissingArmorPieceNames(tier, missing);
+                    EndPanel();
+                }
+            }
+        }
+    }
+
+    private static List<int> MissingArmorPieceIndices(ArmorTier tier, RelicOwnership ownership)
+    {
+        List<int> missing = [];
+        var count = Math.Min(tier.Pieces, tier.PieceIds.Count);
+        for (var i = 0; i < count; i++)
+        {
+            if (!ownership.IsArmorPieceOwned(tier.CollectType, i))
+            {
+                missing.Add(i);
+            }
+        }
+
+        return missing;
+    }
+
+    private static void DrawMissingArmorPieceNames(ArmorTier tier, IReadOnlyList<int> missing)
+    {
+        const int slotsPerRole = 5;
+        string[] roleLabels = ["Fending", "Maiming", "Striking", "Aiming", "Scouting", "Healing", "Casting"];
+        var lastRole = -1;
+
+        foreach (var i in missing)
+        {
+            var roleIndex = i / slotsPerRole;
+            if (roleIndex != lastRole)
+            {
+                lastRole = roleIndex;
+                var role = roleIndex < roleLabels.Length ? roleLabels[roleIndex] : $"Set {roleIndex + 1}";
+                ImGui.TextColored(MutedColor, role);
+            }
+
+            var pieceId = i < tier.PieceIds.Count ? tier.PieceIds[i] : 0u;
+            var name = ItemDisplayNames.Resolve(pieceId, $"Piece {i + 1}");
+            ImGui.BulletText(name);
         }
     }
 
@@ -1048,7 +1135,7 @@ public sealed partial class PluginUI
             var need = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
             var itemIds = row.MaterialIds;
             var resolved = itemIds.Count > 0;
-            var ownedInventory = itemIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+            var ownedInventory = ShoppingListBuilder.SumOwned(itemIds, ownedLookup);
             var ownedQuestCredit = ShoppingListBuilder.QuestCreditFor(
                 stepName,
                 name,

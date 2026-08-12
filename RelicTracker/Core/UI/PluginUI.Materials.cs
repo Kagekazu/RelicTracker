@@ -134,7 +134,7 @@ public sealed partial class PluginUI
         // Group by where you get it (zone or step); each group is its own collapsible block so the
         // list stays scannable. The group header is the "where", so rows drop that column.
         foreach (var group in materials
-            .GroupBy(row => WhereToGet(expansionId, row))
+            .GroupBy(row => row.Step)
             .OrderBy(g => g.Min(row => row.StepOrder)))
         {
             List<ShoppingMaterialRow> rows = [.. group.OrderBy(row => row.StepOrder)];
@@ -375,7 +375,7 @@ public sealed partial class PluginUI
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
 
             var ownedInventory = resolved
-                ? cost.CurrencyIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId))
+                ? ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup)
                 : 0u;
             var ownedArmorCredit = resolved
                 ? ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup)
@@ -411,10 +411,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Where/how to get a material: farm zone (material_sources.json), else the relic step.</summary>
-    private string WhereToGet(string expansionId, ShoppingMaterialRow row) =>
-        data.MaterialSources.TryGetValue(row.Material, out var source) ? source : row.Step;
-
     private void DrawShoppingSummary(
         IReadOnlyList<ShoppingMaterialRow> materials,
         IReadOnlyList<ArmorCostRow>? armorCosts,
@@ -433,7 +429,7 @@ public sealed partial class PluginUI
                     continue;
                 }
 
-                var ownedInventory = cost.CurrencyIds.Aggregate(0u, (total, itemId) => total + ownedLookup(itemId));
+                var ownedInventory = ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup);
                 var owned = ownedInventory + ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup);
                 if ((uint)cost.AllTotal > owned)
                 {
