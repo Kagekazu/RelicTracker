@@ -224,7 +224,8 @@ def attach_armor_ids(lines: list[dict], index: ItemIndex) -> None:
     for line in lines:
         for armor_set in line["sets"]:
             for tier in armor_set["tiers"]:
-                tier["pieceIds"] = [index.resolve(name) for name in tier["pieceNames"]]
+                names = tier.pop("pieceNames")
+                tier["pieceIds"] = [index.resolve(name) for name in names]
 
 
 def build_armor(relics: list[dict]) -> list[dict]:
@@ -240,6 +241,7 @@ def build_armor(relics: list[dict]) -> list[dict]:
                         "collectType": collect_type,
                         "label": label,
                         "pieces": len(piece_names),
+                        # Temporary: resolved to pieceIds in attach_armor_ids, then dropped.
                         "pieceNames": piece_names,
                     }
                 )

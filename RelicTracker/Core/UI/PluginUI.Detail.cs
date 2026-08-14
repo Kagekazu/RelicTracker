@@ -398,8 +398,8 @@ public sealed partial class PluginUI
     }
 
     /// <summary>
-    ///     Lists pieces inventory/manual does not name. Collect alone is aggregate-only, so without
-    ///     Allagan Tools we only prompt to connect it.
+    ///     Per-piece list for auto-tracked armor: owned pieces are green, missing stay muted.
+    ///     Collect alone is aggregate-only, so without Allagan Tools we only prompt to connect it.
     /// </summary>
     private void DrawArmorMissingPieces(ArmorLine armor, RelicOwnership ownership)
     {
@@ -421,62 +421,65 @@ public sealed partial class PluginUI
             var multiTier = set.Tiers.Count > 1;
             foreach (var tier in set.Tiers)
             {
-                var missing = MissingArmorPieceIndices(tier, ownership);
-                if (missing.Count == 0)
+                var namedOwned = CountNamedOwnedArmorPieces(tier, ownership);
+                if (namedOwned >= tier.Pieces)
                 {
                     continue;
                 }
 
+                var missing = tier.Pieces - namedOwned;
                 var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
                 if (!ImGui.CollapsingHeader(
-                        $"Missing — {label} ({missing.Count} left)###armor_missing_{tier.CollectType}"))
+                        $"Pieces — {label} ({namedOwned}/{tier.Pieces}, {missing} left)###armor_pieces_{tier.CollectType}"))
                 {
                     continue;
                 }
 
-                if (BeginPanel($"armor_missing_body_{tier.CollectType}"))
+                if (BeginPanel($"armor_pieces_body_{tier.CollectType}"))
                 {
-                    DrawMissingArmorPieceNames(tier, missing);
+                    DrawArmorPieceStatusList(tier, ownership);
                     EndPanel();
                 }
             }
         }
     }
 
-    private static List<int> MissingArmorPieceIndices(ArmorTier tier, RelicOwnership ownership)
+    private static int CountNamedOwnedArmorPieces(ArmorTier tier, RelicOwnership ownership)
     {
-        List<int> missing = [];
+        var owned = 0;
         var count = Math.Min(tier.Pieces, tier.PieceIds.Count);
         for (var i = 0; i < count; i++)
         {
-            if (!ownership.IsArmorPieceOwned(tier.CollectType, i))
+            if (ownership.IsArmorPieceOwned(tier.CollectType, i))
             {
-                missing.Add(i);
+                owned++;
             }
         }
 
-        return missing;
+        return owned;
     }
 
-    private static void DrawMissingArmorPieceNames(ArmorTier tier, IReadOnlyList<int> missing)
+    private static void DrawArmorPieceStatusList(ArmorTier tier, RelicOwnership ownership)
     {
         const int slotsPerRole = 5;
         string[] roleLabels = ["Fending", "Maiming", "Striking", "Aiming", "Scouting", "Healing", "Casting"];
-        var lastRole = -1;
+        var count = Math.Min(tier.Pieces, tier.PieceIds.Count);
 
-        foreach (var i in missing)
+        for (var i = 0; i < count; i++)
         {
-            var roleIndex = i / slotsPerRole;
-            if (roleIndex != lastRole)
+            if (i % slotsPerRole == 0)
             {
-                lastRole = roleIndex;
+                var roleIndex = i / slotsPerRole;
                 var role = roleIndex < roleLabels.Length ? roleLabels[roleIndex] : $"Set {roleIndex + 1}";
                 ImGui.TextColored(MutedColor, role);
             }
 
-            var pieceId = i < tier.PieceIds.Count ? tier.PieceIds[i] : 0u;
+            var owned = ownership.IsArmorPieceOwned(tier.CollectType, i);
+            var pieceId = tier.PieceIds[i];
             var name = ItemDisplayNames.Resolve(pieceId, $"Piece {i + 1}");
-            ImGui.BulletText(name);
+            ImGui.Bullet();
+            ImGui.SameLine();
+            ImGui.TextColored(owned ? GoodColor : MutedColor, name);
         }
     }
 

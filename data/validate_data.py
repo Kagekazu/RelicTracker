@@ -184,19 +184,8 @@ def main() -> int:
         for set_index, armor_set in enumerate(line.get("sets") or []):
             for tier_index, tier in enumerate(armor_set.get("tiers") or []):
                 pieces = int(tier.get("pieces") or 0)
-                piece_names = tier.get("pieceNames") or []
                 if pieces <= 0:
                     fail(errors, f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has invalid pieces")
-                if len(piece_names) != pieces:
-                    fail(
-                        errors,
-                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] pieceNames count does not match pieces",
-                    )
-                if any(not isinstance(name, str) or not name.strip() for name in piece_names):
-                    fail(
-                        errors,
-                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has blank pieceNames entries",
-                    )
 
                 piece_ids = tier.get("pieceIds") or []
                 if len(piece_ids) != pieces:
@@ -208,6 +197,11 @@ def main() -> int:
                     fail(
                         errors,
                         f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] has invalid pieceIds entries",
+                    )
+                if "pieceNames" in tier:
+                    fail(
+                        errors,
+                        f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] still has pieceNames (IDs only)",
                     )
 
     material_names: set[str] = set()
