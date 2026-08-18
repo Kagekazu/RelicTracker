@@ -241,13 +241,13 @@
     },
     {
       "set": "Phantom Vision (base)",
-      "currency": "Enlightenment Silver Piece",
+      "currency": "Enlightenment Silver Obol",
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (North Horn) — 4,000 every slot. All = 7 role sets",
+      "note": "Occult Crescent (North Horn) — 4,000 Enlightenment Silver Obol every slot. All = 7 role sets",
       "currencyIds": [
-        45043
+        51975
       ]
     },
     {

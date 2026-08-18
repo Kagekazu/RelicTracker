@@ -17,7 +17,8 @@ public static class InventoryProgressBuilder
                 {
                     uint relicId = line.RelicId(slot, tier);
                     if (relicId == 0
-                        || !IsRelicOrReplicaOwned(relicId, line.RelicReplicas(slot, tier), ownedLookup))
+                        || (!IsRelicOrReplicaOwned(relicId, line.RelicReplicas(slot, tier), ownedLookup)
+                            && !WksCosmicTools.CreditsStep(line, slot, tier)))
                     {
                         continue;
                     }

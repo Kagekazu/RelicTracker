@@ -271,14 +271,15 @@ public sealed partial class PluginUI
 
         if (wide)
         {
+            DrawAllJobsGrid(weapon, jobList, job, ownership);
+            ImGui.Spacing();
+
             var gap = 10f;
             var half = (ImGui.GetContentRegionAvail().X - gap) * 0.48f;
             using (var left = ImRaii.Child("##relicLeft", new(half, -1), true))
             {
                 if (left)
                 {
-                    DrawAllJobsGrid(weapon, jobList, job, ownership);
-                    ImGui.Spacing();
                     DrawDetailStepsLeft(weapon, job, slotIndex, currentTier, ownership);
                 }
             }
@@ -361,7 +362,7 @@ public sealed partial class PluginUI
 
                     foreach (var set in armor.Sets)
                     {
-                        DrawArmorSetRows(set, ownership);
+                        DrawArmorSetRows(armor, set, ownership);
                     }
                 }
             }
@@ -389,7 +390,7 @@ public sealed partial class PluginUI
 
                     if (BeginPanel($"armor_ticks_{tier.CollectType}"))
                     {
-                        DrawArmorPieceCheckboxes(tier);
+                        DrawArmorPieceCheckboxes(armor, set, tier);
                         EndPanel();
                     }
                 }
@@ -437,7 +438,7 @@ public sealed partial class PluginUI
 
                 if (BeginPanel($"armor_pieces_body_{tier.CollectType}"))
                 {
-                    DrawArmorPieceStatusList(tier, ownership);
+                    DrawArmorPieceStatusList(armor, set, tier, ownership);
                     EndPanel();
                 }
             }
@@ -459,7 +460,7 @@ public sealed partial class PluginUI
         return owned;
     }
 
-    private static void DrawArmorPieceStatusList(ArmorTier tier, RelicOwnership ownership)
+    private void DrawArmorPieceStatusList(ArmorLine armor, ArmorSet set, ArmorTier tier, RelicOwnership ownership)
     {
         const int slotsPerRole = 5;
         string[] roleLabels = ["Fending", "Maiming", "Striking", "Aiming", "Scouting", "Healing", "Casting"];
@@ -480,10 +481,14 @@ public sealed partial class PluginUI
             ImGui.Bullet();
             ImGui.SameLine();
             ImGui.TextColored(owned ? GoodColor : MutedColor, name);
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(BuildArmorCostTooltip(armor, set, tier, i, name));
+            }
         }
     }
 
-    private void DrawArmorSetRows(ArmorSet set, RelicOwnership ownership)
+    private void DrawArmorSetRows(ArmorLine line, ArmorSet set, RelicOwnership ownership)
     {
         var multiTier = set.Tiers.Count > 1;
 
@@ -498,21 +503,25 @@ public sealed partial class PluginUI
             // Single-tier sets show just the set name; multi-tier show "Set — Tier".
             var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, label);
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(tier.CollectType);
-            }
+            var hovered = ImGui.IsItemHovered();
 
             ImGui.TableNextColumn();
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, $"{tierOwned}/{tier.Pieces}");
+            hovered |= ImGui.IsItemHovered();
 
             ImGui.TableNextColumn();
             DrawPercentBar(fraction, 150f, $"{fraction * 100f:0}%");
+            hovered |= ImGui.IsItemHovered();
+
+            if (hovered)
+            {
+                ImGui.SetTooltip(BuildArmorCostTooltip(line, set, tier, pieceIndex: null, tier.CollectType));
+            }
         }
     }
 
     /// <summary>One checkbox per piece, wrapped by role set (5 slots) with role headers.</summary>
-    private void DrawArmorPieceCheckboxes(ArmorTier tier)
+    private void DrawArmorPieceCheckboxes(ArmorLine line, ArmorSet set, ArmorTier tier)
     {
         const int slotsPerRole = 5;
         string[] roleLabels = ["Fending", "Maiming", "Striking", "Aiming", "Scouting", "Healing", "Casting"];
@@ -536,11 +545,60 @@ public sealed partial class PluginUI
                 SetArmorPieceDone(tier.CollectType, i, done);
             }
 
-            if (ImGui.IsItemHovered() && i < tier.PieceIds.Count && tier.PieceIds[i] != 0)
+            if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip(ItemDisplayNames.Resolve(tier.PieceIds[i], $"Piece {i + 1}"));
+                var name = i < tier.PieceIds.Count && tier.PieceIds[i] != 0
+                    ? ItemDisplayNames.Resolve(tier.PieceIds[i], $"Piece {i + 1}")
+                    : $"Piece {i + 1}";
+                ImGui.SetTooltip(BuildArmorCostTooltip(line, set, tier, i, name));
             }
         }
+    }
+
+    private string BuildArmorCostTooltip(
+        ArmorLine line,
+        ArmorSet set,
+        ArmorTier tier,
+        int? pieceIndex,
+        string header)
+    {
+        List<string> lines = [header];
+        if (!data.ArmorCosts.TryGetValue(line.Expansion, out var costs))
+        {
+            return header;
+        }
+
+        foreach (var cost in costs)
+        {
+            if (!ArmorCostCalculator.CostAppliesTo(cost, set.Name, tier, pieceIndex))
+            {
+                continue;
+            }
+
+            var currency = ItemDisplayNames.Label(cost.CurrencyIds, cost.Currency);
+            if (pieceIndex is int index)
+            {
+                lines.Add($"{ArmorCostCalculator.PieceCost(cost, index % 5)} {currency}");
+                continue;
+            }
+
+            if (cost.PerPiece > 0 && cost.SetTotal != cost.PerPiece * 5)
+            {
+                var other = (cost.SetTotal - (2 * cost.PerPiece)) / 3;
+                lines.Add($"Per piece: {cost.PerPiece} {currency} (body/legs), {other} (other slots)");
+            }
+            else
+            {
+                lines.Add($"Per piece: {cost.PerPiece} {currency}");
+            }
+
+            if (cost.SetTotal > 0)
+            {
+                lines.Add($"Per set: {cost.SetTotal}");
+            }
+        }
+
+        return string.Join("\n", lines);
     }
 
     /// <summary>Manual armor piece tick (used when FFXIV Collect isn't linked).</summary>

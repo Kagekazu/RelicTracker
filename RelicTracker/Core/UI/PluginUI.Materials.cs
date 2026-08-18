@@ -321,7 +321,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TextColored(MutedColor, "Need is for all unfinished sets. Hover a stage for per-set detail.");
+        ImGui.TextColored(MutedColor, "Need is for all unfinished sets. Hover a row for per-piece cost.");
         ImGui.Spacing();
 
         using var table = ImRaii.Table(
@@ -341,23 +341,14 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 72);
         DrawNeedOwnedShortHeaders(includeItem: false);
 
-        foreach (var cost in costs)
+        for (var index = 0; index < costs.Count; index++)
         {
+            var cost = costs[index];
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted(cost.Set);
-            if (ImGui.IsItemHovered())
-            {
-                var perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
-                var detail = $"Per piece: {perPiece}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
-                if (!string.IsNullOrWhiteSpace(cost.Note))
-                {
-                    detail += $"\n\n{cost.Note}";
-                }
-
-                ImGui.SetTooltip(detail);
-            }
+            ImGui.Selectable($"{cost.Set}##armor_stage_{index}", false, ImGuiSelectableFlags.SpanAllColumns);
+            var rowHovered = ImGui.IsItemHovered(ImGuiHoveredFlags.RectOnly);
 
             ImGui.TableNextColumn();
             var resolved = cost.CurrencyIds.Count > 0;
@@ -386,12 +377,6 @@ public sealed partial class PluginUI
             if (resolved)
             {
                 ImGui.Text(ownedInventory.ToString());
-                if (ownedArmorCredit > 0 && ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip(
-                        $"+{ownedArmorCredit} counted from owned armor pieces.\n"
-                        + $"Effective owned: {owned} (inventory {ownedInventory} + armor {ownedArmorCredit}).");
-                }
             }
             else
             {
@@ -408,6 +393,27 @@ public sealed partial class PluginUI
             {
                 ImGui.TextColored(MutedColor, "—");
             }
+
+            if (!rowHovered)
+            {
+                continue;
+            }
+
+            var perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
+            var detail = $"Per piece: {perPiece} {currencyLabel}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
+            if (!string.IsNullOrWhiteSpace(cost.Note))
+            {
+                detail += $"\n\n{cost.Note}";
+            }
+
+            if (ownedArmorCredit > 0)
+            {
+                detail +=
+                    $"\n\n+{ownedArmorCredit} counted from owned armor pieces.\n"
+                    + $"Effective owned: {owned} (inventory {ownedInventory} + armor {ownedArmorCredit}).";
+            }
+
+            ImGui.SetTooltip(detail);
         }
     }
 

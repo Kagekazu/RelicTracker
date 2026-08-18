@@ -85,6 +85,25 @@ public sealed class RelicLine
         return index >= 0 && index < RelicReplicaIds.Count ? RelicReplicaIds[index] : [];
     }
 
+    public void AddReplica(int relicIndex, uint itemId)
+    {
+        if (itemId == 0 || relicIndex < 0)
+        {
+            return;
+        }
+
+        while (RelicReplicaIds.Count <= relicIndex)
+        {
+            RelicReplicaIds.Add([]);
+        }
+
+        List<uint> replicas = RelicReplicaIds[relicIndex];
+        if (!replicas.Contains(itemId))
+        {
+            replicas.Add(itemId);
+        }
+    }
+
     private int RelicIndex(int slotIndex, int tierIndex) => (tierIndex * Jobs) + slotIndex;
 }
 
@@ -281,6 +300,14 @@ public sealed class RelicCatalog
         }
 
         Svc.Log.Information("[RelicTracker] Resolved job order from game data for {Count}/{Total} relic lines.", resolvedLines, Lines.Count);
+        try
+        {
+            WksCosmicTools.AttachStageReplicas(Lines);
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "[RelicTracker] Could not link Cosmic tool stages from WKSCosmoToolClass.");
+        }
     }
 
     public IEnumerable<RelicLine> LinesFor(string expansionId) =>
