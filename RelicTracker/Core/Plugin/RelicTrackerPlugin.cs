@@ -26,6 +26,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         relicData.Load();
         relicCatalog.Load();
         relicCatalog.ResolveJobs();
+        ArmorShopResolver.Apply(relicData, relicCatalog);
 
         pluginUi = new(Configuration, relicData, relicCatalog, ffxivCollect);
         windowSystem.AddWindow(pluginUi);

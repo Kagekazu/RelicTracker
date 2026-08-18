@@ -70,7 +70,7 @@ public static class ArmorCostCalculator
         return credit;
     }
 
-    private static bool TryResolveCostTarget(
+    public static bool TryResolveCostTarget(
         string expansionId,
         string? costSet,
         RelicCatalog catalog,
@@ -120,6 +120,29 @@ public static class ArmorCostCalculator
 
         return false;
     }
+
+    public static bool CostAppliesTo(ArmorCostRow cost, string setName, ArmorTier tier, int? pieceIndex)
+    {
+        if (string.IsNullOrWhiteSpace(cost.Set) || !CostLinks.TryGetValue(cost.Set.Trim(), out var link))
+        {
+            return false;
+        }
+
+        if (!string.Equals(link.SetName, setName, StringComparison.OrdinalIgnoreCase)
+            || !TierMatches(tier, link.TierKey))
+        {
+            return false;
+        }
+
+        if (pieceIndex is int index && link.Slot is int requiredSlot && index % 5 != requiredSlot)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static uint PieceCost(ArmorCostRow cost, int slotInSet) => CreditPerPiece(cost, slotInSet);
 
     private static bool TierMatches(ArmorTier tier, string tierKey) =>
         string.Equals(tier.Label, tierKey, StringComparison.OrdinalIgnoreCase)

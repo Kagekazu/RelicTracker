@@ -47,11 +47,6 @@ public sealed partial class PluginUI
 
     private long OwnedCountRefreshStamp()
     {
-        if (!AllaganToolsIpc.IsReady)
-        {
-            return 0;
-        }
-
         long interval = trackerTabVisible ? TrackerInventoryRefreshMs : InventoryCacheBucketMs;
         return Environment.TickCount64 / interval;
     }
@@ -70,7 +65,13 @@ public sealed partial class PluginUI
         {
             if (!cache.TryGetValue(itemId, out uint count))
             {
-                count = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
+                count = PlayerInventory.GetItemCount(itemId);
+                uint allagan = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
+                if (allagan > count)
+                {
+                    count = allagan;
+                }
+
                 cache[itemId] = count;
             }
 
