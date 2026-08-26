@@ -6,6 +6,8 @@ namespace RelicTracker;
 
 public sealed class RelicTrackerPlugin : IDalamudPlugin
 {
+    private static readonly string[] CommandNames = ["/relictracker", "/rtracker"];
+
     private readonly RelicContextMenu contextMenu;
     private readonly FfxivCollectService ffxivCollect = new();
     private readonly PluginUI pluginUi;
@@ -36,7 +38,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         Svc.ClientState.Logout += pluginUi.OnCharacterLoggedOut;
         Svc.GameInventory.InventoryChanged += pluginUi.OnInventoryChanged;
 
-        foreach (var commandName in RelicTrackerConstants.CommandNames)
+        foreach (var commandName in CommandNames)
         {
             Svc.Commands.AddHandler(commandName, new(OnCommand)
             {
@@ -60,7 +62,7 @@ public sealed class RelicTrackerPlugin : IDalamudPlugin
         Svc.GameInventory.InventoryChanged -= pluginUi.OnInventoryChanged;
         contextMenu.Dispose();
         Configuration.PersistIfDirty();
-        foreach (var commandName in RelicTrackerConstants.CommandNames)
+        foreach (var commandName in CommandNames)
         {
             Svc.Commands.RemoveHandler(commandName);
         }

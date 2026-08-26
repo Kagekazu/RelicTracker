@@ -220,7 +220,7 @@ public sealed partial class PluginUI
 
         DrawProgressRecheckButton();
         ImGui.SameLine();
-        ImGui.TextColored(MutedColor, DescribeWeaponProgressSource(inventoryLinked, collectLinked));
+        ImGui.TextColored(MutedColor, DescribeProgressSource(inventoryLinked, collectLinked, "Steps", "relics"));
     }
 
     private void DrawRelicArmorStatusChips(ArmorLine armor, RelicOwnership ownership)
@@ -249,7 +249,7 @@ public sealed partial class PluginUI
             ImGui.SameLine();
             DrawStatusChip($"{owned}/{total} pieces", complete ? StatusChipKind.Ok : StatusChipKind.Muted);
             ImGui.SameLine();
-            ImGui.TextColored(MutedColor, DescribeArmorProgressSource(inventory, CollectActive));
+            ImGui.TextColored(MutedColor, DescribeProgressSource(inventory, CollectActive, "Pieces", "pieces"));
         }
         else
         {
@@ -398,10 +398,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>
-    ///     Per-piece list for auto-tracked armor: owned pieces are green, missing stay muted.
-    ///     Collect alone is aggregate-only, so without Allagan Tools we only prompt to connect it.
-    /// </summary>
     private void DrawArmorMissingPieces(ArmorLine armor, RelicOwnership ownership)
     {
         if (!AllaganToolsIpc.IsReady)
@@ -500,7 +496,6 @@ public sealed partial class PluginUI
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            // Single-tier sets show just the set name; multi-tier show "Set — Tier".
             var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, label);
             var hovered = ImGui.IsItemHovered();
@@ -520,7 +515,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>One checkbox per piece, wrapped by role set (5 slots) with role headers.</summary>
     private void DrawArmorPieceCheckboxes(ArmorLine line, ArmorSet set, ArmorTier tier)
     {
         const int slotsPerRole = 5;
@@ -601,7 +595,6 @@ public sealed partial class PluginUI
         return string.Join("\n", lines);
     }
 
-    /// <summary>Manual armor piece tick (used when FFXIV Collect isn't linked).</summary>
     private void SetArmorPieceDone(string collectType, int piece, bool done)
     {
         string key = $"{collectType}|{piece}";
@@ -638,8 +631,8 @@ public sealed partial class PluginUI
             if (AllaganToolsIpc.IsReady)
             {
                 Func<uint, uint> ownedLookup = CreateOwnedLookup();
-                inventoryDone = InventoryProgressBuilder.BuildStepDoneKeys(catalog, ownedLookup);
-                inventoryArmorDone = InventoryProgressBuilder.BuildArmorPieceDoneKeys(catalog, ownedLookup);
+                inventoryDone = RelicStatusService.BuildStepDoneKeys(catalog, ownedLookup);
+                inventoryArmorDone = RelicStatusService.BuildArmorPieceDoneKeys(catalog, ownedLookup);
                 config.SaveInventorySnapshot(inventoryDone, inventoryArmorDone);
             }
             else
@@ -735,7 +728,6 @@ public sealed partial class PluginUI
 
     private void DrawAllJobsGrid(RelicLine line, IReadOnlyList<string> jobList, string selectedJob, RelicOwnership ownership)
     {
-        // Collapsed by default — it's a wide reference grid; open it when you want the full picture.
         if (!ImGui.CollapsingHeader($"All jobs · {line.CollectType}###alljobs"))
         {
             return;
@@ -1046,7 +1038,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Per-weapon materials for a step from bundled expansion data, with live owned counts.</summary>
     private IEnumerable<StepItem> GetStepItems(RelicLine line, string stepName, int slotIndex)
     {
         if (!data.Expansions.TryGetValue(line.Expansion, out var sheet))
@@ -1268,11 +1259,6 @@ public sealed partial class PluginUI
         ImGui.Spacing();
     }
 
-    /// <summary>
-    ///     Picks the part of a step note relevant to one job. Tool-line notes split per discipline with
-    ///     inline [[Crafters]] / [[Gatherers]] / [[Fisher]] tags (slots 0-7 / 8-9 / 10), keeping any
-    ///     untagged intro for everyone. Notes without tags (weapons, armor) are returned unchanged.
-    /// </summary>
     private static string? NoteForDiscipline(string? note, int slotIndex)
     {
         if (string.IsNullOrEmpty(note) || !note.Contains("[[", StringComparison.Ordinal))
@@ -1316,7 +1302,6 @@ public sealed partial class PluginUI
 
     private int VisibleTierCount(RelicLine line) => line.EffectiveTierCount(config.HidePhyseosRelics);
 
-    /// <summary>First tier not yet done (auto from Collect or manual) — the step the job is working on.</summary>
     private int CurrentStepTier(RelicLine line, string job, int slotIndex, RelicOwnership ownership)
     {
         var tiers = VisibleTierCount(line);
@@ -1331,7 +1316,6 @@ public sealed partial class PluginUI
         return tiers;
     }
 
-    /// <summary>Manual steps are sequential: ticking fills everything below, unticking clears everything above.</summary>
     private void SetManualStepDone(RelicLine line, string job, int tier, bool done)
     {
         HashSet<string> steps = config.CurrentCharacterProgress().RelicStepDone;

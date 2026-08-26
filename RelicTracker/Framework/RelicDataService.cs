@@ -1,4 +1,124 @@
+using System.Globalization;
+
 namespace RelicTracker.Framework;
+
+public sealed class RelicManifest
+{
+    [JsonPropertyName("source")]
+    public string Source { get; set; } = string.Empty;
+
+    [JsonPropertyName("sheetVersion")]
+    public string SheetVersion { get; set; } = string.Empty;
+
+    [JsonPropertyName("patch")]
+    public string Patch { get; set; } = string.Empty;
+
+    [JsonPropertyName("expansions")]
+    public List<string> Expansions { get; set; } = [];
+}
+
+public sealed class ExpansionMaterialRow
+{
+    [JsonPropertyName("step")]
+    public string? Step { get; set; }
+
+    [JsonPropertyName("material")]
+    public string? Material { get; set; }
+
+    [JsonPropertyName("materialIds")]
+    public List<uint> MaterialIds { get; set; } = [];
+
+    [JsonPropertyName("jobs")]
+    public List<bool?> Jobs { get; set; } = [];
+
+    [JsonPropertyName("perUnit")]
+    [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
+    public double? PerUnit { get; set; }
+
+    [JsonPropertyName("purchase")]
+    public MaterialPurchase? Purchase { get; set; }
+
+    [JsonPropertyName("role")]
+    public string? Role { get; set; }
+
+    [JsonPropertyName("craftOf")]
+    public string? CraftOf { get; set; }
+}
+
+public sealed class MaterialPurchase
+{
+    [JsonPropertyName("currency")]
+    public string Currency { get; set; } = string.Empty;
+
+    [JsonPropertyName("unit")]
+    public int Unit { get; set; }
+}
+
+public sealed class ExpansionSheet
+{
+    public string Id { get; set; } = string.Empty;
+
+    public List<ExpansionMaterialRow> Materials { get; set; } = [];
+}
+
+public sealed class ArmorCostRow
+{
+    [JsonPropertyName("set")]
+    public string Set { get; set; } = string.Empty;
+
+    [JsonPropertyName("currency")]
+    public string Currency { get; set; } = string.Empty;
+
+    [JsonPropertyName("currencyIds")]
+    public List<uint> CurrencyIds { get; set; } = [];
+
+    [JsonPropertyName("perPiece")]
+    public int PerPiece { get; set; }
+
+    [JsonPropertyName("setTotal")]
+    public int SetTotal { get; set; }
+
+    [JsonPropertyName("allTotal")]
+    public int AllTotal { get; set; }
+
+    [JsonPropertyName("note")]
+    public string? Note { get; set; }
+}
+
+internal sealed class FlexibleDoubleJsonConverter : JsonConverter<double?>
+{
+    public override double? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        reader.TokenType switch
+        {
+            JsonTokenType.Null => null,
+            JsonTokenType.Number => reader.GetDouble(),
+            JsonTokenType.String => TryParse(reader.GetString()),
+            var _ => null
+        };
+
+    public override void Write(Utf8JsonWriter writer, double? value, JsonSerializerOptions options)
+    {
+        if (value is null)
+        {
+            writer.WriteNullValue();
+        }
+        else
+        {
+            writer.WriteNumberValue(value.Value);
+        }
+    }
+
+    private static double? TryParse(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return null;
+        }
+
+        text = text.Trim().Replace(",", string.Empty);
+        return double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var value) ? value : null;
+    }
+}
 
 public sealed class RelicDataService
 {
@@ -10,17 +130,13 @@ public sealed class RelicDataService
 
     public RelicManifest Manifest { get; private set; } = new();
 
-    /// <summary>Expansion id -> relic step materials (built entirely from the curated supplement).</summary>
     public Dictionary<string, ExpansionSheet> Expansions { get; } = new(StringComparer.Ordinal);
 
-    /// <summary>Material name -> where it is farmed, for grouping the shopping list by source.</summary>
     public Dictionary<string, string> MaterialSources { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Material name -> item row IDs for owned counts (alias-expanded at build time).</summary>
     public Dictionary<string, IReadOnlyList<uint>> MaterialIdsByName { get; private set; } =
         new(StringComparer.OrdinalIgnoreCase);
 
-    /// <summary>Expansion id -> field-op relic armor currency costs (per piece).</summary>
     public Dictionary<string, List<ArmorCostRow>> ArmorCosts { get; private set; } = new(StringComparer.Ordinal);
 
     public void Load()
@@ -38,10 +154,6 @@ public sealed class RelicDataService
             Expansions.Count);
     }
 
-    /// <summary>
-    ///     Loads the curated relic materials — the single source of truth for every relic line's step
-    ///     materials. Creates the expansion sheet if needed and replaces any materials wholesale.
-    /// </summary>
     private void MergeExtraMaterials(string path)
     {
         var extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
@@ -63,7 +175,6 @@ public sealed class RelicDataService
         }
     }
 
-    /// <summary>Per-step materials shopping list, scaled by the jobs still needing each step.</summary>
     public List<ShoppingMaterialRow> GetShoppingMaterials(
         string expansionId,
         IReadOnlyList<RelicLineStatus> statuses,

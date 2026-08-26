@@ -11,6 +11,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterable
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from item_lookup import expand_name_variants
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "extracted"
@@ -68,21 +71,6 @@ def load_item_names(path: Path | None) -> tuple[set[str], str | None]:
                 names.add(name.casefold())
 
     return names, None
-
-
-def expand_name_variants(name: str) -> Iterable[str]:
-    yield name
-    if name.lower().startswith("hq "):
-        yield name[3:].strip()
-    if name.endswith(" Parts"):
-        yield name[:-1]
-        yield name.replace(" Parts", " Component")
-        yield name.replace(" Parts", " Components")
-    if name.endswith(" Pars"):
-        yield name.replace(" Pars", " Part")
-        yield name.replace(" Pars", " Parts")
-    if name.endswith(" parts"):
-        yield name[:-1]
 
 
 def alias_targets(value) -> list[str]:

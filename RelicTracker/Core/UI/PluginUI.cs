@@ -87,7 +87,7 @@ public sealed partial class PluginUI : Window
             ImGui.EndTabBar();
         }
 
-        TitleBarVersion.DrawFromContext(
+        DrawTitleBarVersion(
             TitleBarButtons.Count,
             AllowPinning || AllowClickthrough);
     }
@@ -110,7 +110,7 @@ public sealed partial class PluginUI : Window
                 if (ImGui.Selectable(ExpansionNames.LongName(expansionId), expansionId == config.SelectedExpansionId))
                 {
                     config.SelectedExpansionId = expansionId;
-                    config.TrackerLineFilter = string.Empty; // focus is per-expansion
+                    config.TrackerLineFilter = string.Empty;
                     config.OnSettingChanged();
                 }
             }
@@ -118,7 +118,6 @@ public sealed partial class PluginUI : Window
             ImGui.EndCombo();
         }
 
-        // DoH/DoL has several tool lines per expansion; weapon expansions have one line each.
         List<RelicLine> lines = [.. catalog.LinesFor(config.SelectedExpansionId)];
         var multiLine = lines.Count > 1;
         if (!multiLine)
@@ -133,7 +132,7 @@ public sealed partial class PluginUI : Window
         {
             if (!string.IsNullOrEmpty(config.TrackerLineFilter) && lines.All(l => l.CollectType != config.TrackerLineFilter))
             {
-                config.TrackerLineFilter = string.Empty; // stale from a previous expansion
+                config.TrackerLineFilter = string.Empty;
             }
 
             ImGui.SameLine();

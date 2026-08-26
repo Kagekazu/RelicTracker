@@ -21,7 +21,6 @@ internal static class ArtisanIpc
     public static bool IsEnabled =>
         DalamudReflector.TryGetDalamudPlugin("Artisan", out _, false, true);
 
-    /// <summary>True once Artisan exposes <c>Artisan.GetRelicToolListId</c> (relic premade lists build).</summary>
     public static bool SupportsRelicToolLists
     {
         get

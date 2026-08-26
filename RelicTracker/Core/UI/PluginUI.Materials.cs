@@ -131,8 +131,6 @@ public sealed partial class PluginUI
             questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
         }
 
-        // Group by where you get it (zone or step); each group is its own collapsible block so the
-        // list stays scannable. The group header is the "where", so rows drop that column.
         foreach (var group in materials
             .GroupBy(row => row.Step)
             .OrderBy(g => g.Min(row => row.StepOrder)))
@@ -235,7 +233,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Vendor-price breakdown for a purchasable material (per unit, total need, total short).</summary>
     private static string? PurchaseSummary(ShoppingMaterialRow row)
     {
         if (row.Purchase is not { Unit: > 0 } purchase)

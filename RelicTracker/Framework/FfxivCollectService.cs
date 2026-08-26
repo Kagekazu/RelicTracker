@@ -1,4 +1,143 @@
+using System.Net;
+using System.Net.Http;
+
 namespace RelicTracker.Framework;
+
+public sealed class FfxivCollectSnapshot
+{
+    public static FfxivCollectSnapshot Empty { get; } = new();
+
+    public ulong CharacterId { get; init; }
+    public List<FfxivCollectRelic> Owned { get; init; } = [];
+    public List<FfxivCollectRelic> Missing { get; init; } = [];
+}
+
+public sealed class FfxivCollectRelic
+{
+    [JsonPropertyName("order")]
+    public int Order { get; set; }
+
+    [JsonPropertyName("type")]
+    public FfxivCollectRelicType? Type { get; set; }
+}
+
+public sealed class FfxivCollectRelicType
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+}
+
+internal sealed class FfxivCollectApiError
+{
+    [JsonPropertyName("error")]
+    public string? Error { get; set; }
+}
+
+public sealed class FfxivCollectException(string message) : Exception(message);
+
+internal static class FfxivCollectClient
+{
+    private const string BaseUrl = "https://ffxivcollect.com/api";
+
+    private static readonly HttpClient Http = new()
+    {
+        Timeout = TimeSpan.FromSeconds(90)
+    };
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString
+    };
+
+    static FfxivCollectClient() => Http.DefaultRequestHeaders.UserAgent.ParseAdd("RelicTracker/0.1");
+
+    public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId)
+    {
+        var ownedTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
+        var missingTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
+        await Task.WhenAll(ownedTask, missingTask).ConfigureAwait(false);
+
+        return new()
+        {
+            CharacterId = characterId,
+            Owned = await ownedTask.ConfigureAwait(false),
+            Missing = await missingTask.ConfigureAwait(false)
+        };
+    }
+
+    private static async Task<List<FfxivCollectRelic>> FetchRelicListAsync(string url)
+    {
+        using var response = await Http.GetAsync(url).ConfigureAwait(false);
+        var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new FfxivCollectException(ParseErrorMessage(response.StatusCode, body));
+        }
+
+        if (string.IsNullOrWhiteSpace(body))
+        {
+            return [];
+        }
+
+        return ParseRelicList(body);
+    }
+
+    private static List<FfxivCollectRelic> ParseRelicList(string body)
+    {
+        using var document = JsonDocument.Parse(body);
+        var root = document.RootElement;
+
+        if (root.ValueKind == JsonValueKind.Array)
+        {
+            return DeserializeRelicList(root.GetRawText());
+        }
+
+        if (root.ValueKind == JsonValueKind.Object
+            && root.TryGetProperty("results", out var results)
+            && results.ValueKind == JsonValueKind.Array)
+        {
+            return DeserializeRelicList(results.GetRawText());
+        }
+
+        throw new FfxivCollectException("Unexpected response format from FFXIV Collect.");
+    }
+
+    private static List<FfxivCollectRelic> DeserializeRelicList(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<List<FfxivCollectRelic>>(json, JsonOptions) ?? [];
+        }
+        catch (JsonException ex)
+        {
+            throw new FfxivCollectException($"Could not parse relic data from FFXIV Collect ({ex.Message}).");
+        }
+    }
+
+    private static string ParseErrorMessage(HttpStatusCode statusCode, string body)
+    {
+        try
+        {
+            var error = JsonSerializer.Deserialize<FfxivCollectApiError>(body, JsonOptions);
+            if (!string.IsNullOrWhiteSpace(error?.Error))
+            {
+                return error.Error;
+            }
+        }
+        catch
+        {
+        }
+
+        return statusCode switch
+        {
+            HttpStatusCode.NotFound => "Character not found on FFXIV Collect.",
+            HttpStatusCode.Forbidden => "Character or relic collection is private on FFXIV Collect.",
+            var _ => $"FFXIV Collect request failed ({(int)statusCode})."
+        };
+    }
+}
 
 public sealed class FfxivCollectService
 {
@@ -26,7 +165,6 @@ public sealed class FfxivCollectService
 
     public void Refresh(ulong characterId) => Refresh(characterId, false);
 
-    /// <summary>Starts a new fetch even if one is already in progress (supersedes stale requests).</summary>
     public void ForceRefresh(ulong characterId) => Refresh(characterId, true);
 
     private void Refresh(ulong characterId, bool force)

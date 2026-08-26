@@ -1,7 +1,25 @@
+using Dalamud.Game;
+using Lumina.Excel;
 using Lumina.Excel.Sheets;
+
 namespace RelicTracker.Framework;
 
-/// <summary>Maps an item's ClassJobCategory to a single job abbreviation using Lumina game data.</summary>
+internal static class GameSheets
+{
+    public static ExcelSheet<T> English<T>() where T : struct, IExcelRow<T>
+    {
+        try
+        {
+            return Svc.Data.GetExcelSheet<T>(ClientLanguage.English);
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "[RelicTracker] English {Sheet} sheet unavailable; falling back to client language.", typeof(T).Name);
+            return Svc.Data.GetExcelSheet<T>();
+        }
+    }
+}
+
 internal static class ClassJobEquipResolver
 {
     private static readonly HashSet<string> BaseClassAbbrevs = new(StringComparer.Ordinal)
@@ -11,24 +29,6 @@ internal static class ClassJobEquipResolver
 
     private static (string Abbrev, Func<ClassJobCategory, bool> Has)[]? jobAccessors;
 
-    public static bool TryResolve(ClassJobCategory category, out string jobAbbrev)
-    {
-        foreach ((string abbrev, Func<ClassJobCategory, bool> has) in Accessors())
-        {
-            if (!has(category))
-            {
-                continue;
-            }
-
-            jobAbbrev = abbrev;
-            return true;
-        }
-
-        jobAbbrev = string.Empty;
-        return false;
-    }
-
-    /// <summary>Resolves the single job a relic weapon/tool is equippable by, from its item row ID.</summary>
     public static bool TryResolveEquipJobByItemId(uint itemId, out string jobAbbrev)
     {
         jobAbbrev = string.Empty;
@@ -52,6 +52,23 @@ internal static class ClassJobEquipResolver
         return TryResolve(category.Value, out jobAbbrev);
     }
 
+    private static bool TryResolve(ClassJobCategory category, out string jobAbbrev)
+    {
+        foreach ((string abbrev, Func<ClassJobCategory, bool> has) in Accessors())
+        {
+            if (!has(category))
+            {
+                continue;
+            }
+
+            jobAbbrev = abbrev;
+            return true;
+        }
+
+        jobAbbrev = string.Empty;
+        return false;
+    }
+
     private static (string Abbrev, Func<ClassJobCategory, bool> Has)[] Accessors() =>
         jobAccessors ??= BuildJobAccessors();
 
@@ -62,7 +79,6 @@ internal static class ClassJobEquipResolver
             .Select((abbrev, index) => (abbrev, index))
             .ToDictionary(entry => entry.abbrev, entry => entry.index, StringComparer.Ordinal);
 
-        // English sheet: abbreviations match ClassJobCategory's English-named bool columns.
         var sheet = GameSheets.English<ClassJob>();
         List<(string Abbrev, Func<ClassJobCategory, bool> Has)> accessors = [];
         HashSet<string> seen = new(StringComparer.Ordinal);
@@ -91,7 +107,6 @@ internal static class ClassJobEquipResolver
     }
 }
 
-/// <summary>Canonical job-slot priority when multiple jobs could match a category column.</summary>
 internal static class JobColumnDefaults
 {
     public static readonly string[] CombatJobs =

@@ -4,6 +4,18 @@ using Dalamud.Plugin;
 namespace RelicTracker;
 
 [Serializable]
+public sealed class CharacterProgress
+{
+    public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
+
+    public HashSet<string> ArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
+
+    public HashSet<string> InventoryStepDone { get; set; } = new(StringComparer.Ordinal);
+
+    public HashSet<string> InventoryArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
+}
+
+[Serializable]
 public sealed class Configuration : IPluginConfiguration
 {
     private static readonly CharacterProgress EmptyProgress = new();
@@ -16,20 +28,16 @@ public sealed class Configuration : IPluginConfiguration
 
     public ulong FfxivCollectCharacterId { get; set; }
 
-    /// <summary>Relic progress keyed by logged-in character content ID.</summary>
     public Dictionary<ulong, CharacterProgress> ProgressByCharacter { get; set; } = new();
 
-    /// <summary>Last selected line + job in the Relic detail view, for convenience.</summary>
     public string DetailExpansionId { get; set; } = "ARR";
 
     public string DetailCollectType { get; set; } = string.Empty;
 
     public string DetailJob { get; set; } = string.Empty;
 
-    /// <summary>Hide materials you already have enough of.</summary>
     public bool HideCompleteMaterials { get; set; } = true;
 
-    /// <summary>On the Overview tab, hide relic lines you have already finished on every job.</summary>
     public bool OverviewIncompleteOnly { get; set; }
 
     /// <summary>
@@ -38,14 +46,12 @@ public sealed class Configuration : IPluginConfiguration
     /// </summary>
     public bool HidePhyseosRelics { get; set; }
 
-    /// <summary>Tracker focus: a CollectType to scope the shopping list to one relic line ("" = all lines).</summary>
     public string TrackerLineFilter { get; set; } = string.Empty;
 
     public Dictionary<string, bool> ExpandedMaterialSections { get; set; } = new(StringComparer.Ordinal);
 
     public int Version { get; set; } = 6;
 
-    // Legacy (v5) — migrated into ProgressByCharacter on load.
     public HashSet<string> RelicStepDone { get; set; } = new(StringComparer.Ordinal);
 
     public HashSet<string> ArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
@@ -53,11 +59,8 @@ public sealed class Configuration : IPluginConfiguration
     public void Initialize(IDalamudPluginInterface pi)
     {
         pluginInterface = pi;
-        MigrateIfNeeded();
+        MigrateLegacyProgressIfNeeded();
     }
-
-    /// <summary>Moves v5 global progress into the logged-in character. Safe to call on login.</summary>
-    public void MigrateLegacyProgressIfNeeded() => MigrateIfNeeded();
 
     public CharacterProgress CurrentCharacterProgress()
     {
@@ -132,7 +135,7 @@ public sealed class Configuration : IPluginConfiguration
         _pendingPersist = false;
     }
 
-    private void MigrateIfNeeded()
+    public void MigrateLegacyProgressIfNeeded()
     {
         if (Version >= 6)
         {
@@ -170,4 +173,10 @@ public sealed class Configuration : IPluginConfiguration
     }
 
     private void WriteToDisk() => pluginInterface!.SavePluginConfig(this);
+}
+
+internal static class CharacterScope
+{
+    public static ulong CurrentContentId =>
+        Svc.PlayerState.IsLoaded ? Svc.PlayerState.ContentId : 0;
 }

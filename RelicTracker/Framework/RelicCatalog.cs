@@ -1,9 +1,5 @@
 namespace RelicTracker.Framework;
 
-/// <summary>
-///     One relic "line" — a FFXIV Collect relic type (e.g. Anima Weapons) with its
-///     ordered upgrade steps. Each step is a tier of <see cref="Jobs" /> relics.
-/// </summary>
 public sealed class RelicLine
 {
     [JsonPropertyName("collectType")]
@@ -39,11 +35,9 @@ public sealed class RelicLine
     [JsonPropertyName("typeOrder")]
     public int TypeOrder { get; set; }
 
-    /// <summary>Slot -> job order resolved from game data at runtime; empty until resolved.</summary>
     [JsonIgnore]
     public List<string> ResolvedJobs { get; set; } = [];
 
-    /// <summary>Authoritative job order: resolved from the game when available, else the bundled list.</summary>
     [JsonIgnore]
     public IReadOnlyList<string> EffectiveJobList =>
         Jobs > 0 && ResolvedJobs.Count == Jobs ? ResolvedJobs : JobList;
@@ -107,7 +101,6 @@ public sealed class RelicLine
     private int RelicIndex(int slotIndex, int tierIndex) => (tierIndex * Jobs) + slotIndex;
 }
 
-/// <summary>One augment tier of an armor set (a FFXIV Collect armor type).</summary>
 public sealed class ArmorTier
 {
     [JsonPropertyName("collectType")]
@@ -123,7 +116,6 @@ public sealed class ArmorTier
     public List<uint> PieceIds { get; set; } = [];
 }
 
-/// <summary>A distinct armor set (e.g. Bozjan), with its Base/Augmented/+1/+2 tiers.</summary>
 public sealed class ArmorSet
 {
     [JsonPropertyName("name")]
@@ -133,7 +125,6 @@ public sealed class ArmorSet
     public List<ArmorTier> Tiers { get; set; } = [];
 }
 
-/// <summary>A field-operation relic armor line (Eurekan / Resistance / Phantom), per expansion.</summary>
 public sealed class ArmorLine
 {
     [JsonPropertyName("expansion")]
@@ -152,10 +143,6 @@ public sealed class ArmorLine
     public int TotalPieces => AllTiers.Sum(tier => tier.Pieces);
 }
 
-/// <summary>
-///     Loads the bundled relic catalog (relic_lines.json) — the canonical list of relic
-///     lines and their steps, derived from the FFXIV Collect relic index.
-/// </summary>
 public sealed class RelicCatalog
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -247,7 +234,6 @@ public sealed class RelicCatalog
         }
     }
 
-    /// <summary>A curated "what to do" note for a step, falling back to the line-level note.</summary>
     public string? StepNote(string collectType, string stepName)
     {
         if (!stepNotes.TryGetValue(collectType, out var byStep))
@@ -263,7 +249,6 @@ public sealed class RelicCatalog
         return byStep.TryGetValue("_line", out var lineNote) && !string.IsNullOrWhiteSpace(lineNote) ? lineNote : null;
     }
 
-    /// <summary>Resolves each line's slot -> job order from game data, falling back to the bundled list.</summary>
     public void ResolveJobs()
     {
         var resolvedLines = 0;
@@ -312,4 +297,20 @@ public sealed class RelicCatalog
 
     public IEnumerable<RelicLine> LinesFor(string expansionId) =>
         Lines.Where(line => string.Equals(line.Expansion, expansionId, StringComparison.Ordinal));
+}
+
+internal static class ExpansionNames
+{
+    public static string LongName(string expansionId) =>
+        expansionId switch
+        {
+            "ARR" => "A Realm Reborn",
+            "HW" => "Heavensward",
+            "SB" => "Stormblood",
+            "ShB" => "Shadowbringers",
+            "EW" => "Endwalker",
+            "DT" => "Dawntrail",
+            "DoHDoL" => "Crafters & Gatherers",
+            _ => expansionId
+        };
 }

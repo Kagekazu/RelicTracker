@@ -121,7 +121,6 @@ public sealed partial class PluginUI
                 ? $"{title} — done"
                 : $"{title} — {jobsComplete}/{jobsTotal} maxed";
 
-        // Finished expansions collapse by default; ones you're still working on stay open.
         var headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
         if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", headerFlags))
         {
@@ -267,7 +266,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Concise "what step are you on" summary: how many jobs need each upcoming step next.</summary>
     private static string BuildFrontierText(RelicLineStatus status)
     {
         List<(int Count, string Step)> frontiers = [];

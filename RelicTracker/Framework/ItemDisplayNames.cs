@@ -2,10 +2,8 @@ using Lumina.Excel.Sheets;
 
 namespace RelicTracker.Framework;
 
-/// <summary>Client-language item labels for UI; bundled English names remain the lookup keys.</summary>
 internal static class ItemDisplayNames
 {
-    /// <summary>Localized name when one item row backs the entry; bundled label for alias groups (e.g. Atma).</summary>
     public static string Label(IReadOnlyList<uint> itemIds, string bundledName)
     {
         if (itemIds.Count != 1)

@@ -2,10 +2,6 @@ using Lumina.Excel.Sheets;
 
 namespace RelicTracker.Framework;
 
-/// <summary>
-///     Overlays armor currency IDs and per-piece amounts from <see cref="SpecialShop"/>.
-///     Bundled JSON stays the fallback when a listing isn't in the shop sheet (or costs vary by slot).
-/// </summary>
 internal static class ArmorShopResolver
 {
     public static void Apply(RelicDataService data, RelicCatalog catalog)
