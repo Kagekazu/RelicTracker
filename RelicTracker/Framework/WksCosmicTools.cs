@@ -3,10 +3,6 @@ using Lumina.Excel.Sheets;
 
 namespace RelicTracker.Framework;
 
-/// <summary>
-///     Cosmic tool stages from EXD <see cref="WKSCosmoToolClass"/> (20 items per class)
-///     and live stage from CS <see cref="WKSResearchModule"/> when that module is loaded.
-/// </summary>
 internal static unsafe class WksCosmicTools
 {
     public const string CollectType = "Cosmic Tools";

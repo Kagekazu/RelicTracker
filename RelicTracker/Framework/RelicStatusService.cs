@@ -1,21 +1,16 @@
 namespace RelicTracker.Framework;
 
-/// <summary>Progress for a single relic line, derived from Collect, inventory ownership, and manual ticks.</summary>
 public sealed class RelicLineStatus
 {
     public required RelicLine Line { get; init; }
 
-    /// <summary>ReachedPerStep[t] = number of jobs that have completed step t (cumulative funnel).</summary>
     public required int[] ReachedPerStep { get; init; }
 
-    /// <summary>Required tiers for progress UI (may exclude optional Physeos).</summary>
     public int TierCount { get; init; }
 
     public int JobsComplete => TierCount > 0 ? ReachedPerStep[TierCount - 1] : 0;
 
-    public int JobsStarted => TierCount > 0 ? ReachedPerStep[0] : 0;
-
-    public int JobsNotStarted => Math.Max(0, Line.Jobs - JobsStarted);
+    public int JobsNotStarted => Math.Max(0, Line.Jobs - (TierCount > 0 ? ReachedPerStep[0] : 0));
 
     public int StepsDone
     {
@@ -37,7 +32,6 @@ public sealed class RelicLineStatus
 
     public bool IsComplete => Line.Jobs > 0 && JobsComplete >= Line.Jobs;
 
-    /// <summary>Jobs whose highest completed step is exactly t (i.e. currently working on step t+1).</summary>
     public int JobsAtStep(int tierIndex)
     {
         if (tierIndex < 0 || tierIndex >= TierCount)
@@ -51,7 +45,6 @@ public sealed class RelicLineStatus
     }
 }
 
-/// <summary>Aggregated totals across a set of relic lines.</summary>
 public sealed class RelicProgressSummary
 {
     public int LinesComplete { get; init; }
@@ -63,7 +56,6 @@ public sealed class RelicProgressSummary
     public float Percent => StepsTotal > 0 ? (float)StepsDone / StepsTotal : 0f;
 }
 
-/// <summary>Fast lookup of which exact relics a character owns, for per-job step detection.</summary>
 public sealed class RelicOwnership
 (
     FfxivCollectSnapshot snapshot,
@@ -72,16 +64,9 @@ public sealed class RelicOwnership
     HashSet<string>? inventoryDone = null,
     HashSet<string>? inventoryArmor = null)
 {
-    /// <summary>Allagan Tools inventory detections, keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> inventoryDone = inventoryDone ?? new(StringComparer.Ordinal);
-
-    /// <summary>Allagan Tools armor detections, keyed CollectType|pieceIndex.</summary>
     private readonly HashSet<string> inventoryArmor = inventoryArmor ?? new(StringComparer.Ordinal);
-
-    /// <summary>Manual armor piece ticks for the active character, keyed CollectType|pieceIndex.</summary>
     private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
-
-    /// <summary>Manual step ticks for the active character, keyed CollectType|job|tier.</summary>
     private readonly HashSet<string> manualDone = manualDone ?? new(StringComparer.Ordinal);
 
     private readonly HashSet<string> owned = snapshot.Owned
@@ -93,16 +78,13 @@ public sealed class RelicOwnership
         .GroupBy(relic => relic.Type!.Name, StringComparer.Ordinal)
         .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
 
-    /// <summary>How many relics of a given Collect type FFXIV Collect shows owned (armor auto-tracking).</summary>
     public int OwnedCount(string collectType) =>
         ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
 
-    /// <summary>How many of an armor tier's pieces are manually ticked.</summary>
-    public int ManualPieceCount(string collectType, int pieces) =>
+    private int ManualPieceCount(string collectType, int pieces) =>
         CountKeys(manualArmor, collectType, pieces);
 
-    /// <summary>How many of an armor tier's pieces Allagan Tools shows in inventory.</summary>
-    public int InventoryPieceCount(string collectType, int pieces) =>
+    private int InventoryPieceCount(string collectType, int pieces) =>
         CountKeys(inventoryArmor, collectType, pieces);
 
     private static int CountKeys(HashSet<string> keys, string collectType, int pieces)
@@ -124,13 +106,11 @@ public sealed class RelicOwnership
         return n;
     }
 
-    /// <summary>Effective owned pieces — FFXIV Collect aggregate, manual ticks, or inventory, whichever is highest.</summary>
     public int OwnedPieceCount(string collectType, int pieces) =>
         Math.Max(
             Math.Min(pieces, OwnedCount(collectType)),
             Math.Max(ManualPieceCount(collectType, pieces), InventoryPieceCount(collectType, pieces)));
 
-    /// <summary>True when Allagan Tools or a manual tick names this exact piece (not Collect aggregate).</summary>
     public bool IsArmorPieceOwned(string collectType, int pieceIndex) =>
         inventoryArmor.Contains($"{collectType}|{pieceIndex}")
         || manualArmor.Contains($"{collectType}|{pieceIndex}");
@@ -153,18 +133,9 @@ public sealed class RelicOwnership
                               && inventoryDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
     }
 
-    /// <summary>
-    ///     True if FFXIV Collect or Allagan Tools inventory shows this step as owned. Manual ticks are
-    ///     kept separate so they remain editable fallbacks.
-    /// </summary>
     public bool IsStepDone(RelicLine line, int slotIndex, int tier) =>
         IsCollectStepDone(line, slotIndex, tier) || IsInventoryStepDone(line, slotIndex, tier);
 
-    /// <summary>
-    ///     True if the step is done for this slot either from FFXIV Collect OR a manual tick. This is the
-    ///     unified "done" used by the Overview funnel and the Tracker, so the plugin works standalone
-    ///     (without a Collect link) off manual ticks alone.
-    /// </summary>
     public bool IsStepDoneOrManual(RelicLine line, int slotIndex, int tier)
     {
         if (IsStepDone(line, slotIndex, tier))
@@ -183,12 +154,8 @@ public sealed class RelicOwnership
     }
 }
 
-public sealed class RelicStatusService
+public static class RelicStatusService
 {
-    /// <summary>
-    ///     Builds per-line status from ownership (FFXIV Collect, Allagan Tools inventory, and manual
-    ///     ticks), so the Overview and Tracker funnel work without a Collect link.
-    /// </summary>
     public static IReadOnlyList<RelicLineStatus> Build(
         RelicOwnership ownership,
         RelicCatalog catalog,
@@ -235,5 +202,83 @@ public sealed class RelicStatusService
             StepsDone = list.Sum(status => status.StepsDone),
             StepsTotal = list.Sum(status => status.StepsTotal)
         };
+    }
+
+    public static HashSet<string> BuildStepDoneKeys(RelicCatalog catalog, Func<uint, uint> ownedLookup)
+    {
+        HashSet<string> done = new(StringComparer.Ordinal);
+        foreach (RelicLine line in catalog.Lines)
+        {
+            IReadOnlyList<string> jobs = line.EffectiveJobList;
+            for (int slot = 0; slot < line.Jobs && slot < jobs.Count; slot++)
+            {
+                for (int tier = 0; tier < line.TierCount; tier++)
+                {
+                    uint relicId = line.RelicId(slot, tier);
+                    if (relicId == 0
+                        || (!IsRelicOrReplicaOwned(relicId, line.RelicReplicas(slot, tier), ownedLookup)
+                            && !WksCosmicTools.CreditsStep(line, slot, tier)))
+                    {
+                        continue;
+                    }
+
+                    for (int completedTier = 0; completedTier <= tier; completedTier++)
+                    {
+                        done.Add($"{line.CollectType}|{jobs[slot]}|{completedTier}");
+                    }
+                }
+            }
+        }
+
+        return done;
+    }
+
+    public static HashSet<string> BuildArmorPieceDoneKeys(RelicCatalog catalog, Func<uint, uint> ownedLookup)
+    {
+        HashSet<string> done = new(StringComparer.Ordinal);
+        foreach (ArmorLine armorLine in catalog.ArmorLines)
+        {
+            foreach (ArmorSet set in armorLine.Sets)
+            {
+                for (int tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
+                {
+                    ArmorTier tier = set.Tiers[tierIndex];
+                    int pieceCount = Math.Min(tier.Pieces, tier.PieceIds.Count);
+                    for (int index = 0; index < pieceCount; index++)
+                    {
+                        uint pieceId = tier.PieceIds[index];
+                        if (pieceId == 0 || ownedLookup(pieceId) == 0)
+                        {
+                            continue;
+                        }
+
+                        ArmorCostCalculator.AddOwnedPieceKeys(armorLine, set, tierIndex, index, done);
+                    }
+                }
+            }
+        }
+
+        return done;
+    }
+
+    private static bool IsRelicOrReplicaOwned(
+        uint relicId,
+        IReadOnlyList<uint> replicaIds,
+        Func<uint, uint> ownedLookup)
+    {
+        if (relicId > 0 && ownedLookup(relicId) > 0)
+        {
+            return true;
+        }
+
+        foreach (uint replicaId in replicaIds)
+        {
+            if (replicaId > 0 && ownedLookup(replicaId) > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

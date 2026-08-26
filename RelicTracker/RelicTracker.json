@@ -11,5 +11,6 @@
     "inventory",
     "crafting",
     "utility"
-  ]
+  ],
+  "Changelog": "- Right-click relics, replicas, materials, and armor to jump to Relic or Tracker.\n- Armor pieces track from inventory; higher tiers (and Phantom Vision / Augmented Law's Order) credit lower sets.\n- Cosmic tool stages and replicas count as owned. Progress is saved per character."
 }

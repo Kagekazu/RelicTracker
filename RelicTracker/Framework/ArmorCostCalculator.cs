@@ -1,8 +1,12 @@
 namespace RelicTracker.Framework;
 
-/// <summary>Credits owned relic armor pieces toward Tracker currency needs (spent mats).</summary>
 public static class ArmorCostCalculator
 {
+    public const string ArcanautsSet = "Arcanaut's";
+    public const string PhantomVisionSet = "Phantom Vision";
+    public const string BozjanSet = "Bozjan";
+    public const string LawsOrderSet = "Law's Order";
+
     private static readonly Dictionary<string, (string SetName, string TierKey, int? Slot)> CostLinks =
         new(StringComparer.OrdinalIgnoreCase)
         {
@@ -59,12 +63,12 @@ public static class ArmorCostCalculator
                 continue;
             }
 
-            if (!ArmorUpgradeCredit.PieceSatisfied(line, set, tierIndex, index, ownedLookup))
+            if (!PieceSatisfied(line, set, tierIndex, index, ownedLookup))
             {
                 continue;
             }
 
-            credit += CreditPerPiece(cost, slot);
+            credit += PieceCost(cost, slot);
         }
 
         return credit;
@@ -142,13 +146,7 @@ public static class ArmorCostCalculator
         return true;
     }
 
-    public static uint PieceCost(ArmorCostRow cost, int slotInSet) => CreditPerPiece(cost, slotInSet);
-
-    private static bool TierMatches(ArmorTier tier, string tierKey) =>
-        string.Equals(tier.Label, tierKey, StringComparison.OrdinalIgnoreCase)
-        || string.Equals(tier.CollectType, tierKey, StringComparison.OrdinalIgnoreCase);
-
-    private static uint CreditPerPiece(ArmorCostRow cost, int slotInSet)
+    public static uint PieceCost(ArmorCostRow cost, int slotInSet)
     {
         if (cost.SetTotal == cost.PerPiece * 5)
         {
@@ -158,5 +156,142 @@ public static class ArmorCostCalculator
         var bodyLegs = (uint)cost.PerPiece;
         var other = (uint)((cost.SetTotal - (2 * cost.PerPiece)) / 3);
         return slotInSet is 1 or 3 ? bodyLegs : other;
+    }
+
+    public static void AddOwnedPieceKeys(
+        ArmorLine line,
+        ArmorSet set,
+        int ownedTierIndex,
+        int pieceIndex,
+        HashSet<string> done)
+    {
+        for (var tierIndex = 0; tierIndex <= ownedTierIndex && tierIndex < set.Tiers.Count; tierIndex++)
+        {
+            done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
+        }
+
+        if (string.Equals(set.Name, PhantomVisionSet, StringComparison.OrdinalIgnoreCase))
+        {
+            MarkAllTiers(FindSet(line, ArcanautsSet), pieceIndex, done);
+            return;
+        }
+
+        if (string.Equals(set.Name, LawsOrderSet, StringComparison.OrdinalIgnoreCase)
+            && IsAugmentedTier(set, ownedTierIndex))
+        {
+            MarkAllTiers(FindSet(line, BozjanSet), pieceIndex, done);
+        }
+    }
+
+    public static bool PieceSatisfied(
+        ArmorLine line,
+        ArmorSet costSet,
+        int costTierIndex,
+        int pieceIndex,
+        Func<uint, uint> ownedLookup)
+    {
+        if (OwnedAtOrAbove(costSet, costTierIndex, pieceIndex, ownedLookup))
+        {
+            return true;
+        }
+
+        if (string.Equals(costSet.Name, ArcanautsSet, StringComparison.OrdinalIgnoreCase))
+        {
+            var vision = FindSet(line, PhantomVisionSet);
+            return vision is not null
+                   && OwnedAtOrAbove(vision, minTierIndex: 0, pieceIndex, ownedLookup);
+        }
+
+        if (string.Equals(costSet.Name, BozjanSet, StringComparison.OrdinalIgnoreCase))
+        {
+            var lawsOrder = FindSet(line, LawsOrderSet);
+            if (lawsOrder is null)
+            {
+                return false;
+            }
+
+            var augTier = FindAugmentedTierIndex(lawsOrder);
+            return augTier >= 0
+                   && OwnedAtOrAbove(lawsOrder, augTier, pieceIndex, ownedLookup);
+        }
+
+        return false;
+    }
+
+    private static bool TierMatches(ArmorTier tier, string tierKey) =>
+        string.Equals(tier.Label, tierKey, StringComparison.OrdinalIgnoreCase)
+        || string.Equals(tier.CollectType, tierKey, StringComparison.OrdinalIgnoreCase);
+
+    private static void MarkAllTiers(ArmorSet? set, int pieceIndex, HashSet<string> done)
+    {
+        if (set is null)
+        {
+            return;
+        }
+
+        for (var tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
+        {
+            done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
+        }
+    }
+
+    private static bool IsAugmentedTier(ArmorSet set, int tierIndex) =>
+        tierIndex >= 0
+        && tierIndex < set.Tiers.Count
+        && string.Equals(set.Tiers[tierIndex].Label, "Augmented", StringComparison.OrdinalIgnoreCase);
+
+    private static int FindAugmentedTierIndex(ArmorSet set)
+    {
+        for (var i = 0; i < set.Tiers.Count; i++)
+        {
+            if (IsAugmentedTier(set, i))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private static ArmorSet? FindSet(ArmorLine line, string setName)
+    {
+        foreach (var set in line.Sets)
+        {
+            if (string.Equals(set.Name, setName, StringComparison.OrdinalIgnoreCase))
+            {
+                return set;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool OwnedAtOrAbove(
+        ArmorSet set,
+        int minTierIndex,
+        int pieceIndex,
+        Func<uint, uint> ownedLookup)
+    {
+        if (minTierIndex < 0)
+        {
+            return false;
+        }
+
+        for (var tierIndex = minTierIndex; tierIndex < set.Tiers.Count; tierIndex++)
+        {
+            var tier = set.Tiers[tierIndex];
+            if (pieceIndex < 0 || pieceIndex >= tier.PieceIds.Count)
+            {
+                continue;
+            }
+
+            var pieceId = tier.PieceIds[pieceIndex];
+            if (pieceId != 0 && ownedLookup(pieceId) > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

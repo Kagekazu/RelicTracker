@@ -1,5 +1,7 @@
+using FFXIVClientStructs.FFXIV.Client.Game;
 using RelicTracker.IPC;
 using System.Numerics;
+using System.Reflection;
 
 namespace RelicTracker;
 
@@ -65,7 +67,7 @@ public sealed partial class PluginUI
         {
             if (!cache.TryGetValue(itemId, out uint count))
             {
-                count = PlayerInventory.GetItemCount(itemId);
+                count = GetOnCharacterItemCount(itemId);
                 uint allagan = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
                 if (allagan > count)
                 {
@@ -98,11 +100,6 @@ public sealed partial class PluginUI
         ImGui.Dummy(new Vector2(0, 6));
     }
 
-    /// <summary>
-    /// Bordered content card. Height 0 (default) sizes to content — do not use BeginChild(0)
-    /// which fills the rest of the window and leaves a huge empty region.
-    /// Pass a non-zero height only when you intentionally want a fixed/fill child.
-    /// </summary>
     private bool BeginPanel(string id, float height = 0f)
     {
         if (height != 0f)
@@ -126,7 +123,6 @@ public sealed partial class PluginUI
         float width = ImGui.GetContentRegionAvail().X;
         panelStack.Push(new PanelScope { UseChild = false, Width = width });
 
-        // Draw background behind content after we know the group height.
         ImDrawListPtr drawList = ImGui.GetWindowDrawList();
         drawList.ChannelsSplit(2);
         drawList.ChannelsSetCurrent(1);
@@ -222,12 +218,6 @@ public sealed partial class PluginUI
         }
     }
 
-    private static string DescribeWeaponProgressSource(bool inventoryLinked, bool collectLinked) =>
-        DescribeProgressSource(inventoryLinked, collectLinked, "Steps", "relics");
-
-    private static string DescribeArmorProgressSource(bool inventoryLinked, bool collectLinked) =>
-        DescribeProgressSource(inventoryLinked, collectLinked, "Pieces", "pieces");
-
     private static string DescribeProgressSource(
         bool inventoryLinked,
         bool collectLinked,
@@ -289,5 +279,78 @@ public sealed partial class PluginUI
         Vector4 color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
         using var barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
         ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new Vector2(width, ImGui.GetFrameHeight()), overlay);
+    }
+
+    private void DrawTitleBarVersion(int customTitleBarButtonCount, bool showAdditionalOptionsButton)
+    {
+        var windowPos = ImGui.GetWindowPos();
+        var windowSize = ImGui.GetWindowSize();
+        if (windowSize.X <= 0f || windowSize.Y <= 0f)
+        {
+            return;
+        }
+
+        var text = GetVersionLabel();
+        if (string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        var textSize = ImGui.CalcTextSize(text);
+        var style = ImGui.GetStyle();
+        var buttonSize = ImGui.GetFontSize();
+        var spacing = style.ItemInnerSpacing.X;
+
+        var numNativeButtons = 1;
+        if (style.WindowMenuButtonPosition == ImGuiDir.Right)
+        {
+            numNativeButtons++;
+        }
+
+        var numCustomButtons = customTitleBarButtonCount + (showAdditionalOptionsButton ? 1 : 0);
+        var padRight = (numNativeButtons + numCustomButtons) * (buttonSize + spacing);
+
+        Vector2 position = new(
+            windowPos.X + windowSize.X - padRight - textSize.X,
+            windowPos.Y + style.FramePadding.Y);
+
+        var color = ImGui.ColorConvertFloat4ToU32(style.Colors[(int)ImGuiCol.TextDisabled]);
+        var drawList = ImGui.GetWindowDrawList();
+        drawList.PushClipRect(windowPos, windowPos + windowSize, false);
+        drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), position, color, text);
+        drawList.PopClipRect();
+    }
+
+    private static string GetVersionLabel()
+    {
+        var manifestVersion = Svc.PluginInterface.Manifest.AssemblyVersion;
+        if (manifestVersion != null)
+        {
+            return "v" + FormatVersion(manifestVersion);
+        }
+
+        var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        return assemblyVersion != null ? "v" + FormatVersion(assemblyVersion) : "v?.?.?.?";
+    }
+
+    private static string FormatVersion(Version version) =>
+        version.Revision >= 0 ? version.ToString(4) : version.ToString(3);
+
+    private static unsafe uint GetOnCharacterItemCount(uint itemId)
+    {
+        if (itemId == 0)
+        {
+            return 0;
+        }
+
+        InventoryManager* inventory = InventoryManager.Instance();
+        if (inventory == null)
+        {
+            return 0;
+        }
+
+        int nq = inventory->GetInventoryItemCount(itemId);
+        int hq = inventory->GetInventoryItemCount(itemId, isHq: true);
+        return (uint)Math.Max(0, nq) + (uint)Math.Max(0, hq);
     }
 }
