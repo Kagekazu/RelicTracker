@@ -14,6 +14,8 @@ public sealed partial class PluginUI
     private long ownedCountCacheStamp;
     private RelicTrackerDestinationTab? pendingTab;
     private int cacheGeneration;
+    private bool inventoryCountsDirty;
+    private long lastInventoryCountsInvalidateTick;
 
     private bool CollectActive =>
         config.FfxivCollectCharacterId != 0 && ffxivCollect.LastRefreshUtc.HasValue;
@@ -668,7 +670,33 @@ public sealed partial class PluginUI
         InvalidateOwnedCountCache();
     }
 
-    public void OnInventoryChanged(IReadOnlyCollection<InventoryEventArgs> _) => InvalidateOwnershipCache();
+    /// <summary>
+    ///     Eureka (and other loot-heavy zones) fire this constantly. Do not wipe relic ownership here —
+    ///     that rebuild walks every relic via Allagan Tools and used to hitch frames. Material counts are
+    ///     refreshed on the next Draw with a short debounce; ownership still rolls on the 10s stamp.
+    /// </summary>
+    public void OnInventoryChanged(IReadOnlyCollection<InventoryEventArgs> _) =>
+        inventoryCountsDirty = true;
+
+    private void FlushInventoryCountInvalidation()
+    {
+        if (!inventoryCountsDirty)
+        {
+            return;
+        }
+
+        long now = Environment.TickCount64;
+        if (lastInventoryCountsInvalidateTick != 0
+            && now - lastInventoryCountsInvalidateTick < InventoryCountsDebounceMs)
+        {
+            return;
+        }
+
+        inventoryCountsDirty = false;
+        lastInventoryCountsInvalidateTick = now;
+        InvalidateOwnedCountCache();
+        InvalidateShoppingCache();
+    }
 
     public void OpenTo(RelicItemTarget target)
     {
