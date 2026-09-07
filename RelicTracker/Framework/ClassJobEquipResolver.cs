@@ -1,24 +1,6 @@
-using Dalamud.Game;
-using Lumina.Excel;
 using Lumina.Excel.Sheets;
 
 namespace RelicTracker.Framework;
-
-internal static class GameSheets
-{
-    public static ExcelSheet<T> English<T>() where T : struct, IExcelRow<T>
-    {
-        try
-        {
-            return Svc.Data.GetExcelSheet<T>(ClientLanguage.English);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "[RelicTracker] English {Sheet} sheet unavailable; falling back to client language.", typeof(T).Name);
-            return Svc.Data.GetExcelSheet<T>();
-        }
-    }
-}
 
 internal static class ClassJobEquipResolver
 {

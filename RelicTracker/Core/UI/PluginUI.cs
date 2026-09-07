@@ -54,6 +54,7 @@ public sealed partial class PluginUI : Window
 
     public override void Draw()
     {
+        FlushInventoryCountInvalidation();
         trackerTabVisible = false;
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {

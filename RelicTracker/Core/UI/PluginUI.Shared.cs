@@ -22,7 +22,8 @@ public sealed partial class PluginUI
     }
 
     private const long InventoryCacheBucketMs = 10_000;
-    private const long TrackerInventoryRefreshMs = 500;
+    private const long TrackerInventoryRefreshMs = 2_000;
+    private const long InventoryCountsDebounceMs = 1_000;
     private const float RelicWideLayoutMinWidth = 820f;
 
     private static readonly Vector4 PanelBg = new(0.10f, 0.10f, 0.12f, 0.55f);
@@ -45,7 +46,7 @@ public sealed partial class PluginUI
     private bool CollectIdLinked => config.FfxivCollectCharacterId != 0;
 
     private static long InventoryCacheStamp() =>
-        AllaganToolsIpc.IsReady ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
+        AllaganToolsIpc.IsBound ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
 
     private long OwnedCountRefreshStamp()
     {

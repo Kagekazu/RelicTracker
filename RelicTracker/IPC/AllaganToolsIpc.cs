@@ -28,8 +28,10 @@ internal static class AllaganToolsIpc
     public static bool IsEnabled =>
         PluginNames.Any(name => DalamudReflector.TryGetDalamudPlugin(name, out var _, false, true));
 
+    public static bool IsBound => _ipcBound && _itemCountOwned != null;
+
     public static bool IsReady =>
-        IsEnabled && _ipcBound && _itemCountOwned != null && InvokeIsInitialized();
+        IsBound && IsEnabled && InvokeIsInitialized();
 
     public static void Init()
     {
@@ -50,7 +52,8 @@ internal static class AllaganToolsIpc
 
     public static uint GetOwnedCount(uint itemId, bool activeCharacterOnly)
     {
-        if (!IsReady || _itemCountOwned == null)
+        // Skip IsReady (reflection + IPC ping) — already gated once at bind time.
+        if (!_ipcBound || _itemCountOwned == null)
         {
             return 0;
         }
