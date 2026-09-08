@@ -40,10 +40,6 @@ public sealed class Configuration : IPluginConfiguration
 
     public bool OverviewIncompleteOnly { get; set; }
 
-    /// <summary>
-    ///     Hide Eureka's optional Physeos step (Baldesion Arsenal). Eureka counts as finished for
-    ///     Overview / Relic / Tracker — Physeos is not a separate achievement relic.
-    /// </summary>
     public bool HidePhyseosRelics { get; set; }
 
     public string TrackerLineFilter { get; set; } = string.Empty;

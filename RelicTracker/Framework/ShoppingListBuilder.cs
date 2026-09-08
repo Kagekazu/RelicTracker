@@ -436,6 +436,7 @@ public static class ShoppingListBuilder
 
 internal static class MaterialFilters
 {
+    // Keep in sync with data/build_material_aliases.py SKIP.
     private static readonly HashSet<string> NonItemLabels = new(StringComparer.OrdinalIgnoreCase)
     {
         "Crafters",

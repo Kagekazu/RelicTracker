@@ -348,7 +348,6 @@ public sealed partial class PluginUI
 
         if (BeginPanel("armor_sets"))
         {
-            // Table must End before EndPanel — ending the child first crashes ImGui.
             using (var table = ImRaii.Table(
                 "ArmorSets",
                 3,
@@ -1240,51 +1239,15 @@ public sealed partial class PluginUI
 
     private void DrawStepQuestRewards(string configKey, IReadOnlyList<ShoppingQuestRewardRow> rewards)
     {
-        if (rewards.Count == 0)
-        {
-            return;
-        }
-
         var ownedCount = rewards.Count(row => row.Owned > 0);
-        if (!DrawCollapsingSection(
-                configKey,
-                $"Prefarmed quest rewards ({ownedCount}/{rewards.Count} in inventory)",
-                ownedCount > 0))
-        {
-            return;
-        }
-
-        ImGui.TextColored(MutedColor, "Owning these credits their turn-in materials below (one weapon).");
-        ImGui.Spacing();
-
-        using var table = ImRaii.Table($"RelicQuestRewards_{configKey}", 2, ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg, new(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 52);
-        ImGui.TableHeadersRow();
-
-        foreach (var reward in rewards)
-        {
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            if (reward.Resolved)
-            {
-                ImGui.TextUnformatted(reward.DisplayMaterial);
-            }
-            else
-            {
-                ImGui.TextColored(WarningColor, reward.DisplayMaterial);
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.TextColored(reward.Owned > 0 ? GoodColor : MutedColor, reward.Resolved ? reward.Owned.ToString() : "—");
-        }
-
-        ImGui.Spacing();
+        DrawQuestRewardsSection(
+            configKey,
+            rewards,
+            $"Prefarmed quest rewards ({ownedCount}/{rewards.Count} in inventory)",
+            "Owning these credits their turn-in materials below (one weapon).",
+            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
+            ownedColumnWidth: 52,
+            showResolvedTooltip: false);
     }
 
     private static string? NoteForDiscipline(string? note, int slotIndex)

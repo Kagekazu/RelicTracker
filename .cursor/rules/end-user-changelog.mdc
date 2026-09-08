@@ -1,0 +1,34 @@
+---
+description: RelicTracker plugin Changelog must be written for end users (Dalamud shows it)
+alwaysApply: true
+---
+
+# End-user Changelog
+
+`RelicTracker/RelicTracker.json` → `Changelog` is shown to players in Dalamud. Always write it for them.
+
+## Do
+
+- Short bullets: what changed for the player, in plain language
+- Prefer outcomes over implementation ("smoother in Eureka", "Craft with Artisan works again")
+- Keep prior player-facing bullets when bumping; lead with the newest release notes
+- Match tone of existing good bullets (progress, inventory, right-click, Cosmic tools)
+
+## Don't
+
+- Developer jargon: IPC, ordinals, dedupe, merge, refactor, shared loading, resolver, partials
+- Internal names unless players see them (Allagan Tools / Artisan / FFXIV Collect are OK)
+- Commit-style or PR-style summaries
+
+## Examples
+
+```text
+❌ Cleanup: shared data loading, merged job resolver, deduped quest-reward UI
+✅ Under-the-hood tidy; same features, nothing you need to reconfigure
+
+❌ Artisan craft button uses step IDs (needs Artisan with GetRelicToolListId(int, int))
+✅ Craft with Artisan works with the latest Artisan relic craft lists
+
+❌ Inventory spam no longer rebuilds all relic ownership every tick
+✅ Less stuttering in busy zones like Eureka Hydatos when loot is flying
+```

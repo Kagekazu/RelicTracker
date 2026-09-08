@@ -13,12 +13,15 @@ ROOT = Path(__file__).resolve().parent
 MATERIALS = ROOT / "extracted" / "tool_extra_materials.json"
 OUT = ROOT / "extracted" / "material_aliases.json"
 
+# Keep in sync with ShoppingListBuilder.MaterialFilters.NonItemLabels (+ generator filters).
 SKIP = {
     "Select Material",
     "Crafters",
     "Fisher",
     "Miner & Botanist",
     "Cosmic",
+    "Stellar",
+    "Hyper",
     "You just do Cosmic Exploration.",
 }
 

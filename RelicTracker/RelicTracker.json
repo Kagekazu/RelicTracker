@@ -12,5 +12,5 @@
     "crafting",
     "utility"
   ],
-  "Changelog": "- Artisan craft button uses step IDs (needs Artisan with GetRelicToolListId(int, int)).\n- Fix frame hitching in loot-heavy zones (e.g. Eureka Hydatos): inventory spam no longer rebuilds all relic ownership every tick.\n- Starts without blocking the game thread.\n- Right-click relics, replicas, materials, and armor to jump to Relic or Tracker.\n- Armor pieces track from inventory; higher tiers (and Phantom Vision / Augmented Law's Order) credit lower sets.\n- Cosmic tool stages and replicas count as owned. Progress is saved per character."
+  "Changelog": "- Less stuttering in busy zones like Eureka Hydatos when loot is flying.\n- Craft with Artisan works with the latest Artisan relic craft lists (update Artisan if the button is missing).\n- Starts without blocking the game thread.\n- Right-click relics, replicas, materials, and armor to jump to Relic or Tracker.\n- Armor pieces track from inventory; higher tiers (and Phantom Vision / Augmented Law's Order) credit lower sets.\n- Cosmic tool stages and replicas count as owned. Progress is saved per character."
 }

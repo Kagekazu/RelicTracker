@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from item_lookup import expand_name_variants
+from item_lookup import alias_targets, expand_name_variants
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -71,14 +71,6 @@ def load_item_names(path: Path | None) -> tuple[set[str], str | None]:
                 names.add(name.casefold())
 
     return names, None
-
-
-def alias_targets(value) -> list[str]:
-    if isinstance(value, str):
-        return [value]
-    if isinstance(value, list):
-        return [item for item in value if isinstance(item, str)]
-    return []
 
 
 def main() -> int:
