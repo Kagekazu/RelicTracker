@@ -5,9 +5,6 @@ public sealed class RelicLine
     [JsonPropertyName("collectType")]
     public string CollectType { get; set; } = string.Empty;
 
-    [JsonPropertyName("category")]
-    public string Category { get; set; } = string.Empty;
-
     [JsonPropertyName("expansion")]
     public string Expansion { get; set; } = string.Empty;
 
@@ -162,18 +159,9 @@ public sealed class RelicCatalog
 
     public void Load()
     {
-        var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
-        var path = Path.Combine(baseDir, "relic_lines.json");
-        if (!File.Exists(path))
+        Lines = BundledData.ReadJson<List<RelicLine>>("relic_lines.json", JsonOptions) ?? [];
+        if (Lines.Count > 0)
         {
-            Svc.Log.Warning("[RelicTracker] Missing relic catalog: {Path}", path);
-            return;
-        }
-
-        try
-        {
-            var json = File.ReadAllText(path);
-            Lines = JsonSerializer.Deserialize<List<RelicLine>>(json, JsonOptions) ?? [];
             Expansions =
             [
                 .. Lines
@@ -183,56 +171,20 @@ public sealed class RelicCatalog
             IsLoaded = true;
             Svc.Log.Information("[RelicTracker] Loaded relic catalog: {LineCount} lines.", Lines.Count);
         }
-        catch (Exception ex)
-        {
-            Svc.Log.Error(ex, "[RelicTracker] Failed to load relic catalog from {Path}", path);
-        }
 
-        LoadStepNotes(Path.Combine(baseDir, "relic_step_notes.json"));
-        LoadArmor(Path.Combine(baseDir, "relic_armor.json"));
-    }
-
-    private void LoadArmor(string path)
-    {
-        if (!File.Exists(path))
+        stepNotes = BundledData.ReadJson<Dictionary<string, Dictionary<string, string>>>(
+                        "relic_step_notes.json",
+                        JsonOptions)
+                    ?? new(StringComparer.Ordinal);
+        ArmorLines = BundledData.ReadJson<List<ArmorLine>>("relic_armor.json", JsonOptions) ?? [];
+        if (ArmorLines.Count > 0)
         {
-            return;
-        }
-
-        try
-        {
-            ArmorLines = JsonSerializer.Deserialize<List<ArmorLine>>(File.ReadAllText(path), JsonOptions) ?? [];
             Svc.Log.Information("[RelicTracker] Loaded {Count} relic armor lines.", ArmorLines.Count);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "[RelicTracker] Failed to load relic armor from {Path}", path);
         }
     }
 
     public IEnumerable<ArmorLine> ArmorLinesFor(string expansionId) =>
         ArmorLines.Where(line => string.Equals(line.Expansion, expansionId, StringComparison.Ordinal));
-
-    private void LoadStepNotes(string path)
-    {
-        if (!File.Exists(path))
-        {
-            return;
-        }
-
-        try
-        {
-            var parsed = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(path), JsonOptions);
-            if (parsed is not null)
-            {
-                stepNotes = parsed;
-            }
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Warning(ex, "[RelicTracker] Failed to load relic step notes from {Path}", path);
-        }
-    }
 
     public string? StepNote(string collectType, string stepName)
     {

@@ -141,22 +141,23 @@ public sealed class RelicDataService
 
     public void Load()
     {
-        var baseDir = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName ?? ".", "Data");
-        Manifest = ReadJson<RelicManifest>(Path.Combine(baseDir, "manifest.json")) ?? new RelicManifest();
-        MaterialSources = ReadJson<Dictionary<string, string>>(Path.Combine(baseDir, "material_sources.json"))
+        Manifest = BundledData.ReadJson<RelicManifest>("manifest.json", JsonOptions) ?? new RelicManifest();
+        MaterialSources = BundledData.ReadJson<Dictionary<string, string>>("material_sources.json", JsonOptions)
                           ?? new(StringComparer.OrdinalIgnoreCase);
-        ArmorCosts = ReadJson<Dictionary<string, List<ArmorCostRow>>>(Path.Combine(baseDir, "armor_costs.json"))
+        ArmorCosts = BundledData.ReadJson<Dictionary<string, List<ArmorCostRow>>>("armor_costs.json", JsonOptions)
                      ?? new(StringComparer.Ordinal);
-        MergeExtraMaterials(Path.Combine(baseDir, "tool_extra_materials.json"));
+        MergeExtraMaterials();
         BuildMaterialIdIndex();
         Svc.Log.Information(
             "[RelicTracker] Loaded relic materials for {ExpansionCount} expansions.",
             Expansions.Count);
     }
 
-    private void MergeExtraMaterials(string path)
+    private void MergeExtraMaterials()
     {
-        var extra = ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(path);
+        var extra = BundledData.ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(
+            "tool_extra_materials.json",
+            JsonOptions);
         if (extra is null)
         {
             return;
@@ -174,16 +175,6 @@ public sealed class RelicDataService
             sheet.Materials.AddRange(materials);
         }
     }
-
-    public List<ShoppingMaterialRow> GetShoppingMaterials(
-        string expansionId,
-        IReadOnlyList<RelicLineStatus> statuses,
-        RelicOwnership ownership,
-        Func<uint, uint> ownedLookup,
-        string? lineFilter = null) =>
-        Expansions.TryGetValue(expansionId, out var sheet)
-            ? ShoppingListBuilder.Build(expansionId, sheet, statuses, ownership, ownedLookup, MaterialSources, MaterialIdsByName, lineFilter)
-            : [];
 
     private void BuildMaterialIdIndex()
     {
@@ -206,25 +197,5 @@ public sealed class RelicDataService
             entry => entry.Key,
             entry => (IReadOnlyList<uint>)entry.Value,
             StringComparer.OrdinalIgnoreCase);
-    }
-
-    private static T? ReadJson<T>(string path)
-    {
-        if (!File.Exists(path))
-        {
-            Svc.Log.Warning("[RelicTracker] Missing data file: {Path}", path);
-            return default;
-        }
-
-        try
-        {
-            var json = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<T>(json, JsonOptions);
-        }
-        catch (Exception ex)
-        {
-            Svc.Log.Error(ex, "[RelicTracker] Failed to read {Path}", path);
-            return default;
-        }
     }
 }

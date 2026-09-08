@@ -132,7 +132,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        // Table must End before EndPanel — ending the child first crashes ImGui.
+        // End ImGui tables before EndPanel — ending the child first crashes ImGui.
         using (var table = ImRaii.Table(
             $"OverviewLines_{expansionId}",
             4,

@@ -39,8 +39,17 @@ public sealed partial class PluginUI
 
         RelicOwnership ownership = GetOwnership();
         IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
-        List<ShoppingMaterialRow> materials =
-            data.GetShoppingMaterials(expansionId, statuses, ownership, ownedLookup, lineFilter);
+        List<ShoppingMaterialRow> materials = data.Expansions.TryGetValue(expansionId, out var sheet)
+            ? ShoppingListBuilder.Build(
+                expansionId,
+                sheet,
+                statuses,
+                ownership,
+                ownedLookup,
+                data.MaterialSources,
+                data.MaterialIdsByName,
+                lineFilter)
+            : [];
 
         cachedShoppingMaterials = materials;
         cachedShoppingExpansionId = expansionId;
@@ -84,7 +93,7 @@ public sealed partial class PluginUI
 
         if (BeginPanel("tracker_summary"))
         {
-            DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup, catalog);
+            DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup);
             EndPanel();
         }
 
@@ -253,62 +262,16 @@ public sealed partial class PluginUI
 
     private void DrawQuestRewardsSubsection(string configKey, IReadOnlyList<ShoppingQuestRewardRow> rewards)
     {
-        if (rewards.Count == 0)
-        {
-            return;
-        }
-
         var ownedCount = rewards.Count(row => row.Owned > 0);
         var badge = ownedCount > 0 ? $"{ownedCount}/{rewards.Count} in inventory" : $"{rewards.Count} rewards";
-        if (!DrawCollapsingSection(configKey, $"Prefarmed quest rewards  ({badge})###{configKey}", ownedCount > 0))
-        {
-            return;
-        }
-
-        ImGui.TextColored(MutedColor,
-            "Repeatable sub-quest turn-ins. Owning these credits their materials in the table below.");
-        ImGui.Spacing();
-
-        using var table = ImRaii.Table($"QuestRewards_{configKey}", 2, ShoppingTableFlags, new(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch, 0.75f);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableHeadersRow();
-
-        foreach (var reward in rewards)
-        {
-            ImGui.TableNextRow();
-
-            ImGui.TableNextColumn();
-            if (reward.Resolved)
-            {
-                ImGui.TextUnformatted(reward.DisplayMaterial);
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetTooltip("Counts toward component materials for this step when still in inventory.");
-                }
-            }
-            else
-            {
-                ImGui.TextColored(WarningColor, reward.DisplayMaterial);
-            }
-
-            ImGui.TableNextColumn();
-            if (reward.Resolved)
-            {
-                ImGui.TextColored(reward.Owned > 0 ? GoodColor : MutedColor, reward.Owned.ToString());
-            }
-            else
-            {
-                ImGui.TextColored(MutedColor, "—");
-            }
-        }
-
-        ImGui.Spacing();
+        DrawQuestRewardsSection(
+            configKey,
+            rewards,
+            $"Prefarmed quest rewards  ({badge})###{configKey}",
+            "Repeatable sub-quest turn-ins. Owning these credits their materials in the table below.",
+            ShoppingTableFlags,
+            ownedColumnWidth: 64,
+            showResolvedTooltip: true);
     }
 
     private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs, Func<uint, uint> ownedLookup)
@@ -362,13 +325,9 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
 
-            var ownedInventory = resolved
-                ? ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup)
-                : 0u;
-            var ownedArmorCredit = resolved
-                ? ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup)
-                : 0u;
-            var owned = ownedInventory + ownedArmorCredit;
+            (uint ownedInventory, uint ownedArmorCredit, uint owned) = resolved
+                ? ArmorCurrencyOwned(expansionId, cost, ownedLookup)
+                : (0u, 0u, 0u);
 
             ImGui.TableNextColumn();
             if (resolved)
@@ -414,12 +373,21 @@ public sealed partial class PluginUI
         }
     }
 
+    private (uint Inventory, uint ArmorCredit, uint Owned) ArmorCurrencyOwned(
+        string expansionId,
+        ArmorCostRow cost,
+        Func<uint, uint> ownedLookup)
+    {
+        uint inventory = ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup);
+        uint armorCredit = ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup);
+        return (inventory, armorCredit, inventory + armorCredit);
+    }
+
     private void DrawShoppingSummary(
         IReadOnlyList<ShoppingMaterialRow> materials,
         IReadOnlyList<ArmorCostRow>? armorCosts,
         string expansionId,
-        Func<uint, uint> ownedLookup,
-        RelicCatalog catalog)
+        Func<uint, uint> ownedLookup)
     {
         var weaponShort = materials.Count(row => row.Short > 0);
         var armorShort = 0;
@@ -432,8 +400,7 @@ public sealed partial class PluginUI
                     continue;
                 }
 
-                var ownedInventory = ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup);
-                var owned = ownedInventory + ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup);
+                (_, _, uint owned) = ArmorCurrencyOwned(expansionId, cost, ownedLookup);
                 if ((uint)cost.AllTotal > owned)
                 {
                     armorShort++;

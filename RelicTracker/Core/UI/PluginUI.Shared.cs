@@ -275,6 +275,65 @@ public sealed partial class PluginUI
         ImGui.TextColored(GoodColor, $"{label} connected");
     }
 
+    private void DrawQuestRewardsSection(
+        string configKey,
+        IReadOnlyList<ShoppingQuestRewardRow> rewards,
+        string header,
+        string blurb,
+        ImGuiTableFlags tableFlags,
+        float ownedColumnWidth,
+        bool showResolvedTooltip)
+    {
+        if (rewards.Count == 0)
+        {
+            return;
+        }
+
+        var ownedCount = rewards.Count(row => row.Owned > 0);
+        if (!DrawCollapsingSection(configKey, header, ownedCount > 0))
+        {
+            return;
+        }
+
+        ImGui.TextColored(MutedColor, blurb);
+        ImGui.Spacing();
+
+        using var table = ImRaii.Table($"QuestRewards_{configKey}", 2, tableFlags, new(0, 0));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, ownedColumnWidth);
+        ImGui.TableHeadersRow();
+
+        foreach (var reward in rewards)
+        {
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            if (reward.Resolved)
+            {
+                ImGui.TextUnformatted(reward.DisplayMaterial);
+                if (showResolvedTooltip && ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Counts toward component materials for this step when still in inventory.");
+                }
+            }
+            else
+            {
+                ImGui.TextColored(WarningColor, reward.DisplayMaterial);
+            }
+
+            ImGui.TableNextColumn();
+            ImGui.TextColored(
+                reward.Owned > 0 ? GoodColor : MutedColor,
+                reward.Resolved ? reward.Owned.ToString() : "—");
+        }
+
+        ImGui.Spacing();
+    }
+
     private void DrawPercentBar(float fraction, float width, string overlay)
     {
         Vector4 color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
