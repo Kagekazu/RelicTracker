@@ -100,7 +100,7 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            var perUnit = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
+            var perUnit = row.PerUnitCount;
             if (perUnit == 0)
             {
                 continue;
@@ -233,7 +233,7 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            var per = (uint)Math.Max(0, Math.Round(row.PerUnit ?? 0));
+            var per = row.PerUnitCount;
             if (per == 0)
             {
                 continue;

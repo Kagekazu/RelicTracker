@@ -1,5 +1,12 @@
 namespace RelicTracker.Framework;
 
+public static class ProgressKeys
+{
+    public static string Step(string collectType, string job, int tier) => $"{collectType}|{job}|{tier}";
+
+    public static string ArmorPiece(string collectType, int pieceIndex) => $"{collectType}|{pieceIndex}";
+}
+
 public sealed class RelicLineStatus
 {
     public required RelicLine Line { get; init; }
@@ -97,7 +104,7 @@ public sealed class RelicOwnership
         var n = 0;
         for (var i = 0; i < pieces; i++)
         {
-            if (keys.Contains($"{collectType}|{i}"))
+            if (keys.Contains(ProgressKeys.ArmorPiece(collectType, i)))
             {
                 n++;
             }
@@ -112,8 +119,8 @@ public sealed class RelicOwnership
             Math.Max(ManualPieceCount(collectType, pieces), InventoryPieceCount(collectType, pieces)));
 
     public bool IsArmorPieceOwned(string collectType, int pieceIndex) =>
-        inventoryArmor.Contains($"{collectType}|{pieceIndex}")
-        || manualArmor.Contains($"{collectType}|{pieceIndex}");
+        inventoryArmor.Contains(ProgressKeys.ArmorPiece(collectType, pieceIndex))
+        || manualArmor.Contains(ProgressKeys.ArmorPiece(collectType, pieceIndex));
 
     public bool IsCollectStepDone(RelicLine line, int slotIndex, int tier)
     {
@@ -130,7 +137,7 @@ public sealed class RelicOwnership
     {
         var jobs = line.EffectiveJobList;
         return slotIndex >= 0 && slotIndex < jobs.Count
-                              && inventoryDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
+                              && inventoryDone.Contains(ProgressKeys.Step(line.CollectType, jobs[slotIndex], tier));
     }
 
     public bool IsStepDone(RelicLine line, int slotIndex, int tier) =>
@@ -150,7 +157,7 @@ public sealed class RelicOwnership
 
         var jobs = line.EffectiveJobList;
         return slotIndex >= 0 && slotIndex < jobs.Count
-                              && manualDone.Contains($"{line.CollectType}|{jobs[slotIndex]}|{tier}");
+                              && manualDone.Contains(ProgressKeys.Step(line.CollectType, jobs[slotIndex], tier));
     }
 }
 
@@ -224,7 +231,7 @@ public static class RelicStatusService
 
                     for (int completedTier = 0; completedTier <= tier; completedTier++)
                     {
-                        done.Add($"{line.CollectType}|{jobs[slot]}|{completedTier}");
+                        done.Add(ProgressKeys.Step(line.CollectType, jobs[slot], completedTier));
                     }
                 }
             }

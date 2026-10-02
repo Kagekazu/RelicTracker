@@ -145,14 +145,14 @@ internal static class ArmorShopResolver
 
         if (material.Amount > 0 && row.PerPiece != (int)material.Amount)
         {
-            if (row.PerPiece > 0 && row.SetTotal == row.PerPiece * 5)
+            if (row.PerPiece > 0 && row.SetTotal == row.PerPiece * ArmorCostCalculator.PiecesPerSet)
             {
-                row.SetTotal = (int)material.Amount * 5;
+                row.SetTotal = (int)material.Amount * ArmorCostCalculator.PiecesPerSet;
             }
 
-            if (row.PerPiece > 0 && row.AllTotal == row.PerPiece * 35)
+            if (row.PerPiece > 0 && row.AllTotal == row.PerPiece * ArmorCostCalculator.PiecesPerSet * ArmorCostCalculator.RoleSets)
             {
-                row.AllTotal = (int)material.Amount * 35;
+                row.AllTotal = (int)material.Amount * ArmorCostCalculator.PiecesPerSet * ArmorCostCalculator.RoleSets;
             }
 
             row.PerPiece = (int)material.Amount;
@@ -172,7 +172,7 @@ internal static class ArmorShopResolver
         var count = Math.Min(tier.Pieces, tier.PieceIds.Count);
         for (var i = 0; i < count; i++)
         {
-            if (slotFilter is int requiredSlot && i % 5 != requiredSlot)
+            if (slotFilter is int requiredSlot && i % ArmorCostCalculator.PiecesPerSet != requiredSlot)
             {
                 continue;
             }

@@ -7,6 +7,63 @@ public sealed partial class PluginUI
     private string collectCharacterIdInput = string.Empty;
     private bool collectInputInitialized;
 
+    private void DrawSettingsTab()
+    {
+        if (BeginPanel("settings_intro"))
+        {
+            ImGui.TextColored(MutedColor, "Install Allagan Tools for owned counts (bags, retainers, dresser, armoire — including replicas).");
+            ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
+            EndPanel();
+        }
+
+        DrawAllaganToolsSettingsSection();
+        DrawArtisanSettingsSection();
+
+        if (BeginPanel("settings_display"))
+        {
+            ImGui.TextColored(HeaderColor, "Display");
+            ImGui.Spacing();
+            var hidePhyseos = config.HidePhyseosRelics;
+            if (ImGui.Checkbox("Hide Physeos (Eureka Weapons)", ref hidePhyseos))
+            {
+                config.HidePhyseosRelics = hidePhyseos;
+                config.OnSettingChanged();
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(
+                    "Physeos is the Baldesion Arsenal upgrade after Eureka. Same look/stats outside Eureka, "
+                    + "and it does not count as a new relic for achievements. When enabled, Eureka counts as "
+                    + "finished on Overview, Relic, and Tracker.");
+            }
+
+            EndPanel();
+        }
+
+        if (BeginPanel("settings_collect"))
+        {
+            ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
+            ImGui.SameLine();
+            if (config.FfxivCollectCharacterId != 0)
+            {
+                DrawStatusChip(ffxivCollect.IsLoading ? "Syncing…" : "Linked", ffxivCollect.IsLoading ? StatusChipKind.Warn : StatusChipKind.Ok);
+            }
+            else
+            {
+                DrawStatusChip("Off", StatusChipKind.Muted);
+            }
+
+            ImGui.TextColored(
+                MutedColor,
+                "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
+                + "Allagan Tools already covers relics and replicas you still own.");
+            ImGui.Spacing();
+            DrawCollectSection();
+            EndPanel();
+        }
+    }
+
     private void DrawCollectSection()
     {
         if (!collectInputInitialized)
@@ -17,7 +74,7 @@ public sealed partial class PluginUI
             collectInputInitialized = true;
         }
 
-        ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
+        RefreshCollectIfStale();
 
         ImGui.TextColored(MutedColor, "Read-only profile sync — use when relics are no longer in your inventory.");
         ImGui.Spacing();
@@ -84,46 +141,6 @@ public sealed partial class PluginUI
         }
     }
 
-    private void TriggerProgressRecheck()
-    {
-        var collectLinked = config.FfxivCollectCharacterId != 0;
-        if (!collectLinked && !AllaganToolsIpc.IsReady)
-        {
-            return;
-        }
-
-        InvalidateOwnershipCache();
-
-        if (collectLinked)
-        {
-            ffxivCollect.ForceRefresh(config.FfxivCollectCharacterId);
-        }
-    }
-
-    private void DrawProgressRecheckButton()
-    {
-        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
-        {
-            return;
-        }
-
-        ImGui.SameLine();
-        if (ImGui.Button("Recheck"))
-        {
-            TriggerProgressRecheck();
-        }
-
-        if (ImGui.IsItemHovered())
-        {
-            var tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
-                ? "Refresh FFXIV Collect and re-read Allagan Tools inventory counts."
-                : config.FfxivCollectCharacterId != 0
-                    ? "Fetch the latest relic progress from FFXIV Collect."
-                    : "Re-read owned relic items (and replicas) from Allagan Tools inventory.";
-            ImGui.SetTooltip(tooltip);
-        }
-    }
-
     private void DrawAllaganToolsSettingsSection()
     {
         if (!BeginPanel("settings_at"))
@@ -167,40 +184,5 @@ public sealed partial class PluginUI
         }
 
         EndPanel();
-    }
-
-    private void DrawArtisanCraftButton(RelicLine line, string stepName, int slotIndex)
-    {
-        if (!string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal) || slotIndex > 7)
-        {
-            return;
-        }
-
-        if (!ArtisanIpc.TryGetRelicToolListId(stepName, slotIndex, out _))
-        {
-            return;
-        }
-
-        using (ImRaii.Disabled(ArtisanIpc.IsBusy()))
-        {
-            if (ImGui.Button("Craft with Artisan"))
-            {
-                if (ArtisanIpc.TryStartRelicToolList(stepName, slotIndex, out string? error))
-                {
-                    Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", stepName);
-                }
-                else if (!string.IsNullOrWhiteSpace(error))
-                {
-                    Svc.Log.Warning("[RelicTracker] {Error}", error);
-                }
-            }
-        }
-
-        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-        {
-            ImGui.SetTooltip(
-                "Starts Artisan's premade list for this step (precrafts and collectables).\n"
-                + "Scrip vendor mats (Select / Oddly Specific) are not included — buy those first.");
-        }
     }
 }

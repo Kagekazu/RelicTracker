@@ -35,6 +35,9 @@ public sealed class ExpansionMaterialRow
     [JsonConverter(typeof(FlexibleDoubleJsonConverter))]
     public double? PerUnit { get; set; }
 
+    [JsonIgnore]
+    public uint PerUnitCount => (uint)Math.Max(0, Math.Round(PerUnit ?? 0));
+
     [JsonPropertyName("purchase")]
     public MaterialPurchase? Purchase { get; set; }
 

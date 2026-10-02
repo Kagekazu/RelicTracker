@@ -7,11 +7,100 @@ public sealed partial class PluginUI
     private const ImGuiTableFlags ShoppingTableFlags =
         ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg;
 
+    private string materialFilter = string.Empty;
     private string? cachedShoppingExpansionId;
     private string? cachedShoppingLineFilter;
     private int cachedShoppingGeneration;
     private long cachedShoppingOwnedStamp;
     private List<ShoppingMaterialRow>? cachedShoppingMaterials;
+
+    private void DrawTrackerTab()
+    {
+        trackerTabVisible = true;
+        RefreshCollectIfStale();
+
+        DrawTabIntro("Shopping list for unfinished jobs. Open Relic for per-job steps and notes.");
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("Expansion");
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(180);
+        if (ImGui.BeginCombo("##expansion-tracker", ExpansionNames.LongName(config.SelectedExpansionId)))
+        {
+            foreach (var expansionId in data.Manifest.Expansions)
+            {
+                if (ImGui.Selectable(ExpansionNames.LongName(expansionId), expansionId == config.SelectedExpansionId))
+                {
+                    config.SelectedExpansionId = expansionId;
+                    config.TrackerLineFilter = string.Empty;
+                    config.OnSettingChanged();
+                }
+            }
+
+            ImGui.EndCombo();
+        }
+
+        List<RelicLine> lines = [.. catalog.LinesFor(config.SelectedExpansionId)];
+        var multiLine = lines.Count > 1;
+        if (!multiLine)
+        {
+            if (!string.IsNullOrEmpty(config.TrackerLineFilter))
+            {
+                config.TrackerLineFilter = string.Empty;
+                config.OnSettingChanged();
+            }
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(config.TrackerLineFilter) && lines.All(l => l.CollectType != config.TrackerLineFilter))
+            {
+                config.TrackerLineFilter = string.Empty;
+            }
+
+            ImGui.SameLine();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted("Line");
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(190);
+            var focusLabel = string.IsNullOrEmpty(config.TrackerLineFilter) ? "All lines" : config.TrackerLineFilter;
+            if (ImGui.BeginCombo("##line-tracker", focusLabel))
+            {
+                if (ImGui.Selectable("All lines", string.IsNullOrEmpty(config.TrackerLineFilter)))
+                {
+                    config.TrackerLineFilter = string.Empty;
+                    config.OnSettingChanged();
+                }
+
+                foreach (var line in lines)
+                {
+                    if (ImGui.Selectable(line.CollectType, line.CollectType == config.TrackerLineFilter))
+                    {
+                        config.TrackerLineFilter = line.CollectType;
+                        config.OnSettingChanged();
+                    }
+                }
+
+                ImGui.EndCombo();
+            }
+        }
+
+        ImGui.Spacing();
+
+        var hideComplete = config.HideCompleteMaterials;
+        if (ImGui.Checkbox("Hide finished materials", ref hideComplete))
+        {
+            config.HideCompleteMaterials = hideComplete;
+            config.OnSettingChanged();
+        }
+
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(180);
+        ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
+
+        EndStickyHeader();
+
+        DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
+    }
 
     private void InvalidateShoppingCache()
     {
