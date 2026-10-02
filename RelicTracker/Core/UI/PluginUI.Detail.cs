@@ -1073,8 +1073,7 @@ public sealed partial class PluginUI
         }
 
         // On tool lines the material flag columns line up with the relic job slots, so a Fisher
-        // only sees fishing parts and crafters don't see them. Weapon-line flags are spreadsheet
-        // artifacts (e.g. every Eureka material is flagged for one stray column), so don't filter.
+        // only sees fishing parts and crafters don't see them. Weapon-line flags are placeholders.
         var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
 
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
@@ -1102,7 +1101,7 @@ public sealed partial class PluginUI
             }
 
             var name = row.Material?.Trim();
-            if (!MaterialFilters.IsTrackableMaterial(name) || !seen.Add(name!))
+            if (string.IsNullOrWhiteSpace(name) || !seen.Add(name))
             {
                 continue;
             }
