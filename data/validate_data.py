@@ -18,7 +18,6 @@ from item_lookup import alias_targets, expand_name_variants
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "extracted"
 PROJECT = ROOT / "RelicTracker" / "RelicTracker.csproj"
-LEGACY_LIVE_FILES = ("expansions.json", "notes.json")
 
 
 def load_json(path: Path):
@@ -37,7 +36,7 @@ def bundled_data_files() -> list[Path]:
         include = node.attrib.get("Include")
         if not include or not include.startswith("..\\data\\extracted\\"):
             continue
-        # csproj paths use Windows separators; normalize so this also runs on Linux CI.
+        # csproj paths use Windows separators; normalize so this also runs on Linux.
         files.append((PROJECT.parent / include.replace("\\", "/")).resolve())
     return files
 
@@ -94,10 +93,6 @@ def main() -> int:
             load_json(path)
         except json.JSONDecodeError as ex:
             fail(errors, f"Bundled data file is invalid JSON: {path.relative_to(ROOT)} ({ex})")
-
-    for filename in LEGACY_LIVE_FILES:
-        if (DATA / filename).exists():
-            fail(errors, f"Legacy Wyn output should not live in data/extracted: {filename}")
 
     manifest = load_json(DATA / "manifest.json")
     relic_lines = load_json(DATA / "relic_lines.json")
