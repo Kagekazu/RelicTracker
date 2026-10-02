@@ -114,8 +114,8 @@ public sealed partial class PluginUI
         var header = jobsTotal == 0
             ? title
             : allDone
-                ? $"{title} — done"
-                : $"{title} — {jobsComplete}/{jobsTotal} maxed";
+                ? $"{title} - done"
+                : $"{title} - {jobsComplete}/{jobsTotal} maxed";
 
         var headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
         if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", headerFlags))
@@ -128,7 +128,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        // End ImGui tables before EndPanel — ending the child first crashes ImGui.
+        // End ImGui tables before EndPanel - ending the child first crashes ImGui.
         using (var table = ImRaii.Table(
             $"OverviewLines_{expansionId}",
             4,
@@ -201,7 +201,7 @@ public sealed partial class PluginUI
 
     private static string BuildArmorTooltip(ArmorLine armor, RelicOwnership ownership)
     {
-        List<string> lines = [$"{armor.LineName} — pieces owned per set:"];
+        List<string> lines = [$"{armor.LineName} - pieces owned per set:"];
         foreach (var set in armor.Sets)
         {
             lines.Add(string.Empty);
@@ -282,7 +282,7 @@ public sealed partial class PluginUI
 
         if (frontiers.Count == 0)
         {
-            return "—";
+            return "-";
         }
 
         List<string> parts = [.. frontiers.Select(frontier => $"{frontier.Count} on {frontier.Step}")];

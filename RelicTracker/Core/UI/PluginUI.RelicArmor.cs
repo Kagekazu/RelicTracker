@@ -34,7 +34,7 @@ public sealed partial class PluginUI
         {
             DrawStatusChip("Manual", StatusChipKind.Muted);
             ImGui.SameLine();
-            ImGui.TextColored(MutedColor, "No auto-tracking yet — expand a set below to tick pieces, or connect Allagan Tools in Settings.");
+            ImGui.TextColored(MutedColor, "No auto-tracking yet - expand a set below to tick pieces, or connect Allagan Tools in Settings.");
         }
     }
 
@@ -48,7 +48,7 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(HeaderColor, armor.LineName);
             ImGui.SameLine();
-            ImGui.TextColored(complete ? GoodColor : MutedColor, $"— {owned}/{total} pieces");
+            ImGui.TextColored(complete ? GoodColor : MutedColor, $"- {owned}/{total} pieces");
             if (armor.Sets.Count > 1)
             {
                 ImGui.SameLine();
@@ -108,7 +108,7 @@ public sealed partial class PluginUI
                 foreach (var tier in set.Tiers)
                 {
                     var tierOwned = ownership.OwnedPieceCount(tier.CollectType, tier.Pieces);
-                    var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+                    var label = multiTier ? $"{set.Name} - {tier.Label}" : set.Name;
                     if (!ImGui.CollapsingHeader($"{label} ({tierOwned}/{tier.Pieces})###armor_manual_{tier.CollectType}"))
                     {
                         continue;
@@ -151,9 +151,9 @@ public sealed partial class PluginUI
                 }
 
                 var missing = tier.Pieces - namedOwned;
-                var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+                var label = multiTier ? $"{set.Name} - {tier.Label}" : set.Name;
                 if (!ImGui.CollapsingHeader(
-                        $"Pieces — {label} ({namedOwned}/{tier.Pieces}, {missing} left)###armor_pieces_{tier.CollectType}"))
+                        $"Pieces - {label} ({namedOwned}/{tier.Pieces}, {missing} left)###armor_pieces_{tier.CollectType}"))
                 {
                     continue;
                 }
@@ -218,7 +218,7 @@ public sealed partial class PluginUI
             ImGui.TableNextRow();
 
             ImGui.TableNextColumn();
-            var label = multiTier ? $"{set.Name} — {tier.Label}" : set.Name;
+            var label = multiTier ? $"{set.Name} - {tier.Label}" : set.Name;
             ImGui.TextColored(fraction >= 1f ? GoodColor : MutedColor, label);
             var hovered = ImGui.IsItemHovered();
 

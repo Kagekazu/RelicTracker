@@ -309,7 +309,7 @@ public sealed partial class PluginUI
         }
         else
         {
-            ImGui.TextColored(MutedColor, "—");
+            ImGui.TextColored(MutedColor, "-");
         }
 
         ImGui.TableNextColumn();
@@ -365,7 +365,7 @@ public sealed partial class PluginUI
 
     private void DrawArmoursList(string expansionId, IReadOnlyList<ArmorCostRow> costs, Func<uint, uint> ownedLookup)
     {
-        if (!DrawCollapsingSection($"{expansionId}|Armours", "Armours — currency per stage", true))
+        if (!DrawCollapsingSection($"{expansionId}|Armours", "Armours - currency per stage", true))
         {
             return;
         }
@@ -412,7 +412,7 @@ public sealed partial class PluginUI
             }
 
             ImGui.TableNextColumn();
-            ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "—");
+            ImGui.TextUnformatted(cost.AllTotal > 0 ? cost.AllTotal.ToString() : "-");
 
             (uint ownedInventory, uint ownedArmorCredit, uint owned) = resolved
                 ? ArmorCurrencyOwned(expansionId, cost, ownedLookup)
@@ -425,7 +425,7 @@ public sealed partial class PluginUI
             }
             else
             {
-                ImGui.TextColored(MutedColor, "—");
+                ImGui.TextColored(MutedColor, "-");
             }
 
             ImGui.TableNextColumn();
@@ -436,7 +436,7 @@ public sealed partial class PluginUI
             }
             else
             {
-                ImGui.TextColored(MutedColor, "—");
+                ImGui.TextColored(MutedColor, "-");
             }
 
             if (!rowHovered)
@@ -445,7 +445,7 @@ public sealed partial class PluginUI
             }
 
             var perPiece = cost.PerPiece > 0 ? cost.PerPiece.ToString() : "varies";
-            var detail = $"Per piece: {perPiece} {currencyLabel}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "—")}";
+            var detail = $"Per piece: {perPiece} {currencyLabel}\nPer set: {(cost.SetTotal > 0 ? cost.SetTotal.ToString() : "-")}";
             if (!string.IsNullOrWhiteSpace(cost.Note))
             {
                 detail += $"\n\n{cost.Note}";
@@ -522,7 +522,7 @@ public sealed partial class PluginUI
         if (unresolved > 0)
         {
             ImGui.SameLine();
-            ImGui.TextColored(WarningColor, $"({unresolved} items couldn't be matched — Owned won't count)");
+            ImGui.TextColored(WarningColor, $"({unresolved} items couldn't be matched - Owned won't count)");
         }
 
         ImGui.TextColored(MutedColor,

@@ -256,7 +256,7 @@ public sealed partial class PluginUI
             return $"{fillNoun} fill from inventory (Allagan Tools).";
         }
 
-        return $"{fillNoun} fill from FFXIV Collect — for {orphanNoun} no longer in inventory.";
+        return $"{fillNoun} fill from FFXIV Collect - for {orphanNoun} no longer in inventory.";
     }
 
     private void DrawPluginConnectionStatus(string label, bool installed, bool enabled, bool ready)
@@ -286,7 +286,7 @@ public sealed partial class PluginUI
             DrawStatusChip("Loading", StatusChipKind.Warn);
             ImGui.SameLine();
             ImGui.TextColored(WarningColor, label == "Artisan"
-                ? "Artisan found — relic craft lists need a newer Artisan build."
+                ? "Artisan found - relic craft lists need a newer Artisan build."
                 : $"{label} is loading inventory data…");
             return;
         }
@@ -349,7 +349,7 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             ImGui.TextColored(
                 reward.Owned > 0 ? GoodColor : MutedColor,
-                reward.Resolved ? reward.Owned.ToString() : "—");
+                reward.Resolved ? reward.Owned.ToString() : "-");
         }
 
         ImGui.Spacing();

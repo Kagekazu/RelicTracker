@@ -1,6 +1,6 @@
 """
-Generates data/extracted/tool_extra_materials.json — the curated material source for relic
-weapons and DoH/DoL relic tools — and refreshes item IDs in armor_costs.json.
+Generates data/extracted/tool_extra_materials.json - the curated material source for relic
+weapons and DoH/DoL relic tools - and refreshes item IDs in armor_costs.json.
 
 One row per (step, material, discipline); on tool lines the `jobs` flags pick the relic job
 slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH). Weapon-line flags are placeholders (all true).
@@ -29,7 +29,7 @@ def add(step, material, per, *slots, role=None, craft_of=None, purchase=None):
     if purchase: row["purchase"]=purchase
     rows.append(row)
 
-# ===== Lucis Tools (ARR) — shared currencies =====
+# ===== Lucis Tools (ARR) - shared currencies =====
 rows.append({"step":"Supra","material":"Fieldcraft Demimateria III","perUnit":2,"jobs":ALL})
 rows.append({"step":"Supra","material":"Mastercraft Demimateria","perUnit":1,"jobs":ALL})
 rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL,"purchase":{"currency":"GC seals","unit":4000}})
@@ -60,7 +60,7 @@ def craft_tree(step, craft_cnt, data):
         for dname, dtotal in entry.get("direct", []):
             add(step, dname, dtotal, s, craft_of=coll)
 
-# ===== Skysteel +1 (IL455) — craft 20 =====
+# ===== Skysteel +1 (IL455) - craft 20 =====
 crafter("Skysteel +1",20,20,{
  "CRP":("Oddly Specific Petrified Log",[("White Ash Log",20)],"Oddly Specific Petrified Orb"),
  "BSM":("Oddly Specific Iron Sand",[("Manasilver Sand",20)],"Oddly Specific Rivets"),
@@ -75,7 +75,7 @@ add("Skysteel +1","Oddly Specific Obsidian",340,SLOT["MIN"]); add("Skysteel +1",
 add("Skysteel +1","Oddly Specific Latex",340,SLOT["BTN"]); add("Skysteel +1","Oddly Specific Fossil Dust",120,SLOT["BTN"])
 add("Skysteel +1","Thinker's Coral",40,SLOT["FSH"])
 
-# ===== Dragonsung (IL475) — craft 30 =====
+# ===== Dragonsung (IL475) - craft 30 =====
 crafter("Dragonsung",30,30,{
  "CRP":("Oddly Specific Petrified Log",[("Sandteak Log",120)],"Oddly Specific Shaft"),
  "BSM":("Oddly Specific Iron Sand",[("Titancopper Ore",120),("Titanium Ore",30)],"Oddly Specific Fitting"),
@@ -90,7 +90,7 @@ add("Dragonsung","Oddly Specific Dark Matter",510,SLOT["MIN"]); add("Dragonsung"
 add("Dragonsung","Oddly Specific Amber",510,SLOT["BTN"]); add("Dragonsung","Oddly Specific Bauble",180,SLOT["BTN"])
 add("Dragonsung","Dragonspine",60,SLOT["FSH"])
 
-# ===== Augmented Dragonsung (IL485) — best case 18 (gathered 36) =====
+# ===== Augmented Dragonsung (IL485) - best case 18 (gathered 36) =====
 crafter("Augmented Dragonsung",18,18,{
  "CRP":("Oddly Specific Cedar Log",[("Lignum Vitae Log",36)],"Oddly Specific Cedar Lumber"),
  "BSM":("Oddly Specific Coerthan Iron Ore",[("Dimythrite Ore",36)],"Oddly Specific Iron Nails"),
@@ -105,7 +105,7 @@ add("Augmented Dragonsung","Oddly Specific Schorl",500,SLOT["MIN"]); add("Augmen
 add("Augmented Dragonsung","Oddly Specific Dark Chestnut Log",500,SLOT["BTN"]); add("Augmented Dragonsung","Oddly Specific Leafborne Aethersand",180,SLOT["BTN"])
 add("Augmented Dragonsung","Petal Shell",60,SLOT["FSH"])
 
-# ===== Skysung (IL500) — best case 21 =====
+# ===== Skysung (IL500) - best case 21 =====
 crafter("Skysung",21,21,{
  "CRP":("Oddly Specific Cedar Log",[("Lignum Vitae Log",84)],"Oddly Specific Cedar Plank"),
  "BSM":("Oddly Specific Coerthan Iron Ore",[("Dimythrite Ore",84),("Mythrite Ore",21)],"Oddly Specific Iron Ingot"),
@@ -120,7 +120,7 @@ add("Skysung","Oddly Specific Primordial Ore",600,SLOT["MIN"]); add("Skysung","O
 add("Skysung","Oddly Specific Primordial Log",600,SLOT["BTN"]); add("Skysung","Oddly Specific Primordial Resin",200,SLOT["BTN"])
 add("Skysung","Allagan Hunter",70,SLOT["FSH"])
 
-# ===== Skybuilders' (IL510) — best case 20 (gathered 100 each, Diadem) =====
+# ===== Skybuilders' (IL510) - best case 20 (gathered 100 each, Diadem) =====
 AG="Approved Grade 4 Artisanal Skybuilders' "
 crafter("Skybuilders'",20,20,{
  "CRP":("Oddly Delicate Pine Log",[(AG+"Log",100),(AG+"Barbgrass",100)],"Oddly Delicate Pine Lumber"),
@@ -405,13 +405,13 @@ SPL_FISH={
 for st,fishes in SPL_FISH.items():
     for fname,fcnt in fishes: add(st,fname,fcnt,SLOT["FSH"])
 
-# ===== Resplendent Tools (ShB) — single "Resplendent" step =====
+# ===== Resplendent Tools (ShB) - single "Resplendent" step =====
 # Crafters: buy Material A (25 Purple Crafters' Scrips each) and craft up the chain
 # (Component A -> Material B -> Component B -> Material C -> Component C -> Final Material);
 # 60 Final Material buys the tool. Best case (max collectability) = 30 Material A/class.
 # Intermediates (Component A/B/C, Material B/C) are 1-2 per turn-in (RNG) and transient, so we
 # track only the two stable endpoints: Material A (the scrip buy) and Final Material (the gate).
-# Gatherers earn their tools from gathering-log achievements (no materials) — note only.
+# Gatherers earn their tools from gathering-log achievements (no materials) - note only.
 CLASS_NAME={"CRP":"Carpenter","BSM":"Blacksmith","ARM":"Armorer","GSM":"Goldsmith",
             "LTW":"Leatherworker","WVR":"Weaver","ALC":"Alchemist","CUL":"Culinarian"}
 for cls in C:
@@ -419,10 +419,10 @@ for cls in C:
     add("Resplendent", f"Resplendent {nm}'s Material A", 30, s)
     add("Resplendent", f"Resplendent {nm}'s Final Material", 60, s)
 
-# Cosmic Tools (DT) have no materials — upgraded via Cosmic Exploration research data (notes only).
+# Cosmic Tools (DT) have no materials - upgraded via Cosmic Exploration research data (notes only).
 
 # ===== ARR Zodiac weapons (A Relic Reborn) =====
-# Activity relic (quests, FATEs, dungeons, books) — notes carry most of it; only stockpilable items
+# Activity relic (quests, FATEs, dungeons, books) - notes carry most of it; only stockpilable items
 # get rows. Weapon-line `jobs` flags are ignored (the Tracker scales by all jobs; the Relic tab
 # shows all step items), so the flag array is just a placeholder.
 arr_rows=[]
@@ -460,7 +460,7 @@ arr_add("Zodiac", "Brass Kettle", 1)          # 100,000 gil
 for craft in ["Perfect Firewood","Perfect Pestle","Perfect Mortar","Furnace Ring",
               "Perfect Vellum","Perfect Cloth","Perfect Pounce","Tailor-made Eel Pie"]:
     arr_add("Zodiac", craft, 1)               # HQ Master Recipe I crafts (desynth ingredients)
-# Sub-quest rewards (repeatable before Nexus) — owning one credits its turn-in materials.
+# Sub-quest rewards (repeatable before Nexus) - owning one credits its turn-in materials.
 zodiac_reward("Book of Skylight",
     "Bombard Core", "Sacred Spring Water", "Bronze Lake Crystal", "Furnace Ring", "Perfect Firewood")
 zodiac_reward("Zodium",
@@ -502,29 +502,29 @@ hw_add("Lux", "Archaic Enchanted Ink", 1)
 sb_rows=[]
 def sb_add(step, material, per):
     sb_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*15})
-# Eureka Anemos — Protean Crystal (1300 total) + 3 Pazuzu's Feather.
+# Eureka Anemos - Protean Crystal (1300 total) + 3 Pazuzu's Feather.
 sb_add("Base", "Protean Crystal", 100)
 sb_add("Base +1", "Protean Crystal", 400)
 sb_add("Base +2", "Protean Crystal", 800)
 sb_add("Anemos", "Pazuzu's Feather", 3)
-# Eureka Pagos — Frosted Protean Crystal (31 total) + 500 Pagos Crystal + 5 Louhi's Ice.
+# Eureka Pagos - Frosted Protean Crystal (31 total) + 500 Pagos Crystal + 5 Louhi's Ice.
 sb_add("Pagos", "Frosted Protean Crystal", 5)
 sb_add("Pagos +1", "Frosted Protean Crystal", 10)
 sb_add("Pagos +1", "Pagos Crystal", 500)
 sb_add("Elemental", "Frosted Protean Crystal", 16)
 sb_add("Elemental", "Louhi's Ice", 5)
-# Eureka Pyros — Pyros Crystal (650 total) + 5 Penthesilea's Flame (+ Logos Actions note).
+# Eureka Pyros - Pyros Crystal (650 total) + 5 Penthesilea's Flame (+ Logos Actions note).
 sb_add("Elemental +1", "Pyros Crystal", 150)
 sb_add("Elemental +2", "Pyros Crystal", 200)
 sb_add("Pyros", "Pyros Crystal", 300)
 sb_add("Pyros", "Penthesilea's Flame", 5)
-# Eureka Hydatos — Hydatos Crystal (350 total) + 5 Crystalline Scale.
+# Eureka Hydatos - Hydatos Crystal (350 total) + 5 Crystalline Scale.
 sb_add("Hydatos", "Hydatos Crystal", 50)
 sb_add("Hydatos +1", "Hydatos Crystal", 100)
 sb_add("Base (Physeos)", "Hydatos Crystal", 100)
 sb_add("Eureka", "Hydatos Crystal", 100)
 sb_add("Eureka", "Crystalline Scale", 5)
-# Physeos — 100 Eureka Fragment, dropped only in The Baldesion Arsenal (~28/clear, ~4 runs).
+# Physeos - 100 Eureka Fragment, dropped only in The Baldesion Arsenal (~28/clear, ~4 runs).
 sb_add("Physeos", "Eureka Fragment", 100)
 
 # ===== ShB Resistance weapons (Bozja) ===== Memory-grind relic. 17 jobs (flags ignored).
@@ -551,10 +551,10 @@ ew_add("Amazing", "Complementary Chondrite")
 ew_add("Majestic", "Amplifying Achondrite")
 ew_add("Mandervillous", "Cosmic Crystallite")
 
-# ===== DT Phantom weapons (Occult Crescent) — 5 tiers; tomestone arcanites on the first four. =====
+# ===== DT Phantom weapons (Occult Crescent) - 5 tiers; tomestone arcanites on the first four. =====
 # Per weapon (tiers 1-4): exchange 1,500 Allagan Tomestones of Mathematics for 3 arcanites (Ermina,
 # Phantom Village) + the previous tier's weapon, traded to Dodokkuli. Occultum (IL795) is a free
-# conversion from Eclipticum via 'Final Phantasm' / Dodokkuli — no tracked material. Each earlier
+# conversion from Eclipticum via 'Final Phantasm' / Dodokkuli - no tracked material. Each earlier
 # tier has a one-time unlock grind (demiatmas / aether array / crystal paste / North Horn
 # dispellers) -> notes. 21 jobs (flags ignored).
 dt_rows=[]

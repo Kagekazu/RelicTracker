@@ -67,7 +67,7 @@ public sealed partial class PluginUI
             ImGui.TextUnformatted("Relic");
             ImGui.SameLine();
             ImGui.SetNextItemWidth(200);
-            var relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "—";
+            var relicLabel = armor is not null ? $"{armor.LineName} (armor)" : weapon?.CollectType ?? "-";
             if (ImGui.BeginCombo("##relic-detail", relicLabel))
             {
                 foreach (var candidate in weaponLines)
@@ -132,7 +132,7 @@ public sealed partial class PluginUI
         ImGui.TextUnformatted("Job");
         ImGui.SameLine();
         ImGui.SetNextItemWidth(90);
-        if (ImGui.BeginCombo("##job-detail", string.IsNullOrEmpty(job) ? "—" : job))
+        if (ImGui.BeginCombo("##job-detail", string.IsNullOrEmpty(job) ? "-" : job))
         {
             foreach (var candidate in jobList)
             {
@@ -330,11 +330,11 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         if (complete)
         {
-            ImGui.TextColored(GoodColor, "— complete");
+            ImGui.TextColored(GoodColor, "- complete");
         }
         else
         {
-            ImGui.TextColored(WarningColor, $"— up next: {line.StepName(currentTier)}");
+            ImGui.TextColored(WarningColor, $"- up next: {line.StepName(currentTier)}");
         }
 
         ImGui.Spacing();
@@ -384,7 +384,7 @@ public sealed partial class PluginUI
             if (string.IsNullOrWhiteSpace(note))
             {
                 ImGui.TextWrapped(
-                    "No item breakdown recorded for this step — it's mostly tomestones, quests or other tasks. "
+                    "No item breakdown recorded for this step - it's mostly tomestones, quests or other tasks. "
                     + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually.");
             }
 
@@ -435,7 +435,7 @@ public sealed partial class PluginUI
         {
             ImGui.SetTooltip(
                 "Starts Artisan's premade list for this step (precrafts and collectables).\n"
-                + "Scrip vendor mats (Select / Oddly Specific) are not included — buy those first.");
+                + "Scrip vendor mats (Select / Oddly Specific) are not included - buy those first.");
         }
     }
 
@@ -517,7 +517,7 @@ public sealed partial class PluginUI
             }
             else
             {
-                ImGui.TextWrapped(string.IsNullOrWhiteSpace(item.Where) ? "—" : item.Where);
+                ImGui.TextWrapped(string.IsNullOrWhiteSpace(item.Where) ? "-" : item.Where);
             }
 
             ImGui.TableNextColumn();
@@ -536,7 +536,7 @@ public sealed partial class PluginUI
             }
             else
             {
-                ImGui.TextColored(MutedColor, "—");
+                ImGui.TextColored(MutedColor, "-");
             }
 
             ImGui.TableNextColumn();
