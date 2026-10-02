@@ -23,7 +23,7 @@ public sealed partial class PluginUI
     private long lastInventoryCountsInvalidateTick;
 
     /// <summary>
-    ///     Eureka (and other loot-heavy zones) fire this constantly. Do not wipe relic ownership here —
+    ///     Eureka (and other loot-heavy zones) fire this constantly. Do not wipe relic ownership here -
     ///     that rebuild walks every relic via Allagan Tools and used to hitch frames. Material counts are
     ///     refreshed on the next Draw with a short debounce; ownership still rolls on the 10s stamp.
     /// </summary>

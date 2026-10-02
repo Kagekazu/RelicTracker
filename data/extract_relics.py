@@ -64,8 +64,8 @@ STEP_NAMES = {
 # Per-line job slot lists, ordered to match FFXIV Collect's within-tier slot order,
 # verified against tier-0 relic names (weapon types identify the job: DT slot 12 is the
 # "Star Globe" = AST, slot 9 the "Staff" = BLM; EW slot 17 "Milpreves" = SGE nouliths,
-# slot 18 "Scythe" = RPR). Casters run WHM, BLM, SMN, SCH, then AST — classic class
-# order with AST appended — and SGE sits before RPR. Length must equal `jobs`.
+# slot 18 "Scythe" = RPR). Casters run WHM, BLM, SMN, SCH, then AST - classic class
+# order with AST appended - and SGE sits before RPR. Length must equal `jobs`.
 DOH_DOL = ["CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL", "MIN", "BTN", "FSH"]
 JOB_LISTS = {
     "A Relic Reborn": ["PLD", "MNK", "WAR", "DRG", "BRD", "WHM", "BLM", "SMN", "SCH", "NIN"],
@@ -163,9 +163,9 @@ def build_lines(relics: list[dict]) -> list[dict]:
         ordered = sorted(entry["relics"])
         total = len(ordered)
         tier_count = total // jobs if jobs else 0
-        # Tier-0 relic names in slot order — used at runtime to resolve slot -> job.
+        # Tier-0 relic names in slot order - used at runtime to resolve slot -> job.
         slot_relics = [relic_name for _, relic_name in ordered[:jobs]]
-        # Full FFXIV Collect order — tier = index // jobs, slot = index % jobs.
+        # Full FFXIV Collect order - tier = index // jobs, slot = index % jobs.
         relic_names = [relic_name for _, relic_name in ordered]
         authored = STEP_NAMES.get(name, [])
         steps = [

@@ -52,7 +52,7 @@ internal static class AllaganToolsIpc
 
     public static uint GetOwnedCount(uint itemId, bool activeCharacterOnly)
     {
-        // Skip IsReady (reflection + IPC ping) — already gated once at bind time.
+        // Skip IsReady (reflection + IPC ping) - already gated once at bind time.
         if (!_ipcBound || _itemCountOwned == null)
         {
             return 0;

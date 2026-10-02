@@ -6,7 +6,7 @@
       "perPiece": 50,
       "setTotal": 250,
       "allTotal": 3750,
-      "note": "Eurekan/Anemos line — from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets",
+      "note": "Eurekan/Anemos line - from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets",
       "currencyIds": [
         21801
       ]
@@ -39,7 +39,7 @@
       "perPiece": 150,
       "setTotal": 750,
       "allTotal": 11250,
-      "note": "final stage — dyeable, 5 materia slots; 150 every slot. All = 15 job sets",
+      "note": "final stage - dyeable, 5 materia slots; 150 every slot. All = 15 job sets",
       "currencyIds": [
         21803
       ]
@@ -85,7 +85,7 @@
       "perPiece": 28,
       "setTotal": 98,
       "allTotal": 686,
-      "note": "body/legs 28, head/hands/feet 14 — Resistance Supplier, Southern Front. All = 7 role sets",
+      "note": "body/legs 28, head/hands/feet 14 - Resistance Supplier, Southern Front. All = 7 role sets",
       "currencyIds": [
         31351
       ]
@@ -111,7 +111,7 @@
       "perPiece": 3,
       "setTotal": 12,
       "allTotal": 84,
-      "note": "body/legs 3, others 2 — Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets",
+      "note": "body/legs 3, others 2 - Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets",
       "currencyIds": [
         32180
       ]
@@ -177,7 +177,7 @@
       "perPiece": 9,
       "setTotal": 36,
       "allTotal": 252,
-      "note": "body/legs 9, others 6 — Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets",
+      "note": "body/legs 9, others 6 - Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets",
       "currencyIds": [
         33796
       ]
@@ -190,7 +190,7 @@
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (South Horn) — 4,000 every slot. All = 7 role sets",
+      "note": "Occult Crescent (South Horn) - 4,000 every slot. All = 7 role sets",
       "currencyIds": [
         45043
       ]
@@ -245,7 +245,7 @@
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (North Horn) — 4,000 Enlightenment Silver Obol every slot. All = 7 role sets",
+      "note": "Occult Crescent (North Horn) - 4,000 Enlightenment Silver Obol every slot. All = 7 role sets",
       "currencyIds": [
         51975
       ]

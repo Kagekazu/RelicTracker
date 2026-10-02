@@ -11,7 +11,7 @@ public sealed partial class PluginUI
     {
         if (BeginPanel("settings_intro"))
         {
-            ImGui.TextColored(MutedColor, "Install Allagan Tools for owned counts (bags, retainers, dresser, armoire — including replicas).");
+            ImGui.TextColored(MutedColor, "Install Allagan Tools for owned counts (bags, retainers, dresser, armoire - including replicas).");
             ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
             EndPanel();
         }
@@ -76,7 +76,7 @@ public sealed partial class PluginUI
 
         RefreshCollectIfStale();
 
-        ImGui.TextColored(MutedColor, "Read-only profile sync — use when relics are no longer in your inventory.");
+        ImGui.TextColored(MutedColor, "Read-only profile sync - use when relics are no longer in your inventory.");
         ImGui.Spacing();
 
         ImGui.SetNextItemWidth(180);
