@@ -26,7 +26,7 @@ RAW_CACHE = ROOT / "extracted" / "_relics_index_raw.json"
 ITEM_CSV = ROOT / "extracted" / "_item.csv"
 API_URL = "https://ffxivcollect.com/api/relics?limit=3000"
 
-# Map FFXIV Collect's numeric expansion + type into Wyn's expansion tabs.
+# Map each FFXIV Collect relic type to the plugin's expansion tab.
 # Tools all live under the DoHDoL tab regardless of release expansion.
 TYPE_TO_EXPANSION = {
     "A Relic Reborn": "ARR",
@@ -241,7 +241,7 @@ def build_armor(relics: list[dict]) -> list[dict]:
                         "collectType": collect_type,
                         "label": label,
                         "pieces": len(piece_names),
-                        # Temporary: resolved to pieceIds in attach_armor_ids, then dropped.
+                        # Replaced by pieceIds in attach_armor_ids.
                         "pieceNames": piece_names,
                     }
                 )

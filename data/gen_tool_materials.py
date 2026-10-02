@@ -1,14 +1,16 @@
 """
 Generates data/extracted/tool_extra_materials.json — the curated material source for relic
-weapons and DoH/DoL relic tools. One row per (step, material, discipline);
-the `jobs` flag picks the relic job slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH).
-For crafter steps, `craft_tree()` emits a hierarchical tree: collectable, optional scrip row,
-precrafts with raw materials, and/or direct gathered materials. `crafter()` is shorthand for
-steps with scrip + direct only (no named precrafts).
-Collect and `craftOf` link rows. Collectability-gated steps use best-case (max collectability) counts.
-a tool chain; do not hand-edit the JSON.
+weapons and DoH/DoL relic tools — and refreshes item IDs in armor_costs.json.
+
+One row per (step, material, discipline); on tool lines the `jobs` flags pick the relic job
+slot (0-7 crafters, 8 MIN, 9 BTN, 10 FSH). Weapon-line flags are placeholders (all true).
+For crafter steps, `craft_tree()` emits collectable -> optional scrip row -> precrafts -> raw
+materials, linked through `craftOf`; `crafter()` is shorthand for scrip + direct materials only.
+Collectability-gated steps use best-case (max collectability) counts.
+
+Re-run after editing; do not hand-edit the JSON.
 """
-import json, os
+import json
 from pathlib import Path
 
 from item_lookup import attach_armor_costs, attach_tool_extra_materials, load_item_index
@@ -27,7 +29,7 @@ def add(step, material, per, *slots, role=None, craft_of=None, purchase=None):
     if purchase: row["purchase"]=purchase
     rows.append(row)
 
-# ---------------- ARR Lucis shared currencies (kept) ----------------
+# ===== Lucis Tools (ARR) — shared currencies =====
 rows.append({"step":"Supra","material":"Fieldcraft Demimateria III","perUnit":2,"jobs":ALL})
 rows.append({"step":"Supra","material":"Mastercraft Demimateria","perUnit":1,"jobs":ALL})
 rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL,"purchase":{"currency":"GC seals","unit":4000}})
@@ -134,7 +136,7 @@ add("Skybuilders'","Oddly Delicate Adamantite Ore",36,SLOT["MIN"]); add("Skybuil
 add("Skybuilders'","Oddly Delicate Feather",36,SLOT["BTN"]); add("Skybuilders'","Oddly Delicate Birch Log",750,SLOT["BTN"])
 add("Skybuilders'","Flintstrike",50,SLOT["FSH"]); add("Skybuilders'","Pickled Pom",50,SLOT["FSH"])
 
-# ===== Splendorous Tools (EW) — part 1: Augmented + Crystalline crafters =====
+# ===== Splendorous Tools (EW) =====
 # Splendorous (base IL570) = note only (Splendorous Coffer from the quest; extras 750 scrips).
 # Augmented (IL590): craft 20 first-tier collectables -> 60 splendorous components. Best case 20.
 crafter("Augmented",20,20,{
@@ -417,15 +419,12 @@ for cls in C:
     add("Resplendent", f"Resplendent {nm}'s Material A", 30, s)
     add("Resplendent", f"Resplendent {nm}'s Final Material", 60, s)
 
-# Cosmic Tools (DT) have NO materials — upgraded via Cosmic Exploration research data (notes only).
-# Drop Wyn's placeholder Cosmic/Stellar/Hyper rows so those steps are clean (notes carry them).
+# Cosmic Tools (DT) have no materials — upgraded via Cosmic Exploration research data (notes only).
 
-# ===== ARR Zodiac weapons (A Relic Reborn) — part 1: Relic / Zenith / Atma / Animus =====
-# Activity relic (quests, FATEs, dungeons, books) — notes carry most of it. Wyn's rows were shifted
-# one step (12 Atma under Zenith, 9 Books under Atma, Superior Enchanted Ink under Animus), so we
-# drop those steps and re-place the stockpilable items at their correct step. Weapon-line `jobs`
-# flags are ignored (the Tracker scales by all jobs; the Relic tab shows all step items), so the
-# flag array is just a placeholder. Books are held one at a time -> note only, not a row.
+# ===== ARR Zodiac weapons (A Relic Reborn) =====
+# Activity relic (quests, FATEs, dungeons, books) — notes carry most of it; only stockpilable items
+# get rows. Weapon-line `jobs` flags are ignored (the Tracker scales by all jobs; the Relic tab
+# shows all step items), so the flag array is just a placeholder.
 arr_rows=[]
 def arr_add(step, material, per, role=None, craft_of=None, purchase=None):
     row={"step":step,"material":material,"perUnit":per,"jobs":[True]*10}
@@ -472,10 +471,7 @@ zodiac_reward("Zodiac Scroll",
     "Bombard Core", "Sacred Spring Water", "Furite Sand", "Perfect Vellum", "Perfect Pounce")
 # Zeta: 12 Mahatma Light grind (held one at a time) -> note only.
 
-# ===== HW Anima weapons — part 1: Animated / Awoken / Anima / Hyperconductive =====
-# Wyn's HW data is scattered across wrong steps (Bone under Awoken, Aether Oil under Complete, etc.)
-# so we replace ALL 8 steps and place the stockpilable items correctly. Reconditioned / Sharpened /
-# Complete / Lux are left empty until part 2. 13 jobs; flag array is a placeholder (ignored).
+# ===== HW Anima weapons ===== 13 jobs (flags ignored).
 hw_rows=[]
 def hw_add(step, material, per):
     hw_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*13})
@@ -500,9 +496,9 @@ hw_add("Complete", "Pneumite", 15)
 # Lux: 1 Archaic Enchanted Ink (+ 12 Hard trials -> note).
 hw_add("Lux", "Archaic Enchanted Ink", 1)
 
-# ===== SB Eureka weapons — part 1: Base..Eureka (Physeos = part 2) =====
-# Catalog tracks all 15 sub-tiers; Wyn lumped totals at the major milestones. Place each sub-tier's
-# exact crystal cost. Real singular item names (zones via material_sources). 15 jobs (flags ignored).
+# ===== SB Eureka weapons =====
+# Catalog tracks all 15 sub-tiers; each gets its exact crystal cost. Farming zones come from
+# material_sources.json. 15 jobs (flags ignored).
 sb_rows=[]
 def sb_add(step, material, per):
     sb_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*15})
@@ -530,12 +526,8 @@ sb_add("Eureka", "Hydatos Crystal", 100)
 sb_add("Eureka", "Crystalline Scale", 5)
 # Physeos — 100 Eureka Fragment, dropped only in The Baldesion Arsenal (~28/clear, ~4 runs).
 sb_add("Physeos", "Eureka Fragment", 100)
-SB_STEPS=["Base","Base +1","Base +2","Anemos","Pagos","Pagos +1","Elemental",
-          "Elemental +1","Elemental +2","Pyros","Hydatos","Hydatos +1","Base (Physeos)","Eureka","Physeos"]
 
-# ===== ShB Resistance weapons (Bozja) — part 1: Resistance / Augmented / Recollection / Law's Order =====
-# Memory-grind relic; Wyn's data was correct here, just moved to the supplement with real singular
-# names (memory items). 17 jobs (flags ignored). Augmented Law's Order + Blade's = part 2.
+# ===== ShB Resistance weapons (Bozja) ===== Memory-grind relic. 17 jobs (flags ignored).
 shb_rows=[]
 def shb_add(step, material, per):
     shb_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*17})
@@ -548,11 +540,9 @@ shb_add("Augmented Law's Order", "Timeworn Artifact", 15)   # 3/Delubrum Reginae
 shb_add("Blade's", "Raw Emotion", 15)                       # Dalriada 3 / DR 2 / SB dungeon 1 / HoH
 # One-time grinds (1st: Haunting/Vexatious; 2nd: Zadnor Compact Axle etc.) + optional Aetherial
 # Sealant reallocation are one-time / optional, NOT per weapon -> notes only.
-# replaceSteps uses Wyn's step name "Augmented Law's" (catalog step is "Augmented Law's Order").
-SHB_STEPS=["Resistance","Augmented","Recollection","Law's Order","Augmented Law's","Blade's","Bozjan Haste"]
 
-# ===== EW Manderville weapons — each tier = 3 of a Poetics item (500 each) from Jubrunnah. =====
-# Wyn's data was correct; moved to the supplement for consistency. 19 jobs (flags ignored).
+# ===== EW Manderville weapons ===== Each tier = 3 of a Poetics item (500 each) from Jubrunnah.
+# 19 jobs (flags ignored).
 ew_rows=[]
 def ew_add(step, material):
     ew_rows.append({"step":step,"material":material,"perUnit":3,"jobs":[True]*19})
@@ -560,7 +550,6 @@ ew_add("Manderville", "Manderium Meteorite")
 ew_add("Amazing", "Complementary Chondrite")
 ew_add("Majestic", "Amplifying Achondrite")
 ew_add("Mandervillous", "Cosmic Crystallite")
-EW_STEPS=["Manderville","Amazing","Majestic","Mandervillous"]
 
 # ===== DT Phantom weapons (Occult Crescent) — 5 tiers; tomestone arcanites on the first four. =====
 # Per weapon (tiers 1-4): exchange 1,500 Allagan Tomestones of Mathematics for 3 arcanites (Ermina,
@@ -576,8 +565,7 @@ dt_add("Umbrae", "Waxing Arcanite")
 dt_add("Obscurum", "Waning Arcanite")
 dt_add("Eclipticum", "Ecliptic Arcanite")
 
-# The curated JSON is now the sole source of relic materials;
-# RelicDataService loads each expansion's rows wholesale, so no replaceSteps is needed.
+# RelicDataService loads each expansion's rows wholesale.
 data={
  "DoHDoL":rows,
  "ARR":arr_rows,
@@ -601,4 +589,4 @@ armor_aliases = json.loads((data_dir / "armor_currency_aliases.json").read_text(
 attach_armor_costs(armor, item_index, armor_aliases)
 json.dump(armor, open(armor_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 
-print(f"DoHDoL {len(rows)} · ARR {len(arr_rows)} · HW {len(hw_rows)} · SB {len(sb_rows)} · ShB {len(shb_rows)}")
+print(" · ".join(f"{expansion} {len(expansion_rows)}" for expansion, expansion_rows in data.items()))

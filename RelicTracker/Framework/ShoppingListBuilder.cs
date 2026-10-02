@@ -35,12 +35,6 @@ public sealed class ShoppingQuestRewardRow
 public static class ShoppingListBuilder
 {
     private const int FisherSlot = 10;
-    private static readonly Dictionary<string, string> MaterialStepAliases = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["Skybuilders"] = "Skybuilders'",
-        ["Augmented Law's"] = "Augmented Law's Order",
-        ["Kettle to the Mettle"] = "Zeta"
-    };
 
     public static List<ShoppingMaterialRow> Build(
         string expansionId,
@@ -86,7 +80,7 @@ public static class ShoppingListBuilder
         {
             var step = row.Step?.Trim();
             var material = row.Material?.Trim();
-            if (string.IsNullOrWhiteSpace(step) || !MaterialFilters.IsTrackableMaterial(material))
+            if (string.IsNullOrWhiteSpace(step) || string.IsNullOrWhiteSpace(material))
             {
                 continue;
             }
@@ -112,8 +106,7 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            var catalogStep = ResolveCatalogStep(step!);
-            if (!stepInfo.TryGetValue(catalogStep, out var info) && !stepInfo.TryGetValue(step!, out info))
+            if (!stepInfo.TryGetValue(step!, out var info))
             {
                 continue;
             }
@@ -133,11 +126,11 @@ public static class ShoppingListBuilder
             var key = (source, material!);
             if (accumulated.TryGetValue(key, out var existing))
             {
-                accumulated[key] = (existing.Need + need, Math.Min(existing.Order, info.Order), jobsNeeding, catalogStep);
+                accumulated[key] = (existing.Need + need, Math.Min(existing.Order, info.Order), jobsNeeding, step!);
             }
             else
             {
-                accumulated[key] = (need, info.Order, jobsNeeding, catalogStep);
+                accumulated[key] = (need, info.Order, jobsNeeding, step!);
                 keyOrder.Add(key);
             }
         }
@@ -187,9 +180,6 @@ public static class ShoppingListBuilder
         string.Equals(row.Role, "quest", StringComparison.OrdinalIgnoreCase)
         || string.Equals(row.Role, "covers", StringComparison.OrdinalIgnoreCase);
 
-    public static string ResolveCatalogStep(string sheetStep) =>
-        MaterialStepAliases.TryGetValue(sheetStep, out var mapped) ? mapped : sheetStep;
-
     public sealed class QuestRewardIndex
     {
         public Dictionary<string, Dictionary<string, Dictionary<string, uint>>> CoversByStep { get; } =
@@ -213,18 +203,16 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            var catalogStep = ResolveCatalogStep(step);
-
             if (string.Equals(row.Role, "quest", StringComparison.OrdinalIgnoreCase))
             {
                 var product = row.Material?.Trim();
                 if (!string.IsNullOrWhiteSpace(product) && row.MaterialIds.Count > 0)
                 {
                     index.ProductIds.TryAdd(product, row.MaterialIds);
-                    if (!index.ProductsByStep.TryGetValue(catalogStep, out var products))
+                    if (!index.ProductsByStep.TryGetValue(step, out var products))
                     {
                         products = [];
-                        index.ProductsByStep[catalogStep] = products;
+                        index.ProductsByStep[step] = products;
                     }
 
                     products.Add(product);
@@ -251,10 +239,10 @@ public static class ShoppingListBuilder
                 continue;
             }
 
-            if (!index.CoversByStep.TryGetValue(catalogStep, out var byProduct))
+            if (!index.CoversByStep.TryGetValue(step, out var byProduct))
             {
                 byProduct = new Dictionary<string, Dictionary<string, uint>>(StringComparer.OrdinalIgnoreCase);
-                index.CoversByStep[catalogStep] = byProduct;
+                index.CoversByStep[step] = byProduct;
             }
 
             if (!byProduct.TryGetValue(craftOf, out var covers))
@@ -431,40 +419,5 @@ public static class ShoppingListBuilder
         }
 
         return !crafterFlagged || (slotIndex < jobs.Count && jobs[slotIndex] == true);
-    }
-}
-
-internal static class MaterialFilters
-{
-    // Keep in sync with data/build_material_aliases.py SKIP.
-    private static readonly HashSet<string> NonItemLabels = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "Crafters",
-        "Fisher",
-        "Miner & Botanist",
-        "Cosmic",
-        "Stellar",
-        "Hyper",
-        "Select Material",
-        "You just do Cosmic Exploration."
-    };
-
-    public static bool IsTrackableMaterial(string? name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return false;
-        }
-
-        var trimmed = name.Trim();
-        if (trimmed.Contains('\n', StringComparison.Ordinal)
-            || NonItemLabels.Contains(trimmed)
-            || trimmed.StartsWith("First ", StringComparison.Ordinal)
-            || trimmed.Contains("assume the maximum", StringComparison.OrdinalIgnoreCase))
-        {
-            return false;
-        }
-
-        return true;
     }
 }
