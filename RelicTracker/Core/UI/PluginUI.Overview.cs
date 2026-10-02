@@ -9,16 +9,12 @@ public sealed partial class PluginUI
 
     private void DrawOverviewTab()
     {
-        if (!catalog.IsLoaded || catalog.Lines.Count == 0)
+        if (DrawCatalogLoadError())
         {
-            ImGui.TextColored(WarningColor, "Relic data failed to load. Reload RelicTracker in /xlplugins, or check Dalamud's log.");
             return;
         }
 
-        if (config.FfxivCollectCharacterId != 0)
-        {
-            ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, TimeSpan.FromMinutes(10));
-        }
+        RefreshCollectIfStale();
 
         var ownership = GetOwnership();
         var statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);

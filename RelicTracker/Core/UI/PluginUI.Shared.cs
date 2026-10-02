@@ -1,4 +1,3 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
 using RelicTracker.IPC;
 using System.Numerics;
 using System.Reflection;
@@ -21,11 +20,6 @@ public sealed partial class PluginUI
         Muted,
     }
 
-    private const long InventoryCacheBucketMs = 10_000;
-    private const long TrackerInventoryRefreshMs = 2_000;
-    private const long InventoryCountsDebounceMs = 1_000;
-    private const float RelicWideLayoutMinWidth = 820f;
-
     private static readonly Vector4 PanelBg = new(0.10f, 0.10f, 0.12f, 0.55f);
     private static readonly Vector4 PanelBorder = new(0.40f, 0.40f, 0.45f, 0.55f);
     private static readonly Vector4 ChipOkBg = new(0.18f, 0.38f, 0.24f, 0.95f);
@@ -34,6 +28,8 @@ public sealed partial class PluginUI
 
     private const float PanelPadX = 12f;
     private const float PanelPadY = 10f;
+
+    private static readonly TimeSpan CollectRefreshInterval = TimeSpan.FromMinutes(10);
 
     private readonly Stack<PanelScope> panelStack = new();
 
@@ -45,47 +41,22 @@ public sealed partial class PluginUI
 
     private bool CollectIdLinked => config.FfxivCollectCharacterId != 0;
 
-    private static long InventoryCacheStamp() =>
-        AllaganToolsIpc.IsBound ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
+    private bool CollectActive => CollectIdLinked && ffxivCollect.LastRefreshUtc.HasValue;
 
-    private long OwnedCountRefreshStamp()
-    {
-        long interval = trackerTabVisible ? TrackerInventoryRefreshMs : InventoryCacheBucketMs;
-        return Environment.TickCount64 / interval;
-    }
+    private bool ArmorAutoTracked => CollectActive || AllaganToolsIpc.IsReady;
 
-    private Func<uint, uint> CreateOwnedLookup()
+    private void RefreshCollectIfStale() =>
+        ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, CollectRefreshInterval);
+
+    private bool DrawCatalogLoadError()
     {
-        long stamp = OwnedCountRefreshStamp();
-        if (ownedCountCache is null || ownedCountCacheStamp != stamp)
+        if (catalog.IsLoaded && catalog.Lines.Count > 0)
         {
-            ownedCountCache = new Dictionary<uint, uint>();
-            ownedCountCacheStamp = stamp;
+            return false;
         }
 
-        Dictionary<uint, uint> cache = ownedCountCache;
-        return itemId =>
-        {
-            if (!cache.TryGetValue(itemId, out uint count))
-            {
-                count = GetOnCharacterItemCount(itemId);
-                uint allagan = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
-                if (allagan > count)
-                {
-                    count = allagan;
-                }
-
-                cache[itemId] = count;
-            }
-
-            return count;
-        };
-    }
-
-    private void InvalidateOwnedCountCache()
-    {
-        ownedCountCache = null;
-        ownedCountCacheStamp = 0;
+        ImGui.TextColored(WarningColor, "Relic data failed to load. Reload RelicTracker in /xlplugins, or check Dalamud's log.");
+        return true;
     }
 
     private void DrawTabIntro(string blurb)
@@ -188,6 +159,56 @@ public sealed partial class PluginUI
         ImGui.SmallButton(label);
         ImGui.PopStyleVar(2);
         ImGui.PopStyleColor(4);
+    }
+
+    private void TriggerProgressRecheck()
+    {
+        var collectLinked = config.FfxivCollectCharacterId != 0;
+        if (!collectLinked && !AllaganToolsIpc.IsReady)
+        {
+            return;
+        }
+
+        InvalidateOwnershipCache();
+
+        if (collectLinked)
+        {
+            ffxivCollect.ForceRefresh(config.FfxivCollectCharacterId);
+        }
+    }
+
+    private void DrawProgressRecheckButton()
+    {
+        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
+        {
+            return;
+        }
+
+        ImGui.SameLine();
+        if (ImGui.Button("Recheck"))
+        {
+            TriggerProgressRecheck();
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            var tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
+                ? "Refresh FFXIV Collect and re-read Allagan Tools inventory counts."
+                : config.FfxivCollectCharacterId != 0
+                    ? "Fetch the latest relic progress from FFXIV Collect."
+                    : "Re-read owned relic items (and replicas) from Allagan Tools inventory.";
+            ImGui.SetTooltip(tooltip);
+        }
+    }
+
+    private void DrawProgressSourceChip(bool inventoryLinked, bool collectLinked)
+    {
+        var label = inventoryLinked && collectLinked
+            ? "Inventory + Collect"
+            : inventoryLinked
+                ? "Inventory"
+                : "Collect";
+        DrawStatusChip(label, StatusChipKind.Ok);
     }
 
     private void DrawProgressSourceHint(ProgressHintContext context)
@@ -396,21 +417,4 @@ public sealed partial class PluginUI
     private static string FormatVersion(Version version) =>
         version.Revision >= 0 ? version.ToString(4) : version.ToString(3);
 
-    private static unsafe uint GetOnCharacterItemCount(uint itemId)
-    {
-        if (itemId == 0)
-        {
-            return 0;
-        }
-
-        InventoryManager* inventory = InventoryManager.Instance();
-        if (inventory == null)
-        {
-            return 0;
-        }
-
-        int nq = inventory->GetInventoryItemCount(itemId);
-        int hq = inventory->GetInventoryItemCount(itemId, isHq: true);
-        return (uint)Math.Max(0, nq) + (uint)Math.Max(0, hq);
-    }
 }

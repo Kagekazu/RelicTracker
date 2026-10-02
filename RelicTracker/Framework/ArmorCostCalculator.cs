@@ -2,6 +2,9 @@ namespace RelicTracker.Framework;
 
 public static class ArmorCostCalculator
 {
+    public const int PiecesPerSet = 5;
+    public const int RoleSets = 7;
+
     public const string ArcanautsSet = "Arcanaut's";
     public const string PhantomVisionSet = "Phantom Vision";
     public const string BozjanSet = "Bozjan";
@@ -57,7 +60,7 @@ public static class ArmorCostCalculator
         var pieceCount = set.Tiers[tierIndex].Pieces;
         for (var index = 0; index < pieceCount; index++)
         {
-            var slot = index % 5;
+            var slot = index % PiecesPerSet;
             if (slotFilter is int requiredSlot && slot != requiredSlot)
             {
                 continue;
@@ -138,7 +141,7 @@ public static class ArmorCostCalculator
             return false;
         }
 
-        if (pieceIndex is int index && link.Slot is int requiredSlot && index % 5 != requiredSlot)
+        if (pieceIndex is int index && link.Slot is int requiredSlot && index % PiecesPerSet != requiredSlot)
         {
             return false;
         }
@@ -148,15 +151,17 @@ public static class ArmorCostCalculator
 
     public static uint PieceCost(ArmorCostRow cost, int slotInSet)
     {
-        if (cost.SetTotal == cost.PerPiece * 5)
+        if (!HasSplitSlotCost(cost))
         {
             return (uint)cost.PerPiece;
         }
 
-        var bodyLegs = (uint)cost.PerPiece;
-        var other = (uint)((cost.SetTotal - (2 * cost.PerPiece)) / 3);
-        return slotInSet is 1 or 3 ? bodyLegs : other;
+        return slotInSet is 1 or 3 ? (uint)cost.PerPiece : (uint)OtherSlotCost(cost);
     }
+
+    public static bool HasSplitSlotCost(ArmorCostRow cost) => cost.SetTotal != cost.PerPiece * PiecesPerSet;
+
+    public static int OtherSlotCost(ArmorCostRow cost) => (cost.SetTotal - (2 * cost.PerPiece)) / 3;
 
     public static void AddOwnedPieceKeys(
         ArmorLine line,
@@ -167,7 +172,7 @@ public static class ArmorCostCalculator
     {
         for (var tierIndex = 0; tierIndex <= ownedTierIndex && tierIndex < set.Tiers.Count; tierIndex++)
         {
-            done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
+            done.Add(ProgressKeys.ArmorPiece(set.Tiers[tierIndex].CollectType, pieceIndex));
         }
 
         if (string.Equals(set.Name, PhantomVisionSet, StringComparison.OrdinalIgnoreCase))
@@ -231,7 +236,7 @@ public static class ArmorCostCalculator
 
         for (var tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
         {
-            done.Add($"{set.Tiers[tierIndex].CollectType}|{pieceIndex}");
+            done.Add(ProgressKeys.ArmorPiece(set.Tiers[tierIndex].CollectType, pieceIndex));
         }
     }
 
