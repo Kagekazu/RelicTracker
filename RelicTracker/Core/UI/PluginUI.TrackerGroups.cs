@@ -4,15 +4,14 @@ namespace RelicTracker;
 
 /// <summary>
 ///     Tracker "what to do" view: materials grouped by how you get them (buy / craft / gather &amp;
-///     fish / content), one-time unlocks, prefarmable quest rewards, and steps that are pure
+///     fish / content), one-time steps, prefarmable quest rewards, and steps that are pure
 ///     activities with nothing to stockpile.
 /// </summary>
 public sealed partial class PluginUI
 {
     private readonly record struct TrackerActivity(string Line, string Step, int JobsLeft, string? Note);
 
-    private string? gatherChillMessage;
-    private bool gatherChillMessageIsError;
+    private StatusMessage? gatherChillResult;
 
     /// <summary>
     ///     One row per material: a material needed by several steps or zones is summed, and the
@@ -55,6 +54,7 @@ public sealed partial class PluginUI
                 Obtain = first.Obtain,
                 ObtainVia = first.ObtainVia,
                 OneTime = first.OneTime,
+                Craftable = first.Craftable,
                 ForSteps = steps,
             });
         }
@@ -74,22 +74,25 @@ public sealed partial class PluginUI
         DrawObtainSection(
             expansionId,
             "OneTime",
-            "One-time unlocks",
-            "Needed once per account before the first weapon of a step - not per job.",
+            "One-time steps",
+            "Done once, before your first weapon of that step - not again for every job.",
             oneTime,
-            row => row.ObtainLabel);
+            row => row.ObtainLabel,
+            () => DrawArtisanWeaponListButtons(expansionId, oneTime));
 
         DrawBuySection(expansionId, [.. perWeapon.Where(row => row.Obtain == "buy")]);
 
+        List<ShoppingMaterialRow> craftRows = [.. perWeapon.Where(row => row.Obtain == "craft")];
         DrawObtainSection(
             expansionId,
             "Craft",
             "Craft",
-            expansionId == "DoHDoL" && ArtisanIpc.SupportsRelicToolLists
+            expansionId == ExpansionNames.ToolsId && ArtisanIpc.SupportsRelicToolLists
                 ? "Crafter tool steps have an Artisan list on the Relic tab."
                 : null,
-            [.. perWeapon.Where(row => row.Obtain == "craft")],
-            null);
+            craftRows,
+            null,
+            () => DrawArtisanWeaponListButtons(expansionId, craftRows));
 
         List<ShoppingMaterialRow> gatherRows = [.. perWeapon.Where(row => row.Obtain is "gather" or "fish")];
         DrawObtainSection(
@@ -120,21 +123,20 @@ public sealed partial class PluginUI
             return;
         }
 
+        DrawArtisanWeaponListButtons(expansionId, rows);
         var shopping = DrawKnightshopperStatus();
+        List<ObtainGroup> groups = [];
         foreach (var group in rows
             .GroupBy(row => row.ObtainVia ?? "Other")
             .OrderBy(group => group.Key, StringComparer.OrdinalIgnoreCase))
         {
             List<ShoppingMaterialRow> groupRows = [.. group];
-            ImGui.Spacing();
-            ImGui.AlignTextToFramePadding();
-            ImGui.TextColored(HeaderColor, group.Key);
-
+            List<KnightshopperPurchase> purchases = [];
+            KnightshopperCurrency currency = default;
             if (!shopping
                 && KnightshopperIpc.IsReady
-                && KnightshopperIpc.TryParseCurrency(group.Key, out var currency))
+                && KnightshopperIpc.TryParseCurrency(group.Key, out currency))
             {
-                List<KnightshopperPurchase> purchases = [];
                 foreach (var row in groupRows)
                 {
                     if (TryGetKnightshopperPurchase(row, out _, out var purchase))
@@ -142,16 +144,17 @@ public sealed partial class PluginUI
                         purchases.Add(purchase);
                     }
                 }
-
-                if (purchases.Count > 0)
-                {
-                    ImGui.SameLine();
-                    DrawKnightshopperBuyButton(currency, purchases, $"Buy {purchases.Count} with Knightshopper");
-                }
             }
 
-            DrawObtainTable($"{expansionId}|Buy|{group.Key}", groupRows);
+            groups.Add(new(
+                group.Key,
+                groupRows,
+                purchases.Count > 0
+                    ? () => DrawKnightshopperBuyButton(currency, purchases, $"Buy {purchases.Count} with Knightshopper")
+                    : null));
         }
+
+        DrawObtainTable($"{expansionId}|Buy", groups);
     }
 
     private void DrawObtainSection(
@@ -177,7 +180,7 @@ public sealed partial class PluginUI
 
         if (subgroup is null)
         {
-            DrawObtainTable($"{expansionId}|{key}", rows);
+            DrawObtainTable($"{expansionId}|{key}", [new(null, rows)]);
             return;
         }
 
@@ -185,16 +188,65 @@ public sealed partial class PluginUI
         [
             .. rows.GroupBy(subgroup).OrderBy(group => group.Min(row => row.StepOrder))
         ];
-        foreach (var group in groups)
+        DrawObtainTable(
+            $"{expansionId}|{key}",
+            [
+                .. groups.Select(group => new ObtainGroup(
+                    groups.Count > 1 || !string.IsNullOrEmpty(group.Key)
+                        ? string.IsNullOrEmpty(group.Key) ? "Other" : group.Key
+                        : null,
+                    [.. group]))
+            ]);
+    }
+
+    /// <summary>
+    ///     Weapon lines: one "Craft {step} with Artisan" button per step whose crafts still need making.
+    ///     Each starts Artisan's premade list for one weapon's worth. Tool lines use the Relic tab.
+    /// </summary>
+    private void DrawArtisanWeaponListButtons(string expansionId, IReadOnlyList<ShoppingMaterialRow> rows)
+    {
+        if (expansionId == ExpansionNames.ToolsId || !ArtisanIpc.SupportsRelicToolLists)
         {
-            if (groups.Count > 1 || !string.IsNullOrEmpty(group.Key))
+            return;
+        }
+
+        List<string> steps =
+        [
+            .. rows
+                .Where(row => (row.Obtain == "craft" || row.Craftable) && row.Short > 0)
+                .SelectMany(row => row.ForSteps)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Where(step => ArtisanIpc.TryGetRelicToolListId(step, ArtisanIpc.AllClassesSlot, out _))
+        ];
+        if (steps.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var step in steps)
+        {
+            using (ImRaii.Disabled(ArtisanIpc.IsBusy()))
             {
-                ImGui.Spacing();
-                ImGui.TextColored(HeaderColor, string.IsNullOrEmpty(group.Key) ? "Other" : group.Key);
+                if (ImGui.SmallButton($"Craft {step} with Artisan##artisan_{step}")
+                    && !ArtisanIpc.TryStartRelicToolList(step, ArtisanIpc.AllClassesSlot, out var error)
+                    && !string.IsNullOrWhiteSpace(error))
+                {
+                    Svc.Log.Warning("[RelicTracker] {Error}", error);
+                }
             }
 
-            DrawObtainTable($"{expansionId}|{key}|{group.Key}", [.. group]);
+            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+            {
+                ImGui.SetTooltip(
+                    (ArtisanIpc.IsBusy() ? "Artisan is already crafting.\n\n" : string.Empty)
+                    + $"Starts Artisan's premade {step} list - one weapon's worth, precrafts included.\n"
+                    + "Vendor mats are not included - buy those first.");
+            }
+
+            ImGui.SameLine();
         }
+
+        ImGui.NewLine();
     }
 
     /// <summary>Adds what's still short (and has a Gather &amp; Chill route) to Gather &amp; Chill's gather list.</summary>
@@ -208,13 +260,10 @@ public sealed partial class PluginUI
         List<(uint ItemId, uint Amount, string Name)> items = [];
         foreach (var row in rows)
         {
-            if (row.Resolved
-                && row.Short > 0
-                && data.MaterialIdsByName.TryGetValue(row.Material, out var ids)
-                && ids.Count > 0
-                && GatherChillIpc.CanGather(ids[0]))
+            var itemId = PrimaryItemId(row);
+            if (row.Resolved && row.Short > 0 && itemId != 0 && GatherChillIpc.CanGather(itemId))
             {
-                items.Add((ids[0], row.Short, row.DisplayMaterial));
+                items.Add((itemId, row.Short, row.DisplayMaterial));
             }
         }
 
@@ -222,13 +271,12 @@ public sealed partial class PluginUI
         {
             if (ImGui.SmallButton($"Add {items.Count} to Gather & Chill##gnc_add"))
             {
-                gatherChillMessageIsError = !GatherChillIpc.TryAddToGatherList(
+                gatherChillResult = GatherChillIpc.TryAddToGatherList(
                     [.. items.Select(item => (item.ItemId, item.Amount))],
                     out var added,
-                    out var error);
-                gatherChillMessage = gatherChillMessageIsError
-                    ? error
-                    : $"Added {added} item{(added == 1 ? string.Empty : "s")} to Gather & Chill's gather list.";
+                    out var error)
+                    ? new($"Added {Plural(added, "item")} to Gather & Chill's gather list.", false)
+                    : new(error ?? "Gather & Chill didn't accept the list.", true);
             }
 
             if (ImGui.IsItemHovered())
@@ -243,10 +291,10 @@ public sealed partial class PluginUI
             ImGui.TextColored(MutedColor, "Nothing short here has a Gather & Chill route.");
         }
 
-        if (gatherChillMessage is { } message)
+        if (gatherChillResult is not null)
         {
             ImGui.SameLine();
-            ImGui.TextColored(gatherChillMessageIsError ? BadColor : GoodColor, message);
+            DrawStatusMessage(ref gatherChillResult, "gnc_dismiss");
         }
     }
 
@@ -256,7 +304,7 @@ public sealed partial class PluginUI
     /// </summary>
     private void DrawLucisFirstJobPicker(string expansionId, string? lineFilter)
     {
-        if (expansionId != "DoHDoL"
+        if (expansionId != ExpansionNames.ToolsId
             || (!string.IsNullOrEmpty(lineFilter) && lineFilter != LucisToolShortcut.CollectType)
             || catalog.LinesFor(expansionId).FirstOrDefault(LucisToolShortcut.Applies) is not { } line)
         {
@@ -282,7 +330,8 @@ public sealed partial class PluginUI
                 if (ImGui.IsItemHovered())
                 {
                     ImGui.SetTooltip(
-                        "Only this job's Supra and Lucis materials are counted (and sent to Knightshopper / Gather & Chill).\n"
+                        "Only this job's Supra and Lucis materials are counted"
+                        + (GatherChillIpc.IsInstalled ? " (and sent to Knightshopper / Gather & Chill).\n" : " (and sent to Knightshopper).\n")
                         + $"Once it has its Lucis tool, a Calamity Salvager sells the others for {LucisToolShortcut.SalvagerGil:N0} gil each.");
                 }
 
@@ -319,7 +368,11 @@ public sealed partial class PluginUI
         return DrawCollapsingSection(configKey, $"{title}  ({badge})###{configKey}", true);
     }
 
-    private void DrawObtainTable(string id, IReadOnlyList<ShoppingMaterialRow> rows)
+    /// <summary>A sub-group of a section's table: an optional divider row (with an optional button) over its rows.</summary>
+    private sealed record ObtainGroup(string? Heading, IReadOnlyList<ShoppingMaterialRow> Rows, Action? HeadingAction = null);
+
+    /// <summary>One table per section; sub-groups (currency, zone, ...) are divider rows, so the header shows once.</summary>
+    private void DrawObtainTable(string id, IReadOnlyList<ObtainGroup> groups)
     {
         using var table = ImRaii.Table($"Obtain_{id}", 5, ShoppingTableFlags, new(0, 0));
         if (!table)
@@ -334,9 +387,26 @@ public sealed partial class PluginUI
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
         DrawNeedOwnedShortHeaders(includeItem: true, includeFor: true);
 
-        foreach (var row in rows)
+        foreach (var group in groups)
         {
-            DrawMaterialRow(row, showFor: true);
+            if (group.Heading is not null)
+            {
+                ImGui.TableNextRow();
+                ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg0, ImGui.GetColorU32(ImGuiCol.TableHeaderBg));
+                ImGui.TableNextColumn();
+                ImGui.AlignTextToFramePadding();
+                ImGui.TextColored(HeaderColor, group.Heading);
+                if (group.HeadingAction is not null)
+                {
+                    ImGui.SameLine();
+                    group.HeadingAction();
+                }
+            }
+
+            foreach (var row in group.Rows)
+            {
+                DrawMaterialRow(row, showFor: true);
+            }
         }
     }
 
@@ -349,29 +419,31 @@ public sealed partial class PluginUI
 
         var questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
         var ownership = GetOwnership();
-        var isTools = expansionId == "DoHDoL";
+        var isTools = expansionId == ExpansionNames.ToolsId;
         List<ShoppingQuestRewardRow> rewards = [];
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
-        foreach (var (status, tier) in UnfinishedSteps(statuses))
+        foreach (var (status, tiers, skipped) in UnfinishedSteps(statuses, ownership))
         {
-            // On tool lines a reward belongs to specific jobs (a Talan seal per gatherer); keep it
-            // only while one of those jobs still needs the step and isn't buying its Lucis tool.
-            var skipped = LucisToolShortcut.SkippedSlots(status.Line, ownership, config.LucisFirstJob);
-            foreach (var reward in ShoppingListBuilder.GetQuestRewards(status.Line.StepName(tier), questRewards, ownedLookup))
+            foreach (var tier in tiers)
             {
-                if (isTools
-                    && questRewards.ProductJobs.TryGetValue(reward.Material, out var jobs)
-                    && !Enumerable.Range(0, status.Line.Jobs).Any(slot =>
-                        ShoppingListBuilder.ToolMaterialAppliesToSlot(jobs, slot, stepHasFisherSection: true)
-                        && !skipped.Contains(slot)
-                        && !ownership.IsStepDoneOrManual(status.Line, slot, tier)))
+                foreach (var reward in ShoppingListBuilder.GetQuestRewards(status.Line.StepName(tier), questRewards, ownedLookup))
                 {
-                    continue;
-                }
+                    // On tool lines a reward belongs to specific jobs (a Talan seal per gatherer); keep it
+                    // only while one of those jobs still needs the step and isn't buying its Lucis tool.
+                    if (isTools
+                        && questRewards.ProductJobs.TryGetValue(reward.Material, out var jobs)
+                        && !Enumerable.Range(0, status.Line.Jobs).Any(slot =>
+                            ShoppingListBuilder.ToolMaterialAppliesToSlot(jobs, slot, stepHasFisherSection: true)
+                            && !skipped.Contains(slot)
+                            && !ownership.IsStepDoneOrManual(status.Line, slot, tier)))
+                    {
+                        continue;
+                    }
 
-                if (seen.Add(reward.Material))
-                {
-                    rewards.Add(reward);
+                    if (seen.Add(reward.Material))
+                    {
+                        rewards.Add(reward);
+                    }
                 }
             }
         }
@@ -382,23 +454,8 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawActivities(string expansionId, IReadOnlyList<RelicLineStatus> statuses)
+    private void DrawActivities(string expansionId, IReadOnlyList<TrackerActivity> activities)
     {
-        List<TrackerActivity> activities = [.. GetActivities(expansionId, statuses)];
-        if (!string.IsNullOrWhiteSpace(materialFilter))
-        {
-            activities =
-            [
-                .. activities.Where(activity => activity.Step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                                                || activity.Line.Contains(materialFilter, StringComparison.OrdinalIgnoreCase))
-            ];
-        }
-
-        if (activities.Count == 0)
-        {
-            return;
-        }
-
         var configKey = $"{expansionId}|Do|Activities";
         if (!DrawCollapsingSection(configKey, $"Activities  ({Plural(activities.Count, "step")})###{configKey}", false))
         {
@@ -407,14 +464,20 @@ public sealed partial class PluginUI
 
         ImGui.TextColored(MutedColor, "Steps with nothing to stockpile - quests, duties, books, or light. Hover a step for what to do.");
 
-        using var table = ImRaii.Table($"Activities_{expansionId}", 3, ShoppingTableFlags, new(0, 0));
+        // The line column only says something when the steps come from more than one relic line.
+        var showLine = activities.Select(activity => activity.Line).Distinct().Skip(1).Any();
+        using var table = ImRaii.Table($"Activities_{expansionId}", showLine ? 3 : 2, ShoppingTableFlags, new(0, 0));
         if (!table)
         {
             return;
         }
 
         ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        ImGui.TableSetupColumn("Relic line", ImGuiTableColumnFlags.WidthStretch, 0.5f);
+        if (showLine)
+        {
+            ImGui.TableSetupColumn("Relic line", ImGuiTableColumnFlags.WidthStretch, 0.5f);
+        }
+
         ImGui.TableSetupColumn("Jobs left", ImGuiTableColumnFlags.WidthFixed, 72);
         ImGui.TableHeadersRow();
 
@@ -426,24 +489,30 @@ public sealed partial class PluginUI
             if (!string.IsNullOrWhiteSpace(activity.Note) && ImGui.IsItemHovered())
             {
                 using var tooltip = ImRaii.Tooltip();
-                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 32f);
-                ImGui.TextUnformatted(activity.Note);
-                ImGui.PopTextWrapPos();
+                DrawNote(activity.Note, ImGui.GetFontSize() * 32f);
             }
 
-            ImGui.TableNextColumn();
-            ImGui.TextColored(MutedColor, activity.Line);
+            if (showLine)
+            {
+                ImGui.TableNextColumn();
+                ImGui.TextColored(MutedColor, activity.Line);
+            }
+
             ImGui.TableNextColumn();
             ImGui.TextUnformatted(activity.JobsLeft.ToString());
         }
     }
 
-    /// <summary>Unfinished steps that have no material rows at all - the work is an activity.</summary>
-    private IEnumerable<TrackerActivity> GetActivities(string expansionId, IReadOnlyList<RelicLineStatus> statuses)
+    /// <summary>
+    ///     Unfinished steps that have no material rows at all - the work is an activity. Matches the
+    ///     material filter against the step and line names.
+    /// </summary>
+    private List<TrackerActivity> GetActivities(string expansionId, IReadOnlyList<RelicLineStatus> statuses)
     {
+        List<TrackerActivity> activities = [];
         if (!data.Expansions.TryGetValue(expansionId, out var sheet))
         {
-            yield break;
+            return activities;
         }
 
         HashSet<string> stepsWithMaterials = new(
@@ -453,44 +522,54 @@ public sealed partial class PluginUI
             StringComparer.OrdinalIgnoreCase);
 
         var ownership = GetOwnership();
-        foreach (var (status, tier) in UnfinishedSteps(statuses))
+        foreach (var (status, tiers, skipped) in UnfinishedSteps(statuses, ownership))
         {
-            var step = status.Line.StepName(tier);
-            if (stepsWithMaterials.Contains(step))
+            foreach (var tier in tiers)
             {
-                continue;
-            }
+                var step = status.Line.StepName(tier);
+                if (stepsWithMaterials.Contains(step)
+                    || (!string.IsNullOrWhiteSpace(materialFilter)
+                        && !step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
+                        && !status.Line.CollectType.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
 
-            // Jobs that will buy their Lucis tool from a Calamity Salvager skip every earlier step.
-            var skipped = LucisToolShortcut.SkippedSlots(status.Line, ownership, config.LucisFirstJob);
-            var jobsLeft = Enumerable.Range(0, status.Line.Jobs)
-                .Count(slot => !skipped.Contains(slot) && !ownership.IsStepDoneOrManual(status.Line, slot, tier));
-            if (jobsLeft == 0)
-            {
-                continue;
-            }
+                var jobsLeft = Enumerable.Range(0, status.Line.Jobs)
+                    .Count(slot => !skipped.Contains(slot) && !ownership.IsStepDoneOrManual(status.Line, slot, tier));
+                if (jobsLeft == 0)
+                {
+                    continue;
+                }
 
-            var note = catalog.StepNote(status.Line.CollectType, step);
-            yield return new(
-                status.Line.CollectType,
-                step,
-                jobsLeft,
-                note?.Replace("[[Crafters]]", "\n\nCrafters: ")
-                    .Replace("[[Gatherers]]", "\n\nGatherers: ")
-                    .Replace("[[Fisher]]", "\n\nFisher: "));
+                var note = catalog.StepNote(status.Line.CollectType, step);
+                activities.Add(new(
+                    status.Line.CollectType,
+                    step,
+                    jobsLeft,
+                    note?.Replace("[[Crafters]]", "\nCrafters:\n")
+                        .Replace("[[Gatherers]]", "\nGatherers:\n")
+                        .Replace("[[Fisher]]", "\nFisher:\n")));
+            }
         }
+
+        return activities;
     }
 
-    private static IEnumerable<(RelicLineStatus Status, int Tier)> UnfinishedSteps(IReadOnlyList<RelicLineStatus> statuses)
+    /// <summary>
+    ///     Each line's unfinished steps, plus the job slots to skip on it (Lucis Tools jobs that will
+    ///     buy their tool from a Calamity Salvager).
+    /// </summary>
+    private IEnumerable<(RelicLineStatus Status, List<int> Tiers, HashSet<int> Skipped)> UnfinishedSteps(
+        IReadOnlyList<RelicLineStatus> statuses,
+        RelicOwnership ownership)
     {
         foreach (var status in statuses.OrderBy(status => status.Line.TypeOrder))
         {
-            for (var tier = 0; tier < status.TierCount; tier++)
+            List<int> tiers = [.. Enumerable.Range(0, status.TierCount).Where(tier => status.Line.Jobs - status.ReachedPerStep[tier] > 0)];
+            if (tiers.Count > 0)
             {
-                if (status.Line.Jobs - status.ReachedPerStep[tier] > 0)
-                {
-                    yield return (status, tier);
-                }
+                yield return (status, tiers, LucisToolShortcut.SkippedSlots(status.Line, ownership, config.LucisFirstJob));
             }
         }
     }

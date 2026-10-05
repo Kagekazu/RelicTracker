@@ -26,6 +26,8 @@ public sealed class ShoppingMaterialRow
 
     public bool OneTime { get; init; }
 
+    public bool Craftable { get; init; }
+
     /// <summary>Relic steps this row is needed for (Step can be a farming zone instead).</summary>
     public IReadOnlyList<string> ForSteps { get; init; } = [];
 
@@ -58,7 +60,7 @@ public static class ShoppingListBuilder
         string? lineFilter = null,
         IReadOnlyDictionary<string, string>? lucisFirstJobs = null)
     {
-        var isTools = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal);
+        var isTools = string.Equals(expansionId, ExpansionNames.ToolsId, StringComparison.Ordinal);
 
         Dictionary<string, (RelicLineStatus Status, int Tier, int Order)> stepInfo = new(StringComparer.OrdinalIgnoreCase);
         var order = 0;
@@ -81,7 +83,7 @@ public static class ShoppingListBuilder
         // Lucis Tools: only the first job per category farms materials; the rest buy their tool
         // from a Calamity Salvager once that first Lucis tool exists.
         Dictionary<RelicLine, HashSet<int>> skippedSlots = [];
-        Dictionary<RelicLine, IReadOnlyList<LucisToolShortcut.SalvagerSlot>> salvagerSlots = [];
+        Dictionary<RelicLine, IReadOnlyList<int>> salvagerSlots = [];
         foreach (var line in stepInfo.Values.Select(info => info.Status.Line).Distinct())
         {
             if (isTools && LucisToolShortcut.Applies(line))
@@ -148,7 +150,11 @@ public static class ShoppingListBuilder
                     ownership,
                     fisherSteps!.Contains(step!),
                     skippedSlots.GetValueOrDefault(info.Status.Line))
-                : Math.Max(0, info.Status.Line.Jobs - info.Status.ReachedPerStep[info.Tier]);
+                : IsJobSpecific(row.Jobs)
+                    ? Enumerable.Range(0, info.Status.Line.Jobs).Count(slot =>
+                        slot < row.Jobs.Count && row.Jobs[slot] == true
+                        && !ownership.IsStepDoneOrManual(info.Status.Line, slot, info.Tier))
+                    : Math.Max(0, info.Status.Line.Jobs - info.Status.ReachedPerStep[info.Tier]);
 
             var source = sources.TryGetValue(material!, out var mappedSource) ? mappedSource : step!;
 
@@ -213,24 +219,25 @@ public static class ShoppingListBuilder
                 Obtain = firstRow.Obtain,
                 ObtainVia = firstRow.ObtainVia,
                 OneTime = firstRow.OneTime,
+                Craftable = firstRow.Craftable,
                 ForSteps = stepsByKey[key]
             });
         }
 
-        foreach ((RelicLine line, IReadOnlyList<LucisToolShortcut.SalvagerSlot> slots) in salvagerSlots)
+        foreach ((RelicLine line, IReadOnlyList<int> slots) in salvagerSlots)
         {
             var top = line.TierCount - 1;
             var step = line.StepName(top);
             var stepOrder = stepInfo.TryGetValue(step, out var topInfo) ? topInfo.Order : int.MaxValue;
-            foreach (var salvager in slots)
+            foreach (var slot in slots)
             {
-                uint toolId = line.RelicId(salvager.Slot, top);
+                uint toolId = line.RelicId(slot, top);
                 if (toolId == 0)
                 {
                     continue;
                 }
 
-                var name = ItemDisplayNames.Label([toolId], $"{line.EffectiveJobList[salvager.Slot]} Lucis tool");
+                var name = ItemDisplayNames.Label([toolId], $"{line.EffectiveJobList[slot]} Lucis tool");
                 result.Add(new()
                 {
                     Step = step,
@@ -262,6 +269,12 @@ public static class ShoppingListBuilder
 
         return total;
     }
+
+    /// <summary>
+    ///     Weapon-line rows apply to every job unless they flag only some (the Zodiac base weapons);
+    ///     then the flags follow the line's job order.
+    /// </summary>
+    public static bool IsJobSpecific(IReadOnlyList<bool?> jobs) => jobs.Any(flag => flag != true);
 
     public static bool IsQuestRewardRow(ExpansionMaterialRow row) =>
         string.Equals(row.Role, "quest", StringComparison.OrdinalIgnoreCase)

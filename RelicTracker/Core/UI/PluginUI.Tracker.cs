@@ -1,5 +1,3 @@
-using RelicTracker.IPC;
-
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -228,17 +226,14 @@ public sealed partial class PluginUI
 
         data.ArmorCosts.TryGetValue(expansionId, out var armorCosts);
 
-        if (BeginPanel("tracker_summary"))
+        DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup);
+        DrawLucisFirstJobPicker(expansionId, lineFilter);
+        if (bySteps)
         {
-            DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup);
-            DrawLucisFirstJobPicker(expansionId, lineFilter);
-            if (bySteps)
-            {
-                DrawKnightshopperBar(materials);
-            }
-
-            EndPanel();
+            DrawKnightshopperBar(materials);
         }
+
+        ImGui.Spacing();
 
         var hasArmor = armorCosts is { Count: > 0 };
         var drewAny = false;
@@ -260,10 +255,11 @@ public sealed partial class PluginUI
                 DrawObtainGroups(expansionId, materials, statuses, ownedLookup);
             }
 
-            if (GetActivities(expansionId, statuses).Any())
+            List<TrackerActivity> activities = GetActivities(expansionId, statuses);
+            if (activities.Count > 0)
             {
                 drewAny = true;
-                DrawActivities(expansionId, statuses);
+                DrawActivities(expansionId, activities);
             }
         }
 
@@ -352,10 +348,10 @@ public sealed partial class PluginUI
             if (row.OneTime)
             {
                 ImGui.SameLine();
-                ImGui.TextColored(MutedColor, "(one-time)");
+                ImGui.TextColored(MutedColor, "(one-time step)");
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Needed once per account for this step, not once per job.");
+                    ImGui.SetTooltip("One-time step: needed once, not again for every job.");
                 }
             }
         }
@@ -407,7 +403,7 @@ public sealed partial class PluginUI
         ImGui.TableNextColumn();
         if (row.Resolved)
         {
-            ImGui.TextColored(row.Short == 0 ? GoodColor : BadColor, row.Short.ToString());
+            ImGui.TextColored(row.Short == 0 ? GoodColor : ShortColor, row.Short.ToString());
         }
         else
         {
@@ -524,7 +520,7 @@ public sealed partial class PluginUI
             if (resolved && cost.AllTotal > 0)
             {
                 var shortfall = (uint)cost.AllTotal > owned ? (uint)cost.AllTotal - owned : 0;
-                ImGui.TextColored(shortfall == 0 ? GoodColor : BadColor, shortfall.ToString());
+                ImGui.TextColored(shortfall == 0 ? GoodColor : ShortColor, shortfall.ToString());
             }
             else
             {
@@ -598,17 +594,17 @@ public sealed partial class PluginUI
         }
         else if (weaponShort > 0 && armorShort > 0)
         {
-            ImGui.TextColored(BadColor,
-                $"{weaponShort} weapon material{(weaponShort == 1 ? string.Empty : "s")} and {armorShort} armor currenc{(armorShort == 1 ? "y" : "ies")} still short.");
+            ImGui.TextColored(ShortColor,
+                $"{Plural(weaponShort, "weapon material")} and {armorShort} armor currenc{(armorShort == 1 ? "y" : "ies")} still short.");
         }
         else if (armorShort > 0)
         {
-            ImGui.TextColored(BadColor,
+            ImGui.TextColored(ShortColor,
                 $"{armorShort} armor currenc{(armorShort == 1 ? "y" : "ies")} still short.");
         }
         else
         {
-            ImGui.TextColored(BadColor, $"{weaponShort} material{(weaponShort == 1 ? string.Empty : "s")} still short.");
+            ImGui.TextColored(ShortColor, $"{Plural(weaponShort, "material")} still short.");
         }
 
         if (ImGui.IsItemHovered())

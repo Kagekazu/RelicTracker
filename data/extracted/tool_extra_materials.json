@@ -1358,7 +1358,8 @@
         4847
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "craftable": true
     },
     {
       "step": "Supra",
@@ -14207,6 +14208,426 @@
       "obtainVia": "Tomestones"
     },
     {
+      "step": "Relic",
+      "material": "Aeolian Scimitar",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        1670
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Battledance Materia III",
+      "perUnit": 2,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5681
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Barbarian's Bardiche",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        1810
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Battledance Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5681
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Champion's Lance",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        1879
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Savage Aim Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5671
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Wildling's Cesti",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        1740
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Savage Aim Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5671
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Vamper's Knives",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "materialIds": [
+        9224
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Heavens' Eye Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "materialIds": [
+        5666
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Longarm's Composite Bow",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        1949
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Heavens' Eye Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5666
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Sanguine Scepter",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        2102
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Savage Might Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5676
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Erudite's Picatrix of Casting",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "materialIds": [
+        2202
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Savage Might Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "materialIds": [
+        5676
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Madman's Whispering Rod",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        2049
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Quicktongue Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "materialIds": [
+        5721
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Relic",
+      "material": "Erudite's Picatrix of Healing",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "materialIds": [
+        2201
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Relic",
+      "material": "Quicktongue Materia III",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "materialIds": [
+        5721
+      ],
+      "obtain": "content"
+    },
+    {
       "step": "Zenith",
       "material": "Thavnairian Mist",
       "perUnit": 3,
@@ -15401,7 +15822,8 @@
         13589
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "craftable": true
     },
     {
       "step": "Anima",
@@ -15426,7 +15848,8 @@
         13591
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "craftable": true
     },
     {
       "step": "Anima",
@@ -15451,7 +15874,8 @@
         13593
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "craftable": true
     },
     {
       "step": "Anima",
@@ -15476,7 +15900,8 @@
         13595
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "craftable": true
     },
     {
       "step": "Hyperconductive",

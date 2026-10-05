@@ -55,9 +55,13 @@ public sealed class ExpansionMaterialRow
     [JsonPropertyName("obtainVia")]
     public string? ObtainVia { get; set; }
 
-    /// <summary>Needed once per account before the first weapon of the step, not per job.</summary>
+    /// <summary>One-time step: needed once, before the first weapon of the step - not per job.</summary>
     [JsonPropertyName("oneTime")]
     public bool OneTime { get; set; }
+
+    /// <summary>Has a recipe although it's usually obtained another way (bought Anima crafts).</summary>
+    [JsonPropertyName("craftable")]
+    public bool Craftable { get; set; }
 
     [JsonIgnore]
     public string ObtainLabel => MaterialObtain.Label(Obtain, ObtainVia);

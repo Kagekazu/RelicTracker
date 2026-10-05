@@ -65,7 +65,7 @@ public sealed partial class PluginUI
             {
                 if (BeginPanel("armor_about_body"))
                 {
-                    ImGui.TextWrapped(note);
+                    DrawNote(note);
                     EndPanel();
                 }
             }

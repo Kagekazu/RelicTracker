@@ -1,6 +1,3 @@
-using RelicTracker.IPC;
-using System.Numerics;
-
 namespace RelicTracker;
 
 public sealed partial class PluginUI
@@ -33,7 +30,7 @@ public sealed partial class PluginUI
             DrawProgressSourceHint(ProgressHintContext.Overview);
         }
 
-        var anyExpansion = false;
+        List<(string ExpansionId, List<RelicLineStatus> Lines, List<ArmorLine> ArmorLines)> expansions = [];
         foreach (var expansionId in catalog.Expansions)
         {
             List<RelicLineStatus> lines =
@@ -44,24 +41,27 @@ public sealed partial class PluginUI
             ];
 
             List<ArmorLine> armorLines = [.. catalog.ArmorLinesFor(expansionId).Where(armor => MatchesArmorFilter(armor, ownership))];
-
-            if (lines.Count == 0 && armorLines.Count == 0)
+            if (lines.Count > 0 || armorLines.Count > 0)
             {
-                continue;
+                expansions.Add((expansionId, lines, armorLines));
             }
-
-            anyExpansion = true;
-            DrawOverviewExpansion(expansionId, lines, armorLines, ownership);
         }
 
-        if (!anyExpansion)
+        if (!BeginPanel("overview_lines"))
         {
-            if (BeginPanel("overview_empty"))
-            {
-                ImGui.TextColored(MutedColor, "No lines match this filter.");
-                EndPanel();
-            }
+            return;
         }
+
+        if (expansions.Count == 0)
+        {
+            ImGui.TextColored(MutedColor, "No lines match this filter.");
+        }
+        else
+        {
+            DrawOverviewTable(expansions, ownership);
+        }
+
+        EndPanel();
     }
 
     private void DrawOverviewStickyHeader(IReadOnlyList<RelicLineStatus> statuses)
@@ -81,9 +81,20 @@ public sealed partial class PluginUI
 
         DrawProgressRecheckButton();
 
-        ImGui.Text($"{summary.LinesComplete}/{summary.LineCount} relic lines finished on every job");
+        ImGui.Text($"{summary.LinesComplete} of {summary.LineCount} relic lines complete");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(
+                "A relic line is one relic series (Zodiac, Anima, Lucis tools, ...).\n"
+                + "It's complete once every job has its final upgrade. Armor isn't counted here.");
+        }
+
         ImGui.SameLine();
-        ImGui.TextColored(MutedColor, $"·  {summary.JobsComplete}/{summary.JobsTotal} job relics maxed");
+        ImGui.TextColored(MutedColor, $"·  {summary.JobsComplete} of {summary.JobsTotal} relics fully upgraded");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Counts each job on each relic line separately (for example 13 Anima weapons, 11 Lucis tools).");
+        }
 
         DrawPercentBar(summary.Percent, Math.Min(320f, ImGui.GetContentRegionAvail().X), $"{summary.Percent * 100f:0}% of all upgrade steps");
 
@@ -100,11 +111,49 @@ public sealed partial class PluginUI
         ImGui.InputTextWithHint("##overviewFilter", "Filter relics…", ref overviewFilter, 128);
     }
 
-    private void DrawOverviewExpansion(
-        string expansionId,
-        IReadOnlyList<RelicLineStatus> lines,
-        IReadOnlyList<ArmorLine> armorLines,
+    /// <summary>One table for every expansion, each a collapsible divider row over its lines.</summary>
+    private void DrawOverviewTable(
+        IReadOnlyList<(string ExpansionId, List<RelicLineStatus> Lines, List<ArmorLine> ArmorLines)> expansions,
         RelicOwnership ownership)
+    {
+        // End ImGui tables before EndPanel - ending the child first crashes ImGui.
+        using var table = ImRaii.Table(
+            "OverviewLines",
+            4,
+            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
+            new(0, 0));
+        if (!table)
+        {
+            return;
+        }
+
+        ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
+        ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 64);
+        ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
+        ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
+        ImGui.TableHeadersRow();
+
+        foreach ((string expansionId, List<RelicLineStatus> lines, List<ArmorLine> armorLines) in expansions)
+        {
+            if (!DrawOverviewExpansionRow(expansionId, lines))
+            {
+                continue;
+            }
+
+            foreach (var status in lines)
+            {
+                DrawOverviewLineRow(status);
+            }
+
+            foreach (var armor in armorLines)
+            {
+                DrawOverviewArmorRow(armor, ownership);
+            }
+        }
+    }
+
+    /// <summary>Expansion divider row; finished expansions start collapsed. Returns true when open.</summary>
+    private bool DrawOverviewExpansionRow(string expansionId, IReadOnlyList<RelicLineStatus> lines)
     {
         var jobsComplete = lines.Sum(line => line.JobsComplete);
         var jobsTotal = lines.Sum(line => line.Line.Jobs);
@@ -117,45 +166,13 @@ public sealed partial class PluginUI
                 ? $"{title} - done"
                 : $"{title} - {jobsComplete}/{jobsTotal} maxed";
 
-        var headerFlags = allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen;
-        if (!ImGui.CollapsingHeader($"{header}###overview_{expansionId}", headerFlags))
-        {
-            return;
-        }
-
-        if (!BeginPanel($"overview_{expansionId}"))
-        {
-            return;
-        }
-
-        // End ImGui tables before EndPanel - ending the child first crashes ImGui.
-        using (var table = ImRaii.Table(
-            $"OverviewLines_{expansionId}",
-            4,
-            ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.BordersOuterH | ImGuiTableFlags.RowBg,
-            new(0, 0)))
-        {
-            if (table)
-            {
-                ImGui.TableSetupColumn("Relic", ImGuiTableColumnFlags.WidthStretch, 0.36f);
-                ImGui.TableSetupColumn("Done", ImGuiTableColumnFlags.WidthFixed, 64);
-                ImGui.TableSetupColumn("Progress", ImGuiTableColumnFlags.WidthFixed, 150);
-                ImGui.TableSetupColumn("What's left", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-                ImGui.TableHeadersRow();
-
-                foreach (var status in lines)
-                {
-                    DrawOverviewLineRow(status);
-                }
-
-                foreach (var armor in armorLines)
-                {
-                    DrawOverviewArmorRow(armor, ownership);
-                }
-            }
-        }
-
-        EndPanel();
+        ImGui.TableNextRow();
+        ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg0, ImGui.GetColorU32(ImGuiCol.TableHeaderBg));
+        ImGui.TableNextColumn();
+        var flags = ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.NoTreePushOnOpen
+                    | (allDone ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.DefaultOpen);
+        using var color = ImRaii.PushColor(ImGuiCol.Text, HeaderColor);
+        return ImGui.TreeNodeEx($"{header}###overview_{expansionId}", flags);
     }
 
     private void DrawOverviewArmorRow(ArmorLine armor, RelicOwnership ownership)
@@ -176,8 +193,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableNextColumn();
-        var doneColor = complete ? GoodColor : owned > 0 ? WarningColor : MutedColor;
-        ImGui.TextColored(doneColor, $"{owned}/{total}");
+        DrawDoneCount(owned, total);
 
         ImGui.TableNextColumn();
         DrawPercentBar(fraction, 140f, $"{fraction * 100f:0}%");
@@ -190,6 +206,24 @@ public sealed partial class PluginUI
         else
         {
             ImGui.TextUnformatted($"{setsDone}/{armor.Sets.Count} sets complete");
+        }
+    }
+
+    /// <summary>"done/total": green when complete, muted when nothing is done yet, plain otherwise.</summary>
+    private static void DrawDoneCount(int done, int total)
+    {
+        var text = $"{done}/{total}";
+        if (total > 0 && done >= total)
+        {
+            ImGui.TextColored(GoodColor, text);
+        }
+        else if (done == 0)
+        {
+            ImGui.TextColored(MutedColor, text);
+        }
+        else
+        {
+            ImGui.TextUnformatted(text);
         }
     }
 
@@ -245,8 +279,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableNextColumn();
-        var doneColor = status.IsComplete ? GoodColor : status.JobsComplete > 0 ? WarningColor : MutedColor;
-        ImGui.TextColored(doneColor, $"{status.JobsComplete}/{status.Line.Jobs}");
+        DrawDoneCount(status.JobsComplete, status.Line.Jobs);
 
         ImGui.TableNextColumn();
         DrawPercentBar(status.Percent, 140f, $"{status.Percent * 100f:0}%");

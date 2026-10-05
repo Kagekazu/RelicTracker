@@ -13,6 +13,11 @@ public sealed partial class PluginUI : Window
     private static readonly Vector4 WarningColor = new(0.95f, 0.75f, 0.35f, 1f);
     private static readonly Vector4 GoodColor = new(0.45f, 0.9f, 0.55f, 1f);
     private static readonly Vector4 BadColor = new(0.95f, 0.45f, 0.45f, 1f);
+
+    // Progress fill (green once complete) and "still short" amounts: calm colours for normal state,
+    // so yellow/red keep meaning a real problem.
+    private static readonly Vector4 ProgressColor = new(0.38f, 0.66f, 0.88f, 1f);
+    private static readonly Vector4 ShortColor = new(0.9f, 0.68f, 0.45f, 1f);
     private readonly RelicCatalog catalog;
 
     private readonly Configuration config;

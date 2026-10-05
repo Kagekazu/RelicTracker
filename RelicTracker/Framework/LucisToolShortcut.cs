@@ -18,8 +18,6 @@ public static class LucisToolShortcut
         ["gatherer"] = [8, 9, 10],
     };
 
-    public readonly record struct SalvagerSlot(int Slot, string Category);
-
     public static bool Applies(RelicLine line) =>
         string.Equals(line.CollectType, CollectType, StringComparison.Ordinal) && line.TierCount > 0;
 
@@ -97,14 +95,14 @@ public static class LucisToolShortcut
     }
 
     /// <summary>Unfinished jobs in unlocked categories - they buy their Lucis tool from a Calamity Salvager.</summary>
-    public static IReadOnlyList<SalvagerSlot> SalvagerSlots(RelicLine line, RelicOwnership ownership)
+    public static IReadOnlyList<int> SalvagerSlots(RelicLine line, RelicOwnership ownership)
     {
-        List<SalvagerSlot> result = [];
+        List<int> result = [];
         foreach (var category in CategoryNames)
         {
             if (IsCategoryUnlocked(line, ownership, category))
             {
-                result.AddRange(UnfinishedSlots(line, ownership, category).Select(slot => new SalvagerSlot(slot, category)));
+                result.AddRange(UnfinishedSlots(line, ownership, category));
             }
         }
 
