@@ -204,36 +204,35 @@ public sealed partial class PluginUI
         var wide = ImGui.GetContentRegionAvail().X >= RelicWideLayoutMinWidth;
         var currentTier = CurrentStepTier(weapon, job, slotIndex, ownership);
 
+        using var scroll = ImRaii.Child("##RelicDetailScroll", new(0, -1), false);
+        if (!scroll)
+        {
+            return;
+        }
+
         if (wide)
         {
             DrawAllJobsGrid(weapon, jobList, job, ownership);
             ImGui.Spacing();
 
-            var gap = 10f;
-            var half = (ImGui.GetContentRegionAvail().X - gap) * 0.48f;
-            using (var left = ImRaii.Child("##relicLeft", new(half, -1), true))
+            // Steps and notes beside materials, each only as tall as its content.
+            using var columns = ImRaii.Table(
+                "##relicColumns",
+                2,
+                ImGuiTableFlags.BordersOuter | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.PadOuterX,
+                new(0, 0));
+            if (!columns)
             {
-                if (left)
-                {
-                    DrawDetailStepsLeft(weapon, job, slotIndex, currentTier, ownership);
-                }
+                return;
             }
 
-            ImGui.SameLine(0, gap);
-            using (var right = ImRaii.Child("##relicRight", new(0, -1), true))
-            {
-                if (right)
-                {
-                    DrawDetailStepsRight(weapon, currentTier, slotIndex);
-                }
-            }
-
-            return;
-        }
-
-        using var scroll = ImRaii.Child("##RelicDetailScroll", new(0, -1), false);
-        if (!scroll)
-        {
+            ImGui.TableSetupColumn("Steps", ImGuiTableColumnFlags.WidthStretch, 0.48f);
+            ImGui.TableSetupColumn("Materials", ImGuiTableColumnFlags.WidthStretch, 0.52f);
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            DrawDetailStepsLeft(weapon, job, slotIndex, currentTier, ownership);
+            ImGui.TableNextColumn();
+            DrawDetailStepsRight(weapon, currentTier, slotIndex);
             return;
         }
 
@@ -355,7 +354,7 @@ public sealed partial class PluginUI
         var note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
         if (!string.IsNullOrWhiteSpace(note))
         {
-            ImGui.TextWrapped(note);
+            DrawNote(note);
         }
     }
 
@@ -380,18 +379,20 @@ public sealed partial class PluginUI
                     stepName,
                     questIndex,
                     CreateOwnedLookup(),
-                    string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal) ? slotIndex : -1));
+                    string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal) ? slotIndex : -1));
         }
 
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
         if (items.Count == 0)
         {
             var note = NoteForDiscipline(catalog.StepNote(line.CollectType, stepName), slotIndex);
-            if (string.IsNullOrWhiteSpace(note))
+            using (ImRaii.PushColor(ImGuiCol.Text, MutedColor))
             {
-                ImGui.TextWrapped(
-                    "No item breakdown recorded for this step - it's mostly tomestones, quests or other tasks. "
-                    + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually.");
+                ImGui.TextWrapped(string.IsNullOrWhiteSpace(note)
+                    ? "No item breakdown recorded for this step - it's mostly tomestones, quests or other tasks. "
+                      + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually."
+                    : "Nothing to collect for this step - it's quests or duties. See the notes on the left. "
+                      + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually.");
             }
 
             return;
@@ -412,13 +413,21 @@ public sealed partial class PluginUI
 
     private void DrawArtisanCraftButton(RelicLine line, string stepName, int slotIndex)
     {
-        if (!string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal) || slotIndex > 7)
+        // Tool lines: one list per crafter class. Weapon lines: the job's own list if the step has
+        // one (the Zodiac base weapons), else one list per step across all classes; a one-time
+        // step's list goes away once any job is past that step.
+        var isTools = string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal);
+        if ((isTools && slotIndex > 7)
+            || (!isTools && StepCraftsAreOneTime(line, stepName) && IsStepUnlockedOnAnyJob(line, stepName)))
         {
             return;
         }
 
-        var artisanStep = ArtisanIpc.ArtisanStepFor(stepName, slotIndex, GetOnCharacterItemCount);
-        if (!ArtisanIpc.TryGetRelicToolListId(artisanStep, slotIndex, out _))
+        var artisanStep = isTools ? ArtisanIpc.ArtisanStepFor(stepName, slotIndex, GetOnCharacterItemCount) : stepName;
+        var craftSlot = isTools || ArtisanIpc.TryGetRelicToolListId(artisanStep, slotIndex, out _)
+            ? slotIndex
+            : ArtisanIpc.AllClassesSlot;
+        if (!ArtisanIpc.TryGetRelicToolListId(artisanStep, craftSlot, out _))
         {
             return;
         }
@@ -428,7 +437,7 @@ public sealed partial class PluginUI
         {
             if (ImGui.Button(resplendentTier is null ? "Craft with Artisan" : $"Craft Component {resplendentTier} with Artisan"))
             {
-                if (ArtisanIpc.TryStartRelicToolList(artisanStep, slotIndex, out string? error))
+                if (ArtisanIpc.TryStartRelicToolList(artisanStep, craftSlot, out string? error))
                 {
                     Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", artisanStep);
                 }
@@ -441,13 +450,26 @@ public sealed partial class PluginUI
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
         {
-            ImGui.SetTooltip(resplendentTier is null
-                ? "Starts Artisan's premade list for this step (precrafts and turn-in crafts).\n"
-                  + "Vendor mats (scrip, GC seal, gil) are not included - buy those first."
-                : $"Crafts Component {resplendentTier} from the Material {resplendentTier} in your bags (up to 30, best case).\n"
-                  + "Turn the components in to Limbeth, then press again for the next tier.");
+            ImGui.SetTooltip(resplendentTier is not null
+                ? $"Crafts Component {resplendentTier} from the Material {resplendentTier} in your bags (up to 30, best case).\n"
+                  + "Turn the components in to Limbeth, then press again for the next tier."
+                : isTools
+                    ? "Starts Artisan's premade list for this step (precrafts and turn-in crafts).\n"
+                      + "Vendor mats (scrip, GC seal, gil) are not included - buy those first."
+                    : craftSlot != ArtisanIpc.AllClassesSlot
+                        ? "Starts Artisan's premade list for this job's crafted weapon, precrafts included.\n"
+                          + "Meld the materia yourself before handing it in."
+                        : "Starts Artisan's premade list for this step's crafts - one weapon's worth, across crafter classes, precrafts included.\n"
+                          + "Vendor mats are not included - buy those first.");
         }
     }
+
+    /// <summary>True if every crafted material of a step is a one-time step item (the Phantom gate crafts).</summary>
+    private bool StepCraftsAreOneTime(RelicLine line, string stepName) =>
+        data.Expansions.TryGetValue(line.Expansion, out var sheet)
+        && sheet.Materials
+            .Where(row => row.Obtain == "craft" && string.Equals(row.Step?.Trim(), stepName, StringComparison.OrdinalIgnoreCase))
+            .All(row => row.OneTime);
 
     private void DrawDetailStepItemsTable(IReadOnlyList<StepItem> items)
     {
@@ -554,7 +576,7 @@ public sealed partial class PluginUI
 
             ImGui.TableNextColumn();
             var shortfall = item.Need > item.Owned ? item.Need - item.Owned : 0;
-            ImGui.TextColored(shortfall == 0 && item.Resolved ? GoodColor : BadColor, item.Resolved ? shortfall.ToString() : "?");
+            ImGui.TextColored(shortfall == 0 && item.Resolved ? GoodColor : ShortColor, item.Resolved ? shortfall.ToString() : "?");
         }
     }
 
@@ -627,8 +649,9 @@ public sealed partial class PluginUI
         }
 
         // On tool lines the material flag columns line up with the relic job slots, so a Fisher
-        // only sees fishing parts and crafters don't see them. Weapon-line flags are placeholders.
-        var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
+        // only sees fishing parts and crafters don't see them. Weapon-line rows apply to every job
+        // unless they're job-specific (see ShoppingListBuilder.IsJobSpecific).
+        var filterBySlot = string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal);
 
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
         var oneTimeUnlocked = IsStepUnlockedOnAnyJob(line, stepName);
@@ -650,7 +673,9 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            if (filterBySlot && !ShoppingListBuilder.ToolMaterialAppliesToSlot(row.Jobs, slotIndex, hasFisherSection))
+            if (filterBySlot
+                    ? !ShoppingListBuilder.ToolMaterialAppliesToSlot(row.Jobs, slotIndex, hasFisherSection)
+                    : ShoppingListBuilder.IsJobSpecific(row.Jobs) && !(slotIndex < row.Jobs.Count && row.Jobs[slotIndex] == true))
             {
                 continue;
             }
@@ -778,7 +803,7 @@ public sealed partial class PluginUI
             var where = data.MaterialSources.TryGetValue(name, out var src) ? src : row.ObtainLabel;
             if (row.OneTime)
             {
-                where = string.IsNullOrEmpty(where) ? "One-time" : $"One-time · {where}";
+                where = string.IsNullOrEmpty(where) ? "One-time step" : $"One-time step · {where}";
             }
 
             return new(
@@ -935,6 +960,7 @@ public sealed partial class PluginUI
             return;
         }
 
+        ImGui.PushTextWrapPos(0f);
         if (LucisToolShortcut.IsUnlocked(line, ownership, slotIndex))
         {
             ImGui.TextColored(
@@ -959,6 +985,7 @@ public sealed partial class PluginUI
                       + $"buy this one from a Calamity Salvager for {LucisToolShortcut.SalvagerGil:N0} gil (change it on the Tracker).");
         }
 
+        ImGui.PopTextWrapPos();
         ImGui.Spacing();
     }
 

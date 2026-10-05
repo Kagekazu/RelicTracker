@@ -253,6 +253,9 @@ public sealed class RelicCatalog
 
 internal static class ExpansionNames
 {
+    /// <summary>The Disciple of the Hand &amp; Land tool lines, listed as their own "expansion".</summary>
+    public const string ToolsId = "DoHDoL";
+
     public static string LongName(string expansionId) =>
         expansionId switch
         {
@@ -262,7 +265,7 @@ internal static class ExpansionNames
             "ShB" => "Shadowbringers",
             "EW" => "Endwalker",
             "DT" => "Dawntrail",
-            "DoHDoL" => "Crafters & Gatherers",
+            ToolsId => "Crafters & Gatherers",
             _ => expansionId
         };
 }

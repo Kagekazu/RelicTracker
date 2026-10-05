@@ -483,6 +483,26 @@ def zodiac_reward(product, *components):
         arr_add("Zodiac", mat, 1, role="covers", craft_of=product)
 # Relic: base quest turn-in (1 Radz-at-Han Quenching Oil, 15 Poetics).
 arr_add("Relic", "Radz-at-Han Quenching Oil", 1)
+# Relic: each job also hands Gerolt its own crafted weapon melded with 2 job-specific Materia III.
+# These rows are job-specific, so their flags follow the line's job order (unlike the rest of ARR).
+ARR_JOBS = ["PLD", "MNK", "WAR", "DRG", "BRD", "WHM", "BLM", "SMN", "SCH", "NIN"]
+def arr_job(step, material, per, *jobs):
+    arr_add(step, material, per)
+    arr_rows[-1]["jobs"] = [job in jobs for job in ARR_JOBS]
+for job, weapon, materia in [
+    ("PLD", "Aeolian Scimitar", "Battledance Materia III"),
+    ("WAR", "Barbarian's Bardiche", "Battledance Materia III"),
+    ("DRG", "Champion's Lance", "Savage Aim Materia III"),
+    ("MNK", "Wildling's Cesti", "Savage Aim Materia III"),
+    ("NIN", "Vamper's Knives", "Heavens' Eye Materia III"),
+    ("BRD", "Longarm's Composite Bow", "Heavens' Eye Materia III"),
+    ("BLM", "Sanguine Scepter", "Savage Might Materia III"),
+    ("SMN", "Erudite's Picatrix of Casting", "Savage Might Materia III"),
+    ("WHM", "Madman's Whispering Rod", "Quicktongue Materia III"),
+    ("SCH", "Erudite's Picatrix of Healing", "Quicktongue Materia III"),
+]:
+    arr_job("Relic", weapon, 1, job)
+    arr_job("Relic", materia, 2, job)
 # Zenith: 3 Thavnairian Mist (20 Poetics each).
 arr_add("Zenith", "Thavnairian Mist", 3)
 # Atma: 12 FATE-drop atmas (aliased to the 12 items).
@@ -581,7 +601,7 @@ shb_add("Recollection", "Bitter Memory of the Dying", 6)
 shb_add("Law's Order", "Loathsome Memory of the Dying", 15)
 shb_add("Augmented Law's Order", "Timeworn Artifact", 15)   # 3/Delubrum Reginae clear, or PotD
 shb_add("Blade's", "Raw Emotion", 15)                       # Dalriada 3 / DR 2 / SB dungeon 1 / HoH
-# One-time grinds, done once per account before the first weapon of that step (not per weapon).
+# One-time grinds, done once per character before the first weapon of that step (not per weapon).
 # The optional Aetherial Sealant reallocation stays a note.
 def shb_once(step, material, per):
     shb_add(step, material, per)
@@ -617,7 +637,7 @@ dt_add("Penumbrae", "Arcanite")
 dt_add("Umbrae", "Waxing Arcanite")
 dt_add("Obscurum", "Waning Arcanite")
 dt_add("Eclipticum", "Ecliptic Arcanite")
-# One-time gate quests per tier (once per account, before the first weapon of that tier). The
+# One-time gate quests per tier (once per character, before the first weapon of that tier). The
 # Umbrae aether array is duty progress, not a stockpile -> note.
 def dt_once(step, material, per=1):
     dt_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*21,"oneTime":True})
@@ -681,6 +701,9 @@ for expansion_rows in data.values():
         row["obtain"] = kind
         if via:
             row["obtainVia"] = via
+        # Bought by default but also craftable (the Anima crafts): offer the Artisan list too.
+        if kind != "craft" and any(way == "craft" for way, _ in obtain_index.ways(row.get("materialIds", []))):
+            row["craftable"] = True
 
 out = data_dir / "tool_extra_materials.json"
 json.dump(data, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)

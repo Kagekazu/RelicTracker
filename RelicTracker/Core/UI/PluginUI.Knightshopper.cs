@@ -8,8 +8,7 @@ public sealed partial class PluginUI
 
     private KnightshopperStatus? knightshopperStatus;
     private long knightshopperStatusTick;
-    private string? knightshopperMessage;
-    private bool knightshopperMessageIsError;
+    private StatusMessage? knightshopperResult;
 
     private readonly record struct KnightshopperPurchase(uint ItemId, string Name, uint Short);
 
@@ -61,16 +60,7 @@ public sealed partial class PluginUI
             return true;
         }
 
-        if (knightshopperMessage is { } message)
-        {
-            ImGui.TextColored(knightshopperMessageIsError ? BadColor : GoodColor, message);
-            ImGui.SameLine();
-            if (ImGui.SmallButton("x##ks_dismiss"))
-            {
-                knightshopperMessage = null;
-            }
-        }
-
+        DrawStatusMessage(ref knightshopperResult, "ks_dismiss");
         return false;
     }
 
@@ -112,13 +102,14 @@ public sealed partial class PluginUI
         {
             if (knightshopperStatus is { IsFinished: true } finished)
             {
-                knightshopperMessageIsError = finished.State != KnightshopperPurchaseState.Succeeded;
-                knightshopperMessage = finished.State switch
-                {
-                    KnightshopperPurchaseState.Succeeded => "Knightshopper finished buying.",
-                    KnightshopperPurchaseState.Cancelled => "Knightshopper run cancelled.",
-                    _ => $"Knightshopper failed: {finished.Message}",
-                };
+                knightshopperResult = new(
+                    finished.State switch
+                    {
+                        KnightshopperPurchaseState.Succeeded => "Knightshopper finished buying.",
+                        KnightshopperPurchaseState.Cancelled => "Knightshopper run cancelled.",
+                        _ => $"Knightshopper failed: {finished.Message}",
+                    },
+                    finished.State != KnightshopperPurchaseState.Succeeded);
             }
 
             KnightshopperIpc.ClearActive();
@@ -181,18 +172,18 @@ public sealed partial class PluginUI
         out KnightshopperPurchase purchase)
     {
         purchase = default;
+        var itemId = PrimaryItemId(row);
         if (!row.Resolved
             || row.Short == 0
             || row.Obtain != "buy"
-            || !KnightshopperIpc.TryParseCurrency(row.ObtainVia, out currency)
-            || !data.MaterialIdsByName.TryGetValue(row.Material, out var ids)
-            || ids.Count == 0)
+            || itemId == 0
+            || !KnightshopperIpc.TryParseCurrency(row.ObtainVia, out currency))
         {
             currency = default;
             return false;
         }
 
-        purchase = new(ids[0], row.DisplayMaterial, row.Short);
+        purchase = new(itemId, row.DisplayMaterial, row.Short);
         return true;
     }
 
@@ -206,7 +197,6 @@ public sealed partial class PluginUI
         ];
 
         knightshopperStatus = null;
-        knightshopperMessageIsError = !KnightshopperIpc.TryStartItems(currency, request, out var message);
-        knightshopperMessage = knightshopperMessageIsError ? message : null;
+        knightshopperResult = KnightshopperIpc.TryStartItems(currency, request, out var message) ? null : new(message, true);
     }
 }

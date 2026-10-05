@@ -1,4 +1,5 @@
 using Dalamud.Plugin.Ipc;
+using Dalamud.Plugin.Ipc.Exceptions;
 using ECommons.Reflection;
 
 namespace RelicTracker.IPC;
@@ -8,7 +9,7 @@ internal static class ArtisanIpc
     private const long BindRetryMs = 60_000;
 
     /// <summary>
-    ///     Matches Artisan <c>RelicToolPremadeLists.RelicToolStep</c> ordinals (1–16).
+    ///     Matches Artisan <c>RelicToolPremadeLists.RelicToolStep</c> ordinals (1–22).
     ///     IPC is <c>Artisan.GetRelicToolListId(int stepOrdinal, int craftTypeSlot)</c>.
     /// </summary>
     private static readonly Dictionary<string, int> StepOrdinals = new(StringComparer.OrdinalIgnoreCase)
@@ -29,13 +30,25 @@ internal static class ArtisanIpc
         ["Resplendent A"] = 14,
         ["Resplendent B"] = 15,
         ["Resplendent C"] = 16,
+        ["Zodiac"] = 17,
+        ["Umbrae"] = 18,
+        ["Obscurum"] = 19,
+        ["Eclipticum"] = 20,
+        ["Anima"] = 21,
+        ["Relic"] = 22,
     };
+
+    /// <summary>
+    ///     Craft slot for weapon-step lists, which mix crafter classes (Artisan's
+    ///     <c>RelicToolPremadeLists.AllClassesSlot</c>). Tool lists use the class slot 0-7.
+    /// </summary>
+    public const int AllClassesSlot = 8;
 
     // Resplendent Material B / C item IDs run CRP..CUL, so add the craft slot.
     private const uint ResplendentMaterialB = 33194;
     private const uint ResplendentMaterialC = 33202;
 
-    private static ICallGateSubscriber<int, int, int>? _getRelicToolListId;
+    private static Func<int, int, int>? _getRelicToolListId;
     private static ICallGateSubscriber<int, object>? _startListById;
     private static ICallGateSubscriber<bool>? _isBusy;
     private static bool _ipcBound;
@@ -104,7 +117,7 @@ internal static class ArtisanIpc
 
         try
         {
-            listId = _getRelicToolListId.InvokeFunc(stepOrdinal, craftSlot);
+            listId = _getRelicToolListId(stepOrdinal, craftSlot);
             return listId != 0;
         }
         catch (Exception ex)
@@ -182,16 +195,15 @@ internal static class ArtisanIpc
 
         try
         {
-            _getRelicToolListId ??= Svc.PluginInterface.GetIpcSubscriber<int, int, int>("Artisan.GetRelicToolListId");
+            _getRelicToolListId ??= BindRelicToolListIdLookup();
             _startListById ??= Svc.PluginInterface.GetIpcSubscriber<int, object>("Artisan.StartListById");
             _isBusy ??= Svc.PluginInterface.GetIpcSubscriber<bool>("Artisan.IsBusy");
 
-            if (!_getRelicToolListId.HasFunction)
+            if (_getRelicToolListId == null)
             {
                 return;
             }
 
-            _ = _getRelicToolListId.InvokeFunc(0, 0);
             _ipcBound = true;
             _loggedBindFailure = false;
             Svc.Log.Information("[RelicTracker] Artisan IPC ready.");
@@ -203,6 +215,31 @@ internal static class ArtisanIpc
                 Svc.Log.Debug(ex, "[RelicTracker] Artisan IPC not available yet.");
                 _loggedBindFailure = true;
             }
+        }
+    }
+
+    /// <summary>
+    ///     Artisan.GetRelicToolListId is (int step, uint craftSlot) -> uint since Artisan's relic list
+    ///     refactor, and (int, int) -> int before it. Bind whichever this Artisan build registers.
+    /// </summary>
+    private static Func<int, int, int>? BindRelicToolListIdLookup()
+    {
+        var current = Svc.PluginInterface.GetIpcSubscriber<int, uint, uint>("Artisan.GetRelicToolListId");
+        if (!current.HasFunction)
+        {
+            return null;
+        }
+
+        try
+        {
+            _ = current.InvokeFunc(0, 0u);
+            return (step, slot) => (int)current.InvokeFunc(step, (uint)slot);
+        }
+        catch (IpcTypeMismatchError)
+        {
+            var legacy = Svc.PluginInterface.GetIpcSubscriber<int, int, int>("Artisan.GetRelicToolListId");
+            _ = legacy.InvokeFunc(0, 0);
+            return legacy.InvokeFunc;
         }
     }
 }

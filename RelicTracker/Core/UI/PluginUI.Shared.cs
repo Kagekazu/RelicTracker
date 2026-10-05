@@ -320,9 +320,119 @@ public sealed partial class PluginUI
 
     private void DrawPercentBar(float fraction, float width, string overlay)
     {
-        Vector4 color = fraction >= 1f ? GoodColor : fraction > 0f ? WarningColor : MutedColor;
-        using var barColor = ImRaii.PushColor(ImGuiCol.PlotHistogram, color);
-        ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new Vector2(width, ImGui.GetFrameHeight()), overlay);
+        Vector4 color = fraction >= 1f ? GoodColor : ProgressColor;
+        using (ImRaii.PushColor(ImGuiCol.PlotHistogram, color))
+        {
+            ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new Vector2(width, ImGui.GetFrameHeight()), string.Empty);
+        }
+
+        // ImGui puts the overlay after the fill, off the end of a nearly full bar. Centre it instead,
+        // dark over the fill and normal over the rest so it reads on both.
+        var min = ImGui.GetItemRectMin();
+        var max = ImGui.GetItemRectMax();
+        var textSize = ImGui.CalcTextSize(overlay);
+        var textPos = new Vector2(min.X + ((max.X - min.X - textSize.X) * 0.5f), min.Y + ((max.Y - min.Y - textSize.Y) * 0.5f));
+
+        var fillX = min.X + ((max.X - min.X) * Math.Clamp(fraction, 0f, 1f));
+        var drawList = ImGui.GetWindowDrawList();
+        drawList.PushClipRect(min, new Vector2(fillX, max.Y), true);
+        drawList.AddText(textPos, ImGui.GetColorU32(BarTextOnFill), overlay);
+        drawList.PopClipRect();
+        drawList.PushClipRect(new Vector2(fillX, min.Y), max, true);
+        drawList.AddText(textPos, ImGui.GetColorU32(ImGuiCol.Text), overlay);
+        drawList.PopClipRect();
+    }
+
+    private static readonly Vector4 BarTextOnFill = new(0.08f, 0.08f, 0.1f, 1f);
+
+    /// <summary>Result of an action handed to another plugin (Knightshopper, Gather &amp; Chill).</summary>
+    private sealed record StatusMessage(string Text, bool IsError);
+
+    /// <summary>Draws a result message with a dismiss button, which clears it.</summary>
+    private void DrawStatusMessage(ref StatusMessage? message, string id)
+    {
+        if (message is null)
+        {
+            return;
+        }
+
+        ImGui.TextColored(message.IsError ? BadColor : GoodColor, message.Text);
+        ImGui.SameLine();
+        if (ImGui.SmallButton($"x##{id}"))
+        {
+            message = null;
+        }
+    }
+
+    /// <summary>The first game item ID for a material row, or 0 if it couldn't be matched.</summary>
+    private uint PrimaryItemId(ShoppingMaterialRow row) =>
+        data.MaterialIdsByName.TryGetValue(row.Material, out var ids) && ids.Count > 0 ? ids[0] : 0;
+    private static readonly Vector4 TipColor = new(0.55f, 0.8f, 0.95f, 1f);
+
+    /// <summary>
+    ///     Draws a step note with its light markup, one line per '\n':
+    ///     "1. ..." numbered step and "- ..." bullet (both with a hanging indent), "Tip: ..." in the
+    ///     tip colour, a short line ending in ':' as a sub-heading, a blank line as spacing, anything
+    ///     else as plain text. <paramref name="wrapPos" /> is passed to PushTextWrapPos (0 = window edge).
+    /// </summary>
+    private void DrawNote(string note, float wrapPos = 0f)
+    {
+        const float listIndent = 8f;
+        ImGui.PushTextWrapPos(wrapPos);
+        foreach (var raw in note.Replace("\r", string.Empty).Split('\n'))
+        {
+            var line = raw.Trim();
+            if (line.Length == 0)
+            {
+                ImGui.Spacing();
+                continue;
+            }
+
+            if (TrySplitListMarker(line, out var marker, out var rest))
+            {
+                ImGui.Indent(listIndent);
+                ImGui.TextColored(MutedColor, marker);
+                ImGui.SameLine();
+                ImGui.TextUnformatted(rest);
+                ImGui.Unindent(listIndent);
+            }
+            else if (line.StartsWith("Tip:", StringComparison.Ordinal))
+            {
+                ImGui.TextColored(TipColor, line);
+            }
+            else if (line.EndsWith(':') && line.Length <= 40)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(HeaderColor, line);
+            }
+            else
+            {
+                ImGui.TextUnformatted(line);
+            }
+        }
+
+        ImGui.PopTextWrapPos();
+    }
+
+    private static bool TrySplitListMarker(string line, out string marker, out string rest)
+    {
+        marker = rest = string.Empty;
+        if (line.StartsWith("- ", StringComparison.Ordinal))
+        {
+            marker = "•";
+            rest = line[2..];
+            return true;
+        }
+
+        var dot = line.IndexOf(". ", StringComparison.Ordinal);
+        if (dot is > 0 and <= 2 && line[..dot].All(char.IsDigit))
+        {
+            marker = line[..(dot + 1)];
+            rest = line[(dot + 2)..];
+            return true;
+        }
+
+        return false;
     }
 
     private void DrawTitleBarVersion(int customTitleBarButtonCount, bool showAdditionalOptionsButton)

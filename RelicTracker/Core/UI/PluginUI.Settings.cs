@@ -158,7 +158,7 @@ public sealed partial class PluginUI
 
         Integration[] integrations =
         [
-            new("Allagan Tools", "Owned counts (bags, retainers, dresser, armoire) and relic detection.", null, false,
+            new("Allagan Tools", "Recommended. Owned counts (bags, retainers, dresser, armoire) and relic detection - without it, only your bags are counted.", null, false,
                 AllaganToolsIpc.IsInstalled, AllaganToolsIpc.IsEnabled, AllaganToolsIpc.IsReady, null),
             new("Artisan", "Crafts relic-tool turn-ins from the Relic tab.", null, true,
                 ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, ArtisanIpc.SupportsRelicToolLists,
@@ -172,6 +172,14 @@ public sealed partial class PluginUI
                 GatherChillIpc.IsReady && GatherChillIpc.IsBusy() ? "gathering" : null),
         ];
 
+        // Gather & Chill isn't released yet: only list it for people who have a build installed.
+        DrawIntegrationsTable([.. integrations.Where(integration =>
+            integration.Name != "Gather & Chill" || integration.Installed)]);
+        EndPanel();
+    }
+
+    private void DrawIntegrationsTable(IReadOnlyList<Integration> integrations)
+    {
         using var table = ImRaii.Table("Integrations", 3, ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerV, new(0, 0));
         if (!table)
         {
@@ -187,11 +195,7 @@ public sealed partial class PluginUI
             ImGui.TableNextRow();
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(integration.Optional ? integration.Name : $"{integration.Name} *");
-            if (!integration.Optional && ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("Recommended - without it, only items in your bags right now are counted.");
-            }
+            ImGui.TextUnformatted(integration.Name);
 
             ImGui.TableNextColumn();
             (string label, StatusChipKind kind, string tooltip) = (integration.Installed, integration.Enabled, integration.Ready) switch
