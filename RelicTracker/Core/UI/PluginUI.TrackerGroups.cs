@@ -98,7 +98,8 @@ public sealed partial class PluginUI
             "Gather & fish",
             null,
             gatherRows,
-            row => row.ObtainLabel,
+            // Only split Gather / Diadem / Fish when there's more than one of them.
+            gatherRows.Select(row => row.ObtainLabel).Distinct().Skip(1).Any() ? row => row.ObtainLabel : null,
             () => DrawGatherChillButton(gatherRows));
 
         DrawObtainSection(
@@ -275,7 +276,8 @@ public sealed partial class PluginUI
 
             if (!drewLabel)
             {
-                ImGui.AlignTextToFramePadding();
+                // Same line as the summary sentence.
+                ImGui.SameLine(0, 24);
                 ImGui.TextColored(HeaderColor, "First Lucis tool");
                 if (ImGui.IsItemHovered())
                 {
@@ -312,7 +314,7 @@ public sealed partial class PluginUI
     private bool DrawObtainHeader(string expansionId, string key, string title, IReadOnlyList<ShoppingMaterialRow> rows)
     {
         var shortCount = rows.Count(row => row.Short > 0);
-        var badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
+        var badge = shortCount > 0 ? $"{Plural(rows.Count, "item")} · {shortCount} short" : Plural(rows.Count, "item");
         var configKey = $"{expansionId}|Do|{key}";
         return DrawCollapsingSection(configKey, $"{title}  ({badge})###{configKey}", true);
     }
@@ -325,8 +327,8 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch, 0.55f);
-        ImGui.TableSetupColumn("For", ImGuiTableColumnFlags.WidthStretch, 0.45f);
+        ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.TableSetupColumn("For", ImGuiTableColumnFlags.WidthFixed, 150);
         ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
@@ -346,12 +348,27 @@ public sealed partial class PluginUI
         }
 
         var questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
+        var ownership = GetOwnership();
+        var isTools = expansionId == "DoHDoL";
         List<ShoppingQuestRewardRow> rewards = [];
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
         foreach (var (status, tier) in UnfinishedSteps(statuses))
         {
+            // On tool lines a reward belongs to specific jobs (a Talan seal per gatherer); keep it
+            // only while one of those jobs still needs the step and isn't buying its Lucis tool.
+            var skipped = LucisToolShortcut.SkippedSlots(status.Line, ownership, config.LucisFirstJob);
             foreach (var reward in ShoppingListBuilder.GetQuestRewards(status.Line.StepName(tier), questRewards, ownedLookup))
             {
+                if (isTools
+                    && questRewards.ProductJobs.TryGetValue(reward.Material, out var jobs)
+                    && !Enumerable.Range(0, status.Line.Jobs).Any(slot =>
+                        ShoppingListBuilder.ToolMaterialAppliesToSlot(jobs, slot, stepHasFisherSection: true)
+                        && !skipped.Contains(slot)
+                        && !ownership.IsStepDoneOrManual(status.Line, slot, tier)))
+                {
+                    continue;
+                }
+
                 if (seen.Add(reward.Material))
                 {
                     rewards.Add(reward);
@@ -383,7 +400,7 @@ public sealed partial class PluginUI
         }
 
         var configKey = $"{expansionId}|Do|Activities";
-        if (!DrawCollapsingSection(configKey, $"Activities  ({activities.Count} steps)###{configKey}", true))
+        if (!DrawCollapsingSection(configKey, $"Activities  ({Plural(activities.Count, "step")})###{configKey}", false))
         {
             return;
         }

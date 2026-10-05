@@ -307,7 +307,7 @@ public sealed partial class PluginUI
         {
             List<ShoppingMaterialRow> rows = [.. group.OrderBy(row => row.StepOrder)];
             var shortCount = rows.Count(row => row.Short > 0);
-            var badge = shortCount > 0 ? $"{rows.Count} items · {shortCount} short" : $"{rows.Count} items";
+            var badge = shortCount > 0 ? $"{Plural(rows.Count, "item")} · {shortCount} short" : Plural(rows.Count, "item");
             var key = $"{expansionId}|W|{group.Key}";
             if (!DrawCollapsingSection(key, $"{group.Key}  ({badge})###{key}", false))
             {
@@ -377,7 +377,12 @@ public sealed partial class PluginUI
         if (showFor)
         {
             ImGui.TableNextColumn();
-            ImGui.TextColored(MutedColor, string.Join(", ", row.ForSteps));
+            var steps = string.Join(", ", row.ForSteps);
+            ImGui.TextColored(MutedColor, steps);
+            if (row.ForSteps.Count > 1 && ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(string.Join("\n", row.ForSteps));
+            }
         }
 
         ImGui.TableNextColumn();
@@ -439,7 +444,7 @@ public sealed partial class PluginUI
     private void DrawQuestRewardsSubsection(string configKey, IReadOnlyList<ShoppingQuestRewardRow> rewards)
     {
         var ownedCount = rewards.Count(row => row.Owned > 0);
-        var badge = ownedCount > 0 ? $"{ownedCount}/{rewards.Count} in inventory" : $"{rewards.Count} rewards";
+        var badge = ownedCount > 0 ? $"{ownedCount}/{rewards.Count} in inventory" : Plural(rewards.Count, "reward");
         DrawQuestRewardsSection(
             configKey,
             rewards,
@@ -606,15 +611,23 @@ public sealed partial class PluginUI
             ImGui.TextColored(BadColor, $"{weaponShort} material{(weaponShort == 1 ? string.Empty : "s")} still short.");
         }
 
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(
+                "Needs cover every job still missing the step."
+                + (armorCosts is { Count: > 0 }
+                    ? "\nArmor owned includes currency in inventory plus finished pieces already bought."
+                    : string.Empty));
+        }
+
         if (unresolved > 0)
         {
             ImGui.SameLine();
-            ImGui.TextColored(WarningColor, $"({unresolved} items couldn't be matched - Owned won't count)");
+            ImGui.TextColored(WarningColor, $"({Plural(unresolved, "item")} couldn't be matched - Owned won't count)");
         }
-
-        ImGui.TextColored(MutedColor,
-            "Weapon needs cover every job still missing the step. Armor owned includes currency in inventory plus finished pieces already bought.");
     }
+
+    private static string Plural(int count, string noun) => $"{count} {noun}{(count == 1 ? string.Empty : "s")}";
 
     private static void DrawNeedOwnedShortHeaders(bool includeItem, bool includeFor = false)
     {

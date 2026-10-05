@@ -9,17 +9,10 @@ public sealed partial class PluginUI
 
     private void DrawSettingsTab()
     {
-        if (BeginPanel("settings_intro"))
-        {
-            ImGui.TextColored(MutedColor, "Install Allagan Tools for owned counts (bags, retainers, dresser, armoire - including replicas).");
-            ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
-            EndPanel();
-        }
+        ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
+        ImGui.Spacing();
 
-        DrawAllaganToolsSettingsSection();
-        DrawArtisanSettingsSection();
-        DrawKnightshopperSettingsSection();
-        DrawGatherChillSettingsSection();
+        DrawIntegrationsSection();
 
         if (BeginPanel("settings_display"))
         {
@@ -56,10 +49,13 @@ public sealed partial class PluginUI
                 DrawStatusChip("Off", StatusChipKind.Muted);
             }
 
-            ImGui.TextColored(
-                MutedColor,
-                "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
-                + "Allagan Tools already covers relics and replicas you still own.");
+            using (ImRaii.PushColor(ImGuiCol.Text, MutedColor))
+            {
+                ImGui.TextWrapped(
+                    "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
+                    + "Allagan Tools already covers relics and replicas you still own.");
+            }
+
             ImGui.Spacing();
             DrawCollectSection();
             EndPanel();
@@ -77,9 +73,6 @@ public sealed partial class PluginUI
         }
 
         RefreshCollectIfStale();
-
-        ImGui.TextColored(MutedColor, "Read-only profile sync - use when relics are no longer in your inventory.");
-        ImGui.Spacing();
 
         ImGui.SetNextItemWidth(180);
         ImGui.InputTextWithHint("##collectCharacterId", "Character ID", ref collectCharacterIdInput, 32);
@@ -143,109 +136,89 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawAllaganToolsSettingsSection()
+    private readonly record struct Integration(
+        string Name,
+        string UsedFor,
+        string? Setup,
+        bool Optional,
+        bool Installed,
+        bool Enabled,
+        bool Ready,
+        string? BusyLabel);
+
+    private void DrawIntegrationsSection()
     {
-        if (!BeginPanel("settings_at"))
+        if (!BeginPanel("settings_integrations"))
         {
             return;
         }
 
-        ImGui.TextColored(HeaderColor, "Allagan Tools");
-        ImGui.TextColored(MutedColor, "Used for inventory counts, owned relic detection, and material tracking.");
+        ImGui.TextColored(HeaderColor, "Integrations");
         ImGui.Spacing();
-        DrawPluginConnectionStatus(
-            "Allagan Tools",
-            AllaganToolsIpc.IsInstalled,
-            AllaganToolsIpc.IsEnabled,
-            AllaganToolsIpc.IsReady);
-        EndPanel();
-    }
 
-    private void DrawArtisanSettingsSection()
-    {
-        if (!BeginPanel("settings_artisan"))
+        Integration[] integrations =
+        [
+            new("Allagan Tools", "Owned counts (bags, retainers, dresser, armoire) and relic detection.", null, false,
+                AllaganToolsIpc.IsInstalled, AllaganToolsIpc.IsEnabled, AllaganToolsIpc.IsReady, null),
+            new("Artisan", "Crafts relic-tool turn-ins from the Relic tab.", null, true,
+                ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, ArtisanIpc.SupportsRelicToolLists,
+                ArtisanIpc.SupportsRelicToolLists && ArtisanIpc.IsBusy() ? "crafting" : null),
+            new("Knightshopper", "Buys missing materials from the Tracker's Buy section.",
+                "In Knightshopper, enable both IPC permission switches and add RelicTracker to the allowed plugins.", true,
+                KnightshopperIpc.IsInstalled, KnightshopperIpc.IsEnabled, KnightshopperIpc.IsReady,
+                KnightshopperIpc.IsReady && KnightshopperIpc.IsBusy() ? "shopping" : null),
+            new("Gather & Chill", "Adds missing gatherables to its gather list from the Tracker.", null, true,
+                GatherChillIpc.IsInstalled, GatherChillIpc.IsEnabled, GatherChillIpc.IsReady,
+                GatherChillIpc.IsReady && GatherChillIpc.IsBusy() ? "gathering" : null),
+        ];
+
+        using var table = ImRaii.Table("Integrations", 3, ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerV, new(0, 0));
+        if (!table)
         {
             return;
         }
 
-        ImGui.TextColored(HeaderColor, "Artisan (optional)");
-        ImGui.TextColored(
-            MutedColor,
-            "Start premade crafting lists for DoH relic-tool steps (precrafts + collectables). Buy scrip materials first.");
-        ImGui.Spacing();
-        DrawPluginConnectionStatus(
-            "Artisan",
-            ArtisanIpc.IsInstalled,
-            ArtisanIpc.IsEnabled,
-            ArtisanIpc.SupportsRelicToolLists,
-            optional: true,
-            notReadyMessage: "Artisan found - relic craft lists need a newer Artisan build.");
+        ImGui.TableSetupColumn("Plugin", ImGuiTableColumnFlags.WidthFixed, 120);
+        ImGui.TableSetupColumn("Status", ImGuiTableColumnFlags.WidthFixed, 130);
+        ImGui.TableSetupColumn("Used for", ImGuiTableColumnFlags.WidthStretch);
 
-        if (ArtisanIpc.SupportsRelicToolLists && ArtisanIpc.IsBusy())
+        foreach (var integration in integrations)
         {
-            ImGui.SameLine();
-            ImGui.TextColored(WarningColor, "(crafting)");
+            ImGui.TableNextRow();
+            ImGui.TableNextColumn();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextUnformatted(integration.Optional ? integration.Name : $"{integration.Name} *");
+            if (!integration.Optional && ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Recommended - without it, only items in your bags right now are counted.");
+            }
+
+            ImGui.TableNextColumn();
+            (string label, StatusChipKind kind, string tooltip) = (integration.Installed, integration.Enabled, integration.Ready) switch
+            {
+                (false, _, _) => ("Not installed", integration.Optional ? StatusChipKind.Muted : StatusChipKind.Warn,
+                    $"{integration.Name} is not installed."),
+                (_, false, _) => ("Disabled", StatusChipKind.Warn, $"{integration.Name} is installed but not enabled."),
+                (_, _, false) => ("Needs update", StatusChipKind.Warn,
+                    $"{integration.Name} is loaded, but this build doesn't have the IPC RelicTracker uses yet."),
+                _ => (integration.BusyLabel is { } busy ? $"Connected · {busy}" : "Connected", StatusChipKind.Ok,
+                    $"{integration.Name} connected."),
+            };
+            DrawStatusChip(label, kind);
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(tooltip);
+            }
+
+            ImGui.TableNextColumn();
+            using (ImRaii.PushColor(ImGuiCol.Text, MutedColor))
+            {
+                ImGui.TextWrapped(integration.UsedFor);
+                if (integration.Setup is { } setup)
+                {
+                    ImGui.TextWrapped(setup);
+                }
+            }
         }
-
-        EndPanel();
-    }
-
-    private void DrawKnightshopperSettingsSection()
-    {
-        if (!BeginPanel("settings_knightshopper"))
-        {
-            return;
-        }
-
-        ImGui.TextColored(HeaderColor, "Knightshopper (optional)");
-        ImGui.TextColored(
-            MutedColor,
-            "Buy missing materials sold for gil, tomestones, scrips, seals, and other currencies from the Tracker tab.");
-        ImGui.TextColored(
-            MutedColor,
-            "In Knightshopper, enable both IPC permission switches and add RelicTracker to the allowed plugins.");
-        ImGui.Spacing();
-        DrawPluginConnectionStatus(
-            "Knightshopper",
-            KnightshopperIpc.IsInstalled,
-            KnightshopperIpc.IsEnabled,
-            KnightshopperIpc.IsReady,
-            optional: true,
-            notReadyMessage: "Knightshopper found - buying item lists needs a newer Knightshopper build.");
-
-        if (KnightshopperIpc.IsReady && KnightshopperIpc.IsBusy())
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(WarningColor, "(shopping)");
-        }
-
-        EndPanel();
-    }
-
-    private void DrawGatherChillSettingsSection()
-    {
-        if (!BeginPanel("settings_gatherchill"))
-        {
-            return;
-        }
-
-        ImGui.TextColored(HeaderColor, "Gather & Chill (optional)");
-        ImGui.TextColored(MutedColor, "Add missing gathered and fished materials to its gather list from the Tracker tab.");
-        ImGui.Spacing();
-        DrawPluginConnectionStatus(
-            "Gather & Chill",
-            GatherChillIpc.IsInstalled,
-            GatherChillIpc.IsEnabled,
-            GatherChillIpc.IsReady,
-            optional: true,
-            notReadyMessage: "Gather & Chill found - adding to its gather list needs a newer build.");
-
-        if (GatherChillIpc.IsReady && GatherChillIpc.IsBusy())
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(WarningColor, "(gathering)");
-        }
-
-        EndPanel();
     }
 }

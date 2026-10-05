@@ -363,6 +363,7 @@ public sealed partial class PluginUI
     {
         if (currentTier >= VisibleTierCount(line))
         {
+            DrawUnfinishedJobPicker(line);
             return;
         }
 
@@ -460,8 +461,8 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch, 0.45f);
-        ImGui.TableSetupColumn("Where", ImGuiTableColumnFlags.WidthStretch, 0.4f);
+        ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch, 0.55f);
+        ImGui.TableSetupColumn("Where", ImGuiTableColumnFlags.WidthStretch, 0.45f);
         ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 48);
         ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 52);
         ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
@@ -477,6 +478,8 @@ public sealed partial class PluginUI
                 ImGui.Indent(24f * item.Depth);
             }
 
+            // Wrap long names inside the cell instead of clipping them.
+            ImGui.PushTextWrapPos(0f);
             var displayName = item.Depth > 0 ? $"- {item.Name}" : item.Name;
             if (item.Resolved)
             {
@@ -506,6 +509,7 @@ public sealed partial class PluginUI
                 }
             }
 
+            ImGui.PopTextWrapPos();
             if (item.Depth > 0)
             {
                 ImGui.Unindent(24f * item.Depth);
@@ -878,6 +882,44 @@ public sealed partial class PluginUI
 
         config.OnSettingChanged();
         InvalidateOwnershipCache();
+    }
+
+    /// <summary>Finished job: offer the line's unfinished jobs instead of an empty pane.</summary>
+    private void DrawUnfinishedJobPicker(RelicLine line)
+    {
+        var ownership = GetOwnership();
+        var tiers = VisibleTierCount(line);
+        var jobs = line.EffectiveJobList;
+        List<(string Job, string Next)> unfinished = [];
+        for (var slot = 0; slot < line.Jobs && slot < jobs.Count; slot++)
+        {
+            var next = Enumerable.Range(0, tiers).FirstOrDefault(tier => !ownership.IsStepDoneOrManual(line, slot, tier), -1);
+            if (next >= 0)
+            {
+                unfinished.Add((jobs[slot], line.StepName(next)));
+            }
+        }
+
+        if (unfinished.Count == 0)
+        {
+            ImGui.TextColored(GoodColor, $"Every job has finished {line.CollectType}.");
+            return;
+        }
+
+        ImGui.TextColored(HeaderColor, $"Jobs still working on {line.CollectType}");
+        ImGui.Spacing();
+        foreach (var (job, next) in unfinished)
+        {
+            if (ImGui.Button($"{job}##next_{job}"))
+            {
+                config.DetailJob = job;
+                config.OnSettingChanged();
+            }
+
+            ImGui.SameLine();
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextColored(MutedColor, $"up next: {next}");
+        }
     }
 
     private void DrawLucisSalvagerHint(RelicLine line, int slotIndex)
