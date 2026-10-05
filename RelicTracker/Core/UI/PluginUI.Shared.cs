@@ -259,43 +259,6 @@ public sealed partial class PluginUI
         return $"{fillNoun} fill from FFXIV Collect - for {orphanNoun} no longer in inventory.";
     }
 
-    private void DrawPluginConnectionStatus(
-        string label,
-        bool installed,
-        bool enabled,
-        bool ready,
-        bool optional = false,
-        string? notReadyMessage = null)
-    {
-        if (!installed)
-        {
-            DrawStatusChip("Not installed", optional ? StatusChipKind.Muted : StatusChipKind.Warn);
-            ImGui.SameLine();
-            ImGui.TextColored(optional ? MutedColor : WarningColor, $"{label} is not installed.");
-            return;
-        }
-
-        if (!enabled)
-        {
-            DrawStatusChip("Disabled", StatusChipKind.Warn);
-            ImGui.SameLine();
-            ImGui.TextColored(WarningColor, $"{label} is installed but not enabled.");
-            return;
-        }
-
-        if (!ready)
-        {
-            DrawStatusChip("Loading", StatusChipKind.Warn);
-            ImGui.SameLine();
-            ImGui.TextColored(WarningColor, notReadyMessage ?? $"{label} is loading inventory data…");
-            return;
-        }
-
-        DrawStatusChip("Connected", StatusChipKind.Ok);
-        ImGui.SameLine();
-        ImGui.TextColored(GoodColor, $"{label} connected");
-    }
-
     private void DrawQuestRewardsSection(
         string configKey,
         IReadOnlyList<ShoppingQuestRewardRow> rewards,
