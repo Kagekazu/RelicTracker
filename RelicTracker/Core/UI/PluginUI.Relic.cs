@@ -368,13 +368,18 @@ public sealed partial class PluginUI
 
         var stepName = line.StepName(currentTier);
         DrawArtisanCraftButton(line, stepName, slotIndex);
+        DrawLucisSalvagerHint(line, slotIndex);
 
         if (data.Expansions.TryGetValue(line.Expansion, out var expansionSheet))
         {
             var questIndex = ShoppingListBuilder.BuildQuestRewardIndex(expansionSheet);
             DrawStepQuestRewards(
                 $"{line.CollectType}|{stepName}|Rewards",
-                ShoppingListBuilder.GetQuestRewards(stepName, questIndex, CreateOwnedLookup()));
+                ShoppingListBuilder.GetQuestRewards(
+                    stepName,
+                    questIndex,
+                    CreateOwnedLookup(),
+                    string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal) ? slotIndex : -1));
         }
 
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
@@ -411,18 +416,20 @@ public sealed partial class PluginUI
             return;
         }
 
-        if (!ArtisanIpc.TryGetRelicToolListId(stepName, slotIndex, out _))
+        var artisanStep = ArtisanIpc.ArtisanStepFor(stepName, slotIndex, GetOnCharacterItemCount);
+        if (!ArtisanIpc.TryGetRelicToolListId(artisanStep, slotIndex, out _))
         {
             return;
         }
 
+        var resplendentTier = artisanStep.StartsWith("Resplendent ", StringComparison.Ordinal) ? artisanStep[^1..] : null;
         using (ImRaii.Disabled(ArtisanIpc.IsBusy()))
         {
-            if (ImGui.Button("Craft with Artisan"))
+            if (ImGui.Button(resplendentTier is null ? "Craft with Artisan" : $"Craft Component {resplendentTier} with Artisan"))
             {
-                if (ArtisanIpc.TryStartRelicToolList(stepName, slotIndex, out string? error))
+                if (ArtisanIpc.TryStartRelicToolList(artisanStep, slotIndex, out string? error))
                 {
-                    Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", stepName);
+                    Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", artisanStep);
                 }
                 else if (!string.IsNullOrWhiteSpace(error))
                 {
@@ -433,9 +440,11 @@ public sealed partial class PluginUI
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
         {
-            ImGui.SetTooltip(
-                "Starts Artisan's premade list for this step (precrafts and collectables).\n"
-                + "Scrip vendor mats (Select / Oddly Specific) are not included - buy those first.");
+            ImGui.SetTooltip(resplendentTier is null
+                ? "Starts Artisan's premade list for this step (precrafts and turn-in crafts).\n"
+                  + "Vendor mats (scrip, GC seal, gil) are not included - buy those first."
+                : $"Crafts Component {resplendentTier} from the Material {resplendentTier} in your bags (up to 30, best case).\n"
+                  + "Turn the components in to Limbeth, then press again for the next tier.");
         }
     }
 
@@ -505,7 +514,7 @@ public sealed partial class PluginUI
             ImGui.TableNextColumn();
             if (item.IsCraftProduct)
             {
-                ImGui.TextColored(MutedColor, "Collectable");
+                ImGui.TextColored(MutedColor, "Turn-in");
             }
             else if (item.IsPrecraft)
             {
@@ -618,6 +627,7 @@ public sealed partial class PluginUI
         var filterBySlot = string.Equals(line.Expansion, "DoHDoL", StringComparison.Ordinal);
 
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
+        var oneTimeUnlocked = IsStepUnlockedOnAnyJob(line, stepName);
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
         Func<uint, uint> ownedLookup = CreateOwnedLookup();
         var questIndex = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
@@ -647,7 +657,7 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            if (row.PerUnitCount == 0)
+            if (row.PerUnitCount == 0 || (row.OneTime && oneTimeUnlocked))
             {
                 continue;
             }
@@ -761,7 +771,12 @@ public sealed partial class PluginUI
                 questIndex,
                 ownedLookup);
             var displayName = ItemDisplayNames.Label(itemIds, name);
-            var where = data.MaterialSources.TryGetValue(name, out var src) ? src : null;
+            var where = data.MaterialSources.TryGetValue(name, out var src) ? src : row.ObtainLabel;
+            if (row.OneTime)
+            {
+                where = string.IsNullOrEmpty(where) ? "One-time" : $"One-time · {where}";
+            }
+
             return new(
                 displayName,
                 where,
@@ -863,6 +878,69 @@ public sealed partial class PluginUI
 
         config.OnSettingChanged();
         InvalidateOwnershipCache();
+    }
+
+    private void DrawLucisSalvagerHint(RelicLine line, int slotIndex)
+    {
+        if (!LucisToolShortcut.Applies(line))
+        {
+            return;
+        }
+
+        var ownership = GetOwnership();
+        if (ownership.IsStepDoneOrManual(line, slotIndex, line.TierCount - 1))
+        {
+            return;
+        }
+
+        if (LucisToolShortcut.IsUnlocked(line, ownership, slotIndex))
+        {
+            ImGui.TextColored(
+                GoodColor,
+                $"Skip the grind: buy this Lucis tool from a Calamity Salvager for {LucisToolShortcut.SalvagerGil:N0} gil.");
+            ImGui.TextColored(
+                MutedColor,
+                "Calamity Salvager > Purchase Job-specific Gear > Purchase Lv.50 Arms & Tools. "
+                + "Also needs this class's level 50 class quest.");
+        }
+        else
+        {
+            var category = LucisToolShortcut.CategoryFor(slotIndex);
+            var first = LucisToolShortcut.FirstSlot(line, ownership, category, config.LucisFirstJob.GetValueOrDefault(category));
+            var jobs = line.EffectiveJobList;
+            ImGui.TextColored(
+                MutedColor,
+                first == slotIndex || first < 0 || first >= jobs.Count
+                    ? $"Tip: once this Lucis tool is done, a Calamity Salvager sells the other {category} Lucis tools "
+                      + $"for {LucisToolShortcut.SalvagerGil:N0} gil each."
+                    : $"Tip: the Tracker counts {jobs[first]}'s materials as your first {category} Lucis tool. After that, "
+                      + $"buy this one from a Calamity Salvager for {LucisToolShortcut.SalvagerGil:N0} gil (change it on the Tracker).");
+        }
+
+        ImGui.Spacing();
+    }
+
+    /// <summary>True once any job has reached the step, so its one-time unlock is already done.</summary>
+    private bool IsStepUnlockedOnAnyJob(RelicLine line, string stepName)
+    {
+        var ownership = GetOwnership();
+        for (var tier = 0; tier < line.TierCount; tier++)
+        {
+            if (!string.Equals(line.StepName(tier), stepName, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            for (var slot = 0; slot < line.Jobs; slot++)
+            {
+                if (ownership.IsStepDoneOrManual(line, slot, tier))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private readonly record struct StepItem

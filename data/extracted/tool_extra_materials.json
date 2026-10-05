@@ -19,7 +19,9 @@
       ],
       "materialIds": [
         8150
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Supra",
@@ -40,7 +42,9 @@
       ],
       "materialIds": [
         8155
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lucis",
@@ -65,7 +69,2237 @@
       },
       "materialIds": [
         10124
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Supra",
+      "material": "Talan's Seal of Mining",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "role": "quest",
+      "materialIds": [
+        8040
       ]
+    },
+    {
+      "step": "Supra",
+      "material": "Antumbral Rock",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "materialIds": [
+        8030
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Antumbral Rock",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Mining",
+      "materialIds": [
+        8030
+      ]
+    },
+    {
+      "step": "Supra",
+      "material": "Talan's Seal of Botany",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "role": "quest",
+      "materialIds": [
+        8041
+      ]
+    },
+    {
+      "step": "Supra",
+      "material": "Redolent Log",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "materialIds": [
+        8031
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Redolent Log",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Botany",
+      "materialIds": [
+        8031
+      ]
+    },
+    {
+      "step": "Supra",
+      "material": "Talan's Seal of Fishing",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        8042
+      ]
+    },
+    {
+      "step": "Supra",
+      "material": "Olgoi-Khorkhoi",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "materialIds": [
+        7930
+      ],
+      "obtain": "fish"
+    },
+    {
+      "step": "Supra",
+      "material": "Olgoi-Khorkhoi",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Fishing",
+      "materialIds": [
+        7930
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Talan's Seal of Mining Mastery",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "role": "quest",
+      "materialIds": [
+        10108
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Magicked Oilcloth",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "materialIds": [
+        10120
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Magicked Oilcloth",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Mining Mastery",
+      "materialIds": [
+        10120
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Antumbral Rock",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "materialIds": [
+        8030
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Antumbral Rock",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Mining Mastery",
+      "materialIds": [
+        8030
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Talan's Seal of Botany Mastery",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "role": "quest",
+      "materialIds": [
+        10109
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Bamboo Paper",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "materialIds": [
+        10121
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Bamboo Paper",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Botany Mastery",
+      "materialIds": [
+        10121
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Redolent Log",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "materialIds": [
+        8031
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Redolent Log",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Botany Mastery",
+      "materialIds": [
+        8031
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Talan's Seal of Fishing Mastery",
+      "perUnit": 0,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "role": "quest",
+      "materialIds": [
+        10110
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Glacier Crystal",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "materialIds": [
+        10122
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Glacier Crystal",
+      "perUnit": 15,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Fishing Mastery",
+      "materialIds": [
+        10122
+      ]
+    },
+    {
+      "step": "Lucis",
+      "material": "Gigant Clam",
+      "perUnit": 10,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "materialIds": [
+        10123
+      ],
+      "obtain": "fish"
+    },
+    {
+      "step": "Lucis",
+      "material": "Gigant Clam",
+      "perUnit": 10,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "role": "covers",
+      "craftOf": "Talan's Seal of Fishing Mastery",
+      "materialIds": [
+        10123
+      ]
+    },
+    {
+      "step": "Supra",
+      "material": "Reinforced Spruce Plywood",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8032
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Spruce Plywood",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Reinforced Spruce Plywood",
+      "materialIds": [
+        7612
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Spruce Log",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spruce Plywood",
+      "materialIds": [
+        5395
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Aldgoat Horn",
+      "perUnit": 4,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spruce Plywood",
+      "materialIds": [
+        5436
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Supra",
+      "material": "Balanced Darksteel Hook",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8033
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Darksteel Hook",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Balanced Darksteel Hook",
+      "materialIds": [
+        7613
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Darksteel Ore",
+      "perUnit": 6,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Darksteel Hook",
+      "materialIds": [
+        5121
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Reinforced Darksteel Wire",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8034
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Darksteel Wire",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Reinforced Darksteel Wire",
+      "materialIds": [
+        7614
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Darksteel Ore",
+      "perUnit": 6,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Darksteel Wire",
+      "materialIds": [
+        5121
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Calibrated Rose Gold Cog",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8035
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Rose Gold Cog",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Calibrated Rose Gold Cog",
+      "materialIds": [
+        7615
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Gold Ore",
+      "perUnit": 6,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Rose Gold Cog",
+      "materialIds": [
+        5118
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Copper Ore",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Rose Gold Cog",
+      "materialIds": [
+        5106
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Water-hardened Hippogryph Strap",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8036
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Gryphonskin Strap",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Water-hardened Hippogryph Strap",
+      "materialIds": [
+        7616
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Hippogryph Skin",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Gryphonskin Strap",
+      "materialIds": [
+        5316
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Supra",
+      "material": "Black Alumen",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Gryphonskin Strap",
+      "materialIds": [
+        5525
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Intricate Silver Brocade",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8037
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Silver Brocade",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Intricate Silver Brocade",
+      "materialIds": [
+        7617
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Silkworm Cocoon",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Silver Brocade",
+      "materialIds": [
+        5350
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Effervescent Water",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Silver Brocade",
+      "materialIds": [
+        5491
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Silver Ore",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Silver Brocade",
+      "materialIds": [
+        5113
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Concentrated Spirits of Salt",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8038
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Spirits of Salt",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Concentrated Spirits of Salt",
+      "materialIds": [
+        7618
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Volcanic Rock Salt",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spirits of Salt",
+      "materialIds": [
+        6152
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Vitriol",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spirits of Salt",
+      "materialIds": [
+        5490
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Supra",
+      "material": "Rich Tomato Relish",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        8039
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Spicy Tomato Relish",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Rich Tomato Relish",
+      "materialIds": [
+        7619
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Supra",
+      "material": "Dzemael Tomato",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spicy Tomato Relish",
+      "materialIds": [
+        6148
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Cinnamon",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spicy Tomato Relish",
+      "materialIds": [
+        4828
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Supra",
+      "material": "Table Salt",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spicy Tomato Relish",
+      "materialIds": [
+        4847
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Supra",
+      "material": "Noble Grapes",
+      "perUnit": 4,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Spicy Tomato Relish",
+      "materialIds": [
+        6145
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Petrified Orb",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10100
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Urushi",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Petrified Orb",
+      "materialIds": [
+        10112
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Petrified Log",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Petrified Orb",
+      "materialIds": [
+        7596
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Scarlet Sap",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Petrified Orb",
+      "materialIds": [
+        7590
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Mummer's Daggers",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10101
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Composite Whetstone",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Mummer's Daggers",
+      "materialIds": [
+        10113
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Scheelite",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Mummer's Daggers",
+      "materialIds": [
+        7597
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Ferberite",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Mummer's Daggers",
+      "materialIds": [
+        7588
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Lapdog Collar Bell",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10102
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Heat-resistant Plaster",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Lapdog Collar Bell",
+      "materialIds": [
+        10114
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Scheelite",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Lapdog Collar Bell",
+      "materialIds": [
+        7597
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Ferberite",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Lapdog Collar Bell",
+      "materialIds": [
+        7588
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Fluorite Lens",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10103
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Basilisk Whetstone",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Fluorite Lens",
+      "materialIds": [
+        5262
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Basilisk Egg",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Basilisk Whetstone",
+      "materialIds": [
+        5263
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Siltstone Whetstone",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Fluorite Lens",
+      "materialIds": [
+        5260
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Siltstone",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Siltstone Whetstone",
+      "materialIds": [
+        5231
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Clear Fluorite",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Fluorite Lens",
+      "materialIds": [
+        10115
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Emery",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Fluorite Lens",
+      "materialIds": [
+        7601
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Patent Leather",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10104
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Lampblack Linseed Oil",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Patent Leather",
+      "materialIds": [
+        10116
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Saurian Skin",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Patent Leather",
+      "materialIds": [
+        7599
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Shroud Tea Leaves",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Patent Leather",
+      "materialIds": [
+        7591
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Camlet",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10105
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Diluted Vitriol",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "precraft",
+      "craftOf": "Camlet",
+      "materialIds": [
+        7620
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Filtered Water",
+      "perUnit": 9,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Diluted Vitriol",
+      "materialIds": [
+        6153
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Vitriol",
+      "perUnit": 6,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Diluted Vitriol",
+      "materialIds": [
+        5490
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Lucis",
+      "material": "Camel Hair",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Camlet",
+      "materialIds": [
+        10117
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Cashmere Fleece",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Camlet",
+      "materialIds": [
+        7600
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Enchanted Quicksilver",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10106
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Black Cinnabar",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Enchanted Quicksilver",
+      "materialIds": [
+        10118
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Raziqsand",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Enchanted Quicksilver",
+      "materialIds": [
+        7598
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Tarantula",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Enchanted Quicksilver",
+      "materialIds": [
+        5562
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Duck Broth",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "role": "craft",
+      "materialIds": [
+        10107
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Lucis",
+      "material": "Duck Bones",
+      "perUnit": 3,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Duck Broth",
+      "materialIds": [
+        10119
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Canard Breast",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Duck Broth",
+      "materialIds": [
+        7605
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
+    },
+    {
+      "step": "Lucis",
+      "material": "Thyme",
+      "perUnit": 1,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Duck Broth",
+      "materialIds": [
+        4841
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Wild Onion",
+      "perUnit": 4,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Duck Broth",
+      "materialIds": [
+        4777
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Lucis",
+      "material": "Garlean Garlic",
+      "perUnit": 2,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Duck Broth",
+      "materialIds": [
+        4829
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -87,7 +2321,8 @@
       "role": "craft",
       "materialIds": [
         29645
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -110,7 +2345,9 @@
       "craftOf": "Oddly Specific Petrified Orb",
       "materialIds": [
         29661
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -132,7 +2369,8 @@
       "craftOf": "Oddly Specific Petrified Orb",
       "materialIds": [
         27685
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -154,7 +2392,8 @@
       "role": "craft",
       "materialIds": [
         29646
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -177,7 +2416,9 @@
       "craftOf": "Oddly Specific Rivets",
       "materialIds": [
         29662
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -199,7 +2440,8 @@
       "craftOf": "Oddly Specific Rivets",
       "materialIds": [
         27699
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -221,7 +2463,8 @@
       "role": "craft",
       "materialIds": [
         29647
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -244,7 +2487,9 @@
       "craftOf": "Oddly Specific Wire",
       "materialIds": [
         29663
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -266,7 +2511,8 @@
       "craftOf": "Oddly Specific Wire",
       "materialIds": [
         27699
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -288,7 +2534,8 @@
       "role": "craft",
       "materialIds": [
         29648
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -311,7 +2558,9 @@
       "craftOf": "Oddly Specific Whetstone",
       "materialIds": [
         29664
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -333,7 +2582,8 @@
       "craftOf": "Oddly Specific Whetstone",
       "materialIds": [
         27699
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -355,7 +2605,8 @@
       "role": "craft",
       "materialIds": [
         29649
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -378,7 +2629,9 @@
       "craftOf": "Oddly Specific Leather",
       "materialIds": [
         29665
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -400,7 +2653,9 @@
       "craftOf": "Oddly Specific Leather",
       "materialIds": [
         27734
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Skysteel +1",
@@ -422,7 +2677,8 @@
       "role": "craft",
       "materialIds": [
         29650
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -445,7 +2701,9 @@
       "craftOf": "Oddly Specific Moonbeam Silk",
       "materialIds": [
         29666
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -467,7 +2725,8 @@
       "craftOf": "Oddly Specific Moonbeam Silk",
       "materialIds": [
         27753
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -489,7 +2748,8 @@
       "role": "craft",
       "materialIds": [
         29651
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -512,7 +2772,9 @@
       "craftOf": "Oddly Specific Synthetic Resin",
       "materialIds": [
         29667
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -534,7 +2796,9 @@
       "craftOf": "Oddly Specific Synthetic Resin",
       "materialIds": [
         27774
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Skysteel +1",
@@ -556,7 +2820,8 @@
       "role": "craft",
       "materialIds": [
         29652
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysteel +1",
@@ -579,7 +2844,9 @@
       "craftOf": "Oddly Specific Seed Extract",
       "materialIds": [
         29668
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysteel +1",
@@ -601,7 +2868,8 @@
       "craftOf": "Oddly Specific Seed Extract",
       "materialIds": [
         27968
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -622,7 +2890,8 @@
       ],
       "materialIds": [
         29671
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -643,7 +2912,8 @@
       ],
       "materialIds": [
         29672
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -664,7 +2934,8 @@
       ],
       "materialIds": [
         29669
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -685,7 +2956,8 @@
       ],
       "materialIds": [
         29670
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysteel +1",
@@ -706,7 +2978,8 @@
       ],
       "materialIds": [
         29673
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Dragonsung",
@@ -728,7 +3001,8 @@
       "role": "craft",
       "materialIds": [
         29653
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -751,7 +3025,9 @@
       "craftOf": "Oddly Specific Shaft",
       "materialIds": [
         29661
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -773,7 +3049,8 @@
       "craftOf": "Oddly Specific Shaft",
       "materialIds": [
         27686
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -795,7 +3072,8 @@
       "role": "craft",
       "materialIds": [
         29654
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -818,7 +3096,9 @@
       "craftOf": "Oddly Specific Fitting",
       "materialIds": [
         29662
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -840,7 +3120,8 @@
       "craftOf": "Oddly Specific Fitting",
       "materialIds": [
         27701
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -862,7 +3143,8 @@
       "craftOf": "Oddly Specific Fitting",
       "materialIds": [
         12537
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -884,7 +3166,8 @@
       "role": "craft",
       "materialIds": [
         29655
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -907,7 +3190,9 @@
       "craftOf": "Oddly Specific Chainmail Sheet",
       "materialIds": [
         29663
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -929,7 +3214,8 @@
       "craftOf": "Oddly Specific Chainmail Sheet",
       "materialIds": [
         27701
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -951,7 +3237,8 @@
       "craftOf": "Oddly Specific Chainmail Sheet",
       "materialIds": [
         12537
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -973,7 +3260,8 @@
       "role": "craft",
       "materialIds": [
         29656
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -996,7 +3284,9 @@
       "craftOf": "Oddly Specific Gemstone",
       "materialIds": [
         29664
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -1018,7 +3308,8 @@
       "craftOf": "Oddly Specific Gemstone",
       "materialIds": [
         27803
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1040,7 +3331,8 @@
       "role": "craft",
       "materialIds": [
         29657
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -1063,7 +3355,9 @@
       "craftOf": "Oddly Specific Vellum",
       "materialIds": [
         29665
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -1085,7 +3379,9 @@
       "craftOf": "Oddly Specific Vellum",
       "materialIds": [
         27735
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Dragonsung",
@@ -1107,7 +3403,8 @@
       "craftOf": "Oddly Specific Vellum",
       "materialIds": [
         27817
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1129,7 +3426,8 @@
       "role": "craft",
       "materialIds": [
         29658
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -1152,7 +3450,9 @@
       "craftOf": "Oddly Specific Velvet",
       "materialIds": [
         29666
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -1174,7 +3474,9 @@
       "craftOf": "Oddly Specific Velvet",
       "materialIds": [
         27756
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Dragonsung",
@@ -1196,7 +3498,8 @@
       "craftOf": "Oddly Specific Velvet",
       "materialIds": [
         27776
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1218,7 +3521,8 @@
       "craftOf": "Oddly Specific Velvet",
       "materialIds": [
         19907
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1240,7 +3544,8 @@
       "role": "craft",
       "materialIds": [
         29659
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -1263,7 +3568,9 @@
       "craftOf": "Oddly Specific Glass",
       "materialIds": [
         29667
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -1285,7 +3592,8 @@
       "craftOf": "Oddly Specific Glass",
       "materialIds": [
         27776
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1307,7 +3615,8 @@
       "craftOf": "Oddly Specific Glass",
       "materialIds": [
         19907
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1329,7 +3638,8 @@
       "role": "craft",
       "materialIds": [
         29660
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Dragonsung",
@@ -1352,7 +3662,9 @@
       "craftOf": "Oddly Specific Seed Flour",
       "materialIds": [
         29668
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Dragonsung",
@@ -1374,7 +3686,8 @@
       "craftOf": "Oddly Specific Seed Flour",
       "materialIds": [
         27826
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1395,7 +3708,8 @@
       ],
       "materialIds": [
         29676
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1416,7 +3730,8 @@
       ],
       "materialIds": [
         29677
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1437,7 +3752,8 @@
       ],
       "materialIds": [
         29674
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1458,7 +3774,8 @@
       ],
       "materialIds": [
         29675
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Dragonsung",
@@ -1479,7 +3796,8 @@
       ],
       "materialIds": [
         29678
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1501,7 +3819,8 @@
       "role": "craft",
       "materialIds": [
         31101
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1524,7 +3843,9 @@
       "craftOf": "Oddly Specific Cedar Lumber",
       "materialIds": [
         31117
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1546,7 +3867,8 @@
       "craftOf": "Oddly Specific Cedar Lumber",
       "materialIds": [
         27687
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1568,7 +3890,8 @@
       "role": "craft",
       "materialIds": [
         31102
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1591,7 +3914,9 @@
       "craftOf": "Oddly Specific Iron Nails",
       "materialIds": [
         31118
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1613,7 +3938,8 @@
       "craftOf": "Oddly Specific Iron Nails",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1635,7 +3961,8 @@
       "role": "craft",
       "materialIds": [
         31103
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1658,7 +3985,9 @@
       "craftOf": "Oddly Specific Mythril Rings",
       "materialIds": [
         31119
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1680,7 +4009,8 @@
       "craftOf": "Oddly Specific Mythril Rings",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1702,7 +4032,8 @@
       "role": "craft",
       "materialIds": [
         31104
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1725,7 +4056,9 @@
       "craftOf": "Oddly Specific Silver Nugget",
       "materialIds": [
         31120
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1747,7 +4080,8 @@
       "craftOf": "Oddly Specific Silver Nugget",
       "materialIds": [
         27702
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1769,7 +4103,8 @@
       "role": "craft",
       "materialIds": [
         31105
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1792,7 +4127,9 @@
       "craftOf": "Oddly Specific Gaganaskin Strap",
       "materialIds": [
         31121
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1814,7 +4151,8 @@
       "craftOf": "Oddly Specific Gaganaskin Strap",
       "materialIds": [
         27817
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1836,7 +4174,8 @@
       "role": "craft",
       "materialIds": [
         31106
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1859,7 +4198,9 @@
       "craftOf": "Oddly Specific Cloth",
       "materialIds": [
         31122
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1881,7 +4222,8 @@
       "craftOf": "Oddly Specific Cloth",
       "materialIds": [
         27759
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1903,7 +4245,8 @@
       "role": "craft",
       "materialIds": [
         31107
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1926,7 +4269,9 @@
       "craftOf": "Oddly Specific Glue",
       "materialIds": [
         31123
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1948,7 +4293,9 @@
       "craftOf": "Oddly Specific Glue",
       "materialIds": [
         27773
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1970,7 +4317,8 @@
       "role": "craft",
       "materialIds": [
         31108
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented Dragonsung",
@@ -1993,7 +4341,9 @@
       "craftOf": "Oddly Specific Oil",
       "materialIds": [
         31124
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2015,7 +4365,8 @@
       "craftOf": "Oddly Specific Oil",
       "materialIds": [
         27820
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2036,7 +4387,8 @@
       ],
       "materialIds": [
         31127
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2057,7 +4409,8 @@
       ],
       "materialIds": [
         31128
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2078,7 +4431,8 @@
       ],
       "materialIds": [
         31125
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2099,7 +4453,8 @@
       ],
       "materialIds": [
         31126
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented Dragonsung",
@@ -2120,7 +4475,8 @@
       ],
       "materialIds": [
         31129
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Skysung",
@@ -2142,7 +4498,8 @@
       "role": "craft",
       "materialIds": [
         31109
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2165,7 +4522,9 @@
       "craftOf": "Oddly Specific Cedar Plank",
       "materialIds": [
         31117
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2187,7 +4546,8 @@
       "craftOf": "Oddly Specific Cedar Plank",
       "materialIds": [
         27687
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2209,7 +4569,8 @@
       "role": "craft",
       "materialIds": [
         31110
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2232,7 +4593,9 @@
       "craftOf": "Oddly Specific Iron Ingot",
       "materialIds": [
         31118
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2254,7 +4617,8 @@
       "craftOf": "Oddly Specific Iron Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2276,7 +4640,8 @@
       "craftOf": "Oddly Specific Iron Ingot",
       "materialIds": [
         12534
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2298,7 +4663,8 @@
       "role": "craft",
       "materialIds": [
         31111
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2321,7 +4687,9 @@
       "craftOf": "Oddly Specific Mythril Plate",
       "materialIds": [
         31119
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2343,7 +4711,8 @@
       "craftOf": "Oddly Specific Mythril Plate",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2365,7 +4734,8 @@
       "craftOf": "Oddly Specific Mythril Plate",
       "materialIds": [
         12534
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2387,7 +4757,8 @@
       "role": "craft",
       "materialIds": [
         31112
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2410,7 +4781,9 @@
       "craftOf": "Oddly Specific Silver Ingot",
       "materialIds": [
         31120
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2432,7 +4805,8 @@
       "craftOf": "Oddly Specific Silver Ingot",
       "materialIds": [
         27702
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2454,7 +4828,8 @@
       "craftOf": "Oddly Specific Silver Ingot",
       "materialIds": [
         12531
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2476,7 +4851,8 @@
       "role": "craft",
       "materialIds": [
         31113
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2499,7 +4875,9 @@
       "craftOf": "Oddly Specific Gagana Leather",
       "materialIds": [
         31121
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2521,7 +4899,9 @@
       "craftOf": "Oddly Specific Gagana Leather",
       "materialIds": [
         27736
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Skysung",
@@ -2543,7 +4923,8 @@
       "craftOf": "Oddly Specific Gagana Leather",
       "materialIds": [
         27817
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2565,7 +4946,8 @@
       "role": "craft",
       "materialIds": [
         31114
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2588,7 +4970,9 @@
       "craftOf": "Oddly Specific Undyed Woolen Cloth",
       "materialIds": [
         31122
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2610,7 +4994,8 @@
       "craftOf": "Oddly Specific Undyed Woolen Cloth",
       "materialIds": [
         27759
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2632,7 +5017,8 @@
       "role": "craft",
       "materialIds": [
         31115
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2655,7 +5041,9 @@
       "craftOf": "Oddly Specific Rubber",
       "materialIds": [
         31123
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2677,7 +5065,8 @@
       "craftOf": "Oddly Specific Rubber",
       "materialIds": [
         27776
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2699,7 +5088,8 @@
       "craftOf": "Oddly Specific Rubber",
       "materialIds": [
         19907
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2721,7 +5111,8 @@
       "role": "craft",
       "materialIds": [
         31116
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skysung",
@@ -2744,7 +5135,9 @@
       "craftOf": "Oddly Specific Paste",
       "materialIds": [
         31124
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skysung",
@@ -2766,7 +5159,8 @@
       "craftOf": "Oddly Specific Paste",
       "materialIds": [
         27826
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2787,7 +5181,8 @@
       ],
       "materialIds": [
         31132
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2808,7 +5203,8 @@
       ],
       "materialIds": [
         31133
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2829,7 +5225,8 @@
       ],
       "materialIds": [
         31130
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2850,7 +5247,8 @@
       ],
       "materialIds": [
         31131
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skysung",
@@ -2871,7 +5269,8 @@
       ],
       "materialIds": [
         31134
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Skybuilders'",
@@ -2893,7 +5292,8 @@
       "role": "craft",
       "materialIds": [
         31750
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -2916,7 +5316,9 @@
       "craftOf": "Oddly Delicate Pine Lumber",
       "materialIds": [
         31758
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -2938,7 +5340,9 @@
       "craftOf": "Oddly Delicate Pine Lumber",
       "materialIds": [
         31991
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -2960,7 +5364,9 @@
       "craftOf": "Oddly Delicate Pine Lumber",
       "materialIds": [
         31995
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -2982,7 +5388,8 @@
       "role": "craft",
       "materialIds": [
         31751
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3005,7 +5412,9 @@
       "craftOf": "Oddly Delicate Silver Gear",
       "materialIds": [
         31759
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3027,7 +5436,9 @@
       "craftOf": "Oddly Delicate Silver Gear",
       "materialIds": [
         31996
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3049,7 +5460,9 @@
       "craftOf": "Oddly Delicate Silver Gear",
       "materialIds": [
         31999
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3071,7 +5484,8 @@
       "role": "craft",
       "materialIds": [
         31752
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3094,7 +5508,9 @@
       "craftOf": "Oddly Delicate Wolfram Square",
       "materialIds": [
         31760
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3116,7 +5532,9 @@
       "craftOf": "Oddly Delicate Wolfram Square",
       "materialIds": [
         31996
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3138,7 +5556,9 @@
       "craftOf": "Oddly Delicate Wolfram Square",
       "materialIds": [
         32000
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3160,7 +5580,8 @@
       "role": "craft",
       "materialIds": [
         31753
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3183,7 +5604,9 @@
       "craftOf": "Oddly Delicate Celestine",
       "materialIds": [
         31761
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3205,7 +5628,9 @@
       "craftOf": "Oddly Delicate Celestine",
       "materialIds": [
         31999
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3227,7 +5652,9 @@
       "craftOf": "Oddly Delicate Celestine",
       "materialIds": [
         31995
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3249,7 +5676,8 @@
       "role": "craft",
       "materialIds": [
         31754
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3272,7 +5700,9 @@
       "craftOf": "Oddly Delicate Gazelle Leather",
       "materialIds": [
         31762
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3294,7 +5724,9 @@
       "craftOf": "Oddly Delicate Gazelle Leather",
       "materialIds": [
         31991
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3316,7 +5748,9 @@
       "craftOf": "Oddly Delicate Gazelle Leather",
       "materialIds": [
         31993
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3338,7 +5772,8 @@
       "role": "craft",
       "materialIds": [
         31755
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3361,7 +5796,9 @@
       "craftOf": "Oddly Delicate Rhea Cloth",
       "materialIds": [
         31763
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3383,7 +5820,9 @@
       "craftOf": "Oddly Delicate Rhea Cloth",
       "materialIds": [
         31994
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3405,7 +5844,9 @@
       "craftOf": "Oddly Delicate Rhea Cloth",
       "materialIds": [
         31998
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3427,7 +5868,8 @@
       "role": "craft",
       "materialIds": [
         31756
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3450,7 +5892,9 @@
       "craftOf": "Oddly Delicate Holy Water",
       "materialIds": [
         31764
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3472,7 +5916,9 @@
       "craftOf": "Oddly Delicate Holy Water",
       "materialIds": [
         31997
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3494,7 +5940,9 @@
       "craftOf": "Oddly Delicate Holy Water",
       "materialIds": [
         31992
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3516,7 +5964,8 @@
       "role": "craft",
       "materialIds": [
         31757
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Skybuilders'",
@@ -3539,7 +5988,9 @@
       "craftOf": "Oddly Delicate Shark Oil",
       "materialIds": [
         31765
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Skybuilders'",
@@ -3561,7 +6012,9 @@
       "craftOf": "Oddly Delicate Shark Oil",
       "materialIds": [
         31997
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3583,7 +6036,9 @@
       "craftOf": "Oddly Delicate Shark Oil",
       "materialIds": [
         31998
-      ]
+      ],
+      "obtain": "gather",
+      "obtainVia": "Diadem"
     },
     {
       "step": "Skybuilders'",
@@ -3604,7 +6059,8 @@
       ],
       "materialIds": [
         31768
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skybuilders'",
@@ -3625,7 +6081,8 @@
       ],
       "materialIds": [
         31769
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skybuilders'",
@@ -3646,7 +6103,8 @@
       ],
       "materialIds": [
         31766
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skybuilders'",
@@ -3667,7 +6125,8 @@
       ],
       "materialIds": [
         31767
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Skybuilders'",
@@ -3688,7 +6147,8 @@
       ],
       "materialIds": [
         31770
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Skybuilders'",
@@ -3709,7 +6169,8 @@
       ],
       "materialIds": [
         31771
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Augmented",
@@ -3731,7 +6192,8 @@
       "role": "craft",
       "materialIds": [
         38756
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -3754,7 +6216,9 @@
       "craftOf": "Connoisseur's Chair",
       "materialIds": [
         38748
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -3776,7 +6240,8 @@
       "craftOf": "Connoisseur's Chair",
       "materialIds": [
         36193
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -3798,7 +6263,8 @@
       "role": "craft",
       "materialIds": [
         38757
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -3821,7 +6287,9 @@
       "craftOf": "Connoisseur's Wall Lantern",
       "materialIds": [
         38749
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -3843,7 +6311,8 @@
       "craftOf": "Connoisseur's Wall Lantern",
       "materialIds": [
         36176
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -3865,7 +6334,8 @@
       "role": "craft",
       "materialIds": [
         38758
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -3888,7 +6358,9 @@
       "craftOf": "Connoisseur's Ornate Door",
       "materialIds": [
         38750
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -3910,7 +6382,8 @@
       "craftOf": "Connoisseur's Ornate Door",
       "materialIds": [
         36193
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -3932,7 +6405,8 @@
       "role": "craft",
       "materialIds": [
         38759
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -3955,7 +6429,9 @@
       "craftOf": "Connoisseur's Vanity Mirror",
       "materialIds": [
         38751
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -3977,7 +6453,8 @@
       "craftOf": "Connoisseur's Vanity Mirror",
       "materialIds": [
         36164
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -3999,7 +6476,8 @@
       "role": "craft",
       "materialIds": [
         38760
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -4022,7 +6500,9 @@
       "craftOf": "Connoisseur's Rug",
       "materialIds": [
         38752
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -4044,7 +6524,9 @@
       "craftOf": "Connoisseur's Rug",
       "materialIds": [
         36203
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Augmented",
@@ -4066,7 +6548,8 @@
       "role": "craft",
       "materialIds": [
         38761
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -4089,7 +6572,9 @@
       "craftOf": "Connoisseur's Swag Valance",
       "materialIds": [
         38753
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -4111,7 +6596,9 @@
       "craftOf": "Connoisseur's Swag Valance",
       "materialIds": [
         36203
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Augmented",
@@ -4133,7 +6620,8 @@
       "role": "craft",
       "materialIds": [
         38762
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -4156,7 +6644,9 @@
       "craftOf": "Connoisseur's Cosmetics Box",
       "materialIds": [
         38754
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -4178,7 +6668,9 @@
       "craftOf": "Connoisseur's Cosmetics Box",
       "materialIds": [
         36260
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Augmented",
@@ -4200,7 +6692,8 @@
       "role": "craft",
       "materialIds": [
         38763
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Augmented",
@@ -4223,7 +6716,9 @@
       "craftOf": "Connoisseur's Pixieberry Tea",
       "materialIds": [
         38755
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Augmented",
@@ -4245,7 +6740,8 @@
       "craftOf": "Connoisseur's Pixieberry Tea",
       "materialIds": [
         36094
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4267,7 +6763,8 @@
       "role": "craft",
       "materialIds": [
         38764
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4290,7 +6787,9 @@
       "craftOf": "Connoisseur's Marimba",
       "materialIds": [
         38748
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -4313,7 +6812,8 @@
       "craftOf": "Connoisseur's Marimba",
       "materialIds": [
         36200
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4335,7 +6835,8 @@
       "craftOf": "Integral Lumber",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4358,7 +6859,8 @@
       "craftOf": "Connoisseur's Marimba",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4380,7 +6882,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4402,7 +6905,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4424,7 +6928,8 @@
       "role": "craft",
       "materialIds": [
         38765
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4447,7 +6952,9 @@
       "craftOf": "Connoisseur's Coffee Brewer",
       "materialIds": [
         38749
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -4470,7 +6977,8 @@
       "craftOf": "Connoisseur's Coffee Brewer",
       "materialIds": [
         36186
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4492,7 +7000,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36178
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4514,7 +7023,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36181
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4537,7 +7047,8 @@
       "craftOf": "Connoisseur's Coffee Brewer",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4559,7 +7070,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4581,7 +7093,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4603,7 +7116,8 @@
       "role": "craft",
       "materialIds": [
         38766
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4626,7 +7140,9 @@
       "craftOf": "Connoisseur's Bench",
       "materialIds": [
         38750
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -4649,7 +7165,8 @@
       "craftOf": "Connoisseur's Bench",
       "materialIds": [
         36200
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4671,7 +7188,8 @@
       "craftOf": "Integral Lumber",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4694,7 +7212,8 @@
       "craftOf": "Connoisseur's Bench",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4716,7 +7235,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4738,7 +7258,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4760,7 +7281,8 @@
       "role": "craft",
       "materialIds": [
         38767
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4783,7 +7305,9 @@
       "craftOf": "Connoisseur's Astroscope",
       "materialIds": [
         38751
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -4806,7 +7330,8 @@
       "craftOf": "Connoisseur's Astroscope",
       "materialIds": [
         36186
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4828,7 +7353,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36178
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4850,7 +7376,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36181
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4873,7 +7400,8 @@
       "craftOf": "Connoisseur's Astroscope",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4895,7 +7423,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4917,7 +7446,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -4939,7 +7469,8 @@
       "role": "craft",
       "materialIds": [
         38768
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -4962,7 +7493,9 @@
       "craftOf": "Connoisseur's Leather Sofa",
       "materialIds": [
         38752
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -4985,7 +7518,8 @@
       "craftOf": "Connoisseur's Leather Sofa",
       "materialIds": [
         36200
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5007,7 +7541,8 @@
       "craftOf": "Integral Lumber",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5030,7 +7565,8 @@
       "craftOf": "Connoisseur's Leather Sofa",
       "materialIds": [
         36212
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5052,7 +7588,8 @@
       "craftOf": "AR-Caean Velvet",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5074,7 +7611,8 @@
       "role": "craft",
       "materialIds": [
         38769
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5097,7 +7635,9 @@
       "craftOf": "Connoisseur's Red Carpet",
       "materialIds": [
         38753
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -5120,7 +7660,8 @@
       "craftOf": "Connoisseur's Red Carpet",
       "materialIds": [
         36212
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5142,7 +7683,8 @@
       "craftOf": "AR-Caean Velvet",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5165,7 +7707,8 @@
       "craftOf": "Connoisseur's Red Carpet",
       "materialIds": [
         36251
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5187,7 +7730,9 @@
       "craftOf": "Ophiotauros Leather",
       "materialIds": [
         36246
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Crystalline",
@@ -5209,7 +7754,8 @@
       "craftOf": "Ophiotauros Leather",
       "materialIds": [
         36241
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5231,7 +7777,8 @@
       "role": "craft",
       "materialIds": [
         38770
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5254,7 +7801,9 @@
       "craftOf": "Connoisseur's Elixir Bottle",
       "materialIds": [
         38754
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -5277,7 +7826,8 @@
       "craftOf": "Connoisseur's Elixir Bottle",
       "materialIds": [
         36229
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5299,7 +7849,8 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27782
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5321,7 +7872,8 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27783
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5343,7 +7895,8 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27784
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5366,7 +7919,8 @@
       "craftOf": "Connoisseur's Elixir Bottle",
       "materialIds": [
         36231
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5388,7 +7942,9 @@
       "craftOf": "Grade 5 Mind Alkahest",
       "materialIds": [
         36258
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Crystalline",
@@ -5410,7 +7966,8 @@
       "role": "craft",
       "materialIds": [
         38771
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5433,7 +7990,9 @@
       "craftOf": "Connoisseur's Pixieberry Tart",
       "materialIds": [
         38755
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Crystalline",
@@ -5456,7 +8015,8 @@
       "craftOf": "Connoisseur's Pixieberry Tart",
       "materialIds": [
         36077
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5478,7 +8038,8 @@
       "craftOf": "Dark Rye Flour",
       "materialIds": [
         36083
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -5501,7 +8062,8 @@
       "craftOf": "Connoisseur's Pixieberry Tart",
       "materialIds": [
         36080
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Crystalline",
@@ -5523,7 +8085,8 @@
       "craftOf": "Palm Sugar",
       "materialIds": [
         36086
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5545,7 +8108,8 @@
       "role": "craft",
       "materialIds": [
         39773
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5568,7 +8132,9 @@
       "craftOf": "Connoisseur's Picture Frame",
       "materialIds": [
         39765
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -5591,7 +8157,8 @@
       "craftOf": "Connoisseur's Picture Frame",
       "materialIds": [
         36198
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5613,7 +8180,8 @@
       "craftOf": "Red Pine Lumber",
       "materialIds": [
         36192
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5636,7 +8204,8 @@
       "craftOf": "Connoisseur's Picture Frame",
       "materialIds": [
         7026
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5658,7 +8227,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5346
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5680,7 +8250,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5343
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5702,7 +8273,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5516
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5724,7 +8296,8 @@
       "role": "craft",
       "materialIds": [
         39774
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5747,7 +8320,9 @@
       "craftOf": "Connoisseur's Samurai Blade",
       "materialIds": [
         39766
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -5770,7 +8345,8 @@
       "craftOf": "Connoisseur's Samurai Blade",
       "materialIds": [
         36183
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5792,7 +8368,8 @@
       "craftOf": "Pewter Ingot",
       "materialIds": [
         36175
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5814,7 +8391,8 @@
       "craftOf": "Pewter Ingot",
       "materialIds": [
         5107
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5837,7 +8415,8 @@
       "craftOf": "Connoisseur's Samurai Blade",
       "materialIds": [
         19943
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5859,7 +8438,8 @@
       "craftOf": "Oroshigane Ingot",
       "materialIds": [
         19953
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5881,7 +8461,8 @@
       "craftOf": "Oroshigane Ingot",
       "materialIds": [
         5111
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5903,7 +8484,8 @@
       "role": "craft",
       "materialIds": [
         39775
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5926,7 +8508,9 @@
       "craftOf": "Connoisseur's Aquarium",
       "materialIds": [
         39767
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -5949,7 +8533,8 @@
       "craftOf": "Connoisseur's Aquarium",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -5971,7 +8556,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -5993,7 +8579,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6016,7 +8603,8 @@
       "craftOf": "Connoisseur's Aquarium",
       "materialIds": [
         12610
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6038,7 +8626,8 @@
       "craftOf": "Crystal Glass",
       "materialIds": [
         5523
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6060,7 +8649,8 @@
       "craftOf": "Crystal Glass",
       "materialIds": [
         5491
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6082,7 +8672,8 @@
       "craftOf": "Crystal Glass",
       "materialIds": [
         5518
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6104,7 +8695,9 @@
       "craftOf": "Crystal Glass",
       "materialIds": [
         5274
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Chora-Zoi's",
@@ -6126,7 +8719,8 @@
       "role": "craft",
       "materialIds": [
         39776
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6149,7 +8743,9 @@
       "craftOf": "Connoisseur's Glaives",
       "materialIds": [
         39768
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -6172,7 +8768,8 @@
       "craftOf": "Connoisseur's Glaives",
       "materialIds": [
         36183
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6194,7 +8791,8 @@
       "craftOf": "Pewter Ingot",
       "materialIds": [
         36175
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6216,7 +8814,8 @@
       "craftOf": "Pewter Ingot",
       "materialIds": [
         5107
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6239,7 +8838,8 @@
       "craftOf": "Connoisseur's Glaives",
       "materialIds": [
         27710
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6261,7 +8861,8 @@
       "craftOf": "Manasilver Nugget",
       "materialIds": [
         27699
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6283,7 +8884,8 @@
       "craftOf": "Manasilver Nugget",
       "materialIds": [
         5113
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6305,7 +8907,8 @@
       "role": "craft",
       "materialIds": [
         39777
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6328,7 +8931,9 @@
       "craftOf": "Connoisseur's Varsity Shoes",
       "materialIds": [
         39769
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -6351,7 +8956,8 @@
       "craftOf": "Connoisseur's Varsity Shoes",
       "materialIds": [
         36250
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6373,7 +8979,9 @@
       "craftOf": "Kumbhira Leather",
       "materialIds": [
         36245
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Chora-Zoi's",
@@ -6395,7 +9003,8 @@
       "craftOf": "Kumbhira Leather",
       "materialIds": [
         36241
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6418,7 +9027,8 @@
       "craftOf": "Connoisseur's Varsity Shoes",
       "materialIds": [
         27748
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6440,7 +9050,8 @@
       "craftOf": "Iridescent Silk",
       "materialIds": [
         27750
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6462,7 +9073,8 @@
       "craftOf": "Iridescent Silk",
       "materialIds": [
         5491
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6484,7 +9096,8 @@
       "role": "craft",
       "materialIds": [
         39778
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6507,7 +9120,9 @@
       "craftOf": "Connoisseur's Linen Parasol",
       "materialIds": [
         39770
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -6530,7 +9145,8 @@
       "craftOf": "Connoisseur's Linen Parasol",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6552,7 +9168,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6574,7 +9191,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6597,7 +9215,8 @@
       "craftOf": "Connoisseur's Linen Parasol",
       "materialIds": [
         7026
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6619,7 +9238,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5346
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6641,7 +9261,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5343
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6663,7 +9284,8 @@
       "craftOf": "Linen Canvas",
       "materialIds": [
         5516
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6685,7 +9307,8 @@
       "role": "craft",
       "materialIds": [
         39779
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6708,7 +9331,9 @@
       "craftOf": "Connoisseur's Topiary Moogle",
       "materialIds": [
         39771
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -6731,7 +9356,8 @@
       "craftOf": "Connoisseur's Topiary Moogle",
       "materialIds": [
         36230
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6753,7 +9379,8 @@
       "craftOf": "Grade 5 Intelligence Alkahest",
       "materialIds": [
         27782
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6775,7 +9402,9 @@
       "craftOf": "Grade 5 Intelligence Alkahest",
       "materialIds": [
         36258
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Chora-Zoi's",
@@ -6797,7 +9426,8 @@
       "craftOf": "Grade 5 Intelligence Alkahest",
       "materialIds": [
         27780
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6819,7 +9449,9 @@
       "craftOf": "Grade 5 Intelligence Alkahest",
       "materialIds": [
         27763
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Chora-Zoi's",
@@ -6842,7 +9474,8 @@
       "craftOf": "Connoisseur's Topiary Moogle",
       "materialIds": [
         27778
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6864,7 +9497,9 @@
       "craftOf": "Growth Formula Kappa",
       "materialIds": [
         27774
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Chora-Zoi's",
@@ -6886,7 +9521,8 @@
       "role": "craft",
       "materialIds": [
         39780
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6909,7 +9545,9 @@
       "craftOf": "Connoisseur's Squid Baguette",
       "materialIds": [
         39772
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Chora-Zoi's",
@@ -6932,7 +9570,8 @@
       "craftOf": "Connoisseur's Squid Baguette",
       "materialIds": [
         36078
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6954,7 +9593,8 @@
       "craftOf": "Northern Sea Salt",
       "materialIds": [
         36084
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -6977,7 +9617,8 @@
       "craftOf": "Connoisseur's Squid Baguette",
       "materialIds": [
         27841
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Chora-Zoi's",
@@ -6999,7 +9640,8 @@
       "craftOf": "Upland Wheat Flour",
       "materialIds": [
         12880
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -7021,7 +9663,8 @@
       "craftOf": "Upland Wheat Flour",
       "materialIds": [
         12631
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -7043,7 +9686,8 @@
       "craftOf": "Upland Wheat Flour",
       "materialIds": [
         12901
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -7065,7 +9709,9 @@
       "craftOf": "Upland Wheat Flour",
       "materialIds": [
         36255
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -7087,7 +9733,8 @@
       "role": "craft",
       "materialIds": [
         39781
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7110,7 +9757,9 @@
       "craftOf": "Connoisseur's Bookshelf",
       "materialIds": [
         39765
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -7133,7 +9782,8 @@
       "craftOf": "Connoisseur's Bookshelf",
       "materialIds": [
         36200
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7155,7 +9805,8 @@
       "craftOf": "Integral Lumber",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7178,7 +9829,8 @@
       "craftOf": "Connoisseur's Bookshelf",
       "materialIds": [
         36199
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7200,7 +9852,8 @@
       "craftOf": "Ironwood Lumber",
       "materialIds": [
         36193
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7223,7 +9876,8 @@
       "craftOf": "Connoisseur's Bookshelf",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7245,7 +9899,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7267,7 +9922,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7289,7 +9945,8 @@
       "role": "craft",
       "materialIds": [
         39782
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7312,7 +9969,9 @@
       "craftOf": "Connoisseur's Chandelier",
       "materialIds": [
         39766
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -7335,7 +9994,8 @@
       "craftOf": "Connoisseur's Chandelier",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7357,7 +10017,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7379,7 +10040,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7402,7 +10064,8 @@
       "craftOf": "Connoisseur's Chandelier",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7424,7 +10087,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7446,7 +10110,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7469,7 +10134,8 @@
       "craftOf": "Connoisseur's Chandelier",
       "materialIds": [
         36184
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7491,7 +10157,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         36176
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7513,7 +10180,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         5110
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7535,7 +10203,8 @@
       "role": "craft",
       "materialIds": [
         39783
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7558,7 +10227,9 @@
       "craftOf": "Connoisseur's Escutcheon",
       "materialIds": [
         39767
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -7581,7 +10252,8 @@
       "craftOf": "Connoisseur's Escutcheon",
       "materialIds": [
         36172
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7603,7 +10275,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7625,7 +10298,8 @@
       "craftOf": "Chondrite Ingot",
       "materialIds": [
         27703
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7648,7 +10322,8 @@
       "craftOf": "Connoisseur's Escutcheon",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7670,7 +10345,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7692,7 +10368,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7715,7 +10392,8 @@
       "craftOf": "Connoisseur's Escutcheon",
       "materialIds": [
         36199
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7737,7 +10415,8 @@
       "craftOf": "Ironwood Lumber",
       "materialIds": [
         36193
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7759,7 +10438,8 @@
       "role": "craft",
       "materialIds": [
         39784
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7782,7 +10462,9 @@
       "craftOf": "Connoisseur's Baghnakhs",
       "materialIds": [
         39768
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -7805,7 +10487,8 @@
       "craftOf": "Connoisseur's Baghnakhs",
       "materialIds": [
         36186
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7827,7 +10510,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36178
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7849,7 +10533,8 @@
       "craftOf": "Star Quartz",
       "materialIds": [
         36181
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7872,7 +10557,8 @@
       "craftOf": "Connoisseur's Baghnakhs",
       "materialIds": [
         36184
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7894,7 +10580,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         36176
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7916,7 +10603,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         5110
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7939,7 +10627,8 @@
       "craftOf": "Connoisseur's Baghnakhs",
       "materialIds": [
         36171
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -7961,7 +10650,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -7983,7 +10673,8 @@
       "craftOf": "Manganese Ingot",
       "materialIds": [
         19957
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8005,7 +10696,8 @@
       "role": "craft",
       "materialIds": [
         39785
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8028,7 +10720,9 @@
       "craftOf": "Connoisseur's Drinking Apkallu",
       "materialIds": [
         39769
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -8051,7 +10745,8 @@
       "craftOf": "Connoisseur's Drinking Apkallu",
       "materialIds": [
         36251
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8073,7 +10768,9 @@
       "craftOf": "Ophiotauros Leather",
       "materialIds": [
         36246
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8095,7 +10792,8 @@
       "craftOf": "Ophiotauros Leather",
       "materialIds": [
         36241
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8118,7 +10816,8 @@
       "craftOf": "Connoisseur's Drinking Apkallu",
       "materialIds": [
         36184
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8140,7 +10839,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         36176
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8162,7 +10862,8 @@
       "craftOf": "Phrygian Gold Ingot",
       "materialIds": [
         5110
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8184,7 +10885,8 @@
       "craftOf": "Connoisseur's Drinking Apkallu",
       "materialIds": [
         5348
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Brilliant",
@@ -8206,7 +10908,8 @@
       "role": "craft",
       "materialIds": [
         39786
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8229,7 +10932,9 @@
       "craftOf": "Connoisseur's Jacket",
       "materialIds": [
         39770
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -8252,7 +10957,8 @@
       "craftOf": "Connoisseur's Jacket",
       "materialIds": [
         36212
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8274,7 +10980,8 @@
       "craftOf": "AR-Caean Velvet",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8297,7 +11004,8 @@
       "craftOf": "Connoisseur's Jacket",
       "materialIds": [
         36211
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8319,7 +11027,8 @@
       "craftOf": "Scarlet Moko Cloth",
       "materialIds": [
         36205
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8342,7 +11051,8 @@
       "craftOf": "Connoisseur's Jacket",
       "materialIds": [
         36249
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8364,7 +11074,9 @@
       "craftOf": "Saiga Leather",
       "materialIds": [
         36244
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8386,7 +11098,8 @@
       "craftOf": "Saiga Leather",
       "materialIds": [
         36241
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8408,7 +11121,8 @@
       "role": "craft",
       "materialIds": [
         39787
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8431,7 +11145,9 @@
       "craftOf": "Connoisseur's Planter Partition",
       "materialIds": [
         39771
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -8454,7 +11170,8 @@
       "craftOf": "Connoisseur's Planter Partition",
       "materialIds": [
         36199
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8476,7 +11193,8 @@
       "craftOf": "Ironwood Lumber",
       "materialIds": [
         36193
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8499,7 +11217,8 @@
       "craftOf": "Connoisseur's Planter Partition",
       "materialIds": [
         36229
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8521,7 +11240,8 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27782
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8543,7 +11263,8 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27783
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8565,7 +11286,9 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27763
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8588,7 +11311,8 @@
       "craftOf": "Connoisseur's Planter Partition",
       "materialIds": [
         27778
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8610,7 +11334,9 @@
       "craftOf": "Growth Formula Kappa",
       "materialIds": [
         36258
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8632,7 +11358,9 @@
       "craftOf": "Growth Formula Kappa",
       "materialIds": [
         27774
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8654,7 +11382,8 @@
       "role": "craft",
       "materialIds": [
         39788
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8677,7 +11406,9 @@
       "craftOf": "Connoisseur's Spaghetti al Nero",
       "materialIds": [
         39772
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Brilliant",
@@ -8700,7 +11431,8 @@
       "craftOf": "Connoisseur's Spaghetti al Nero",
       "materialIds": [
         36079
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8722,7 +11454,8 @@
       "craftOf": "Perilla Oil",
       "materialIds": [
         36085
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8745,7 +11478,8 @@
       "craftOf": "Connoisseur's Spaghetti al Nero",
       "materialIds": [
         36081
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8767,7 +11501,9 @@
       "craftOf": "Garlean Cheese",
       "materialIds": [
         36255
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -8790,7 +11526,8 @@
       "craftOf": "Connoisseur's Spaghetti al Nero",
       "materialIds": [
         12908
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Brilliant",
@@ -8812,7 +11549,8 @@
       "craftOf": "Vermicelli",
       "materialIds": [
         12880
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8834,7 +11572,8 @@
       "craftOf": "Vermicelli",
       "materialIds": [
         12631
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -8856,7 +11595,8 @@
       "craftOf": "Vermicelli",
       "materialIds": [
         12901
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -8878,7 +11618,8 @@
       "role": "craft",
       "materialIds": [
         41254
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -8901,7 +11642,9 @@
       "craftOf": "Connoisseur's Bamboo Fence",
       "materialIds": [
         41246
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -8923,7 +11666,8 @@
       "craftOf": "Connoisseur's Bamboo Fence",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -8945,7 +11689,8 @@
       "craftOf": "Connoisseur's Bamboo Fence",
       "materialIds": [
         5230
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -8967,7 +11712,8 @@
       "role": "craft",
       "materialIds": [
         41255
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -8990,7 +11736,9 @@
       "craftOf": "Connoisseur's Rousing Chronometer",
       "materialIds": [
         41247
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9012,7 +11760,8 @@
       "craftOf": "Connoisseur's Rousing Chronometer",
       "materialIds": [
         36166
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9034,7 +11783,8 @@
       "craftOf": "Connoisseur's Rousing Chronometer",
       "materialIds": [
         36178
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9056,7 +11806,8 @@
       "role": "craft",
       "materialIds": [
         41256
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9079,7 +11830,9 @@
       "craftOf": "Connoisseur's Trumpet",
       "materialIds": [
         41248
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9101,7 +11854,8 @@
       "craftOf": "Connoisseur's Trumpet",
       "materialIds": [
         27697
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9123,7 +11877,8 @@
       "craftOf": "Connoisseur's Trumpet",
       "materialIds": [
         36190
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9145,7 +11900,8 @@
       "role": "craft",
       "materialIds": [
         41257
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9168,7 +11924,9 @@
       "craftOf": "Connoisseur's Washbasin",
       "materialIds": [
         41249
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9190,7 +11948,8 @@
       "craftOf": "Connoisseur's Washbasin",
       "materialIds": [
         36175
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9212,7 +11971,8 @@
       "craftOf": "Connoisseur's Washbasin",
       "materialIds": [
         36164
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9234,7 +11994,8 @@
       "role": "craft",
       "materialIds": [
         41258
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9257,7 +12018,9 @@
       "craftOf": "Connoisseur's Targe",
       "materialIds": [
         41250
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9279,7 +12042,8 @@
       "craftOf": "Connoisseur's Targe",
       "materialIds": [
         36190
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9301,7 +12065,8 @@
       "craftOf": "Connoisseur's Targe",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9323,7 +12088,8 @@
       "role": "craft",
       "materialIds": [
         41259
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9346,7 +12112,9 @@
       "craftOf": "Connoisseur's Petasos",
       "materialIds": [
         41251
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9368,7 +12136,8 @@
       "craftOf": "Connoisseur's Petasos",
       "materialIds": [
         19979
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9390,7 +12159,8 @@
       "craftOf": "Connoisseur's Petasos",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9412,7 +12182,8 @@
       "role": "craft",
       "materialIds": [
         41260
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9435,7 +12206,9 @@
       "craftOf": "Connoisseur's Lunar Curtain",
       "materialIds": [
         41252
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9457,7 +12230,9 @@
       "craftOf": "Connoisseur's Lunar Curtain",
       "materialIds": [
         36258
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Vrandtic",
@@ -9479,7 +12254,9 @@
       "craftOf": "Connoisseur's Lunar Curtain",
       "materialIds": [
         36257
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Vrandtic",
@@ -9501,7 +12278,8 @@
       "role": "craft",
       "materialIds": [
         41261
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Vrandtic",
@@ -9524,7 +12302,9 @@
       "craftOf": "Connoisseur's Crab Cakes",
       "materialIds": [
         41253
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Vrandtic",
@@ -9546,7 +12326,8 @@
       "craftOf": "Connoisseur's Crab Cakes",
       "materialIds": [
         27832
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -9568,7 +12349,9 @@
       "craftOf": "Connoisseur's Crab Cakes",
       "materialIds": [
         36256
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -9590,7 +12373,8 @@
       "role": "craft",
       "materialIds": [
         41262
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -9613,7 +12397,9 @@
       "craftOf": "Connoisseur's Shishi-odoshi",
       "materialIds": [
         41246
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -9635,7 +12421,8 @@
       "craftOf": "Connoisseur's Shishi-odoshi",
       "materialIds": [
         36263
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9657,7 +12444,8 @@
       "craftOf": "Connoisseur's Shishi-odoshi",
       "materialIds": [
         5231
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9679,7 +12467,8 @@
       "craftOf": "Connoisseur's Shishi-odoshi",
       "materialIds": [
         7008
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9701,7 +12490,8 @@
       "role": "craft",
       "materialIds": [
         41263
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -9724,7 +12514,9 @@
       "craftOf": "Connoisseur's Retainer Bell",
       "materialIds": [
         41247
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -9746,7 +12538,8 @@
       "craftOf": "Connoisseur's Retainer Bell",
       "materialIds": [
         36194
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9768,7 +12561,8 @@
       "craftOf": "Connoisseur's Retainer Bell",
       "materialIds": [
         36175
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9790,7 +12584,8 @@
       "craftOf": "Connoisseur's Retainer Bell",
       "materialIds": [
         5360
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9812,7 +12607,8 @@
       "role": "craft",
       "materialIds": [
         41264
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -9835,7 +12631,9 @@
       "craftOf": "Connoisseur's Marching Horn",
       "materialIds": [
         41248
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -9857,7 +12655,8 @@
       "craftOf": "Connoisseur's Marching Horn",
       "materialIds": [
         5391
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9879,7 +12678,8 @@
       "craftOf": "Connoisseur's Marching Horn",
       "materialIds": [
         36164
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9901,7 +12701,8 @@
       "craftOf": "Connoisseur's Marching Horn",
       "materialIds": [
         36165
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9923,7 +12724,8 @@
       "role": "craft",
       "materialIds": [
         41265
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -9946,7 +12748,9 @@
       "craftOf": "Connoisseur's Marble Fountain",
       "materialIds": [
         41249
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -9968,7 +12772,8 @@
       "craftOf": "Connoisseur's Marble Fountain",
       "materialIds": [
         36263
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -9990,7 +12795,8 @@
       "craftOf": "Connoisseur's Marble Fountain",
       "materialIds": [
         36181
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10012,7 +12818,8 @@
       "craftOf": "Connoisseur's Marble Fountain",
       "materialIds": [
         7008
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10034,7 +12841,8 @@
       "role": "craft",
       "materialIds": [
         41266
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -10057,7 +12865,9 @@
       "craftOf": "Connoisseur's Leather Jacket",
       "materialIds": [
         41250
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -10079,7 +12889,8 @@
       "craftOf": "Connoisseur's Leather Jacket",
       "materialIds": [
         19979
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10101,7 +12912,9 @@
       "craftOf": "Connoisseur's Leather Jacket",
       "materialIds": [
         36203
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -10123,7 +12936,8 @@
       "craftOf": "Connoisseur's Leather Jacket",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10145,7 +12959,8 @@
       "role": "craft",
       "materialIds": [
         41267
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -10168,7 +12983,9 @@
       "craftOf": "Connoisseur's Fat Cat Sofa",
       "materialIds": [
         41251
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -10190,7 +13007,9 @@
       "craftOf": "Connoisseur's Fat Cat Sofa",
       "materialIds": [
         36203
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -10212,7 +13031,8 @@
       "craftOf": "Connoisseur's Fat Cat Sofa",
       "materialIds": [
         36206
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10234,7 +13054,8 @@
       "craftOf": "Connoisseur's Fat Cat Sofa",
       "materialIds": [
         36205
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10256,7 +13077,8 @@
       "role": "craft",
       "materialIds": [
         41268
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -10279,7 +13101,9 @@
       "craftOf": "Connoisseur's Tincture of Vitality",
       "materialIds": [
         41252
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -10301,7 +13125,9 @@
       "craftOf": "Connoisseur's Tincture of Vitality",
       "materialIds": [
         36260
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -10323,7 +13149,9 @@
       "craftOf": "Connoisseur's Tincture of Vitality",
       "materialIds": [
         36261
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -10345,7 +13173,9 @@
       "craftOf": "Connoisseur's Tincture of Vitality",
       "materialIds": [
         36264
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Lodestar",
@@ -10367,7 +13197,8 @@
       "role": "craft",
       "materialIds": [
         41269
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Lodestar",
@@ -10390,7 +13221,9 @@
       "craftOf": "Connoisseur's Chili Crab",
       "materialIds": [
         41253
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Lodestar",
@@ -10412,7 +13245,8 @@
       "craftOf": "Connoisseur's Chili Crab",
       "materialIds": [
         36085
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10434,7 +13268,8 @@
       "craftOf": "Connoisseur's Chili Crab",
       "materialIds": [
         27825
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10456,7 +13291,8 @@
       "craftOf": "Connoisseur's Chili Crab",
       "materialIds": [
         4836
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -10477,7 +13313,8 @@
       ],
       "materialIds": [
         38790
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -10498,7 +13335,8 @@
       ],
       "materialIds": [
         38788
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -10519,7 +13357,8 @@
       ],
       "materialIds": [
         38796
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -10540,7 +13379,8 @@
       ],
       "materialIds": [
         38794
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -10561,7 +13401,8 @@
       ],
       "materialIds": [
         39805
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Chora-Zoi's",
@@ -10582,7 +13423,8 @@
       ],
       "materialIds": [
         39807
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -10603,7 +13445,8 @@
       ],
       "materialIds": [
         39811
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -10624,7 +13467,8 @@
       ],
       "materialIds": [
         39813
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -10645,7 +13489,8 @@
       ],
       "materialIds": [
         41286
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Vrandtic",
@@ -10666,7 +13511,8 @@
       ],
       "materialIds": [
         41288
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10687,7 +13533,8 @@
       ],
       "materialIds": [
         41290
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Lodestar",
@@ -10708,7 +13555,8 @@
       ],
       "materialIds": [
         41292
-      ]
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Augmented",
@@ -10729,7 +13577,8 @@
       ],
       "materialIds": [
         38792
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Augmented",
@@ -10750,7 +13599,8 @@
       ],
       "materialIds": [
         38793
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Crystalline",
@@ -10771,7 +13621,8 @@
       ],
       "materialIds": [
         38798
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Crystalline",
@@ -10792,7 +13643,8 @@
       ],
       "materialIds": [
         38799
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Chora-Zoi's",
@@ -10813,7 +13665,8 @@
       ],
       "materialIds": [
         39809
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Chora-Zoi's",
@@ -10834,7 +13687,8 @@
       ],
       "materialIds": [
         39810
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Brilliant",
@@ -10855,7 +13709,8 @@
       ],
       "materialIds": [
         39815
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Brilliant",
@@ -10876,7 +13731,8 @@
       ],
       "materialIds": [
         39816
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Vrandtic",
@@ -10897,7 +13753,8 @@
       ],
       "materialIds": [
         41298
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Vrandtic",
@@ -10918,7 +13775,8 @@
       ],
       "materialIds": [
         41299
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Lodestar",
@@ -10939,7 +13797,8 @@
       ],
       "materialIds": [
         41300
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Lodestar",
@@ -10960,7 +13819,8 @@
       ],
       "materialIds": [
         41301
-      ]
+      ],
+      "obtain": "fish"
     },
     {
       "step": "Resplendent",
@@ -10981,7 +13841,9 @@
       ],
       "materialIds": [
         33186
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11002,7 +13864,8 @@
       ],
       "materialIds": [
         33210
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11023,7 +13886,9 @@
       ],
       "materialIds": [
         33187
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11044,7 +13909,8 @@
       ],
       "materialIds": [
         33211
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11065,7 +13931,9 @@
       ],
       "materialIds": [
         33188
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11086,7 +13954,8 @@
       ],
       "materialIds": [
         33212
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11107,7 +13976,9 @@
       ],
       "materialIds": [
         33189
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11128,7 +13999,8 @@
       ],
       "materialIds": [
         33213
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11149,7 +14021,9 @@
       ],
       "materialIds": [
         33190
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11170,7 +14044,8 @@
       ],
       "materialIds": [
         33214
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11191,7 +14066,9 @@
       ],
       "materialIds": [
         33191
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11212,7 +14089,8 @@
       ],
       "materialIds": [
         33215
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11233,7 +14111,9 @@
       ],
       "materialIds": [
         33192
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11254,7 +14134,8 @@
       ],
       "materialIds": [
         33216
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Resplendent",
@@ -11275,7 +14156,9 @@
       ],
       "materialIds": [
         33193
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Scrips"
     },
     {
       "step": "Resplendent",
@@ -11296,7 +14179,8 @@
       ],
       "materialIds": [
         33217
-      ]
+      ],
+      "obtain": "craft"
     }
   ],
   "ARR": [
@@ -11318,7 +14202,9 @@
       ],
       "materialIds": [
         6267
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Zenith",
@@ -11338,7 +14224,9 @@
       ],
       "materialIds": [
         6268
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Atma",
@@ -11369,7 +14257,8 @@
         7852,
         7857,
         7853
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Novus",
@@ -11389,7 +14278,9 @@
       ],
       "materialIds": [
         7885
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Novus",
@@ -11409,7 +14300,9 @@
       ],
       "materialIds": [
         7883
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Hunt seals"
     },
     {
       "step": "Zodiac",
@@ -11433,7 +14326,9 @@
       },
       "materialIds": [
         9539
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Zodiac",
@@ -11453,7 +14348,9 @@
       ],
       "materialIds": [
         9540
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Zodiac",
@@ -11473,7 +14370,9 @@
       ],
       "materialIds": [
         9543
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
     },
     {
       "step": "Zodiac",
@@ -11493,7 +14392,9 @@
       ],
       "materialIds": [
         9542
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
     },
     {
       "step": "Zodiac",
@@ -11513,7 +14414,9 @@
       ],
       "materialIds": [
         9538
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
     },
     {
       "step": "Zodiac",
@@ -11533,7 +14436,9 @@
       ],
       "materialIds": [
         9544
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
     },
     {
       "step": "Zodiac",
@@ -11553,7 +14458,8 @@
       ],
       "materialIds": [
         9511
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11573,7 +14479,8 @@
       ],
       "materialIds": [
         9513
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11593,7 +14500,8 @@
       ],
       "materialIds": [
         9512
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11613,7 +14521,8 @@
       ],
       "materialIds": [
         9510
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11633,7 +14542,8 @@
       ],
       "materialIds": [
         9514
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11653,7 +14563,8 @@
       ],
       "materialIds": [
         9517
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11673,7 +14584,8 @@
       ],
       "materialIds": [
         9515
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -11693,7 +14605,8 @@
       ],
       "materialIds": [
         9516
-      ]
+      ],
+      "obtain": "craft"
     },
     {
       "step": "Zodiac",
@@ -12242,7 +15155,8 @@
       ],
       "materialIds": [
         13570
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Animated",
@@ -12265,7 +15179,8 @@
       ],
       "materialIds": [
         13571
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Animated",
@@ -12288,7 +15203,8 @@
       ],
       "materialIds": [
         13573
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Animated",
@@ -12311,7 +15227,8 @@
       ],
       "materialIds": [
         13569
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Animated",
@@ -12334,7 +15251,8 @@
       ],
       "materialIds": [
         13572
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Animated",
@@ -12357,7 +15275,8 @@
       ],
       "materialIds": [
         13574
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Anima",
@@ -12380,7 +15299,9 @@
       ],
       "materialIds": [
         13582
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Anima",
@@ -12403,7 +15324,9 @@
       ],
       "materialIds": [
         13584
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Anima",
@@ -12426,7 +15349,9 @@
       ],
       "materialIds": [
         13586
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Anima",
@@ -12449,7 +15374,9 @@
       ],
       "materialIds": [
         13588
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Anima",
@@ -12472,7 +15399,9 @@
       ],
       "materialIds": [
         13589
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Anima",
@@ -12495,7 +15424,9 @@
       ],
       "materialIds": [
         13591
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Anima",
@@ -12518,7 +15449,9 @@
       ],
       "materialIds": [
         13593
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Anima",
@@ -12541,7 +15474,9 @@
       ],
       "materialIds": [
         13595
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "GC seals"
     },
     {
       "step": "Hyperconductive",
@@ -12564,7 +15499,9 @@
       ],
       "materialIds": [
         14899
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Reconditioned",
@@ -12587,7 +15524,9 @@
       ],
       "materialIds": [
         15840
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Reconditioned",
@@ -12610,7 +15549,8 @@
       ],
       "materialIds": [
         15841
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Sharpened",
@@ -12633,7 +15573,9 @@
       ],
       "materialIds": [
         16064
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Complete",
@@ -12656,7 +15598,9 @@
       ],
       "materialIds": [
         16933
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Lux",
@@ -12679,7 +15623,9 @@
       ],
       "materialIds": [
         16934
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     }
   ],
   "SB": [
@@ -12706,7 +15652,8 @@
       ],
       "materialIds": [
         21801
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Base +1",
@@ -12731,7 +15678,8 @@
       ],
       "materialIds": [
         21801
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Base +2",
@@ -12756,7 +15704,8 @@
       ],
       "materialIds": [
         21801
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Anemos",
@@ -12781,7 +15730,9 @@
       ],
       "materialIds": [
         21802
-      ]
+      ],
+      "obtain": "content",
+      "obtainVia": "Protean Crystal"
     },
     {
       "step": "Pagos",
@@ -12806,7 +15757,8 @@
       ],
       "materialIds": [
         23309
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Pagos +1",
@@ -12831,7 +15783,8 @@
       ],
       "materialIds": [
         23309
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Pagos +1",
@@ -12856,7 +15809,8 @@
       ],
       "materialIds": [
         22976
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Elemental",
@@ -12881,7 +15835,8 @@
       ],
       "materialIds": [
         23309
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Elemental",
@@ -12906,7 +15861,9 @@
       ],
       "materialIds": [
         22975
-      ]
+      ],
+      "obtain": "content",
+      "obtainVia": "Pagos Crystal"
     },
     {
       "step": "Elemental +1",
@@ -12931,7 +15888,8 @@
       ],
       "materialIds": [
         24124
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Elemental +2",
@@ -12956,7 +15914,8 @@
       ],
       "materialIds": [
         24124
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Pyros",
@@ -12981,7 +15940,8 @@
       ],
       "materialIds": [
         24124
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Pyros",
@@ -13006,7 +15966,9 @@
       ],
       "materialIds": [
         24123
-      ]
+      ],
+      "obtain": "content",
+      "obtainVia": "Pyros Crystal"
     },
     {
       "step": "Hydatos",
@@ -13031,7 +15993,8 @@
       ],
       "materialIds": [
         24807
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Hydatos +1",
@@ -13056,7 +16019,8 @@
       ],
       "materialIds": [
         24807
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Base (Physeos)",
@@ -13081,7 +16045,8 @@
       ],
       "materialIds": [
         24807
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Eureka",
@@ -13106,7 +16071,8 @@
       ],
       "materialIds": [
         24807
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Eureka",
@@ -13131,7 +16097,8 @@
       ],
       "materialIds": [
         24806
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Physeos",
@@ -13156,7 +16123,8 @@
       ],
       "materialIds": [
         24808
-      ]
+      ],
+      "obtain": "content"
     }
   ],
   "ShB": [
@@ -13185,7 +16153,9 @@
       ],
       "materialIds": [
         30273
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Augmented",
@@ -13212,7 +16182,8 @@
       ],
       "materialIds": [
         31573
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Augmented",
@@ -13239,7 +16210,8 @@
       ],
       "materialIds": [
         31574
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Augmented",
@@ -13266,7 +16238,8 @@
       ],
       "materialIds": [
         31575
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Recollection",
@@ -13293,7 +16266,8 @@
       ],
       "materialIds": [
         31576
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Law's Order",
@@ -13320,7 +16294,8 @@
       ],
       "materialIds": [
         32956
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Augmented Law's Order",
@@ -13347,7 +16322,8 @@
       ],
       "materialIds": [
         32959
-      ]
+      ],
+      "obtain": "content"
     },
     {
       "step": "Blade's",
@@ -13374,7 +16350,240 @@
       ],
       "materialIds": [
         33767
-      ]
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Augmented Law's Order",
+      "material": "Haunting Memory of the Dying",
+      "perUnit": 18,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        32957
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Augmented Law's Order",
+      "material": "Vexatious Memory of the Dying",
+      "perUnit": 18,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        32958
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "Compact Axle",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33757
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "Compact Spring",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33758
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "A Day in the Life: Battles for the Realm",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33759
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "A Day in the Life: Beyond the Rift",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33760
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "Bleak Memory of the Dying",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33763
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Blade's",
+      "material": "Lurid Memory of the Dying",
+      "perUnit": 30,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        33764
+      ],
+      "obtain": "content"
     }
   ],
   "EW": [
@@ -13405,7 +16614,9 @@
       ],
       "materialIds": [
         38420
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Amazing",
@@ -13434,7 +16645,9 @@
       ],
       "materialIds": [
         38940
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Majestic",
@@ -13463,7 +16676,9 @@
       ],
       "materialIds": [
         40322
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Mandervillous",
@@ -13492,7 +16707,9 @@
       ],
       "materialIds": [
         41032
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     }
   ],
   "DT": [
@@ -13525,7 +16742,9 @@
       ],
       "materialIds": [
         47750
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Umbrae",
@@ -13556,7 +16775,9 @@
       ],
       "materialIds": [
         46850
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Obscurum",
@@ -13587,7 +16808,9 @@
       ],
       "materialIds": [
         50058
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
     },
     {
       "step": "Eclipticum",
@@ -13618,7 +16841,772 @@
       ],
       "materialIds": [
         50977
-      ]
+      ],
+      "obtain": "buy",
+      "obtainVia": "Tomestones"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Azurite Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47744
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Verdigris Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47745
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Malachite Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47746
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Realgar Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47747
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Caput Mortuum Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47748
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Penumbrae",
+      "material": "Orpiment Demiatma",
+      "perUnit": 3,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        47749
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Umbrae",
+      "material": "Rroneek Glue",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        46854
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Umbrae",
+      "material": "Ut'ohmu Siderite",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        46852
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
+    },
+    {
+      "step": "Umbrae",
+      "material": "Synthetic Dark Matter Alpha",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        46855
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Umbrae",
+      "material": "Synthetic Dark Matter Beta",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        46856
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Umbrae",
+      "material": "Synthetic Dark Matter Gamma",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        46857
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Obscurum",
+      "material": "Umbral Clay",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50054
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Obscurum",
+      "material": "Aspected Aetheroconductor",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50056
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Obscurum",
+      "material": "Aspected Aether Agglomerate",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50055
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Obscurum",
+      "material": "Aspected Aetherocatalyst",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50057
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Obscurum",
+      "material": "Crystal Paste",
+      "perUnit": 1200,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50059
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Monarch Whetstone",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50970
+      ],
+      "obtain": "buy",
+      "obtainVia": "Gil"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Ascendant Twine",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50971
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Ancestral Alloy Ingot",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50972
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Majestic Polish",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50973
+      ],
+      "obtain": "craft"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Phantom Dispeller α",
+      "perUnit": 100,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50974
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Phantom Dispeller β",
+      "perUnit": 100,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50975
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Eclipticum",
+      "material": "Phantom Dispeller γ",
+      "perUnit": 100,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "oneTime": true,
+      "materialIds": [
+        50976
+      ],
+      "obtain": "content"
     }
   ]
 }

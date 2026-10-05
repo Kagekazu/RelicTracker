@@ -73,6 +73,7 @@ Shows whether Allagan Tools and Artisan are connected, plus the FFXIV Collect li
 |---|---|---|
 | **Allagan Tools** | Counts items across your bags, retainers, glamour dresser, and armoire. Spots relics (and replicas) you own and marks those steps done automatically. | Recommended |
 | **Artisan** | Adds a **Craft with Artisan** button to crafter relic tool steps, which starts the right crafting list for you. | Optional |
+| **Knightshopper** | Adds buy buttons to the Tracker, one per currency (gil, tomestones, scrips, seals, and more), that buy the materials you're still short. In Knightshopper, turn on both IPC permission switches and add RelicTracker to its allowed plugins. | Optional |
 | **FFXIV Collect** (website) | Remembers relics you've finished but no longer have, e.g. sold or desynthed. | Optional |
 
 To link FFXIV Collect, open your profile on [ffxivcollect.com](https://ffxivcollect.com). The

@@ -13,6 +13,7 @@ from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from item_lookup import alias_targets, expand_name_variants
+from obtain_lookup import KINDS as OBTAIN_KINDS
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -203,6 +204,10 @@ def main() -> int:
             fail(errors, f"{expansion}[{index}] has invalid perUnit: {per_unit!r}")
         if not isinstance(jobs, list) or not jobs or not all(isinstance(flag, bool) for flag in jobs):
             fail(errors, f"{expansion}[{index}] has invalid jobs flags")
+        if role not in ("quest", "covers") and row.get("obtain") not in OBTAIN_KINDS:
+            fail(errors, f"{expansion}[{index}] {material} has invalid obtain: {row.get('obtain')!r}")
+        if "oneTime" in row and not isinstance(row["oneTime"], bool):
+            fail(errors, f"{expansion}[{index}] has non-boolean oneTime")
 
         material_ids = row.get("materialIds") or []
         if not isinstance(material_ids, list) or not material_ids:

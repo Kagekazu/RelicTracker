@@ -8,7 +8,7 @@ internal static class ArtisanIpc
     private const long BindRetryMs = 60_000;
 
     /// <summary>
-    ///     Matches Artisan <c>RelicToolPremadeLists.RelicToolStep</c> ordinals (1–11).
+    ///     Matches Artisan <c>RelicToolPremadeLists.RelicToolStep</c> ordinals (1–16).
     ///     IPC is <c>Artisan.GetRelicToolListId(int stepOrdinal, int craftTypeSlot)</c>.
     /// </summary>
     private static readonly Dictionary<string, int> StepOrdinals = new(StringComparer.OrdinalIgnoreCase)
@@ -24,7 +24,16 @@ internal static class ArtisanIpc
         ["Brilliant"] = 9,
         ["Vrandtic"] = 10,
         ["Lodestar"] = 11,
+        ["Supra"] = 12,
+        ["Lucis"] = 13,
+        ["Resplendent A"] = 14,
+        ["Resplendent B"] = 15,
+        ["Resplendent C"] = 16,
     };
+
+    // Resplendent Material B / C item IDs run CRP..CUL, so add the craft slot.
+    private const uint ResplendentMaterialB = 33194;
+    private const uint ResplendentMaterialC = 33202;
 
     private static ICallGateSubscriber<int, int, int>? _getRelicToolListId;
     private static ICallGateSubscriber<int, object>? _startListById;
@@ -59,6 +68,25 @@ internal static class ArtisanIpc
         _ipcBound = false;
         _loggedBindFailure = false;
         _lastBindAttemptTick = 0;
+    }
+
+    /// <summary>
+    ///     Artisan list step for a relic step. Resplendent is a craft -> turn-in chain, so it picks the
+    ///     component tier from the materials in bags: C, then B, then A.
+    /// </summary>
+    public static string ArtisanStepFor(string stepName, int craftSlot, Func<uint, uint> bagCount)
+    {
+        if (!string.Equals(stepName, "Resplendent", StringComparison.OrdinalIgnoreCase) || craftSlot is < 0 or > 7)
+        {
+            return stepName;
+        }
+
+        if (bagCount(ResplendentMaterialC + (uint)craftSlot) >= 2)
+        {
+            return "Resplendent C";
+        }
+
+        return bagCount(ResplendentMaterialB + (uint)craftSlot) >= 2 ? "Resplendent B" : "Resplendent A";
     }
 
     public static bool TryGetRelicToolListId(string stepName, int craftSlot, out int listId)
