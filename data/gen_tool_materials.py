@@ -10,10 +10,12 @@ Collectability-gated steps use best-case (max collectability) counts.
 
 Re-run after editing; do not hand-edit the JSON.
 """
+import csv
 import json
 from pathlib import Path
 
 from item_lookup import attach_armor_costs, attach_tool_extra_materials, load_item_index
+from obtain_lookup import ObtainIndex
 
 SLOT = {"CRP":0,"BSM":1,"ARM":2,"GSM":3,"LTW":4,"WVR":5,"ALC":6,"CUL":7,"MIN":8,"BTN":9,"FSH":10}
 def flags(*slots):
@@ -33,6 +35,22 @@ def add(step, material, per, *slots, role=None, craft_of=None, purchase=None):
 rows.append({"step":"Supra","material":"Fieldcraft Demimateria III","perUnit":2,"jobs":ALL})
 rows.append({"step":"Supra","material":"Mastercraft Demimateria","perUnit":1,"jobs":ALL})
 rows.append({"step":"Lucis","material":"Moonstone","perUnit":5,"jobs":ALL,"purchase":{"currency":"GC seals","unit":4000}})
+
+# Lucis Tools gatherers turn in a Talan seal (Supra) / mastery seal (Lucis) instead of a craft.
+# The seal is a quest reward that covers its gathered items, so a prefarmed seal credits them.
+def talan_seal(step, cls, seal, items):
+    s = SLOT[cls]
+    add(step, seal, 0, s, role="quest")
+    for name, count in items:
+        add(step, name, count, s)
+        add(step, name, count, s, role="covers", craft_of=seal)
+
+talan_seal("Supra", "MIN", "Talan's Seal of Mining", [("Antumbral Rock", 30)])
+talan_seal("Supra", "BTN", "Talan's Seal of Botany", [("Redolent Log", 30)])
+talan_seal("Supra", "FSH", "Talan's Seal of Fishing", [("Olgoi-Khorkhoi", 1)])
+talan_seal("Lucis", "MIN", "Talan's Seal of Mining Mastery", [("Magicked Oilcloth", 15), ("Antumbral Rock", 30)])
+talan_seal("Lucis", "BTN", "Talan's Seal of Botany Mastery", [("Bamboo Paper", 15), ("Redolent Log", 30)])
+talan_seal("Lucis", "FSH", "Talan's Seal of Fishing Mastery", [("Glacier Crystal", 15), ("Gigant Clam", 10)])
 
 C=["CRP","BSM","ARM","GSM","LTW","WVR","ALC","CUL"]
 def crafter(step, craft_cnt, trade_cnt, data):
@@ -59,6 +77,31 @@ def craft_tree(step, craft_cnt, data):
                 add(step, rname, rtotal, s, craft_of=pname)
         for dname, dtotal in entry.get("direct", []):
             add(step, dname, dtotal, s, craft_of=coll)
+
+# Lucis Tools crafters craft a class turn-in each step (recipes from the game's Recipe sheet; the
+# shared demimateria / Moonstone rows above cover the rest). Supra precrafts are flattened to raws.
+craft_tree("Supra", 1, {
+ "CRP":{"collectable":"Reinforced Spruce Plywood","precrafts":[("Spruce Plywood",1,[("Spruce Log",3),("Aldgoat Horn",4)])]},
+ "BSM":{"collectable":"Balanced Darksteel Hook","precrafts":[("Darksteel Hook",1,[("Darksteel Ore",6)])]},
+ "ARM":{"collectable":"Reinforced Darksteel Wire","precrafts":[("Darksteel Wire",1,[("Darksteel Ore",6)])]},
+ "GSM":{"collectable":"Calibrated Rose Gold Cog","precrafts":[("Rose Gold Cog",1,[("Gold Ore",6),("Copper Ore",2)])]},
+ "LTW":{"collectable":"Water-hardened Hippogryph Strap","precrafts":[("Gryphonskin Strap",1,[("Hippogryph Skin",2),("Black Alumen",2)])]},
+ "WVR":{"collectable":"Intricate Silver Brocade","precrafts":[("Silver Brocade",1,[("Silkworm Cocoon",2),("Effervescent Water",1),("Silver Ore",3)])]},
+ "ALC":{"collectable":"Concentrated Spirits of Salt","precrafts":[("Spirits of Salt",1,[("Volcanic Rock Salt",2),("Vitriol",1)])]},
+ "CUL":{"collectable":"Rich Tomato Relish","precrafts":[("Spicy Tomato Relish",1,[("Dzemael Tomato",1),("Cinnamon",1),("Table Salt",1),("Noble Grapes",4)])]},
+})
+craft_tree("Lucis", 1, {
+ "CRP":{"collectable":"Petrified Orb","direct":[("Urushi",3),("Petrified Log",1),("Scarlet Sap",1)]},
+ "BSM":{"collectable":"Mummer's Daggers","direct":[("Composite Whetstone",3),("Scheelite",1),("Ferberite",1)]},
+ "ARM":{"collectable":"Lapdog Collar Bell","direct":[("Heat-resistant Plaster",3),("Scheelite",1),("Ferberite",1)]},
+ "GSM":{"collectable":"Fluorite Lens","direct":[("Clear Fluorite",3),("Emery",1)],
+        "precrafts":[("Basilisk Whetstone",1,[("Basilisk Egg",1)]),("Siltstone Whetstone",1,[("Siltstone",2)])]},
+ "LTW":{"collectable":"Patent Leather","direct":[("Lampblack Linseed Oil",3),("Saurian Skin",1),("Shroud Tea Leaves",1)]},
+ "WVR":{"collectable":"Camlet","direct":[("Camel Hair",3),("Cashmere Fleece",1)],
+        "precrafts":[("Diluted Vitriol",1,[("Filtered Water",9),("Vitriol",6)])]},
+ "ALC":{"collectable":"Enchanted Quicksilver","direct":[("Black Cinnabar",3),("Raziqsand",1),("Tarantula",2)]},
+ "CUL":{"collectable":"Duck Broth","direct":[("Duck Bones",3),("Canard Breast",1),("Thyme",1),("Wild Onion",4),("Garlean Garlic",2)]},
+})
 
 # ===== Skysteel +1 (IL455) - craft 20 =====
 crafter("Skysteel +1",20,20,{
@@ -538,8 +581,18 @@ shb_add("Recollection", "Bitter Memory of the Dying", 6)
 shb_add("Law's Order", "Loathsome Memory of the Dying", 15)
 shb_add("Augmented Law's Order", "Timeworn Artifact", 15)   # 3/Delubrum Reginae clear, or PotD
 shb_add("Blade's", "Raw Emotion", 15)                       # Dalriada 3 / DR 2 / SB dungeon 1 / HoH
-# One-time grinds (1st: Haunting/Vexatious; 2nd: Zadnor Compact Axle etc.) + optional Aetherial
-# Sealant reallocation are one-time / optional, NOT per weapon -> notes only.
+# One-time grinds, done once per account before the first weapon of that step (not per weapon).
+# The optional Aetherial Sealant reallocation stays a note.
+def shb_once(step, material, per):
+    shb_add(step, material, per)
+    shb_rows[-1]["oneTime"] = True
+shb_once("Augmented Law's Order", "Haunting Memory of the Dying", 18)   # 'The Resistance Remembers'
+shb_once("Augmented Law's Order", "Vexatious Memory of the Dying", 18)
+for m in ["Compact Axle", "Compact Spring",                            # 'Spare Parts'
+          "A Day in the Life: Battles for the Realm",                   # 'Tell Me a Story'
+          "A Day in the Life: Beyond the Rift",
+          "Bleak Memory of the Dying", "Lurid Memory of the Dying"]:    # 'A Fond Memory'
+    shb_once("Blade's", m, 30)
 
 # ===== EW Manderville weapons ===== Each tier = 3 of a Poetics item (500 each) from Jubrunnah.
 # 19 jobs (flags ignored).
@@ -564,6 +617,24 @@ dt_add("Penumbrae", "Arcanite")
 dt_add("Umbrae", "Waxing Arcanite")
 dt_add("Obscurum", "Waning Arcanite")
 dt_add("Eclipticum", "Ecliptic Arcanite")
+# One-time gate quests per tier (once per account, before the first weapon of that tier). The
+# Umbrae aether array is duty progress, not a stockpile -> note.
+def dt_once(step, material, per=1):
+    dt_rows.append({"step":step,"material":material,"perUnit":per,"jobs":[True]*21,"oneTime":True})
+for atma in ["Azurite","Verdigris","Malachite","Realgar","Caput Mortuum","Orpiment"]:
+    dt_once("Penumbrae", f"{atma} Demiatma", 3)                      # 'Forging the Phantasmal'
+for m in ["Rroneek Glue","Ut'ohmu Siderite",                          # 'Keeping the Old Ways Alive'
+          "Synthetic Dark Matter Alpha","Synthetic Dark Matter Beta","Synthetic Dark Matter Gamma"]:
+    dt_once("Umbrae", m)
+for m in ["Umbral Clay","Aspected Aetheroconductor",                  # 'Timeworn Techniques'
+          "Aspected Aether Agglomerate","Aspected Aetherocatalyst"]:
+    dt_once("Obscurum", m)
+dt_once("Obscurum", "Crystal Paste", 1200)                            # 'In Pursuit of Perfection'
+for m in ["Monarch Whetstone","Ascendant Twine",                      # 'Under No Illusion'
+          "Ancestral Alloy Ingot","Majestic Polish"]:
+    dt_once("Eclipticum", m)
+for d in ["α", "β", "γ"]:                                             # 'Phantoms to Fillet'
+    dt_once("Eclipticum", f"Phantom Dispeller {d}", 100)              # North Horn FATEs 3 / CEs 10
 
 # RelicDataService loads each expansion's rows wholesale.
 data={
@@ -579,6 +650,37 @@ data_dir = Path(__file__).resolve().parent / "extracted"
 item_index = load_item_index(data_dir / "_item.csv")
 aliases = json.loads((data_dir / "material_aliases.json").read_text(encoding="utf-8"))
 attach_tool_extra_materials(data, item_index, aliases)
+
+# Tag every material row with how it's obtained: craft / gather / fish / buy (+ currency) /
+# content (+ the token it's traded for). Game sheets decide unless a role or override says
+# otherwise. This drives what the Tracker can automate (Artisan, Knightshopper, ...).
+OBTAIN_OVERRIDES = {
+    # Diadem nodes aren't in GatheringItem.
+    **{AG + kind: ("gather", "Diadem") for kind in
+       ["Log", "Barbgrass", "Cloudstone", "Silex", "Prismstone", "Caiman", "Cocoon",
+        "Ice Stalagmite", "Raspberry", "Spring Water"]},
+    # Crafted up the Resplendent chain from Material A; the chain has no recipe rows.
+    **{f"Resplendent {CLASS_NAME[cls]}'s Final Material": ("craft", "") for cls in C},
+}
+with open(data_dir / "_item.csv", encoding="utf-8-sig") as handle:
+    item_names = {int(r[0]): r[4] for r in csv.reader(handle) if r and r[0].isdigit()}
+obtain_index = ObtainIndex(data_dir / "_sheets", item_names)
+for expansion_rows in data.values():
+    for row in expansion_rows:
+        role = row.get("role")
+        if role in ("quest", "covers"):
+            continue
+        if row["material"] in OBTAIN_OVERRIDES:
+            kind, via = OBTAIN_OVERRIDES[row["material"]]
+        elif role in ("craft", "precraft"):
+            kind, via = "craft", ""
+        elif role == "scrip":
+            kind, via = "buy", "Scrips"
+        else:
+            kind, via = obtain_index.primary(row.get("materialIds", []))
+        row["obtain"] = kind
+        if via:
+            row["obtainVia"] = via
 
 out = data_dir / "tool_extra_materials.json"
 json.dump(data, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)

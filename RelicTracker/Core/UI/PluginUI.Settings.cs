@@ -18,6 +18,8 @@ public sealed partial class PluginUI
 
         DrawAllaganToolsSettingsSection();
         DrawArtisanSettingsSection();
+        DrawKnightshopperSettingsSection();
+        DrawGatherChillSettingsSection();
 
         if (BeginPanel("settings_display"))
         {
@@ -175,12 +177,73 @@ public sealed partial class PluginUI
             "Artisan",
             ArtisanIpc.IsInstalled,
             ArtisanIpc.IsEnabled,
-            ArtisanIpc.SupportsRelicToolLists);
+            ArtisanIpc.SupportsRelicToolLists,
+            optional: true,
+            notReadyMessage: "Artisan found - relic craft lists need a newer Artisan build.");
 
         if (ArtisanIpc.SupportsRelicToolLists && ArtisanIpc.IsBusy())
         {
             ImGui.SameLine();
             ImGui.TextColored(WarningColor, "(crafting)");
+        }
+
+        EndPanel();
+    }
+
+    private void DrawKnightshopperSettingsSection()
+    {
+        if (!BeginPanel("settings_knightshopper"))
+        {
+            return;
+        }
+
+        ImGui.TextColored(HeaderColor, "Knightshopper (optional)");
+        ImGui.TextColored(
+            MutedColor,
+            "Buy missing materials sold for gil, tomestones, scrips, seals, and other currencies from the Tracker tab.");
+        ImGui.TextColored(
+            MutedColor,
+            "In Knightshopper, enable both IPC permission switches and add RelicTracker to the allowed plugins.");
+        ImGui.Spacing();
+        DrawPluginConnectionStatus(
+            "Knightshopper",
+            KnightshopperIpc.IsInstalled,
+            KnightshopperIpc.IsEnabled,
+            KnightshopperIpc.IsReady,
+            optional: true,
+            notReadyMessage: "Knightshopper found - buying item lists needs a newer Knightshopper build.");
+
+        if (KnightshopperIpc.IsReady && KnightshopperIpc.IsBusy())
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(WarningColor, "(shopping)");
+        }
+
+        EndPanel();
+    }
+
+    private void DrawGatherChillSettingsSection()
+    {
+        if (!BeginPanel("settings_gatherchill"))
+        {
+            return;
+        }
+
+        ImGui.TextColored(HeaderColor, "Gather & Chill (optional)");
+        ImGui.TextColored(MutedColor, "Add missing gathered and fished materials to its gather list from the Tracker tab.");
+        ImGui.Spacing();
+        DrawPluginConnectionStatus(
+            "Gather & Chill",
+            GatherChillIpc.IsInstalled,
+            GatherChillIpc.IsEnabled,
+            GatherChillIpc.IsReady,
+            optional: true,
+            notReadyMessage: "Gather & Chill found - adding to its gather list needs a newer build.");
+
+        if (GatherChillIpc.IsReady && GatherChillIpc.IsBusy())
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(WarningColor, "(gathering)");
         }
 
         EndPanel();

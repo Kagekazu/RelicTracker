@@ -46,6 +46,38 @@ public sealed class ExpansionMaterialRow
 
     [JsonPropertyName("craftOf")]
     public string? CraftOf { get; set; }
+
+    /// <summary>How the material is obtained: craft, gather, fish, buy, or content.</summary>
+    [JsonPropertyName("obtain")]
+    public string? Obtain { get; set; }
+
+    /// <summary>Currency for <c>buy</c>, token for <c>content</c> trades, or a zone hint.</summary>
+    [JsonPropertyName("obtainVia")]
+    public string? ObtainVia { get; set; }
+
+    /// <summary>Needed once per account before the first weapon of the step, not per job.</summary>
+    [JsonPropertyName("oneTime")]
+    public bool OneTime { get; set; }
+
+    [JsonIgnore]
+    public string ObtainLabel => MaterialObtain.Label(Obtain, ObtainVia);
+}
+
+public static class MaterialObtain
+{
+    public static string Label(string? obtain, string? via)
+    {
+        var hasVia = !string.IsNullOrWhiteSpace(via);
+        return obtain switch
+        {
+            "buy" => hasVia ? $"Buy · {via}" : "Buy",
+            "craft" => "Craft",
+            "gather" => hasVia ? $"Gather · {via}" : "Gather",
+            "fish" => "Fish",
+            "content" => hasVia ? $"Trade {via}" : "Drop / content",
+            _ => string.Empty,
+        };
+    }
 }
 
 public sealed class MaterialPurchase

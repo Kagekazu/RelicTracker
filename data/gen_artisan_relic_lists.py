@@ -12,6 +12,8 @@ text = Path(__file__).with_name("gen_tool_materials.py").read_text(encoding="utf
 C = ["CRP", "BSM", "ARM", "GSM", "LTW", "WVR", "ALC", "CUL"]
 
 STEP_ENUM = {
+    "Supra": "Supra",
+    "Lucis": "Lucis",
     "Skysteel +1": "SkysteelPlus1",
     "Dragonsung": "Dragonsung",
     "Augmented Dragonsung": "AugmentedDragonsung",
@@ -23,7 +25,15 @@ STEP_ENUM = {
     "Brilliant": "Brilliant",
     "Vrandtic": "Vrandtic",
     "Lodestar": "Lodestar",
+    "Resplendent A": "ResplendentA",
+    "Resplendent B": "ResplendentB",
+    "Resplendent C": "ResplendentC",
 }
+
+# Resplendent crafts a component from each material tier, with a turn-in between tiers, so each
+# tier is its own list. Best case (max collectability) is 30 of each component per class.
+CLASS_NAME = ["Carpenter", "Blacksmith", "Armorer", "Goldsmith", "Leatherworker", "Weaver", "Alchemist", "Culinarian"]
+RESPLENDENT_PER_TIER = 30
 
 STEP_ORDER = list(STEP_ENUM.keys())
 
@@ -70,6 +80,10 @@ for m in re.finditer(r'craft_tree\("([^"]+)",\s*(\d+),\s*\{', text):
     step, cnt = m.group(1), int(m.group(2))
     block = extract_brace_block(text, m.end() - 1)
     entries.extend(parse_craft_tree(step, cnt, block))
+
+for tier in "ABC":
+    for cls, name in zip(C, CLASS_NAME):
+        entries.append((f"Resplendent {tier}", cls, f"Resplendent {name}'s Component {tier}", RESPLENDENT_PER_TIER))
 
 index = load_item_index(Path(__file__).with_name("extracted") / "_item.csv")
 

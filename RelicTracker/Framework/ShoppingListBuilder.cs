@@ -20,6 +20,17 @@ public sealed class ShoppingMaterialRow
 
     public MaterialPurchase? Purchase { get; init; }
 
+    public string? Obtain { get; init; }
+
+    public string? ObtainVia { get; init; }
+
+    public bool OneTime { get; init; }
+
+    /// <summary>Relic steps this row is needed for (Step can be a farming zone instead).</summary>
+    public IReadOnlyList<string> ForSteps { get; init; } = [];
+
+    public string ObtainLabel => MaterialObtain.Label(Obtain, ObtainVia);
+
     public uint Short => Need > Owned ? Need - Owned : 0;
 }
 
@@ -44,7 +55,8 @@ public static class ShoppingListBuilder
         Func<uint, uint> ownedLookup,
         IReadOnlyDictionary<string, string> sources,
         IReadOnlyDictionary<string, IReadOnlyList<uint>> materialIdsByName,
-        string? lineFilter = null)
+        string? lineFilter = null,
+        IReadOnlyDictionary<string, string>? lucisFirstJobs = null)
     {
         var isTools = string.Equals(expansionId, "DoHDoL", StringComparison.Ordinal);
 
@@ -66,10 +78,25 @@ public static class ShoppingListBuilder
 
         QuestRewardIndex questRewards = BuildQuestRewardIndex(sheet);
 
+        // Lucis Tools: only the first job per category farms materials; the rest buy their tool
+        // from a Calamity Salvager once that first Lucis tool exists.
+        Dictionary<RelicLine, HashSet<int>> skippedSlots = [];
+        Dictionary<RelicLine, IReadOnlyList<LucisToolShortcut.SalvagerSlot>> salvagerSlots = [];
+        foreach (var line in stepInfo.Values.Select(info => info.Status.Line).Distinct())
+        {
+            if (isTools && LucisToolShortcut.Applies(line))
+            {
+                skippedSlots[line] = LucisToolShortcut.SkippedSlots(line, ownership, lucisFirstJobs);
+                salvagerSlots[line] = LucisToolShortcut.SalvagerSlots(line, ownership);
+            }
+        }
+
         Dictionary<(string Source, string Material), (uint Need, int Order, int JobsNeeding, string CatalogStep)> accumulated = [];
         List<(string Source, string Material)> keyOrder = [];
         HashSet<string> seenStepMaterial = new(StringComparer.OrdinalIgnoreCase);
         Dictionary<string, MaterialPurchase> purchaseByMaterial = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<(string Source, string Material), ExpansionMaterialRow> firstRowByKey = [];
+        Dictionary<(string Source, string Material), List<string>> stepsByKey = [];
 
         // Steps that carry their own Fisher-only section (e.g. Skybuilders', Lodestar). In those
         // the blanket/crafter rows are crafter-side only; in a step with no Fisher section (e.g.
@@ -95,7 +122,9 @@ public static class ShoppingListBuilder
                 purchaseByMaterial.TryAdd(material!, purchase);
             }
 
-            if (isTools && !seenStepMaterial.Add($"{step}|{material}"))
+            // Skip only exact repeats; the same material for another class (Darksteel Ore for both
+            // BSM and ARM) or under another precraft is a separate need and sums below.
+            if (isTools && !seenStepMaterial.Add($"{step}|{material}|{row.CraftOf}|{string.Join(",", row.Jobs)}"))
             {
                 continue;
             }
@@ -112,18 +141,39 @@ public static class ShoppingListBuilder
             }
 
             var jobsNeeding = isTools
-                ? CountFlaggedJobsNeeding(row.Jobs, info.Status.Line, info.Tier, ownership, fisherSteps!.Contains(step!))
+                ? CountFlaggedJobsNeeding(
+                    row.Jobs,
+                    info.Status.Line,
+                    info.Tier,
+                    ownership,
+                    fisherSteps!.Contains(step!),
+                    skippedSlots.GetValueOrDefault(info.Status.Line))
                 : Math.Max(0, info.Status.Line.Jobs - info.Status.ReachedPerStep[info.Tier]);
 
             var source = sources.TryGetValue(material!, out var mappedSource) ? mappedSource : step!;
 
-            var need = perUnit * (uint)jobsNeeding;
+            // One-time unlocks are needed once, and only until any job has reached the step.
+            var need = row.OneTime
+                ? (jobsNeeding > 0 && info.Status.ReachedPerStep[info.Tier] == 0 ? perUnit : 0)
+                : perUnit * (uint)jobsNeeding;
             if (need == 0)
             {
                 continue;
             }
 
             var key = (source, material!);
+            firstRowByKey.TryAdd(key, row);
+            if (!stepsByKey.TryGetValue(key, out var keySteps))
+            {
+                keySteps = [];
+                stepsByKey[key] = keySteps;
+            }
+
+            if (!keySteps.Contains(step!, StringComparer.OrdinalIgnoreCase))
+            {
+                keySteps.Add(step!);
+            }
+
             if (accumulated.TryGetValue(key, out var existing))
             {
                 accumulated[key] = (existing.Need + need, Math.Min(existing.Order, info.Order), jobsNeeding, step!);
@@ -139,6 +189,7 @@ public static class ShoppingListBuilder
         foreach (var key in keyOrder)
         {
             (var need, var stepOrder, var jobsNeeding, var catalogStep) = accumulated[key];
+            var firstRow = firstRowByKey[key];
             var itemIds = materialIdsByName.TryGetValue(key.Material, out var ids) ? ids : [];
             var resolved = itemIds.Count > 0;
             var ownedInventory = SumOwned(itemIds, ownedLookup);
@@ -158,8 +209,44 @@ public static class ShoppingListBuilder
                 OwnedInventory = ownedInventory,
                 OwnedQuestCredit = ownedQuestCredit,
                 Resolved = resolved,
-                Purchase = purchaseByMaterial.GetValueOrDefault(key.Material)
+                Purchase = purchaseByMaterial.GetValueOrDefault(key.Material),
+                Obtain = firstRow.Obtain,
+                ObtainVia = firstRow.ObtainVia,
+                OneTime = firstRow.OneTime,
+                ForSteps = stepsByKey[key]
             });
+        }
+
+        foreach ((RelicLine line, IReadOnlyList<LucisToolShortcut.SalvagerSlot> slots) in salvagerSlots)
+        {
+            var top = line.TierCount - 1;
+            var step = line.StepName(top);
+            var stepOrder = stepInfo.TryGetValue(step, out var topInfo) ? topInfo.Order : int.MaxValue;
+            foreach (var salvager in slots)
+            {
+                uint toolId = line.RelicId(salvager.Slot, top);
+                if (toolId == 0)
+                {
+                    continue;
+                }
+
+                var name = ItemDisplayNames.Label([toolId], $"{line.EffectiveJobList[salvager.Slot]} Lucis tool");
+                result.Add(new()
+                {
+                    Step = step,
+                    StepOrder = stepOrder,
+                    Material = name,
+                    DisplayMaterial = name,
+                    Need = 1,
+                    OwnedInventory = ownedLookup(toolId),
+                    OwnedQuestCredit = 0,
+                    Resolved = true,
+                    Purchase = new() { Currency = "gil", Unit = LucisToolShortcut.SalvagerGil },
+                    Obtain = "buy",
+                    ObtainVia = "Calamity Salvager",
+                    ForSteps = [step]
+                });
+            }
         }
 
         return result;
@@ -190,6 +277,10 @@ public static class ShoppingListBuilder
 
         public Dictionary<string, List<string>> ProductsByStep { get; } =
             new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Job flags of each reward row; on tool lines they pick the job slot.</summary>
+        public Dictionary<string, IReadOnlyList<bool?>> ProductJobs { get; } =
+            new(StringComparer.OrdinalIgnoreCase);
     }
 
     public static QuestRewardIndex BuildQuestRewardIndex(ExpansionSheet sheet)
@@ -209,6 +300,7 @@ public static class ShoppingListBuilder
                 if (!string.IsNullOrWhiteSpace(product) && row.MaterialIds.Count > 0)
                 {
                     index.ProductIds.TryAdd(product, row.MaterialIds);
+                    index.ProductJobs.TryAdd(product, row.Jobs);
                     if (!index.ProductsByStep.TryGetValue(step, out var products))
                     {
                         products = [];
@@ -295,7 +387,8 @@ public static class ShoppingListBuilder
     public static IReadOnlyList<ShoppingQuestRewardRow> GetQuestRewards(
         string catalogStep,
         QuestRewardIndex questRewards,
-        Func<uint, uint> ownedLookup)
+        Func<uint, uint> ownedLookup,
+        int toolSlot = -1)
     {
         if (!questRewards.ProductsByStep.TryGetValue(catalogStep, out var products))
         {
@@ -306,6 +399,13 @@ public static class ShoppingListBuilder
         foreach (var product in products)
         {
             if (!questRewards.ProductIds.TryGetValue(product, out var itemIds))
+            {
+                continue;
+            }
+
+            if (toolSlot >= 0
+                && questRewards.ProductJobs.TryGetValue(product, out var jobs)
+                && !ToolMaterialAppliesToSlot(jobs, toolSlot, stepHasFisherSection: true))
             {
                 continue;
             }
@@ -323,11 +423,22 @@ public static class ShoppingListBuilder
         return result;
     }
 
-    private static int CountFlaggedJobsNeeding(IReadOnlyList<bool?> jobs, RelicLine line, int tier, RelicOwnership ownership, bool stepHasFisherSection)
+    private static int CountFlaggedJobsNeeding(
+        IReadOnlyList<bool?> jobs,
+        RelicLine line,
+        int tier,
+        RelicOwnership ownership,
+        bool stepHasFisherSection,
+        IReadOnlySet<int>? skippedSlots)
     {
         var count = 0;
         for (var slot = 0; slot < line.Jobs; slot++)
         {
+            if (skippedSlots is not null && skippedSlots.Contains(slot))
+            {
+                continue;
+            }
+
             if (ToolMaterialAppliesToSlot(jobs, slot, stepHasFisherSection) && !ownership.IsStepDoneOrManual(line, slot, tier))
             {
                 count++;
@@ -404,11 +515,10 @@ public static class ShoppingListBuilder
 
         if (slotIndex == FisherSlot)
         {
-            // With a Fisher section, the Fisher only needs its own parts. Without one, it shares
-            // the step's blanket/flagged materials like every other job.
-            return stepHasFisherSection
-                ? fisherOnly
-                : !crafterFlagged || fisherFlagged;
+            // Rows that flag the Fisher always apply (its own parts, or shared rows such as the
+            // Lucis demimateria). Unflagged blanket rows only apply when the step has no Fisher
+            // section; with one, they are crafter-side.
+            return fisherFlagged || (!stepHasFisherSection && !crafterFlagged);
         }
 
         // Crafters / miner / botanist never pick up the Fisher-only parts. Honour explicit

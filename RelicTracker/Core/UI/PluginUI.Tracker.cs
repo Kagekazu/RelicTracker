@@ -97,10 +97,51 @@ public sealed partial class PluginUI
         ImGui.SetNextItemWidth(180);
         ImGui.InputTextWithHint("##filter", "Filter materials…", ref materialFilter, 128);
 
+        ImGui.SameLine();
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextUnformatted("Group by");
+        ImGui.SameLine();
+        ImGui.SetNextItemWidth(150);
+        if (ImGui.BeginCombo("##groupby-tracker", config.TrackerGroupBySteps ? "Relic step" : "What to do"))
+        {
+            if (ImGui.Selectable("What to do", !config.TrackerGroupBySteps))
+            {
+                config.TrackerGroupBySteps = false;
+                config.OnSettingChanged();
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Buy, craft, gather & fish, farm in content - with one-time unlocks and activities listed separately.");
+            }
+
+            if (ImGui.Selectable("Relic step", config.TrackerGroupBySteps))
+            {
+                config.TrackerGroupBySteps = true;
+                config.OnSettingChanged();
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Each relic step (or farming zone) with its materials.");
+            }
+
+            ImGui.EndCombo();
+        }
+
         EndStickyHeader();
 
         DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
     }
+
+    /// <summary>Line statuses for the Tracker's expansion and line filter.</summary>
+    private IReadOnlyList<RelicLineStatus> TrackerStatuses(string expansionId, string? lineFilter) =>
+    [
+        .. RelicStatusService.Build(GetOwnership(), catalog, config.HidePhyseosRelics)
+            .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
+            .Where(status => string.IsNullOrEmpty(lineFilter)
+                             || string.Equals(status.Line.CollectType, lineFilter, StringComparison.Ordinal))
+    ];
 
     private void InvalidateShoppingCache()
     {
@@ -137,7 +178,8 @@ public sealed partial class PluginUI
                 ownedLookup,
                 data.MaterialSources,
                 data.MaterialIdsByName,
-                lineFilter)
+                lineFilter,
+                config.LucisFirstJob)
             : [];
 
         cachedShoppingMaterials = materials;
@@ -173,6 +215,12 @@ public sealed partial class PluginUI
             ];
         }
 
+        var bySteps = config.TrackerGroupBySteps;
+        if (!bySteps)
+        {
+            materials = MergeByMaterial(materials);
+        }
+
         if (config.HideCompleteMaterials)
         {
             materials = [.. materials.Where(row => row.Short > 0)];
@@ -183,6 +231,12 @@ public sealed partial class PluginUI
         if (BeginPanel("tracker_summary"))
         {
             DrawShoppingSummary(materials, armorCosts, expansionId, ownedLookup);
+            DrawLucisFirstJobPicker(expansionId, lineFilter);
+            if (bySteps)
+            {
+                DrawKnightshopperBar(materials);
+            }
+
             EndPanel();
         }
 
@@ -192,7 +246,25 @@ public sealed partial class PluginUI
         if (materials.Count > 0)
         {
             drewAny = true;
-            DrawWeaponsList(expansionId, materials, ownedLookup);
+            if (bySteps)
+            {
+                DrawWeaponsList(expansionId, materials, ownedLookup);
+            }
+        }
+
+        if (!bySteps)
+        {
+            IReadOnlyList<RelicLineStatus> statuses = TrackerStatuses(expansionId, lineFilter);
+            if (materials.Count > 0)
+            {
+                DrawObtainGroups(expansionId, materials, statuses, ownedLookup);
+            }
+
+            if (GetActivities(expansionId, statuses).Any())
+            {
+                drewAny = true;
+                DrawActivities(expansionId, statuses);
+            }
         }
 
         if (hasArmor)
@@ -268,7 +340,7 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawMaterialRow(ShoppingMaterialRow row)
+    private void DrawMaterialRow(ShoppingMaterialRow row, bool showFor = false)
     {
         ImGui.TableNextRow();
 
@@ -277,6 +349,15 @@ public sealed partial class PluginUI
         {
             ImGui.TextUnformatted(row.DisplayMaterial);
             DrawPurchaseTooltip(row);
+            if (row.OneTime)
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(MutedColor, "(one-time)");
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Needed once per account for this step, not once per job.");
+                }
+            }
         }
         else
         {
@@ -291,6 +372,12 @@ public sealed partial class PluginUI
 
                 ImGui.SetTooltip(tooltip);
             }
+        }
+
+        if (showFor)
+        {
+            ImGui.TableNextColumn();
+            ImGui.TextColored(MutedColor, string.Join(", ", row.ForSteps));
         }
 
         ImGui.TableNextColumn();
@@ -335,7 +422,7 @@ public sealed partial class PluginUI
     {
         if (row.Purchase is not { Unit: > 0 } purchase)
         {
-            return null;
+            return string.IsNullOrEmpty(row.ObtainLabel) ? null : row.ObtainLabel;
         }
 
         long unit = purchase.Unit;
@@ -529,13 +616,22 @@ public sealed partial class PluginUI
             "Weapon needs cover every job still missing the step. Armor owned includes currency in inventory plus finished pieces already bought.");
     }
 
-    private static void DrawNeedOwnedShortHeaders(bool includeItem)
+    private static void DrawNeedOwnedShortHeaders(bool includeItem, bool includeFor = false)
     {
         ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
         if (includeItem)
         {
             ImGui.TableNextColumn();
             ImGui.TableHeader("Item");
+            if (includeFor)
+            {
+                ImGui.TableNextColumn();
+                ImGui.TableHeader("For");
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Relic steps that need this material.");
+                }
+            }
         }
         else
         {

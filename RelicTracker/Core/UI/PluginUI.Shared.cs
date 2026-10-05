@@ -259,17 +259,19 @@ public sealed partial class PluginUI
         return $"{fillNoun} fill from FFXIV Collect - for {orphanNoun} no longer in inventory.";
     }
 
-    private void DrawPluginConnectionStatus(string label, bool installed, bool enabled, bool ready)
+    private void DrawPluginConnectionStatus(
+        string label,
+        bool installed,
+        bool enabled,
+        bool ready,
+        bool optional = false,
+        string? notReadyMessage = null)
     {
         if (!installed)
         {
-            DrawStatusChip(
-                "Not installed",
-                string.Equals(label, "Artisan", StringComparison.Ordinal) ? StatusChipKind.Muted : StatusChipKind.Warn);
+            DrawStatusChip("Not installed", optional ? StatusChipKind.Muted : StatusChipKind.Warn);
             ImGui.SameLine();
-            ImGui.TextColored(
-                string.Equals(label, "Artisan", StringComparison.Ordinal) ? MutedColor : WarningColor,
-                $"{label} is not installed.");
+            ImGui.TextColored(optional ? MutedColor : WarningColor, $"{label} is not installed.");
             return;
         }
 
@@ -285,9 +287,7 @@ public sealed partial class PluginUI
         {
             DrawStatusChip("Loading", StatusChipKind.Warn);
             ImGui.SameLine();
-            ImGui.TextColored(WarningColor, label == "Artisan"
-                ? "Artisan found - relic craft lists need a newer Artisan build."
-                : $"{label} is loading inventory data…");
+            ImGui.TextColored(WarningColor, notReadyMessage ?? $"{label} is loading inventory data…");
             return;
         }
 

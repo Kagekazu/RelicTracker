@@ -31,6 +31,8 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
 
         AllaganToolsIpc.Init();
         ArtisanIpc.Init();
+        KnightshopperIpc.Init();
+        GatherChillIpc.Init();
 
         relicData.Load();
         relicCatalog.Load();
@@ -90,6 +92,8 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
         windowSystem.RemoveAllWindows();
         AllaganToolsIpc.Dispose();
         ArtisanIpc.Dispose();
+        KnightshopperIpc.Dispose();
+        GatherChillIpc.Dispose();
         ECommonsMain.Dispose();
         return ValueTask.CompletedTask;
     }
