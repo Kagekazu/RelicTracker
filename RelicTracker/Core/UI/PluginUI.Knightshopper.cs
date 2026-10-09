@@ -10,12 +10,13 @@ public sealed partial class PluginUI
     private long knightshopperStatusTick;
     private StatusMessage? knightshopperResult;
 
-    private readonly record struct KnightshopperPurchase(uint ItemId, string Name, uint Short);
+    private readonly record struct KnightshopperPurchase(uint ItemId, string Name, uint Short, uint Need);
 
-    /// <summary>Step view: one row of per-currency buy buttons under the summary.</summary>
+    /// <summary>Step view: per-currency copy/buy buttons under the summary.</summary>
     private void DrawKnightshopperBar(IReadOnlyList<ShoppingMaterialRow> materials)
     {
-        if (!KnightshopperIpc.IsReady)
+        Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = GroupKnightshopperPurchases(materials);
+        if (groups.Count == 0 && !KnightshopperIpc.IsReady && knightshopperResult is null)
         {
             return;
         }
@@ -27,16 +28,28 @@ public sealed partial class PluginUI
 
         if (!DrawKnightshopperStatus())
         {
-            Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = GroupKnightshopperPurchases(materials);
             if (groups.Count == 0)
             {
-                ImGui.TextColored(MutedColor, "Nothing short in this list is sold for a Knightshopper currency.");
+                if (KnightshopperIpc.IsReady)
+                {
+                    ImGui.TextColored(MutedColor, "Nothing short in this list is sold for a Knightshopper currency.");
+                }
+
                 return;
             }
 
             foreach ((KnightshopperCurrency currency, List<KnightshopperPurchase> items) in groups.OrderBy(group => group.Key))
             {
-                DrawKnightshopperBuyButton(currency, items, $"{KnightshopperIpc.CurrencyLabel(currency)} ({items.Count})");
+                DrawKnightshopperCopyButton(currency, items);
+                if (KnightshopperIpc.IsReady)
+                {
+                    ImGui.SameLine();
+                    DrawKnightshopperBuyButton(
+                        currency,
+                        items,
+                        $"{KnightshopperIpc.CurrencyLabel(currency)} ({items.Count})");
+                }
+
                 ImGui.SameLine();
             }
 
@@ -52,6 +65,7 @@ public sealed partial class PluginUI
     {
         if (!KnightshopperIpc.IsReady)
         {
+            DrawStatusMessage(ref knightshopperResult, "ks_dismiss");
             return false;
         }
 
@@ -62,6 +76,38 @@ public sealed partial class PluginUI
 
         DrawStatusMessage(ref knightshopperResult, "ks_dismiss");
         return false;
+    }
+
+    /// <summary>Copy (and optional Buy) for one currency group on the same line.</summary>
+    private void DrawKnightshopperCurrencyActions(
+        KnightshopperCurrency currency,
+        IReadOnlyList<KnightshopperPurchase> items,
+        bool showBuy)
+    {
+        DrawKnightshopperCopyButton(currency, items);
+        if (showBuy)
+        {
+            ImGui.SameLine();
+            DrawKnightshopperBuyButton(currency, items, $"Buy {items.Count} with Knightshopper");
+        }
+    }
+
+    /// <summary>Copies Need amounts as JSON for Knightshopper's shopping-list Paste.</summary>
+    private void DrawKnightshopperCopyButton(KnightshopperCurrency currency, IReadOnlyList<KnightshopperPurchase> items)
+    {
+        if (ImGui.SmallButton($"Copy for Knightshopper##ks_copy_{currency}"))
+        {
+            CopyKnightshopperList(currency, items);
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(
+                $"Copy Need amounts for {KnightshopperIpc.CurrencyLabel(currency)} to the clipboard.\n"
+                + "In Knightshopper, open the same currency page, then Paste into the shopping-list dropdown.\n"
+                + "Needs a Knightshopper build with the JSON list importer.\n\n"
+                + string.Join("\n", items.Select(item => $"  {item.Need:N0} × {item.Name}")));
+        }
     }
 
     /// <summary>Buy button for one currency; disabled while Knightshopper is busy.</summary>
@@ -183,8 +229,29 @@ public sealed partial class PluginUI
             return false;
         }
 
-        purchase = new(itemId, row.DisplayMaterial, row.Short);
+        purchase = new(itemId, row.DisplayMaterial, row.Short, row.Need);
         return true;
+    }
+
+    private void CopyKnightshopperList(KnightshopperCurrency currency, IReadOnlyList<KnightshopperPurchase> items)
+    {
+        try
+        {
+            var entries = items.Select(item => new KnightshopperListItem(item.ItemId, item.Need));
+            var name = $"Relic Tracker — {KnightshopperIpc.CurrencyLabel(currency)}";
+            if (name.Length > 100)
+            {
+                name = name[..100];
+            }
+
+            ImGui.SetClipboardText(KnightshopperListExport.Encode(currency, name, entries));
+            knightshopperResult = new($"Copied {items.Count} items for Knightshopper ({KnightshopperIpc.CurrencyLabel(currency)}).", false);
+        }
+        catch (ArgumentException exception)
+        {
+            Svc.Log.Warning(exception, "[RelicTracker] Could not export Knightshopper list.");
+            knightshopperResult = new(exception.Message, true);
+        }
     }
 
     private void StartKnightshopper(KnightshopperCurrency currency, IReadOnlyList<KnightshopperPurchase> items)

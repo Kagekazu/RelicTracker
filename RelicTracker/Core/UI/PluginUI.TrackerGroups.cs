@@ -133,9 +133,7 @@ public sealed partial class PluginUI
             List<ShoppingMaterialRow> groupRows = [.. group];
             List<KnightshopperPurchase> purchases = [];
             KnightshopperCurrency currency = default;
-            if (!shopping
-                && KnightshopperIpc.IsReady
-                && KnightshopperIpc.TryParseCurrency(group.Key, out currency))
+            if (!shopping && KnightshopperIpc.TryParseCurrency(group.Key, out currency))
             {
                 foreach (var row in groupRows)
                 {
@@ -150,7 +148,7 @@ public sealed partial class PluginUI
                 group.Key,
                 groupRows,
                 purchases.Count > 0
-                    ? () => DrawKnightshopperBuyButton(currency, purchases, $"Buy {purchases.Count} with Knightshopper")
+                    ? () => DrawKnightshopperCurrencyActions(currency, purchases, showBuy: KnightshopperIpc.IsReady)
                     : null));
         }
 
