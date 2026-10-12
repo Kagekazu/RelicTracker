@@ -19,3 +19,6 @@ data/extracted/_sheets/
 # OS
 Thumbs.db
 .DS_Store
+
+# Cursor (local only; Aetherfeed flags .cursor on GitHub)
+.cursor/
