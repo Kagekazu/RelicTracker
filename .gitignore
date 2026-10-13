@@ -1,6 +1,11 @@
-# Build output
+# Build
 **/bin/
 **/obj/
+*.user
+*.suo
+
+# IDE
+.vs/
 .idea/
 .refs/
 
@@ -19,4 +24,3 @@ data/extracted/_sheets/
 # OS
 Thumbs.db
 .DS_Store
-.cursor/
