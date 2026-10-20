@@ -20,10 +20,10 @@ Also install **Allagan Tools** so progress and material counts fill in automatic
 
 ## Tabs
 
-- **Overview** — every relic line at a glance
-- **Relic** — one job, step by step, with materials you're short
-- **Tracker** — shopping list for unfinished jobs, grouped by farm location
-- **Settings** — Allagan Tools / Artisan / Knightshopper / FFXIV Collect
+- **Overview** - every relic line at a glance
+- **Relic** - one job, step by step, with materials you're short
+- **Tracker** - shopping list for unfinished jobs, grouped by farm location
+- **Settings** - Allagan Tools / Artisan / Knightshopper / FFXIV Collect
 
 Right-click a relic or material in inventory → jump straight to it. Progress is per character.
 
