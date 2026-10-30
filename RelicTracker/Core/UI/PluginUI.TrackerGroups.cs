@@ -103,7 +103,8 @@ public sealed partial class PluginUI
             gatherRows,
             // Only split Gather / Diadem / Fish when there's more than one of them.
             gatherRows.Select(row => row.ObtainLabel).Distinct().Skip(1).Any() ? row => row.ObtainLabel : null,
-            () => DrawGatherChillButton(gatherRows));
+            () => DrawGatherChillButton(gatherRows),
+            GatherChillIpc.IsReady ? DrawGatherChillRowButton : null);
 
         DrawObtainSection(
             expansionId,
@@ -162,7 +163,8 @@ public sealed partial class PluginUI
         string? blurb,
         List<ShoppingMaterialRow> rows,
         Func<ShoppingMaterialRow, string>? subgroup,
-        Action? actions = null)
+        Action? actions = null,
+        Action<ShoppingMaterialRow>? rowAction = null)
     {
         if (rows.Count == 0 || !DrawObtainHeader(expansionId, key, title, rows))
         {
@@ -178,7 +180,7 @@ public sealed partial class PluginUI
 
         if (subgroup is null)
         {
-            DrawObtainTable($"{expansionId}|{key}", [new(null, rows)]);
+            DrawObtainTable($"{expansionId}|{key}", [new(null, rows)], rowAction);
             return;
         }
 
@@ -194,7 +196,8 @@ public sealed partial class PluginUI
                         ? string.IsNullOrEmpty(group.Key) ? "Other" : group.Key
                         : null,
                     [.. group]))
-            ]);
+            ],
+            rowAction);
     }
 
     /// <summary>
@@ -247,7 +250,10 @@ public sealed partial class PluginUI
         ImGui.NewLine();
     }
 
-    /// <summary>Adds what's still short (and has a Gather &amp; Chill route) to Gather &amp; Chill's gather list.</summary>
+    /// <summary>
+    ///     Adds what's still short (and has a Gather &amp; Chill route) to Gather &amp; Chill's gather list.
+    ///     While it's gathering, a newer Gather &amp; Chill also gets a Stop button.
+    /// </summary>
     private void DrawGatherChillButton(IReadOnlyList<ShoppingMaterialRow> rows)
     {
         if (!GatherChillIpc.IsReady)
@@ -289,10 +295,57 @@ public sealed partial class PluginUI
             ImGui.TextColored(MutedColor, "Nothing short here has a Gather & Chill route.");
         }
 
+        if (GatherChillIpc.SupportsGatherItem && GatherChillIpc.IsBusy())
+        {
+            ImGui.SameLine();
+            if (ImGui.SmallButton("Stop Gather & Chill##gnc_stop") && !GatherChillIpc.TryStop(out var error))
+            {
+                gatherChillResult = new(error ?? "Gather & Chill didn't stop.", true);
+            }
+        }
+
         if (gatherChillResult is not null)
         {
             ImGui.SameLine();
             DrawStatusMessage(ref gatherChillResult, "gnc_dismiss");
+        }
+    }
+
+    /// <summary>
+    ///     Per-row "Gather" button: a newer Gather &amp; Chill gathers just this item right away; an older
+    ///     one only gets it added to its gather list.
+    /// </summary>
+    private void DrawGatherChillRowButton(ShoppingMaterialRow row)
+    {
+        var itemId = PrimaryItemId(row);
+        if (row.Short == 0 || itemId == 0 || !GatherChillIpc.CanGather(itemId))
+        {
+            return;
+        }
+
+        var direct = GatherChillIpc.SupportsGatherItem;
+        var busy = direct && GatherChillIpc.IsBusy();
+        var what = $"{row.Short:N0} × {row.DisplayMaterial}";
+        ImGui.SameLine();
+        using (ImRaii.Disabled(busy))
+        {
+            if (ImGui.SmallButton($"{(direct ? "Gather" : "Add")}##gnc_row_{itemId}"))
+            {
+                var ok = direct
+                    ? GatherChillIpc.TryGatherItem(itemId, row.Short, out var error)
+                    : GatherChillIpc.TryAddToGatherList([(itemId, row.Short)], out _, out error);
+                gatherChillResult = ok
+                    ? new(direct ? $"Gather & Chill is gathering {what}." : $"Added {what} to Gather & Chill's gather list.", false)
+                    : new(error ?? "Gather & Chill didn't accept the item.", true);
+            }
+        }
+
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+        {
+            ImGui.SetTooltip(
+                busy ? "Gather & Chill is already gathering."
+                : direct ? $"Gathers {what} with Gather & Chill right now, then stops."
+                : $"Adds {what} to Gather & Chill's gather list.\nUpdate Gather & Chill to gather it straight away.");
         }
     }
 
@@ -370,7 +423,7 @@ public sealed partial class PluginUI
     private sealed record ObtainGroup(string? Heading, IReadOnlyList<ShoppingMaterialRow> Rows, Action? HeadingAction = null);
 
     /// <summary>One table per section; sub-groups (currency, zone, ...) are divider rows, so the header shows once.</summary>
-    private void DrawObtainTable(string id, IReadOnlyList<ObtainGroup> groups)
+    private void DrawObtainTable(string id, IReadOnlyList<ObtainGroup> groups, Action<ShoppingMaterialRow>? rowAction = null)
     {
         using var table = ImRaii.Table($"Obtain_{id}", 5, ShoppingTableFlags, new(0, 0));
         if (!table)
@@ -403,7 +456,7 @@ public sealed partial class PluginUI
 
             foreach (var row in group.Rows)
             {
-                DrawMaterialRow(row, showFor: true);
+                DrawMaterialRow(row, showFor: true, rowAction: rowAction);
             }
         }
     }

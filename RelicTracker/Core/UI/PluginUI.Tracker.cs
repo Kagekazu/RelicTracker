@@ -336,7 +336,7 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawMaterialRow(ShoppingMaterialRow row, bool showFor = false)
+    private void DrawMaterialRow(ShoppingMaterialRow row, bool showFor = false, Action<ShoppingMaterialRow>? rowAction = null)
     {
         ImGui.TableNextRow();
 
@@ -354,6 +354,8 @@ public sealed partial class PluginUI
                     ImGui.SetTooltip("One-time step: needed once, not again for every job.");
                 }
             }
+
+            rowAction?.Invoke(row);
         }
         else
         {
