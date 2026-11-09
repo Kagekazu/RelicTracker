@@ -12,5 +12,5 @@
     "crafting",
     "utility"
   ],
-  "Changelog": "- Gather & Chill: each gatherable row now has a Gather button, plus a Stop button while it's gathering.\n- Buttons for Artisan, Gather & Chill and Knightshopper now disappear when that plugin is turned off, and come back when it's on again.\n- Knightshopper lists copied from the Tracker are now named \"Relic Tracker - <currency>\"."
+  "Changelog": "- Gather & Chill: each gatherable row now has a Gather button, plus a Stop button while it's gathering.\n- Buttons for Artisan, Gather & Chill and Knightshopper now disappear when that plugin is turned off, and come back when it's on again.\n- Knightshopper lists copied from the Tracker are now named like \"Relic Tracker - Scrips\"."
 }
