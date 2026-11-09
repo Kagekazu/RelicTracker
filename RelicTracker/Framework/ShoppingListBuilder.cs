@@ -28,7 +28,7 @@ public sealed class ShoppingMaterialRow
 
     public bool Craftable { get; init; }
 
-    /// <summary>Relic steps this row is needed for (Step can be a farming zone instead).</summary>
+    // Step can be a farming zone, so this holds the relic steps.
     public IReadOnlyList<string> ForSteps { get; init; } = [];
 
     public string ObtainLabel => MaterialObtain.Label(Obtain, ObtainVia);
@@ -60,7 +60,7 @@ public static class ShoppingListBuilder
         string? lineFilter = null,
         IReadOnlyDictionary<string, string>? lucisFirstJobs = null)
     {
-        var isTools = string.Equals(expansionId, ExpansionNames.ToolsId, StringComparison.Ordinal);
+        var isTools = ExpansionNames.IsTools(expansionId);
 
         Dictionary<string, (RelicLineStatus Status, int Tier, int Order)> stepInfo = new(StringComparer.OrdinalIgnoreCase);
         var order = 0;
@@ -270,10 +270,7 @@ public static class ShoppingListBuilder
         return total;
     }
 
-    /// <summary>
-    ///     Weapon-line rows apply to every job unless they flag only some (the Zodiac base weapons);
-    ///     then the flags follow the line's job order.
-    /// </summary>
+    // Weapon-line rows apply to every job unless they flag only some (the Zodiac base weapons).
     public static bool IsJobSpecific(IReadOnlyList<bool?> jobs) => jobs.Any(flag => flag != true);
 
     public static bool IsQuestRewardRow(ExpansionMaterialRow row) =>
@@ -291,7 +288,7 @@ public static class ShoppingListBuilder
         public Dictionary<string, List<string>> ProductsByStep { get; } =
             new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Job flags of each reward row; on tool lines they pick the job slot.</summary>
+        // On tool lines the job flags pick the job slot.
         public Dictionary<string, IReadOnlyList<bool?>> ProductJobs { get; } =
             new(StringComparer.OrdinalIgnoreCase);
     }

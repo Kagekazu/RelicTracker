@@ -47,19 +47,19 @@ public sealed class ExpansionMaterialRow
     [JsonPropertyName("craftOf")]
     public string? CraftOf { get; set; }
 
-    /// <summary>How the material is obtained: craft, gather, fish, buy, or content.</summary>
+    // craft, gather, fish, buy, or content
     [JsonPropertyName("obtain")]
     public string? Obtain { get; set; }
 
-    /// <summary>Currency for <c>buy</c>, token for <c>content</c> trades, or a zone hint.</summary>
+    // Currency for buy, token for content trades, or a zone hint.
     [JsonPropertyName("obtainVia")]
     public string? ObtainVia { get; set; }
 
-    /// <summary>One-time step: needed once, before the first weapon of the step - not per job.</summary>
+    // Needed once, before the first weapon of the step - not per job.
     [JsonPropertyName("oneTime")]
     public bool OneTime { get; set; }
 
-    /// <summary>Has a recipe although it's usually obtained another way (bought Anima crafts).</summary>
+    // Has a recipe although it's usually obtained another way (bought Anima crafts).
     [JsonPropertyName("craftable")]
     public bool Craftable { get; set; }
 

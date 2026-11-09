@@ -111,7 +111,6 @@ public sealed partial class PluginUI
         ImGui.InputTextWithHint("##overviewFilter", "Filter relics…", ref overviewFilter, 128);
     }
 
-    /// <summary>One table for every expansion, each a collapsible divider row over its lines.</summary>
     private void DrawOverviewTable(
         IReadOnlyList<(string ExpansionId, List<RelicLineStatus> Lines, List<ArmorLine> ArmorLines)> expansions,
         RelicOwnership ownership)
@@ -152,7 +151,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>Expansion divider row; finished expansions start collapsed. Returns true when open.</summary>
     private bool DrawOverviewExpansionRow(string expansionId, IReadOnlyList<RelicLineStatus> lines)
     {
         var jobsComplete = lines.Sum(line => line.JobsComplete);
@@ -209,7 +207,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>"done/total": green when complete, muted when nothing is done yet, plain otherwise.</summary>
     private static void DrawDoneCount(int done, int total)
     {
         var text = $"{done}/{total}";

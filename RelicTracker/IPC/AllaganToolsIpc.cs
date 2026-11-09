@@ -7,10 +7,7 @@ internal static class AllaganToolsIpc
 {
     private static readonly string[] PluginNames = ["Allagan Tools", "InventoryTools", "AllaganTools"];
 
-    /// <summary>
-    ///     Allagan Tools stores armoire and glamour dresser items under CriticalCommonLib container IDs
-    ///     that are not part of FFXIVClientStructs' <see cref="InventoryType"/> enum.
-    /// </summary>
+    // Allagan Tools' container IDs for armoire and glamour dresser; not in ClientStructs' InventoryType.
     private const uint ArmoireContainer = 2500;
 
     private const uint GlamourChestContainer = 2501;

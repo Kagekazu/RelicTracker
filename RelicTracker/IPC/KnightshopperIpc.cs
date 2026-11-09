@@ -1,9 +1,10 @@
+using System.Text;
 using Dalamud.Plugin.Ipc;
 using ECommons.Reflection;
 
 namespace RelicTracker.IPC;
 
-/// <summary>Knightshopper currency IDs (IPC API v2).</summary>
+// Values must match Knightshopper's IPC v2 currency IDs.
 internal enum KnightshopperCurrency
 {
     BicolorGemstone = 0,
@@ -53,12 +54,9 @@ internal readonly record struct KnightshopperStatus(
         State is KnightshopperPurchaseState.Succeeded or KnightshopperPurchaseState.Failed or KnightshopperPurchaseState.Cancelled;
 }
 
-/// <summary>
-///     Client for Knightshopper's <c>Purchase.StartItems</c> IPC (API v2). See
-///     <c>installedPlugins/Knightshopper/&lt;version&gt;/docs/IPC.md</c>.
-/// </summary>
 internal static class KnightshopperIpc
 {
+    private const string InternalName = "Knightshopper";
     private const int RequiredApiVersion = 2;
     private const long BindRetryMs = 60_000;
 
@@ -71,19 +69,17 @@ internal static class KnightshopperIpc
     private static bool _loggedBindFailure;
     private static long _lastBindAttemptTick;
 
-    /// <summary>The operation RelicTracker started most recently, if any.</summary>
     public static Guid? ActiveOperation { get; private set; }
 
     public static KnightshopperCurrency? ActiveCurrency { get; private set; }
 
     public static bool IsInstalled =>
-        DalamudReflector.TryGetDalamudPlugin("Knightshopper", out _, false, true)
-        || Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.InternalName == "Knightshopper");
+        DalamudReflector.TryGetDalamudPlugin(InternalName, out _, false, true)
+        || Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.InternalName == InternalName);
 
     public static bool IsEnabled =>
-        DalamudReflector.TryGetDalamudPlugin("Knightshopper", out _, false, true);
+        DalamudReflector.TryGetDalamudPlugin(InternalName, out _, false, true);
 
-    /// <summary>True when Knightshopper is loaded and supports buying a supplied item list.</summary>
     public static bool IsReady
     {
         get
@@ -127,9 +123,7 @@ internal static class KnightshopperIpc
         }
     }
 
-    /// <summary>
-    ///     Starts a purchase. Quantities are target inventory totals, not amounts to buy.
-    /// </summary>
+    // Quantities are target inventory totals, not amounts to buy.
     public static bool TryStartItems(
         KnightshopperCurrency currency,
         (uint ItemId, uint Quantity)[] items,
@@ -207,7 +201,6 @@ internal static class KnightshopperIpc
         ActiveCurrency = null;
     }
 
-    /// <summary>Maps a material's <c>obtainVia</c> currency (bundled data) to a Knightshopper currency.</summary>
     public static bool TryParseCurrency(string? obtainVia, out KnightshopperCurrency currency)
     {
         KnightshopperCurrency? parsed = obtainVia switch
@@ -242,6 +235,33 @@ internal static class KnightshopperIpc
         _ => currency.ToString(),
     };
 
+    public static string EncodeList(KnightshopperCurrency currency, string name, IEnumerable<(uint ItemId, uint Quantity)> items)
+    {
+        var rows = new List<object>();
+        foreach (var item in items)
+        {
+            if (rows.Count == 500)
+            {
+                throw new ArgumentException("Lists must contain at most 500 items.", nameof(items));
+            }
+
+            if (item.ItemId == 0 || item.Quantity == 0)
+            {
+                throw new ArgumentException("Items need a nonzero ID and quantity.", nameof(items));
+            }
+
+            rows.Add(new { itemId = item.ItemId, quantity = item.Quantity });
+        }
+
+        var json = JsonSerializer.Serialize(new { name, currency = currency.ToString(), items = rows });
+        if (json.Length > 65_536 || Encoding.UTF8.GetByteCount(json) > 262_144)
+        {
+            throw new ArgumentException("The export exceeds Knightshopper's size limits.", nameof(items));
+        }
+
+        return json;
+    }
+
     private static string DescribeStartFailure(KnightshopperStartResult result, string text)
     {
         var reason = result switch
@@ -260,7 +280,19 @@ internal static class KnightshopperIpc
 
     private static void EnsureBound()
     {
-        if (_ipcBound || !IsEnabled)
+        if (_ipcBound)
+        {
+            if (_apiVersion?.HasFunction == true)
+            {
+                return;
+            }
+
+            // Knightshopper was disabled or unloaded. Drop the subscribers too: a reload can bring new gates.
+            Dispose();
+            Svc.Log.Information("[RelicTracker] Knightshopper IPC gone.");
+        }
+
+        if (!IsEnabled)
         {
             return;
         }

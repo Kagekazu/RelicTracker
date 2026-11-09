@@ -379,7 +379,7 @@ public sealed partial class PluginUI
                     stepName,
                     questIndex,
                     CreateOwnedLookup(),
-                    string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal) ? slotIndex : -1));
+                    ExpansionNames.IsTools(line.Expansion) ? slotIndex : -1));
         }
 
         List<StepItem> items = [.. GetStepItems(line, stepName, slotIndex)];
@@ -416,7 +416,7 @@ public sealed partial class PluginUI
         // Tool lines: one list per crafter class. Weapon lines: the job's own list if the step has
         // one (the Zodiac base weapons), else one list per step across all classes; a one-time
         // step's list goes away once any job is past that step.
-        var isTools = string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal);
+        var isTools = ExpansionNames.IsTools(line.Expansion);
         if ((isTools && slotIndex > 7)
             || (!isTools && StepCraftsAreOneTime(line, stepName) && IsStepUnlockedOnAnyJob(line, stepName)))
         {
@@ -464,7 +464,7 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>True if every crafted material of a step is a one-time step item (the Phantom gate crafts).</summary>
+    // The Phantom gate crafts: every crafted material of the step is a one-time item.
     private bool StepCraftsAreOneTime(RelicLine line, string stepName) =>
         data.Expansions.TryGetValue(line.Expansion, out var sheet)
         && sheet.Materials
@@ -651,7 +651,7 @@ public sealed partial class PluginUI
         // On tool lines the material flag columns line up with the relic job slots, so a Fisher
         // only sees fishing parts and crafters don't see them. Weapon-line rows apply to every job
         // unless they're job-specific (see ShoppingListBuilder.IsJobSpecific).
-        var filterBySlot = string.Equals(line.Expansion, ExpansionNames.ToolsId, StringComparison.Ordinal);
+        var filterBySlot = ExpansionNames.IsTools(line.Expansion);
 
         var hasFisherSection = filterBySlot && ShoppingListBuilder.ToolStepHasFisherSection(sheet, stepName);
         var oneTimeUnlocked = IsStepUnlockedOnAnyJob(line, stepName);
@@ -909,7 +909,6 @@ public sealed partial class PluginUI
         InvalidateOwnershipCache();
     }
 
-    /// <summary>Finished job: offer the line's unfinished jobs instead of an empty pane.</summary>
     private void DrawUnfinishedJobPicker(RelicLine line)
     {
         var ownership = GetOwnership();
@@ -989,7 +988,6 @@ public sealed partial class PluginUI
         ImGui.Spacing();
     }
 
-    /// <summary>True once any job has reached the step, so its one-time unlock is already done.</summary>
     private bool IsStepUnlockedOnAnyJob(RelicLine line, string stepName)
     {
         var ownership = GetOwnership();

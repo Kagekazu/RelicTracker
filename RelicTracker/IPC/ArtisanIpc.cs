@@ -6,12 +6,10 @@ namespace RelicTracker.IPC;
 
 internal static class ArtisanIpc
 {
+    private const string InternalName = "Artisan";
     private const long BindRetryMs = 60_000;
 
-    /// <summary>
-    ///     Matches Artisan <c>RelicToolPremadeLists.RelicToolStep</c> ordinals (1–22).
-    ///     IPC is <c>Artisan.GetRelicToolListId(int stepOrdinal, int craftTypeSlot)</c>.
-    /// </summary>
+    // Must match Artisan's RelicToolPremadeLists.RelicToolStep ordinals.
     private static readonly Dictionary<string, int> StepOrdinals = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Skysteel +1"] = 1,
@@ -38,10 +36,7 @@ internal static class ArtisanIpc
         ["Relic"] = 22,
     };
 
-    /// <summary>
-    ///     Craft slot for weapon-step lists, which mix crafter classes (Artisan's
-    ///     <c>RelicToolPremadeLists.AllClassesSlot</c>). Tool lists use the class slot 0-7.
-    /// </summary>
+    // Artisan's AllClassesSlot: weapon-step lists mix crafter classes. Tool lists use the class slot 0-7.
     public const int AllClassesSlot = 8;
 
     // Resplendent Material B / C item IDs run CRP..CUL, so add the craft slot.
@@ -49,6 +44,7 @@ internal static class ArtisanIpc
     private const uint ResplendentMaterialC = 33202;
 
     private static Func<int, int, int>? _getRelicToolListId;
+    private static ICallGateSubscriber<int, uint, uint>? _relicListGate;
     private static ICallGateSubscriber<int, object>? _startListById;
     private static ICallGateSubscriber<bool>? _isBusy;
     private static bool _ipcBound;
@@ -56,11 +52,11 @@ internal static class ArtisanIpc
     private static long _lastBindAttemptTick;
 
     public static bool IsInstalled =>
-        DalamudReflector.TryGetDalamudPlugin("Artisan", out _, false, true)
-        || Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.InternalName == "Artisan");
+        DalamudReflector.TryGetDalamudPlugin(InternalName, out _, false, true)
+        || Svc.PluginInterface.InstalledPlugins.Any(plugin => plugin.InternalName == InternalName);
 
     public static bool IsEnabled =>
-        DalamudReflector.TryGetDalamudPlugin("Artisan", out _, false, true);
+        DalamudReflector.TryGetDalamudPlugin(InternalName, out _, false, true);
 
     public static bool SupportsRelicToolLists
     {
@@ -76,6 +72,7 @@ internal static class ArtisanIpc
     public static void Dispose()
     {
         _getRelicToolListId = null;
+        _relicListGate = null;
         _startListById = null;
         _isBusy = null;
         _ipcBound = false;
@@ -83,10 +80,7 @@ internal static class ArtisanIpc
         _lastBindAttemptTick = 0;
     }
 
-    /// <summary>
-    ///     Artisan list step for a relic step. Resplendent is a craft -> turn-in chain, so it picks the
-    ///     component tier from the materials in bags: C, then B, then A.
-    /// </summary>
+    // Resplendent is a craft -> turn-in chain: pick the component tier from bags, C then B then A.
     public static string ArtisanStepFor(string stepName, int craftSlot, Func<uint, uint> bagCount)
     {
         if (!string.Equals(stepName, "Resplendent", StringComparison.OrdinalIgnoreCase) || craftSlot is < 0 or > 7)
@@ -180,7 +174,19 @@ internal static class ArtisanIpc
 
     private static void EnsureBound()
     {
-        if (_ipcBound || !IsEnabled)
+        if (_ipcBound)
+        {
+            if (_relicListGate?.HasFunction == true)
+            {
+                return;
+            }
+
+            // Artisan was disabled or unloaded. Drop the subscribers too: a reload can bring new gates.
+            Dispose();
+            Svc.Log.Information("[RelicTracker] Artisan IPC gone.");
+        }
+
+        if (!IsEnabled)
         {
             return;
         }
@@ -218,13 +224,11 @@ internal static class ArtisanIpc
         }
     }
 
-    /// <summary>
-    ///     Artisan.GetRelicToolListId is (int step, uint craftSlot) -> uint since Artisan's relic list
-    ///     refactor, and (int, int) -> int before it. Bind whichever this Artisan build registers.
-    /// </summary>
+    // Artisan registers (int, uint) -> uint since its relic list refactor, (int, int) -> int before it.
     private static Func<int, int, int>? BindRelicToolListIdLookup()
     {
         var current = Svc.PluginInterface.GetIpcSubscriber<int, uint, uint>("Artisan.GetRelicToolListId");
+        _relicListGate = current;
         if (!current.HasFunction)
         {
             return null;

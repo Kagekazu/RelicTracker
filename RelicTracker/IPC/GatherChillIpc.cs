@@ -3,11 +3,6 @@ using ECommons.Reflection;
 
 namespace RelicTracker.IPC;
 
-/// <summary>
-///     Client for Gather &amp; Chill's IPC: adds missing gatherables to its gather list (v1), and
-///     gathers one item right away or stops (v2).
-///     Provider: GatherChill/IPC/GatherChillProvider.cs in the Gather &amp; Chill repo.
-/// </summary>
 internal static class GatherChillIpc
 {
     private const string InternalName = "GatherChill";
@@ -42,7 +37,6 @@ internal static class GatherChillIpc
         }
     }
 
-    /// <summary>True if this Gather &amp; Chill can gather one item directly (API v2+).</summary>
     public static bool SupportsGatherItem => IsReady && ApiVersion() >= GatherItemApiVersion;
 
     public static void Init() => EnsureBound();
@@ -61,7 +55,7 @@ internal static class GatherChillIpc
         _lastBindAttemptTick = 0;
     }
 
-    /// <summary>Queried each time, so a Gather &amp; Chill update is picked up without a reload.</summary>
+    // Queried each time, so a Gather & Chill update is picked up without a reload.
     public static int ApiVersion()
     {
         if (!IsReady || _apiVersion == null)
@@ -98,7 +92,7 @@ internal static class GatherChillIpc
         }
     }
 
-    /// <summary>True if Gather &amp; Chill has a route for the item. Cached; routes rarely change.</summary>
+    // Cached; routes rarely change.
     public static bool CanGather(uint itemId)
     {
         if (!IsReady || _canGather == null)
@@ -124,10 +118,7 @@ internal static class GatherChillIpc
         }
     }
 
-    /// <summary>
-    ///     Adds items to Gather &amp; Chill's gather list; amounts are how many to gather, and an
-    ///     item already listed keeps the larger amount. Returns how many were added or updated.
-    /// </summary>
+    // Amounts are how many to gather; an item already listed keeps the larger amount.
     public static bool TryAddToGatherList((uint ItemId, uint Amount)[] items, out int added, out string? error)
     {
         added = 0;
@@ -151,10 +142,7 @@ internal static class GatherChillIpc
         }
     }
 
-    /// <summary>
-    ///     Adds the item to Gather &amp; Chill's gather list (an existing entry keeps the larger amount)
-    ///     and starts gathering only that item. Gather &amp; Chill stops by itself when it's done.
-    /// </summary>
+    // Writes into the saved gather list (an existing entry keeps the larger amount); stops by itself when done.
     public static bool TryGatherItem(uint itemId, uint amount, out string? error)
     {
         error = null;
@@ -182,7 +170,6 @@ internal static class GatherChillIpc
         }
     }
 
-    /// <summary>Stops Gather &amp; Chill, same as its Stop button (API v2+).</summary>
     public static bool TryStop(out string? error)
     {
         error = null;
@@ -207,7 +194,19 @@ internal static class GatherChillIpc
 
     private static void EnsureBound()
     {
-        if (_ipcBound || !IsEnabled)
+        if (_ipcBound)
+        {
+            if (_apiVersion?.HasFunction == true)
+            {
+                return;
+            }
+
+            // Gather & Chill was disabled or unloaded. Drop the subscribers too: a reload can bring new gates.
+            Dispose();
+            Svc.Log.Information("[RelicTracker] Gather & Chill IPC gone.");
+        }
+
+        if (!IsEnabled)
         {
             return;
         }

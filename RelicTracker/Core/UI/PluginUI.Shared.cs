@@ -345,10 +345,8 @@ public sealed partial class PluginUI
 
     private static readonly Vector4 BarTextOnFill = new(0.08f, 0.08f, 0.1f, 1f);
 
-    /// <summary>Result of an action handed to another plugin (Knightshopper, Gather &amp; Chill).</summary>
     private sealed record StatusMessage(string Text, bool IsError);
 
-    /// <summary>Draws a result message with a dismiss button, which clears it.</summary>
     private void DrawStatusMessage(ref StatusMessage? message, string id)
     {
         if (message is null)
@@ -364,17 +362,11 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>The first game item ID for a material row, or 0 if it couldn't be matched.</summary>
     private uint PrimaryItemId(ShoppingMaterialRow row) =>
         data.MaterialIdsByName.TryGetValue(row.Material, out var ids) && ids.Count > 0 ? ids[0] : 0;
     private static readonly Vector4 TipColor = new(0.55f, 0.8f, 0.95f, 1f);
 
-    /// <summary>
-    ///     Draws a step note with its light markup, one line per '\n':
-    ///     "1. ..." numbered step and "- ..." bullet (both with a hanging indent), "Tip: ..." in the
-    ///     tip colour, a short line ending in ':' as a sub-heading, a blank line as spacing, anything
-    ///     else as plain text. <paramref name="wrapPos" /> is passed to PushTextWrapPos (0 = window edge).
-    /// </summary>
+    // Note markup, per line: "1. " and "- " lists, "Tip:" lines, a short line ending in ':' as a heading, blank = spacing.
     private void DrawNote(string note, float wrapPos = 0f)
     {
         const float listIndent = 8f;

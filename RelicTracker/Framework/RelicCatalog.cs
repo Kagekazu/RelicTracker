@@ -42,10 +42,7 @@ public sealed class RelicLine
     public string StepName(int tierIndex) =>
         tierIndex >= 0 && tierIndex < Steps.Count ? Steps[tierIndex] : $"Step {tierIndex + 1}";
 
-    /// <summary>
-    ///     Eureka's final Physeos upgrade (Baldesion Arsenal) - same look/stats as Eureka outside
-    ///     Eureka zones, and does not count as a new relic for achievements.
-    /// </summary>
+    // Baldesion Arsenal upgrade: same as Eureka outside Eureka zones, and not a new relic for achievements.
     [JsonIgnore]
     public bool EndsWithOptionalPhyseos =>
         TierCount > 0
@@ -253,8 +250,9 @@ public sealed class RelicCatalog
 
 internal static class ExpansionNames
 {
-    /// <summary>The Disciple of the Hand &amp; Land tool lines, listed as their own "expansion".</summary>
-    public const string ToolsId = "DoHDoL";
+    private const string ToolsId = "DoHDoL";
+
+    public static bool IsTools(string? expansionId) => expansionId == ToolsId;
 
     public static string LongName(string expansionId) =>
         expansionId switch

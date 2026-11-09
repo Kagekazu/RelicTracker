@@ -2,21 +2,13 @@ using RelicTracker.IPC;
 
 namespace RelicTracker;
 
-/// <summary>
-///     Tracker "what to do" view: materials grouped by how you get them (buy / craft / gather &amp;
-///     fish / content), one-time steps, prefarmable quest rewards, and steps that are pure
-///     activities with nothing to stockpile.
-/// </summary>
 public sealed partial class PluginUI
 {
     private readonly record struct TrackerActivity(string Line, string Step, int JobsLeft, string? Note);
 
     private StatusMessage? gatherChillResult;
 
-    /// <summary>
-    ///     One row per material: a material needed by several steps or zones is summed, and the
-    ///     inventory is counted once instead of once per row.
-    /// </summary>
+    // Inventory is counted once per material, not summed per row.
     private static List<ShoppingMaterialRow> MergeByMaterial(IReadOnlyList<ShoppingMaterialRow> rows)
     {
         List<ShoppingMaterialRow> merged = [];
@@ -87,7 +79,7 @@ public sealed partial class PluginUI
             expansionId,
             "Craft",
             "Craft",
-            expansionId == ExpansionNames.ToolsId && ArtisanIpc.SupportsRelicToolLists
+            ExpansionNames.IsTools(expansionId) && ArtisanIpc.SupportsRelicToolLists
                 ? "Crafter tool steps have an Artisan list on the Relic tab."
                 : null,
             craftRows,
@@ -145,12 +137,21 @@ public sealed partial class PluginUI
                 }
             }
 
-            groups.Add(new(
-                group.Key,
-                groupRows,
-                purchases.Count > 0
-                    ? () => DrawKnightshopperCurrencyActions(currency, purchases, showBuy: KnightshopperIpc.IsReady)
-                    : null));
+            Action? headingAction = null;
+            if (purchases.Count > 0)
+            {
+                headingAction = () =>
+                {
+                    DrawKnightshopperCopyButton(currency, purchases);
+                    if (KnightshopperIpc.IsReady)
+                    {
+                        ImGui.SameLine();
+                        DrawKnightshopperBuyButton(currency, purchases, $"Buy {purchases.Count} with Knightshopper");
+                    }
+                };
+            }
+
+            groups.Add(new(group.Key, groupRows, headingAction));
         }
 
         DrawObtainTable($"{expansionId}|Buy", groups);
@@ -200,13 +201,9 @@ public sealed partial class PluginUI
             rowAction);
     }
 
-    /// <summary>
-    ///     Weapon lines: one "Craft {step} with Artisan" button per step whose crafts still need making.
-    ///     Each starts Artisan's premade list for one weapon's worth. Tool lines use the Relic tab.
-    /// </summary>
     private void DrawArtisanWeaponListButtons(string expansionId, IReadOnlyList<ShoppingMaterialRow> rows)
     {
-        if (expansionId == ExpansionNames.ToolsId || !ArtisanIpc.SupportsRelicToolLists)
+        if (ExpansionNames.IsTools(expansionId) || !ArtisanIpc.SupportsRelicToolLists)
         {
             return;
         }
@@ -250,10 +247,6 @@ public sealed partial class PluginUI
         ImGui.NewLine();
     }
 
-    /// <summary>
-    ///     Adds what's still short (and has a Gather &amp; Chill route) to Gather &amp; Chill's gather list.
-    ///     While it's gathering, a newer Gather &amp; Chill also gets a Stop button.
-    /// </summary>
     private void DrawGatherChillButton(IReadOnlyList<ShoppingMaterialRow> rows)
     {
         if (!GatherChillIpc.IsReady)
@@ -311,10 +304,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>
-    ///     Per-row "Gather" button: a newer Gather &amp; Chill gathers just this item right away; an older
-    ///     one only gets it added to its gather list.
-    /// </summary>
     private void DrawGatherChillRowButton(ShoppingMaterialRow row)
     {
         var itemId = PrimaryItemId(row);
@@ -349,13 +338,9 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>
-    ///     Lucis Tools: pick which job per category makes the first Lucis tool. Only that job's
-    ///     materials are counted; the others buy theirs from a Calamity Salvager afterwards.
-    /// </summary>
     private void DrawLucisFirstJobPicker(string expansionId, string? lineFilter)
     {
-        if (expansionId != ExpansionNames.ToolsId
+        if (!ExpansionNames.IsTools(expansionId)
             || (!string.IsNullOrEmpty(lineFilter) && lineFilter != LucisToolShortcut.CollectType)
             || catalog.LinesFor(expansionId).FirstOrDefault(LucisToolShortcut.Applies) is not { } line)
         {
@@ -419,10 +404,8 @@ public sealed partial class PluginUI
         return DrawCollapsingSection(configKey, $"{title}  ({badge})###{configKey}", true);
     }
 
-    /// <summary>A sub-group of a section's table: an optional divider row (with an optional button) over its rows.</summary>
     private sealed record ObtainGroup(string? Heading, IReadOnlyList<ShoppingMaterialRow> Rows, Action? HeadingAction = null);
 
-    /// <summary>One table per section; sub-groups (currency, zone, ...) are divider rows, so the header shows once.</summary>
     private void DrawObtainTable(string id, IReadOnlyList<ObtainGroup> groups, Action<ShoppingMaterialRow>? rowAction = null)
     {
         using var table = ImRaii.Table($"Obtain_{id}", 5, ShoppingTableFlags, new(0, 0));
@@ -470,7 +453,7 @@ public sealed partial class PluginUI
 
         var questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
         var ownership = GetOwnership();
-        var isTools = expansionId == ExpansionNames.ToolsId;
+        var isTools = ExpansionNames.IsTools(expansionId);
         List<ShoppingQuestRewardRow> rewards = [];
         HashSet<string> seen = new(StringComparer.OrdinalIgnoreCase);
         foreach (var (status, tiers, skipped) in UnfinishedSteps(statuses, ownership))
@@ -554,10 +537,6 @@ public sealed partial class PluginUI
         }
     }
 
-    /// <summary>
-    ///     Unfinished steps that have no material rows at all - the work is an activity. Matches the
-    ///     material filter against the step and line names.
-    /// </summary>
     private List<TrackerActivity> GetActivities(string expansionId, IReadOnlyList<RelicLineStatus> statuses)
     {
         List<TrackerActivity> activities = [];
@@ -607,10 +586,6 @@ public sealed partial class PluginUI
         return activities;
     }
 
-    /// <summary>
-    ///     Each line's unfinished steps, plus the job slots to skip on it (Lucis Tools jobs that will
-    ///     buy their tool from a Calamity Salvager).
-    /// </summary>
     private IEnumerable<(RelicLineStatus Status, List<int> Tiers, HashSet<int> Skipped)> UnfinishedSteps(
         IReadOnlyList<RelicLineStatus> statuses,
         RelicOwnership ownership)

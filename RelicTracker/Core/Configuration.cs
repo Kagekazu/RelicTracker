@@ -44,10 +44,9 @@ public sealed class Configuration : IPluginConfiguration
 
     public string TrackerLineFilter { get; set; } = string.Empty;
 
-    /// <summary>Tracker groups by relic step / farming zone instead of by what you do.</summary>
     public bool TrackerGroupBySteps { get; set; }
 
-    /// <summary>Lucis Tools: job abbreviation (e.g. "MIN") per category ("crafter"/"gatherer") that makes the first Lucis tool. Missing = furthest along.</summary>
+    // Per category ("crafter"/"gatherer"): job abbreviation that makes the first Lucis tool. Missing = furthest along.
     public Dictionary<string, string> LucisFirstJob { get; set; } = new(StringComparer.Ordinal);
 
     public Dictionary<string, bool> ExpandedMaterialSections { get; set; } = new(StringComparer.Ordinal);

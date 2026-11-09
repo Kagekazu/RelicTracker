@@ -22,11 +22,8 @@ public sealed partial class PluginUI
     private bool inventoryCountsDirty;
     private long lastInventoryCountsInvalidateTick;
 
-    /// <summary>
-    ///     Eureka (and other loot-heavy zones) fire this constantly. Do not wipe relic ownership here -
-    ///     that rebuild walks every relic via Allagan Tools and used to hitch frames. Material counts are
-    ///     refreshed on the next Draw with a short debounce; ownership still rolls on the 10s stamp.
-    /// </summary>
+    // Fires constantly in Eureka and other loot-heavy zones. Don't wipe relic ownership here: that rebuild walks
+    // every relic via Allagan Tools and hitched frames. Ownership still rolls on the 10s stamp.
     public void OnInventoryChanged(IReadOnlyCollection<InventoryEventArgs> _) =>
         inventoryCountsDirty = true;
 

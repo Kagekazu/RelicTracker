@@ -132,7 +132,6 @@ public sealed partial class PluginUI
         DrawShoppingList(config.SelectedExpansionId, ImGui.GetContentRegionAvail().Y);
     }
 
-    /// <summary>Line statuses for the Tracker's expansion and line filter.</summary>
     private IReadOnlyList<RelicLineStatus> TrackerStatuses(string expansionId, string? lineFilter) =>
     [
         .. RelicStatusService.Build(GetOwnership(), catalog, config.HidePhyseosRelics)

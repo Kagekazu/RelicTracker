@@ -22,7 +22,7 @@ internal static class GameSheets
 
 internal static class ItemDisplayNames
 {
-    /// <summary>Client-language item name for UI; English sheets are used elsewhere for matching.</summary>
+    // Client language for display only; matching uses the English sheets.
     public static string Label(IReadOnlyList<uint> itemIds, string bundledName)
     {
         if (itemIds.Count != 1)
