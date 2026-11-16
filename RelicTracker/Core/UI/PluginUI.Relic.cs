@@ -158,7 +158,7 @@ public sealed partial class PluginUI
     {
         ImGui.Spacing();
         bool collectLinked = CollectIdLinked;
-        bool inventoryLinked = AllaganToolsIpc.IsReady;
+        bool inventoryLinked = MogVaultIpc.IsReady;
 
         if (!collectLinked && !inventoryLinked)
         {
@@ -390,21 +390,21 @@ public sealed partial class PluginUI
             {
                 ImGui.TextWrapped(string.IsNullOrWhiteSpace(note)
                     ? "No item breakdown recorded for this step - it's mostly tomestones, quests or other tasks. "
-                      + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually."
+                      + "It ticks off when you own the finished relic (MogVault), link FFXIV Collect, or tick it manually."
                     : "Nothing to collect for this step - it's quests or duties. See the notes on the left. "
-                      + "It ticks off when you own the finished relic (Allagan Tools), link FFXIV Collect, or tick it manually.");
+                      + "It ticks off when you own the finished relic (MogVault), link FFXIV Collect, or tick it manually.");
             }
 
             return;
         }
 
-        if (AllaganToolsIpc.IsReady)
+        if (MogVaultIpc.IsReady)
         {
-            ImGui.TextColored(MutedColor, "Materials for one weapon/tool (owned counts from Allagan Tools):");
+            ImGui.TextColored(MutedColor, "Materials for one weapon/tool (owned counts from MogVault):");
         }
         else
         {
-            ImGui.TextColored(MutedColor, "Materials for one weapon/tool (connect Allagan Tools on Settings for owned counts):");
+            ImGui.TextColored(WarningColor, "MogVault is required for owned counts. Enable it and wait for it to finish loading.");
         }
 
         ImGui.Spacing();

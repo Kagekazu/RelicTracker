@@ -236,7 +236,7 @@ public sealed class FfxivCollectService
                         return;
                     }
 
-                    StatusMessage = "FFXIV Collect timed out. Allagan Tools inventory progress still works - try Recheck again later.";
+                    StatusMessage = "FFXIV Collect timed out. MogVault inventory progress still works - try Recheck again later.";
                 }
 
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect timed out for character {CharacterId}.", characterId);
@@ -250,7 +250,7 @@ public sealed class FfxivCollectService
                         return;
                     }
 
-                    StatusMessage = "Could not reach FFXIV Collect. Allagan Tools inventory progress still works.";
+                    StatusMessage = "Could not reach FFXIV Collect. MogVault inventory progress still works.";
                 }
 
                 Svc.Log.Warning(ex, "[RelicTracker] FFXIV Collect request failed.");

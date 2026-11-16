@@ -23,7 +23,7 @@ public sealed partial class PluginUI
     private long lastInventoryCountsInvalidateTick;
 
     // Fires constantly in Eureka and other loot-heavy zones. Don't wipe relic ownership here: that rebuild walks
-    // every relic via Allagan Tools and hitched frames. Ownership still rolls on the 10s stamp.
+    // every relic via MogVault and hitched frames. Ownership still rolls on the 10s stamp.
     public void OnInventoryChanged(IReadOnlyCollection<InventoryEventArgs> _) =>
         inventoryCountsDirty = true;
 
@@ -106,7 +106,7 @@ public sealed partial class PluginUI
             CharacterProgress progress = config.CurrentCharacterProgress();
             HashSet<string> inventoryDone;
             HashSet<string> inventoryArmorDone;
-            if (AllaganToolsIpc.IsReady)
+            if (MogVaultIpc.IsReady)
             {
                 Func<uint, uint> ownedLookup = CreateOwnedLookup();
                 inventoryDone = RelicStatusService.BuildStepDoneKeys(catalog, ownedLookup);
@@ -147,7 +147,7 @@ public sealed partial class PluginUI
     }
 
     private static long InventoryCacheStamp() =>
-        AllaganToolsIpc.IsBound ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
+        MogVaultIpc.IsBound ? Environment.TickCount64 / InventoryCacheBucketMs : 0;
 
     private long OwnedCountRefreshStamp()
     {
@@ -170,10 +170,10 @@ public sealed partial class PluginUI
             if (!cache.TryGetValue(itemId, out uint count))
             {
                 count = GetOnCharacterItemCount(itemId);
-                uint allagan = AllaganToolsIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
-                if (allagan > count)
+                uint mogVault = MogVaultIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
+                if (mogVault > count)
                 {
-                    count = allagan;
+                    count = mogVault;
                 }
 
                 cache[itemId] = count;

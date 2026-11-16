@@ -658,7 +658,7 @@ public sealed partial class PluginUI
         ImGui.TableHeader("Owned");
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip("In bags, retainers, dresser, and armoire (Allagan Tools).");
+            ImGui.SetTooltip("In bags, retainers, dresser, and armoire (MogVault).");
         }
 
         ImGui.TableNextColumn();

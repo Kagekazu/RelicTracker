@@ -22,7 +22,7 @@ public sealed partial class PluginUI
 
         if (ArmorAutoTracked)
         {
-            bool inventory = AllaganToolsIpc.IsReady;
+            bool inventory = MogVaultIpc.IsReady;
             DrawProgressSourceChip(inventory, CollectActive);
 
             ImGui.SameLine();
@@ -34,7 +34,7 @@ public sealed partial class PluginUI
         {
             DrawStatusChip("Manual", StatusChipKind.Muted);
             ImGui.SameLine();
-            ImGui.TextColored(MutedColor, "No auto-tracking yet - expand a set below to tick pieces, or connect Allagan Tools in Settings.");
+            ImGui.TextColored(WarningColor, "MogVault is required for automatic tracking. Enable it and wait for it to finish loading.");
         }
     }
 
@@ -126,14 +126,14 @@ public sealed partial class PluginUI
 
     private void DrawArmorMissingPieces(ArmorLine armor, RelicOwnership ownership)
     {
-        if (!AllaganToolsIpc.IsReady)
+        if (!MogVaultIpc.IsReady)
         {
             if (OwnedPieces(armor, ownership) < armor.TotalPieces)
             {
                 ImGui.Spacing();
                 ImGui.TextColored(
                     MutedColor,
-                    "Connect Allagan Tools to list which pieces are missing (Collect only tracks totals).");
+                    "MogVault is required to list missing pieces. Enable it and wait for it to finish loading.");
             }
 
             return;

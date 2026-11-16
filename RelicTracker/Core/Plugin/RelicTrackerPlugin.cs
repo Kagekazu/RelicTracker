@@ -29,7 +29,7 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
         Configuration = Svc.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         Configuration.Initialize(Svc.PluginInterface);
 
-        AllaganToolsIpc.Init();
+        MogVaultIpc.Init();
         ArtisanIpc.Init();
         KnightshopperIpc.Init();
         GatherChillIpc.Init();
@@ -90,7 +90,7 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= ToggleUi;
         Svc.PluginInterface.UiBuilder.OpenMainUi -= ToggleUi;
         windowSystem.RemoveAllWindows();
-        AllaganToolsIpc.Dispose();
+        MogVaultIpc.Dispose();
         ArtisanIpc.Dispose();
         KnightshopperIpc.Dispose();
         GatherChillIpc.Dispose();

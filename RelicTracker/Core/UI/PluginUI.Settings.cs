@@ -53,7 +53,7 @@ public sealed partial class PluginUI
             {
                 ImGui.TextWrapped(
                     "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
-                    + "Allagan Tools already covers relics and replicas you still own.");
+                    + "MogVault already covers relics and replicas you still own.");
             }
 
             ImGui.Spacing();
@@ -96,7 +96,7 @@ public sealed partial class PluginUI
         }
 
         ImGui.SameLine();
-        using (ImRaii.Disabled(config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady))
+        using (ImRaii.Disabled(config.FfxivCollectCharacterId == 0 && !MogVaultIpc.IsReady))
         {
             if (ImGui.Button("Recheck"))
             {
@@ -153,13 +153,13 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TextColored(HeaderColor, "Integrations");
+        ImGui.TextColored(HeaderColor, "Required");
         ImGui.Spacing();
 
         Integration[] integrations =
         [
-            new("Allagan Tools", "Recommended. Owned counts (bags, retainers, dresser, armoire) and relic detection - without it, only your bags are counted.", null, false,
-                AllaganToolsIpc.IsInstalled, AllaganToolsIpc.IsEnabled, AllaganToolsIpc.IsReady, null),
+            new("MogVault", "Required. Tracks owned relics and material counts across bags, retainers, dresser, and armoire.", null, false,
+                MogVaultIpc.IsInstalled, MogVaultIpc.IsEnabled, MogVaultIpc.IsReady, null),
             new("Artisan", "Crafts relic-tool turn-ins from the Relic tab.", null, true,
                 ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, ArtisanIpc.SupportsRelicToolLists,
                 ArtisanIpc.SupportsRelicToolLists && ArtisanIpc.IsBusy() ? "crafting" : null),
@@ -172,8 +172,13 @@ public sealed partial class PluginUI
                 GatherChillIpc.IsReady && GatherChillIpc.IsBusy() ? "gathering" : null),
         ];
 
+        DrawIntegrationsTable([integrations[0]]);
+        ImGui.Spacing();
+        ImGui.TextColored(HeaderColor, "Optional helpers");
+        ImGui.Spacing();
+
         // Gather & Chill isn't released yet: only list it for people who have a build installed.
-        DrawIntegrationsTable([.. integrations.Where(integration =>
+        DrawIntegrationsTable([.. integrations[1..].Where(integration =>
             integration.Name != "Gather & Chill" || integration.Installed)]);
         EndPanel();
     }

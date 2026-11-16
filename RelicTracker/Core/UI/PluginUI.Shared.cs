@@ -43,7 +43,38 @@ public sealed partial class PluginUI
 
     private bool CollectActive => CollectIdLinked && ffxivCollect.LastRefreshUtc.HasValue;
 
-    private bool ArmorAutoTracked => CollectActive || AllaganToolsIpc.IsReady;
+    private bool ArmorAutoTracked => CollectActive || MogVaultIpc.IsReady;
+
+    private void DrawMogVaultBlocker()
+    {
+        if (!BeginPanel("mogvault_required"))
+        {
+            return;
+        }
+
+        ImGui.TextColored(HeaderColor, "MogVault required");
+        ImGui.Spacing();
+
+        if (!MogVaultIpc.IsInstalled)
+        {
+            ImGui.TextWrapped("RelicTracker requires MogVault from Puni.sh to track relics and materials.");
+            ImGui.TextColored(WarningColor, "Install MogVault, then reopen RelicTracker.");
+        }
+        else if (!MogVaultIpc.IsEnabled)
+        {
+            ImGui.TextWrapped("RelicTracker requires MogVault to be enabled.");
+            ImGui.TextColored(WarningColor, "Enable MogVault in the plugin installer, then reopen RelicTracker.");
+        }
+        else
+        {
+            ImGui.TextWrapped("RelicTracker is waiting for MogVault's inventory data.");
+            ImGui.TextColored(WarningColor, "Wait for MogVault to finish loading, or update it if this message remains.");
+        }
+
+        ImGui.Spacing();
+        ImGui.TextColored(MutedColor, "RelicTracker will resume automatically once MogVault is ready.");
+        EndPanel();
+    }
 
     private void RefreshCollectIfStale() =>
         ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, CollectRefreshInterval);
@@ -164,7 +195,7 @@ public sealed partial class PluginUI
     private void TriggerProgressRecheck()
     {
         var collectLinked = config.FfxivCollectCharacterId != 0;
-        if (!collectLinked && !AllaganToolsIpc.IsReady)
+        if (!collectLinked && !MogVaultIpc.IsReady)
         {
             return;
         }
@@ -179,7 +210,7 @@ public sealed partial class PluginUI
 
     private void DrawProgressRecheckButton()
     {
-        if (config.FfxivCollectCharacterId == 0 && !AllaganToolsIpc.IsReady)
+        if (config.FfxivCollectCharacterId == 0 && !MogVaultIpc.IsReady)
         {
             return;
         }
@@ -192,11 +223,11 @@ public sealed partial class PluginUI
 
         if (ImGui.IsItemHovered())
         {
-            var tooltip = config.FfxivCollectCharacterId != 0 && AllaganToolsIpc.IsReady
-                ? "Refresh FFXIV Collect and re-read Allagan Tools inventory counts."
+            var tooltip = config.FfxivCollectCharacterId != 0 && MogVaultIpc.IsReady
+                ? "Refresh FFXIV Collect and re-read MogVault inventory counts."
                 : config.FfxivCollectCharacterId != 0
                     ? "Fetch the latest relic progress from FFXIV Collect."
-                    : "Re-read owned relic items (and replicas) from Allagan Tools inventory.";
+                    : "Re-read owned relic items (and replicas) from MogVault inventory.";
             ImGui.SetTooltip(tooltip);
         }
     }
@@ -213,7 +244,7 @@ public sealed partial class PluginUI
 
     private void DrawProgressSourceHint(ProgressHintContext context)
     {
-        bool inventory = AllaganToolsIpc.IsReady;
+        bool inventory = MogVaultIpc.IsReady;
         bool collect = CollectIdLinked;
 
         switch (context)
@@ -222,20 +253,20 @@ public sealed partial class PluginUI
                 ImGui.TextColored(
                     MutedColor,
                     inventory
-                        ? "Owned relics fill in from inventory (Allagan Tools). Tick any missing steps on Relic."
-                        : "Tick steps on Relic to fill this in. Connect Allagan Tools in Settings for owned-relic detection.");
+                        ? "Owned relics fill in from inventory (MogVault). Tick any missing steps on Relic."
+                        : "MogVault is required for owned-relic detection. Enable it and wait for it to finish loading.");
                 ImGui.Spacing();
                 break;
             case ProgressHintContext.Tracker when !inventory && !collect:
                 ImGui.TextColored(
                     MutedColor,
-                    "Tick finished steps on Relic to trim this list. Connect Allagan Tools in Settings to detect owned relics.");
+                    "MogVault is required to detect owned relics. Enable it and wait for it to finish loading.");
                 ImGui.Spacing();
                 break;
             case ProgressHintContext.RelicDisconnected when !inventory && !collect:
                 ImGui.TextColored(
                     MutedColor,
-                    "Tick steps manually, or connect Allagan Tools in Settings to auto-fill owned relics.");
+                    "MogVault is required to auto-fill owned relics. Enable it and wait for it to finish loading.");
                 break;
         }
     }
@@ -248,12 +279,12 @@ public sealed partial class PluginUI
     {
         if (inventoryLinked && collectLinked)
         {
-            return $"{fillNoun} fill from inventory (Allagan Tools). Collect covers sold or desynthed {orphanNoun}.";
+            return $"{fillNoun} fill from inventory (MogVault). Collect covers sold or desynthed {orphanNoun}.";
         }
 
         if (inventoryLinked)
         {
-            return $"{fillNoun} fill from inventory (Allagan Tools).";
+            return $"{fillNoun} fill from inventory (MogVault).";
         }
 
         return $"{fillNoun} fill from FFXIV Collect - for {orphanNoun} no longer in inventory.";

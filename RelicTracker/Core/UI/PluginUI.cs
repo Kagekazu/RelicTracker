@@ -1,5 +1,6 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
+using RelicTracker.IPC;
 using System.Numerics;
 using static ECommons.GenericHelpers;
 namespace RelicTracker;
@@ -60,6 +61,15 @@ public sealed partial class PluginUI : Window
     {
         FlushInventoryCountInvalidation();
         trackerTabVisible = false;
+        if (!MogVaultIpc.IsReady)
+        {
+            DrawMogVaultBlocker();
+            DrawTitleBarVersion(
+                TitleBarButtons.Count,
+                AllowPinning || AllowClickthrough);
+            return;
+        }
+
         if (ImGui.BeginTabBar("RelicTrackerTabs"))
         {
             if (ImGui.BeginTabItem("Overview", TabOpenFlags(RelicTrackerDestinationTab.Overview)))
