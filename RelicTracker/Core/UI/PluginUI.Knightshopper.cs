@@ -46,7 +46,7 @@ public sealed partial class PluginUI
                     DrawKnightshopperBuyButton(
                         currency,
                         items,
-                        $"{KnightshopperIpc.CurrencyLabel(currency)} ({items.Count})");
+                        $"Buy {items.Count} with {KnightshopperIpc.CurrencyLabel(currency)}");
                 }
 
                 ImGui.SameLine();
@@ -70,7 +70,7 @@ public sealed partial class PluginUI
 
     private void DrawKnightshopperCopyButton(KnightshopperCurrency currency, IReadOnlyList<KnightshopperPurchase> items)
     {
-        if (ImGui.SmallButton($"Copy for Knightshopper##ks_copy_{currency}"))
+        if (ImGui.SmallButton($"Copy list for Knightshopper##ks_copy_{currency}"))
         {
             CopyKnightshopperList(currency, items);
         }

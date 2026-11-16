@@ -17,7 +17,7 @@ public sealed partial class PluginUI
         trackerTabVisible = true;
         RefreshCollectIfStale();
 
-        DrawTabIntro("Shopping list for unfinished jobs. Open Relic for per-job steps and notes.");
+        DrawTabIntro("Materials still needed for unfinished relics. Use Relic to view steps and notes.");
 
         ImGui.AlignTextToFramePadding();
         ImGui.TextUnformatted("Expansion");
@@ -85,7 +85,7 @@ public sealed partial class PluginUI
         ImGui.Spacing();
 
         var hideComplete = config.HideCompleteMaterials;
-        if (ImGui.Checkbox("Hide finished materials", ref hideComplete))
+        if (ImGui.Checkbox("Hide materials you have enough of", ref hideComplete))
         {
             config.HideCompleteMaterials = hideComplete;
             config.OnSettingChanged();
@@ -97,7 +97,7 @@ public sealed partial class PluginUI
 
         ImGui.SameLine();
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("Group by");
+        ImGui.TextUnformatted("View");
         ImGui.SameLine();
         ImGui.SetNextItemWidth(150);
         if (ImGui.BeginCombo("##groupby-tracker", config.TrackerGroupBySteps ? "Relic step" : "What to do"))
@@ -272,9 +272,23 @@ public sealed partial class PluginUI
         {
             if (BeginPanel("tracker_empty"))
             {
-                ImGui.TextColored(GoodColor, config.HideCompleteMaterials
-                    ? "Nothing left to farm for this expansion."
-                    : "No tracked materials for this expansion.");
+                if (!string.IsNullOrWhiteSpace(materialFilter))
+                {
+                    ImGui.TextColored(MutedColor, $"No materials match \"{materialFilter}\".");
+                    ImGui.SameLine();
+                    if (ImGui.SmallButton("Clear filter##tracker"))
+                    {
+                        materialFilter = string.Empty;
+                    }
+                }
+                else
+                {
+                    ImGui.TextColored(
+                        config.HideCompleteMaterials ? GoodColor : MutedColor,
+                        config.HideCompleteMaterials
+                            ? "You have enough of every tracked material for this expansion."
+                            : "No tracked materials are available for this expansion.");
+                }
                 EndPanel();
             }
         }
@@ -653,19 +667,23 @@ public sealed partial class PluginUI
 
         ImGui.TableNextColumn();
         ImGui.TableHeader("Need");
-
-        ImGui.TableNextColumn();
-        ImGui.TableHeader("Owned");
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip("In bags, retainers, dresser, and armoire (MogVault).");
+            ImGui.SetTooltip("Total needed for every unfinished relic step in this view.");
         }
 
         ImGui.TableNextColumn();
-        ImGui.TableHeader("Short");
+        ImGui.TableHeader("Have");
         if (ImGui.IsItemHovered())
         {
-            ImGui.SetTooltip("Still to farm after counting inventory plus prefarmed quest rewards or owned armor pieces.");
+            ImGui.SetTooltip("Items you have across bags, retainers, dresser, and armoire (MogVault).");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Left");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Amount still needed after counting items you have, prefarmed quest rewards, and owned armor pieces.");
         }
     }
 

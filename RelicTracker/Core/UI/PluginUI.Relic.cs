@@ -15,7 +15,7 @@ public sealed partial class PluginUI
 
         RefreshCollectIfStale();
 
-        DrawTabIntro("Per-job steps and notes. Tracker lists farm totals for every unfinished job.");
+        DrawTabIntro("Steps and notes for each relic. Use Tracker to see the materials you still need.");
 
         var expansionId = catalog.Expansions.Contains(config.DetailExpansionId, StringComparer.Ordinal)
             ? config.DetailExpansionId
@@ -484,11 +484,11 @@ public sealed partial class PluginUI
         }
 
         ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch, 0.55f);
-        ImGui.TableSetupColumn("Where", ImGuiTableColumnFlags.WidthStretch, 0.45f);
+        ImGui.TableSetupColumn("Source", ImGuiTableColumnFlags.WidthStretch, 0.45f);
         ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 48);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 52);
-        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 48);
-        ImGui.TableHeadersRow();
+        ImGui.TableSetupColumn("Have", ImGuiTableColumnFlags.WidthFixed, 52);
+        ImGui.TableSetupColumn("Left", ImGuiTableColumnFlags.WidthFixed, 48);
+        DrawStepItemHeaders();
 
         foreach (var item in items)
         {
@@ -580,6 +580,35 @@ public sealed partial class PluginUI
         }
     }
 
+    private static void DrawStepItemHeaders()
+    {
+        ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Item");
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Source");
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Need");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Total needed for this relic step.");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Have");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Items you have across bags, retainers, dresser, and armoire (MogVault).");
+        }
+
+        ImGui.TableNextColumn();
+        ImGui.TableHeader("Left");
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Amount still needed after counting items you have and prefarmed quest rewards.");
+        }
+    }
+
     private void DrawDetailStepChecklist(RelicLine line, string job, int slotIndex, int currentTier, RelicOwnership ownership)
     {
         using var table = ImRaii.Table(
@@ -614,10 +643,10 @@ public sealed partial class PluginUI
                 if (ImGui.IsItemHovered())
                 {
                     string source = collectDone && inventoryDone
-                        ? "From inventory + Collect"
+                        ? "From MogVault + FFXIV Collect"
                         : collectDone
                             ? "From FFXIV Collect"
-                            : "From inventory";
+                            : "From MogVault";
                     ImGui.SetTooltip(source);
                 }
             }

@@ -52,23 +52,23 @@ public sealed partial class PluginUI
             return;
         }
 
-        ImGui.TextColored(HeaderColor, "MogVault required");
+        ImGui.TextColored(HeaderColor, "MogVault is required");
         ImGui.Spacing();
 
         if (!MogVaultIpc.IsInstalled)
         {
-            ImGui.TextWrapped("RelicTracker requires MogVault from Puni.sh to track relics and materials.");
-            ImGui.TextColored(WarningColor, "Install MogVault, then reopen RelicTracker.");
+            ImGui.TextWrapped("RelicTracker needs MogVault from Puni.sh to track relics and materials.");
+            ImGui.TextColored(WarningColor, "Install MogVault from /xlplugins, then reopen RelicTracker.");
         }
         else if (!MogVaultIpc.IsEnabled)
         {
-            ImGui.TextWrapped("RelicTracker requires MogVault to be enabled.");
-            ImGui.TextColored(WarningColor, "Enable MogVault in the plugin installer, then reopen RelicTracker.");
+            ImGui.TextWrapped("MogVault is installed but disabled.");
+            ImGui.TextColored(WarningColor, "Enable MogVault in /xlplugins. RelicTracker will open once it is ready.");
         }
         else
         {
-            ImGui.TextWrapped("RelicTracker is waiting for MogVault's inventory data.");
-            ImGui.TextColored(WarningColor, "Wait for MogVault to finish loading, or update it if this message remains.");
+            ImGui.TextWrapped("MogVault is installed but not ready yet.");
+            ImGui.TextColored(WarningColor, "Wait for it to finish loading. If this remains, update MogVault and reopen RelicTracker.");
         }
 
         ImGui.Spacing();
@@ -235,10 +235,10 @@ public sealed partial class PluginUI
     private void DrawProgressSourceChip(bool inventoryLinked, bool collectLinked)
     {
         var label = inventoryLinked && collectLinked
-            ? "Inventory + Collect"
+            ? "MogVault + Collect"
             : inventoryLinked
-                ? "Inventory"
-                : "Collect";
+                ? "MogVault"
+                : "FFXIV Collect";
         DrawStatusChip(label, StatusChipKind.Ok);
     }
 
@@ -253,7 +253,7 @@ public sealed partial class PluginUI
                 ImGui.TextColored(
                     MutedColor,
                     inventory
-                        ? "Owned relics fill in from inventory (MogVault). Tick any missing steps on Relic."
+                        ? "MogVault finds relics you still own. Tick completed relics you no longer have, or link FFXIV Collect in Settings."
                         : "MogVault is required for owned-relic detection. Enable it and wait for it to finish loading.");
                 ImGui.Spacing();
                 break;
@@ -279,12 +279,12 @@ public sealed partial class PluginUI
     {
         if (inventoryLinked && collectLinked)
         {
-            return $"{fillNoun} fill from inventory (MogVault). Collect covers sold or desynthed {orphanNoun}.";
+            return $"{fillNoun} come from MogVault. FFXIV Collect also covers sold or desynthed {orphanNoun}.";
         }
 
         if (inventoryLinked)
         {
-            return $"{fillNoun} fill from inventory (MogVault).";
+            return $"{fillNoun} come from MogVault.";
         }
 
         return $"{fillNoun} fill from FFXIV Collect - for {orphanNoun} no longer in inventory.";

@@ -54,7 +54,23 @@ public sealed partial class PluginUI
 
         if (expansions.Count == 0)
         {
-            ImGui.TextColored(MutedColor, "No lines match this filter.");
+            if (!string.IsNullOrWhiteSpace(overviewFilter))
+            {
+                ImGui.TextColored(MutedColor, $"No relics match \"{overviewFilter}\".");
+                ImGui.SameLine();
+                if (ImGui.SmallButton("Clear filter##overview"))
+                {
+                    overviewFilter = string.Empty;
+                }
+            }
+            else if (config.OverviewIncompleteOnly)
+            {
+                ImGui.TextColored(GoodColor, "Every tracked relic line is complete.");
+            }
+            else
+            {
+                ImGui.TextColored(MutedColor, "No relic progress is available for this character yet.");
+            }
         }
         else
         {
@@ -100,7 +116,7 @@ public sealed partial class PluginUI
 
         ImGui.Spacing();
         var incompleteOnly = config.OverviewIncompleteOnly;
-        if (ImGui.Checkbox("Hide finished lines", ref incompleteOnly))
+        if (ImGui.Checkbox("Hide completed relic lines", ref incompleteOnly))
         {
             config.OverviewIncompleteOnly = incompleteOnly;
             config.OnSettingChanged();

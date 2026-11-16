@@ -318,7 +318,7 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         using (ImRaii.Disabled(busy))
         {
-            if (ImGui.SmallButton($"{(direct ? "Gather" : "Add")}##gnc_row_{itemId}"))
+            if (ImGui.SmallButton($"{(direct ? "Gather now" : "Add to list")}##gnc_row_{itemId}"))
             {
                 var ok = direct
                     ? GatherChillIpc.TryGatherItem(itemId, row.Short, out var error)

@@ -158,7 +158,7 @@ public sealed partial class PluginUI
 
         Integration[] integrations =
         [
-            new("MogVault", "Required. Tracks owned relics and material counts across bags, retainers, dresser, and armoire.", null, false,
+            new("MogVault", "Tracks owned relics and material counts across bags, retainers, dresser, and armoire.", null, false,
                 MogVaultIpc.IsInstalled, MogVaultIpc.IsEnabled, MogVaultIpc.IsReady, null),
             new("Artisan", "Crafts relic-tool turn-ins from the Relic tab.", null, true,
                 ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, ArtisanIpc.SupportsRelicToolLists,
@@ -208,10 +208,10 @@ public sealed partial class PluginUI
                 (false, _, _) => ("Not installed", integration.Optional ? StatusChipKind.Muted : StatusChipKind.Warn,
                     $"{integration.Name} is not installed."),
                 (_, false, _) => ("Disabled", StatusChipKind.Warn, $"{integration.Name} is installed but not enabled."),
-                (_, _, false) => ("Needs update", StatusChipKind.Warn,
-                    $"{integration.Name} is loaded, but this build doesn't have the IPC RelicTracker uses yet."),
-                _ => (integration.BusyLabel is { } busy ? $"Connected · {busy}" : "Connected", StatusChipKind.Ok,
-                    $"{integration.Name} connected."),
+                (_, _, false) => ("Not ready", StatusChipKind.Warn,
+                    $"{integration.Name} is still loading or needs an update."),
+                _ => (integration.BusyLabel is { } busy ? $"Installed · {busy}" : "Installed", StatusChipKind.Ok,
+                    $"{integration.Name} is installed and ready to use."),
             };
             DrawStatusChip(label, kind);
             if (ImGui.IsItemHovered())
