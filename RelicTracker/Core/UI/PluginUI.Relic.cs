@@ -659,6 +659,11 @@ public sealed partial class PluginUI
                     SetManualStepDone(line, job, tier, manual);
                 }
 
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetTooltip("Mark this step complete manually. It stays marked until you clear it.");
+                }
+
                 ImGui.PopID();
             }
 

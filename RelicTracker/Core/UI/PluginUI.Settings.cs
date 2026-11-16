@@ -53,7 +53,7 @@ public sealed partial class PluginUI
             {
                 ImGui.TextWrapped(
                     "Only needed if you finished relics but no longer have the items in inventory (sold, desynthed, etc.). "
-                    + "MogVault already covers relics and replicas you still own.");
+                    + "MogVault already covers relics and replicas you still own. Linking a profile lets RelicTracker fetch its public relic lists.");
             }
 
             ImGui.Spacing();
@@ -132,7 +132,8 @@ public sealed partial class PluginUI
         {
             ImGui.Spacing();
             ImGui.TextWrapped(
-                "Find your character ID in the URL on ffxivcollect.com when viewing your profile, e.g. ffxivcollect.com/characters/123456");
+                "Find your character ID in the URL on ffxivcollect.com when viewing your public profile, e.g. ffxivcollect.com/characters/123456. "
+                + "Saving it lets RelicTracker request that profile's relic lists.");
         }
     }
 

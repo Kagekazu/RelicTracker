@@ -253,7 +253,7 @@ public sealed partial class PluginUI
                 ImGui.TextColored(
                     MutedColor,
                     inventory
-                        ? "MogVault finds relics you still own. Tick completed relics you no longer have, or link FFXIV Collect in Settings."
+                        ? "MogVault finds relics you still own. Manual ticks stay marked until cleared; for sold or desynthed relics, link FFXIV Collect in Settings."
                         : "MogVault is required for owned-relic detection. Enable it and wait for it to finish loading.");
                 ImGui.Spacing();
                 break;
