@@ -6,16 +6,22 @@ namespace RelicTracker.IPC;
 internal static class GatherChillIpc
 {
     private const string InternalName = "GatherChill";
-    private const int RequiredApiVersion = 1;
-    private const int GatherItemApiVersion = 2;
+    private static readonly Version MinimumPluginVersion = new(1, 0, 0, 6);
+    private const int RequiredApiVersion = 5;
+    private const int JobStarted = 0;
+    private const int JobRunning = 1;
+    private const int JobStopping = 2;
+    private const string JobOwner = "RelicTracker";
     private const long BindRetryMs = 60_000;
 
     private static ICallGateSubscriber<int>? _apiVersion;
     private static ICallGateSubscriber<bool>? _isBusy;
     private static ICallGateSubscriber<uint, bool>? _canGather;
     private static ICallGateSubscriber<(uint ItemId, uint Amount)[], int>? _addToGatherList;
-    private static ICallGateSubscriber<uint, int, bool>? _gatherItem;
-    private static ICallGateSubscriber<object>? _stop;
+    private static ICallGateSubscriber<string, uint, int, (int Result, Guid JobId, string Message)>? _startJob;
+    private static ICallGateSubscriber<Guid, (int State, int Gathered, int Wanted, string Message)>? _getJob;
+    private static ICallGateSubscriber<string, Guid, bool>? _cancelJob;
+    private static Guid _jobId;
     private static readonly Dictionary<uint, bool> CanGatherCache = [];
     private static bool _ipcBound;
     private static bool _loggedBindFailure;
@@ -33,11 +39,9 @@ internal static class GatherChillIpc
         get
         {
             EnsureBound();
-            return _ipcBound;
+            return _ipcBound && ApiVersion() >= RequiredApiVersion;
         }
     }
-
-    public static bool SupportsGatherItem => IsReady && ApiVersion() >= GatherItemApiVersion;
 
     public static void Init() => EnsureBound();
 
@@ -47,8 +51,10 @@ internal static class GatherChillIpc
         _isBusy = null;
         _canGather = null;
         _addToGatherList = null;
-        _gatherItem = null;
-        _stop = null;
+        _startJob = null;
+        _getJob = null;
+        _cancelJob = null;
+        _jobId = Guid.Empty;
         CanGatherCache.Clear();
         _ipcBound = false;
         _loggedBindFailure = false;
@@ -56,9 +62,9 @@ internal static class GatherChillIpc
     }
 
     // Queried each time, so a Gather & Chill update is picked up without a reload.
-    public static int ApiVersion()
+    private static int ApiVersion()
     {
-        if (!IsReady || _apiVersion == null)
+        if (_apiVersion is not { HasFunction: true })
         {
             return 0;
         }
@@ -142,51 +148,81 @@ internal static class GatherChillIpc
         }
     }
 
-    // Writes into the saved gather list (an existing entry keeps the larger amount); stops by itself when done.
-    public static bool TryGatherItem(uint itemId, uint amount, out string? error)
+    public static bool TryStartJob(uint itemId, uint amount, out string? error)
     {
         error = null;
-        if (!SupportsGatherItem || _gatherItem == null)
+        if (!IsReady || _startJob == null)
         {
-            error = "Gather & Chill isn't loaded, or is too old.";
+            error = "Gather & Chill's temporary jobs aren't available.";
             return false;
         }
 
         try
         {
-            if (_gatherItem.InvokeFunc(itemId, (int)amount))
+            var result = _startJob.InvokeFunc(JobOwner, itemId, (int)amount);
+            if (result.Result == JobStarted && result.JobId != Guid.Empty)
             {
+                _jobId = result.JobId;
                 return true;
             }
 
-            error = IsBusy() ? "Gather & Chill is already gathering." : "Gather & Chill couldn't gather that item.";
+            error = result.Message;
             return false;
         }
         catch (Exception ex)
         {
-            Svc.Log.Warning(ex, "[RelicTracker] GatherChill.GatherItem failed for {ItemId}.", itemId);
+            Svc.Log.Warning(ex, "[RelicTracker] GatherChill.StartJob failed for {ItemId}.", itemId);
             error = ex.Message;
             return false;
         }
     }
 
-    public static bool TryStop(out string? error)
+    public static bool CanCancelJob()
     {
-        error = null;
-        if (!SupportsGatherItem || _stop == null)
+        if (_jobId == Guid.Empty || !IsReady || _getJob == null)
         {
-            error = "Gather & Chill isn't loaded, or is too old.";
             return false;
         }
 
         try
         {
-            _stop.InvokeAction();
-            return true;
+            var state = _getJob.InvokeFunc(_jobId).State;
+            if (state is not (JobRunning or JobStopping))
+            {
+                _jobId = Guid.Empty;
+            }
+
+            return state == JobRunning;
         }
         catch (Exception ex)
         {
-            Svc.Log.Warning(ex, "[RelicTracker] GatherChill.Stop failed.");
+            Svc.Log.Debug(ex, "[RelicTracker] GatherChill.GetJob failed.");
+            return false;
+        }
+    }
+
+    public static bool TryCancelJob(out string? error)
+    {
+        error = null;
+        if (!IsReady || _jobId == Guid.Empty || _cancelJob == null)
+        {
+            error = "No RelicTracker gathering job is available to stop.";
+            return false;
+        }
+
+        try
+        {
+            if (_cancelJob.InvokeFunc(JobOwner, _jobId))
+            {
+                return true;
+            }
+
+            error = "Gather & Chill couldn't stop the RelicTracker job.";
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Warning(ex, "[RelicTracker] GatherChill.CancelJob failed.");
             error = ex.Message;
             return false;
         }
@@ -206,7 +242,8 @@ internal static class GatherChillIpc
             Svc.Log.Information("[RelicTracker] Gather & Chill IPC gone.");
         }
 
-        if (!IsEnabled)
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
         {
             return;
         }
@@ -226,10 +263,13 @@ internal static class GatherChillIpc
             _canGather ??= Svc.PluginInterface.GetIpcSubscriber<uint, bool>("GatherChill.CanGather");
             _addToGatherList ??= Svc.PluginInterface.GetIpcSubscriber<(uint ItemId, uint Amount)[], int>(
                 "GatherChill.AddToGatherList");
-            _gatherItem ??= Svc.PluginInterface.GetIpcSubscriber<uint, int, bool>("GatherChill.GatherItem");
-            _stop ??= Svc.PluginInterface.GetIpcSubscriber<object>("GatherChill.Stop");
+            _startJob ??= Svc.PluginInterface
+                .GetIpcSubscriber<string, uint, int, (int, Guid, string)>("GatherChill.StartJob");
+            _getJob ??= Svc.PluginInterface
+                .GetIpcSubscriber<Guid, (int, int, int, string)>("GatherChill.GetJob");
+            _cancelJob ??= Svc.PluginInterface.GetIpcSubscriber<string, Guid, bool>("GatherChill.CancelJob");
 
-            if (!_apiVersion.HasFunction || _apiVersion.InvokeFunc() < RequiredApiVersion)
+            if (ApiVersion() < RequiredApiVersion || !_startJob.HasFunction || !_getJob.HasFunction || !_cancelJob.HasFunction)
             {
                 return;
             }

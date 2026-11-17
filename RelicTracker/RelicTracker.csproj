@@ -58,10 +58,6 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Core\UI\PluginUI.Collection.cs" />
-    </ItemGroup>
-
     <Target Name="RelicTrackerClearPackagerReadOnly"
             BeforeTargets="Build"
             Condition="'$(OS)' == 'Windows_NT' and Exists('$(MSBuildProjectDirectory)\$(OutputPath)$(AssemblyName)')">

@@ -143,12 +143,14 @@ public sealed partial class PluginUI
             ImGui.TextColored(MutedColor, "Nothing short here has a Gather & Chill route.");
         }
 
-        if (GatherChillIpc.SupportsGatherItem && GatherChillIpc.IsBusy())
+        if (GatherChillIpc.CanCancelJob())
         {
             ImGui.SameLine();
-            if (ImGui.SmallButton("Stop Gather & Chill##gnc_stop") && !GatherChillIpc.TryStop(out var error))
+            if (ImGui.SmallButton("Stop gathering##gnc_stop"))
             {
-                gatherChillResult = new(error ?? "Gather & Chill didn't stop.", true);
+                gatherChillResult = GatherChillIpc.TryCancelJob(out var error)
+                    ? new("Stopping RelicTracker's gathering job.", false)
+                    : new(error ?? "Gather & Chill didn't stop.", true);
             }
         }
 
@@ -167,29 +169,24 @@ public sealed partial class PluginUI
             return;
         }
 
-        var direct = GatherChillIpc.SupportsGatherItem;
-        var busy = direct && GatherChillIpc.IsBusy();
+        var busy = GatherChillIpc.IsBusy();
         var what = $"{row.Short:N0} × {row.DisplayMaterial}";
         ImGui.SameLine();
         using (ImRaii.Disabled(busy))
         {
-            if (ImGui.SmallButton($"{(direct ? "Gather now" : "Add to list")}##gnc_row_{itemId}"))
+            if (ImGui.SmallButton($"Gather now##gnc_row_{itemId}"))
             {
-                var ok = direct
-                    ? GatherChillIpc.TryGatherItem(itemId, row.Short, out var error)
-                    : GatherChillIpc.TryAddToGatherList([(itemId, row.Short)], out _, out error);
-                gatherChillResult = ok
-                    ? new(direct ? $"Gather & Chill is gathering {what}." : $"Added {what} to Gather & Chill's gather list.", false)
+                gatherChillResult = GatherChillIpc.TryStartJob(itemId, row.Short, out var error)
+                    ? new($"Gather & Chill is gathering {what}.", false)
                     : new(error ?? "Gather & Chill didn't accept the item.", true);
             }
         }
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
         {
-            ImGui.SetTooltip(
-                busy ? "Gather & Chill is already gathering."
-                : direct ? $"Gathers {what} with Gather & Chill right now, then stops."
-                : $"Adds {what} to Gather & Chill's gather list.\nUpdate Gather & Chill to gather it straight away.");
+            ImGui.SetTooltip(busy
+                ? "Gather & Chill is already gathering."
+                : $"Gathers {what} without changing your saved gather list.");
         }
     }
 

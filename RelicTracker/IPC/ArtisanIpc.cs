@@ -1,5 +1,4 @@
 using Dalamud.Plugin.Ipc;
-using Dalamud.Plugin.Ipc.Exceptions;
 using ECommons.Reflection;
 
 namespace RelicTracker.IPC;
@@ -7,6 +6,7 @@ namespace RelicTracker.IPC;
 internal static class ArtisanIpc
 {
     private const string InternalName = "Artisan";
+    private static readonly Version MinimumPluginVersion = new(4, 0, 5, 24);
     private const long BindRetryMs = 60_000;
 
     // Must match Artisan's RelicToolPremadeLists.RelicToolStep ordinals.
@@ -186,7 +186,8 @@ internal static class ArtisanIpc
             Svc.Log.Information("[RelicTracker] Artisan IPC gone.");
         }
 
-        if (!IsEnabled)
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
         {
             return;
         }
@@ -224,7 +225,6 @@ internal static class ArtisanIpc
         }
     }
 
-    // Artisan registers (int, uint) -> uint since its relic list refactor, (int, int) -> int before it.
     private static Func<int, int, int>? BindRelicToolListIdLookup()
     {
         var current = Svc.PluginInterface.GetIpcSubscriber<int, uint, uint>("Artisan.GetRelicToolListId");
@@ -234,16 +234,7 @@ internal static class ArtisanIpc
             return null;
         }
 
-        try
-        {
-            _ = current.InvokeFunc(0, 0u);
-            return (step, slot) => (int)current.InvokeFunc(step, (uint)slot);
-        }
-        catch (IpcTypeMismatchError)
-        {
-            var legacy = Svc.PluginInterface.GetIpcSubscriber<int, int, int>("Artisan.GetRelicToolListId");
-            _ = legacy.InvokeFunc(0, 0);
-            return legacy.InvokeFunc;
-        }
+        _ = current.InvokeFunc(0, 0u);
+        return (step, slot) => (int)current.InvokeFunc(step, (uint)slot);
     }
 }

@@ -83,12 +83,6 @@ public sealed partial class PluginUI
         return true;
     }
 
-    private void DrawTabIntro(string blurb)
-    {
-        ImGui.TextColored(MutedColor, blurb);
-        ImGui.Dummy(new Vector2(0, 4));
-    }
-
     private void EndStickyHeader()
     {
         ImGui.Dummy(new Vector2(0, 2));
@@ -293,33 +287,6 @@ public sealed partial class PluginUI
 
         ImGui.Spacing();
     }
-
-    private void DrawPercentBar(float fraction, float width, string overlay)
-    {
-        Vector4 color = fraction >= 1f ? GoodColor : ProgressColor;
-        using (ImRaii.PushColor(ImGuiCol.PlotHistogram, color))
-        {
-            ImGui.ProgressBar(Math.Clamp(fraction, 0f, 1f), new Vector2(width, ImGui.GetFrameHeight()), string.Empty);
-        }
-
-        // ImGui puts the overlay after the fill, off the end of a nearly full bar. Centre it instead,
-        // dark over the fill and normal over the rest so it reads on both.
-        var min = ImGui.GetItemRectMin();
-        var max = ImGui.GetItemRectMax();
-        var textSize = ImGui.CalcTextSize(overlay);
-        var textPos = new Vector2(min.X + ((max.X - min.X - textSize.X) * 0.5f), min.Y + ((max.Y - min.Y - textSize.Y) * 0.5f));
-
-        var fillX = min.X + ((max.X - min.X) * Math.Clamp(fraction, 0f, 1f));
-        var drawList = ImGui.GetWindowDrawList();
-        drawList.PushClipRect(min, new Vector2(fillX, max.Y), true);
-        drawList.AddText(textPos, ImGui.GetColorU32(BarTextOnFill), overlay);
-        drawList.PopClipRect();
-        drawList.PushClipRect(new Vector2(fillX, min.Y), max, true);
-        drawList.AddText(textPos, ImGui.GetColorU32(ImGuiCol.Text), overlay);
-        drawList.PopClipRect();
-    }
-
-    private static readonly Vector4 BarTextOnFill = new(0.08f, 0.08f, 0.1f, 1f);
 
     private sealed record StatusMessage(string Text, bool IsError);
 

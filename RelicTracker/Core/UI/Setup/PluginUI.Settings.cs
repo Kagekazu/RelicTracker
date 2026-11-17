@@ -169,7 +169,7 @@ public sealed partial class PluginUI
     {
         bool artisanReady = ArtisanIpc.SupportsRelicToolLists;
         DrawIntegration(new("Artisan", "Crafts relic tool turn-ins from the upgrade page.",
-            "Update Artisan to a version that supports relic tool craft lists.", true,
+            "Update Artisan in /xlplugins to use relic crafting lists.", true,
             ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, artisanReady,
             artisanReady && ArtisanIpc.IsBusy() ? "Crafting" : null));
 
@@ -184,7 +184,7 @@ public sealed partial class PluginUI
         if (GatherChillIpc.IsInstalled)
         {
             bool gatherChillReady = GatherChillIpc.IsReady;
-            DrawIntegration(new("Gather & Chill", "Adds missing gatherables to its list from the Materials page.",
+            DrawIntegration(new("Gather & Chill", "Gather missing materials now or save them to your gather list for later.",
                 "Wait for Gather & Chill to finish loading, or update it in /xlplugins.", true,
                 true, GatherChillIpc.IsEnabled, gatherChillReady,
                 gatherChillReady && GatherChillIpc.IsBusy() ? "Gathering" : null));

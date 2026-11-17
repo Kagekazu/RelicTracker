@@ -22,7 +22,7 @@ RelicTracker tracks relic progress per character and shows which materials you s
 
 5. `/xlplugins` -> **MogVault** -> **Install** and enable it
 
-MogVault is required for live inventory tracking and the Materials page. It detects relics, replicas, and materials across bags, retainers, dresser, and armoire.
+MogVault 1.0.0.0 or newer is required for live inventory tracking and the Materials page. It detects relics, replicas, and materials across bags, retainers, dresser, and armoire.
 
 ## Using RelicTracker
 
@@ -35,9 +35,9 @@ Right-click a relic or material in your inventory to jump straight to it.
 ## Optional helpers
 
 - **FFXIV Collect** - recover finished relic progress for items you sold or desynthed. Link a public profile by entering its character ID; RelicTracker then fetches that profile's relic lists.
-- **Artisan** - crafts supported turn-ins from an upgrade page.
-- **Knightshopper** - use **Save shopping list** in Materials to review eligible purchases in Knightshopper. **Buy now** starts buying immediately where available.
-- **Gather & Chill** - adds missing gatherables to its saved gather list when installed.
+- **Artisan** (4.0.5.24+) - crafts supported turn-ins from an upgrade page.
+- **Knightshopper** (1.0.2.0+) - use **Save shopping list** in Materials to review eligible purchases in Knightshopper. **Buy now** starts buying immediately where available.
+- **Gather & Chill** (1.0.0.6+) - **Gather now** starts gathering the amount you're short. Your saved gather list stays intact and **Stop gathering** cancels the job you started from RelicTracker. **Add to Gather & Chill** saves materials for later.
 
 ## Questions
 

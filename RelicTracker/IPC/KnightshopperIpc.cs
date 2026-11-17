@@ -55,8 +55,8 @@ internal readonly record struct KnightshopperStatus(
 internal static class KnightshopperIpc
 {
     private const string InternalName = "Knightshopper";
-    private const int RequiredApiVersion = 2;
-    private const int ListSyncApiVersion = 3;
+    private static readonly Version MinimumPluginVersion = new(1, 0, 2, 0);
+    private const int RequiredApiVersion = 4;
     private const long BindRetryMs = 60_000;
 
     private static ICallGateSubscriber<int>? _apiVersion;
@@ -85,7 +85,7 @@ internal static class KnightshopperIpc
         get
         {
             EnsureBound();
-            return _ipcBound;
+            return _ipcBound && HasRequiredApi();
         }
     }
 
@@ -239,7 +239,7 @@ internal static class KnightshopperIpc
     {
         try
         {
-            if (!IsReady || _apiVersion is not { HasFunction: true } || _apiVersion.InvokeFunc() < ListSyncApiVersion)
+            if (!IsReady)
             {
                 return (false, "Enable or update Knightshopper in /xlplugins to save shopping lists.");
             }
@@ -289,6 +289,19 @@ internal static class KnightshopperIpc
         return string.IsNullOrWhiteSpace(text) ? reason : $"{reason}\n{text}";
     }
 
+    private static bool HasRequiredApi()
+    {
+        try
+        {
+            return _apiVersion is { HasFunction: true } && _apiVersion.InvokeFunc() >= RequiredApiVersion;
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Debug(ex, "[RelicTracker] Knightshopper.ApiVersion failed.");
+            return false;
+        }
+    }
+
     private static void EnsureBound()
     {
         if (_ipcBound)
@@ -303,7 +316,8 @@ internal static class KnightshopperIpc
             Svc.Log.Information("[RelicTracker] Knightshopper IPC gone.");
         }
 
-        if (!IsEnabled)
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
         {
             return;
         }
@@ -325,7 +339,7 @@ internal static class KnightshopperIpc
             _getStatus ??= Svc.PluginInterface.GetIpcSubscriber<Guid, (int, int, int, uint, string)>("Knightshopper.Purchase.GetStatus");
             _cancel ??= Svc.PluginInterface.GetIpcSubscriber<Guid, bool>("Knightshopper.Purchase.Cancel");
 
-            if (!_apiVersion.HasFunction || _apiVersion.InvokeFunc() < RequiredApiVersion)
+            if (!HasRequiredApi())
             {
                 return;
             }

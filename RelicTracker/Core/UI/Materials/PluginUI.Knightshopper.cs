@@ -17,20 +17,16 @@ public sealed partial class PluginUI
 
     private void DrawKnightshopperBar(IReadOnlyList<ShoppingMaterialRow> materials, string? listPurpose = null)
     {
-        Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = GroupKnightshopperPurchases(materials);
-        if (groups.Count == 0 && !KnightshopperIpc.IsReady)
+        if (!KnightshopperIpc.IsReady)
         {
             return;
         }
 
+        Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = GroupKnightshopperPurchases(materials);
         ImGui.Spacing();
         if (groups.Count == 0)
         {
-            if (KnightshopperIpc.IsReady)
-            {
-                ImGui.TextColored(MutedColor, "None of the items you still need can be bought through Knightshopper.");
-            }
-
+            ImGui.TextColored(MutedColor, "None of the items you still need can be bought through Knightshopper.");
             return;
         }
 
@@ -67,11 +63,8 @@ public sealed partial class PluginUI
         var items = groups[selected];
         ImGui.SameLine();
         DrawKnightshopperSaveButton(selected, items, listPurpose);
-        if (KnightshopperIpc.IsReady)
-        {
-            ImGui.SameLine();
-            DrawKnightshopperBuyButton(selected, items, "Buy now");
-        }
+        ImGui.SameLine();
+        DrawKnightshopperBuyButton(selected, items, "Buy now");
     }
 
     // True while a purchase is running, so callers can hide their buy buttons.
@@ -270,4 +263,69 @@ public sealed partial class PluginUI
     private static (uint ItemId, uint Quantity)[] KnightshopperTargets(IReadOnlyList<KnightshopperPurchase> items) =>
         [.. items.Select(item => (item.ItemId, GetOnCharacterItemCount(item.ItemId) + item.Short))];
 
+    private List<KnightshopperPurchase> GetPhantomArmorPurchases(
+        ArmorLine armor, ArmorSet set, ArmorTier tier, RelicOwnership ownership, Func<uint, uint> ownedLookup)
+    {
+        var missing = Enumerable.Range(0, tier.Pieces)
+            .Where(index => !ownership.IsArmorPieceOwned(tier.CollectType, index))
+            .ToArray();
+        if (missing.Length == 0)
+        {
+            return [];
+        }
+
+        return tier.Label == "Base"
+            ? PhantomBasePiecePurchases(tier, missing)
+            : PhantomUpgradeMaterialPurchases(armor, set, tier, missing, ownedLookup);
+    }
+
+    private void DrawPhantomArmorShoppingButton(ArmorSet set, ArmorTier tier, IReadOnlyList<KnightshopperPurchase> purchases)
+    {
+        if (!KnightshopperIpc.IsReady)
+        {
+            return;
+        }
+
+        DrawKnightshopperSaveButton(KnightshopperCurrency.OccultCrescent, purchases, $"{set.Name} {tier.Label}",
+            tier.Label == "Base" ? "Save missing pieces to Knightshopper" : "Save upgrade materials to Knightshopper");
+    }
+
+    private static List<KnightshopperPurchase> PhantomBasePiecePurchases(ArmorTier tier, IReadOnlyList<int> missing) =>
+    [
+        .. missing.Where(index => index < tier.PieceIds.Count)
+            .Select(index => tier.PieceIds[index])
+            .Where(id => id != 0)
+            .Distinct()
+            .Select(id => new KnightshopperPurchase(id, ItemDisplayNames.Resolve(id, $"Item {id}"), 1)),
+    ];
+
+    private List<KnightshopperPurchase> PhantomUpgradeMaterialPurchases(
+        ArmorLine armor, ArmorSet set, ArmorTier tier, IReadOnlyList<int> missing, Func<uint, uint> ownedLookup)
+    {
+        if (!data.ArmorCosts.TryGetValue(armor.Expansion, out var costs))
+        {
+            return [];
+        }
+
+        List<KnightshopperPurchase> purchases = [];
+        foreach (var cost in costs)
+        {
+            uint itemId = cost.CurrencyIds.FirstOrDefault();
+            // These materials have direct offers for Knightshopper's supported Occult Crescent currencies.
+            if (itemId is not (47864 or 47865 or 51978)
+                || !ArmorCostCalculator.CostAppliesTo(cost, set.Name, tier, null))
+            {
+                continue;
+            }
+
+            uint need = missing.Aggregate(0u, (sum, piece) =>
+                sum + ArmorCostCalculator.PieceCost(cost, piece % ArmorCostCalculator.PiecesPerSet));
+            uint owned = ownedLookup(itemId);
+            if (owned < need)
+            {
+                purchases.Add(new(itemId, ItemDisplayNames.Resolve(itemId, cost.Currency), need - owned));
+            }
+        }
+        return purchases;
+    }
 }
