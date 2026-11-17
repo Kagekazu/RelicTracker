@@ -2,7 +2,7 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
     <PropertyGroup>
         <Authors>Kagekazu</Authors>
-        <Version>1.0.3.0</Version>
+        <Version>2.0.0.0</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -53,6 +53,10 @@
         <None Include="..\data\extracted\tool_extra_materials.json" Link="Data\tool_extra_materials.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Core\UI\PluginUI.Collection.cs" />
     </ItemGroup>
 
     <Target Name="RelicTrackerClearPackagerReadOnly"
