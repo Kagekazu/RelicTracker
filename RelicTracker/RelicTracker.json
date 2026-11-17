@@ -12,5 +12,5 @@
     "crafting",
     "utility"
   ],
-  "Changelog": "- MogVault is now required to track the relics and materials you own. RelicTracker explains how to install, enable, or update it if needed.\n- Relic steps and armour pieces now update from your inventory. Previous completion marks still count. FFXIV Collect remains optional for relics you sold or desynthed.\n- Clearer material totals, progress sources, empty results, and helper actions throughout the tracker."
+  "Changelog": "- RelicTracker opens on All Relics, with every weapon, tool, and armour series in one place.\n- Pick any upgrade to see a short plan and expand Quest details for the full walkthrough. Armour pages show missing pieces by role or job.\n- Materials follows the series you open and groups what's left by how you get it. One-time unlocks have their own section.\n- Save Knightshopper lists for eligible materials, missing Dawntrail armour pieces, and supported armour upgrade materials.\n- MogVault is required for Materials and live inventory tracking. Existing completion marks still count, and FFXIV Collect can track relics you no longer own."
 }

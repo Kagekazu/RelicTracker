@@ -19,6 +19,7 @@ public sealed partial class PluginUI
             return;
         }
 
+        bool buying = DrawKnightshopperStatus();
         var statuses = TrackerStatuses(expansionId, scope);
         Func<uint, uint> ownedLookup = CreateOwnedLookup();
         DrawLucisFirstJobPicker(expansionId, scope);
@@ -27,7 +28,7 @@ public sealed partial class PluginUI
             var title = scope ?? (statuses.Count == 1
                 ? statuses[0].Line.CollectType
                 : ExpansionNames.IsTools(expansionId) ? "Relic tools" : "Relic weapons");
-            DrawWeaponAndToolPlan(expansionId, scope, title, statuses, ownedLookup, query);
+            DrawWeaponAndToolPlan(expansionId, scope, title, statuses, ownedLookup, query, buying);
         }
 
         foreach (var armor in catalog.ArmorLinesFor(expansionId).Where(line => scope is null || line.LineName == scope))
@@ -39,7 +40,7 @@ public sealed partial class PluginUI
                 ImGui.Spacing();
             }
 
-            DrawArmorPlan(armor, ownedLookup, query);
+            DrawArmorPlan(armor, ownedLookup, query, buying);
         }
     }
 
@@ -49,7 +50,8 @@ public sealed partial class PluginUI
         string title,
         IReadOnlyList<RelicLineStatus> statuses,
         Func<uint, uint> ownedLookup,
-        string query)
+        string query,
+        bool buying)
     {
         ImGui.TextColored(HeaderColor, title);
         var materials = MergeByMaterial(GetTrackerShoppingMaterials(expansionId, scope, ownedLookup));
@@ -68,8 +70,6 @@ public sealed partial class PluginUI
         var rewards = GetPrefarmRewards(expansionId, statuses, ownedLookup)
             .Where(reward => Matches(reward.DisplayMaterial, query) || Matches(reward.Material, query)
                 || Matches(reward.CatalogStep, query)).ToArray();
-        bool hasShoppingStatus = KnightshopperIpc.ActiveOperation is not null
-            || knightshopperSync is not null || knightshopperResult is not null;
 
         // Quest objectives still matter after all the items for an unlock are in the player's bags.
         var pendingUnlocks = statuses
@@ -80,8 +80,7 @@ public sealed partial class PluginUI
                 || (Matches(task.Step, query) && UnlockInstructions(task.Series, task.Step).Any()))
             .ToArray();
 
-        if (perWeapon.Length == 0 && pendingUnlocks.Length == 0 && activities.Count == 0
-            && rewards.Length == 0 && !hasShoppingStatus)
+        if (perWeapon.Length == 0 && pendingUnlocks.Length == 0 && activities.Count == 0 && rewards.Length == 0)
         {
             ImGui.TextUnformatted(query.Length == 0 ? "No materials or quests left to show." : "No matching materials or quests.");
             return;
@@ -94,9 +93,12 @@ public sealed partial class PluginUI
 
         try
         {
-            if ((buy.Length > 0 || hasShoppingStatus) && ImGui.BeginTabItem("Buy & trade###Buy"))
+            if (buy.Length > 0 && ImGui.BeginTabItem("Buy & trade###Buy"))
             {
-                DrawKnightshopperBar(buy);
+                if (!buying)
+                {
+                    DrawKnightshopperBar(buy, query.Length == 0 ? null : "search results");
+                }
                 DrawMaterialTasks(buy, showBuySource: true);
                 ImGui.EndTabItem();
             }
@@ -143,7 +145,7 @@ public sealed partial class PluginUI
             }
             if (pendingUnlocks.Length > 0 && ImGui.BeginTabItem("One-time unlocks"))
             {
-                DrawUnlockTasks(expansionId, pendingUnlocks, unlocks);
+                DrawUnlockTasks(expansionId, pendingUnlocks, unlocks, buying, query.Length > 0);
                 ImGui.EndTabItem();
             }
         }
@@ -177,13 +179,15 @@ public sealed partial class PluginUI
     private void DrawUnlockTasks(
         string expansionId,
         IReadOnlyList<(string Series, string Step)> pendingUnlocks,
-        IReadOnlyList<ShoppingMaterialRow> rows)
+        IReadOnlyList<ShoppingMaterialRow> rows,
+        bool buying,
+        bool filtered)
     {
         ImGui.TextWrapped("Complete each unlock once to upgrade all jobs.");
         var purchases = rows.Where(row => row.Obtain == "buy" || row.BuyAlternative is not null).ToArray();
-        if (purchases.Length > 0)
+        if (!buying && purchases.Length > 0)
         {
-            DrawKnightshopperBar(purchases, "one-time unlocks");
+            DrawKnightshopperBar(purchases, filtered ? "one-time unlocks - search results" : "one-time unlocks");
         }
 
         foreach (var (series, step) in pendingUnlocks)
@@ -284,7 +288,7 @@ public sealed partial class PluginUI
         }
     }
 
-    private void DrawArmorPlan(ArmorLine armor, Func<uint, uint> ownedLookup, string query)
+    private void DrawArmorPlan(ArmorLine armor, Func<uint, uint> ownedLookup, string query, bool buying)
     {
         ImGui.TextColored(HeaderColor, armor.LineName);
         if (!data.ArmorCosts.TryGetValue(armor.Expansion, out var costs))
@@ -295,11 +299,7 @@ public sealed partial class PluginUI
 
         var ownership = GetOwnership();
         using var armourScope = ImRaii.PushId(armor.LineName);
-        bool canShop = armor.Expansion == "DT" && armor.LineName == "Phantom Armor";
-        if (canShop)
-        {
-            canShop = !DrawKnightshopperStatus();
-        }
+        bool canShop = !buying && armor.Expansion == "DT" && armor.LineName == "Phantom Armor";
 
         bool any = false;
         foreach (var set in armor.Sets)

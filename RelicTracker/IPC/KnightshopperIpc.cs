@@ -7,7 +7,6 @@ namespace RelicTracker.IPC;
 internal enum KnightshopperCurrency
 {
     BicolorGemstone = 0,
-    CompanySeal = 1,
     Gil = 2,
     Hunt = 3,
     MGP = 4,
@@ -210,7 +209,6 @@ internal static class KnightshopperIpc
             "Gil" => KnightshopperCurrency.Gil,
             "Tomestones" => KnightshopperCurrency.Tomestone,
             "Scrips" => KnightshopperCurrency.Scrip,
-            "GC seals" => KnightshopperCurrency.CompanySeal,
             "Bicolor Gemstones" => KnightshopperCurrency.BicolorGemstone,
             "Skybuilders' Scrips" => KnightshopperCurrency.Firmament,
             "Hunt seals" => KnightshopperCurrency.Hunt,
@@ -227,7 +225,6 @@ internal static class KnightshopperIpc
     public static string CurrencyLabel(KnightshopperCurrency currency) => currency switch
     {
         KnightshopperCurrency.BicolorGemstone => "Bicolor Gemstones",
-        KnightshopperCurrency.CompanySeal => "Grand Company seals",
         KnightshopperCurrency.Hunt => "Hunt seals",
         KnightshopperCurrency.PVP => "PvP currency",
         KnightshopperCurrency.Scrip => "Scrips",

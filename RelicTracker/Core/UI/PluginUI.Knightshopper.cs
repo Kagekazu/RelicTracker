@@ -18,17 +18,12 @@ public sealed partial class PluginUI
     private void DrawKnightshopperBar(IReadOnlyList<ShoppingMaterialRow> materials, string? listPurpose = null)
     {
         Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = GroupKnightshopperPurchases(materials);
-        if (groups.Count == 0 && !KnightshopperIpc.IsReady && knightshopperResult is null && knightshopperSync is null)
+        if (groups.Count == 0 && !KnightshopperIpc.IsReady)
         {
             return;
         }
 
         ImGui.Spacing();
-        if (DrawKnightshopperStatus())
-        {
-            return;
-        }
-
         if (groups.Count == 0)
         {
             if (KnightshopperIpc.IsReady)
