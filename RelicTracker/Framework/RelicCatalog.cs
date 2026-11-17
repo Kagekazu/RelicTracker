@@ -145,6 +145,7 @@ public sealed class RelicCatalog
     };
 
     private Dictionary<string, Dictionary<string, string>> stepNotes = new(StringComparer.Ordinal);
+    private Dictionary<string, Dictionary<string, string>> stepChecklists = new(StringComparer.Ordinal);
 
     public IReadOnlyList<RelicLine> Lines { get; private set; } = [];
 
@@ -173,6 +174,9 @@ public sealed class RelicCatalog
                         "relic_step_notes.json",
                         JsonOptions)
                     ?? new(StringComparer.Ordinal);
+        stepChecklists = BundledData.ReadJson<Dictionary<string, Dictionary<string, string>>>(
+                             "relic_checklists.json", JsonOptions)
+                         ?? new(StringComparer.Ordinal);
         ArmorLines = BundledData.ReadJson<List<ArmorLine>>("relic_armor.json", JsonOptions) ?? [];
         if (ArmorLines.Count > 0)
         {
@@ -182,6 +186,11 @@ public sealed class RelicCatalog
 
     public IEnumerable<ArmorLine> ArmorLinesFor(string expansionId) =>
         ArmorLines.Where(line => string.Equals(line.Expansion, expansionId, StringComparison.Ordinal));
+
+    public string? StepChecklist(string series, string step) =>
+        stepChecklists.TryGetValue(series, out var steps) && steps.TryGetValue(step, out var checklist)
+            ? checklist
+            : null;
 
     public string? StepNote(string collectType, string stepName)
     {

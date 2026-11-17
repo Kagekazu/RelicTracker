@@ -45,6 +45,8 @@ public sealed partial class PluginUI
                 Purchase = group.Select(row => row.Purchase).FirstOrDefault(purchase => purchase is not null),
                 Obtain = first.Obtain,
                 ObtainVia = first.ObtainVia,
+                BuyAlternative = first.BuyAlternative,
+                BuyAlternativeQuest = first.BuyAlternativeQuest,
                 OneTime = first.OneTime,
                 Craftable = first.Craftable,
                 ForSteps = steps,
@@ -52,153 +54,6 @@ public sealed partial class PluginUI
         }
 
         return merged;
-    }
-
-    private void DrawObtainGroups(
-        string expansionId,
-        IReadOnlyList<ShoppingMaterialRow> materials,
-        IReadOnlyList<RelicLineStatus> statuses,
-        Func<uint, uint> ownedLookup)
-    {
-        List<ShoppingMaterialRow> oneTime = [.. materials.Where(row => row.OneTime)];
-        List<ShoppingMaterialRow> perWeapon = [.. materials.Where(row => !row.OneTime)];
-
-        DrawObtainSection(
-            expansionId,
-            "OneTime",
-            "One-time steps",
-            "Done once, before your first weapon of that step - not again for every job.",
-            oneTime,
-            row => row.ObtainLabel,
-            () => DrawArtisanWeaponListButtons(expansionId, oneTime));
-
-        DrawBuySection(expansionId, [.. perWeapon.Where(row => row.Obtain == "buy")]);
-
-        List<ShoppingMaterialRow> craftRows = [.. perWeapon.Where(row => row.Obtain == "craft")];
-        DrawObtainSection(
-            expansionId,
-            "Craft",
-            "Craft",
-            ExpansionNames.IsTools(expansionId) && ArtisanIpc.SupportsRelicToolLists
-                ? "Crafter tool steps have an Artisan list on the Relic tab."
-                : null,
-            craftRows,
-            null,
-            () => DrawArtisanWeaponListButtons(expansionId, craftRows));
-
-        List<ShoppingMaterialRow> gatherRows = [.. perWeapon.Where(row => row.Obtain is "gather" or "fish")];
-        DrawObtainSection(
-            expansionId,
-            "Gather",
-            "Gather & fish",
-            null,
-            gatherRows,
-            // Only split Gather / Diadem / Fish when there's more than one of them.
-            gatherRows.Select(row => row.ObtainLabel).Distinct().Skip(1).Any() ? row => row.ObtainLabel : null,
-            () => DrawGatherChillButton(gatherRows),
-            GatherChillIpc.IsReady ? DrawGatherChillRowButton : null);
-
-        DrawObtainSection(
-            expansionId,
-            "Content",
-            "Farm in content",
-            "Drops and trades from duties, FATEs, and field zones.",
-            [.. perWeapon.Where(row => row.Obtain is "content" or null)],
-            row => data.MaterialSources.TryGetValue(row.Material, out var zone) ? zone : row.Step);
-
-        DrawPrefarmRewards(expansionId, statuses, ownedLookup);
-    }
-
-    private void DrawBuySection(string expansionId, List<ShoppingMaterialRow> rows)
-    {
-        if (rows.Count == 0 || !DrawObtainHeader(expansionId, "Buy", "Buy", rows))
-        {
-            return;
-        }
-
-        DrawArtisanWeaponListButtons(expansionId, rows);
-        var shopping = DrawKnightshopperStatus();
-        List<ObtainGroup> groups = [];
-        foreach (var group in rows
-            .GroupBy(row => row.ObtainVia ?? "Other")
-            .OrderBy(group => group.Key, StringComparer.OrdinalIgnoreCase))
-        {
-            List<ShoppingMaterialRow> groupRows = [.. group];
-            List<KnightshopperPurchase> purchases = [];
-            KnightshopperCurrency currency = default;
-            if (!shopping && KnightshopperIpc.TryParseCurrency(group.Key, out currency))
-            {
-                foreach (var row in groupRows)
-                {
-                    if (TryGetKnightshopperPurchase(row, out _, out var purchase))
-                    {
-                        purchases.Add(purchase);
-                    }
-                }
-            }
-
-            Action? headingAction = null;
-            if (purchases.Count > 0)
-            {
-                headingAction = () =>
-                {
-                    DrawKnightshopperCopyButton(currency, purchases);
-                    if (KnightshopperIpc.IsReady)
-                    {
-                        ImGui.SameLine();
-                        DrawKnightshopperBuyButton(currency, purchases, $"Buy {purchases.Count} with Knightshopper");
-                    }
-                };
-            }
-
-            groups.Add(new(group.Key, groupRows, headingAction));
-        }
-
-        DrawObtainTable($"{expansionId}|Buy", groups);
-    }
-
-    private void DrawObtainSection(
-        string expansionId,
-        string key,
-        string title,
-        string? blurb,
-        List<ShoppingMaterialRow> rows,
-        Func<ShoppingMaterialRow, string>? subgroup,
-        Action? actions = null,
-        Action<ShoppingMaterialRow>? rowAction = null)
-    {
-        if (rows.Count == 0 || !DrawObtainHeader(expansionId, key, title, rows))
-        {
-            return;
-        }
-
-        if (blurb is not null)
-        {
-            ImGui.TextColored(MutedColor, blurb);
-        }
-
-        actions?.Invoke();
-
-        if (subgroup is null)
-        {
-            DrawObtainTable($"{expansionId}|{key}", [new(null, rows)], rowAction);
-            return;
-        }
-
-        List<IGrouping<string, ShoppingMaterialRow>> groups =
-        [
-            .. rows.GroupBy(subgroup).OrderBy(group => group.Min(row => row.StepOrder))
-        ];
-        DrawObtainTable(
-            $"{expansionId}|{key}",
-            [
-                .. groups.Select(group => new ObtainGroup(
-                    groups.Count > 1 || !string.IsNullOrEmpty(group.Key)
-                        ? string.IsNullOrEmpty(group.Key) ? "Other" : group.Key
-                        : null,
-                    [.. group]))
-            ],
-            rowAction);
     }
 
     private void DrawArtisanWeaponListButtons(string expansionId, IReadOnlyList<ShoppingMaterialRow> rows)
@@ -396,59 +251,11 @@ public sealed partial class PluginUI
         }
     }
 
-    private bool DrawObtainHeader(string expansionId, string key, string title, IReadOnlyList<ShoppingMaterialRow> rows)
-    {
-        var shortCount = rows.Count(row => row.Short > 0);
-        var badge = shortCount > 0 ? $"{Plural(rows.Count, "item")} · {shortCount} short" : Plural(rows.Count, "item");
-        var configKey = $"{expansionId}|Do|{key}";
-        return DrawCollapsingSection(configKey, $"{title}  ({badge})###{configKey}", true);
-    }
-
-    private sealed record ObtainGroup(string? Heading, IReadOnlyList<ShoppingMaterialRow> Rows, Action? HeadingAction = null);
-
-    private void DrawObtainTable(string id, IReadOnlyList<ObtainGroup> groups, Action<ShoppingMaterialRow>? rowAction = null)
-    {
-        using var table = ImRaii.Table($"Obtain_{id}", 5, ShoppingTableFlags, new(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Item", ImGuiTableColumnFlags.WidthStretch);
-        ImGui.TableSetupColumn("For", ImGuiTableColumnFlags.WidthFixed, 150);
-        ImGui.TableSetupColumn("Need", ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn("Owned", ImGuiTableColumnFlags.WidthFixed, 64);
-        ImGui.TableSetupColumn("Short", ImGuiTableColumnFlags.WidthFixed, 64);
-        DrawNeedOwnedShortHeaders(includeItem: true, includeFor: true);
-
-        foreach (var group in groups)
-        {
-            if (group.Heading is not null)
-            {
-                ImGui.TableNextRow();
-                ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg0, ImGui.GetColorU32(ImGuiCol.TableHeaderBg));
-                ImGui.TableNextColumn();
-                ImGui.AlignTextToFramePadding();
-                ImGui.TextColored(HeaderColor, group.Heading);
-                if (group.HeadingAction is not null)
-                {
-                    ImGui.SameLine();
-                    group.HeadingAction();
-                }
-            }
-
-            foreach (var row in group.Rows)
-            {
-                DrawMaterialRow(row, showFor: true, rowAction: rowAction);
-            }
-        }
-    }
-
-    private void DrawPrefarmRewards(string expansionId, IReadOnlyList<RelicLineStatus> statuses, Func<uint, uint> ownedLookup)
+    private List<ShoppingQuestRewardRow> GetPrefarmRewards(string expansionId, IReadOnlyList<RelicLineStatus> statuses, Func<uint, uint> ownedLookup)
     {
         if (!data.Expansions.TryGetValue(expansionId, out var sheet))
         {
-            return;
+            return [];
         }
 
         var questRewards = ShoppingListBuilder.BuildQuestRewardIndex(sheet);
@@ -482,59 +289,7 @@ public sealed partial class PluginUI
             }
         }
 
-        if (rewards.Count > 0)
-        {
-            DrawQuestRewardsSubsection($"{expansionId}|Do|Rewards", rewards);
-        }
-    }
-
-    private void DrawActivities(string expansionId, IReadOnlyList<TrackerActivity> activities)
-    {
-        var configKey = $"{expansionId}|Do|Activities";
-        if (!DrawCollapsingSection(configKey, $"Activities  ({Plural(activities.Count, "step")})###{configKey}", false))
-        {
-            return;
-        }
-
-        ImGui.TextColored(MutedColor, "Steps with nothing to stockpile - quests, duties, books, or light. Hover a step for what to do.");
-
-        // The line column only says something when the steps come from more than one relic line.
-        var showLine = activities.Select(activity => activity.Line).Distinct().Skip(1).Any();
-        using var table = ImRaii.Table($"Activities_{expansionId}", showLine ? 3 : 2, ShoppingTableFlags, new(0, 0));
-        if (!table)
-        {
-            return;
-        }
-
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        if (showLine)
-        {
-            ImGui.TableSetupColumn("Relic line", ImGuiTableColumnFlags.WidthStretch, 0.5f);
-        }
-
-        ImGui.TableSetupColumn("Jobs left", ImGuiTableColumnFlags.WidthFixed, 72);
-        ImGui.TableHeadersRow();
-
-        foreach (var activity in activities)
-        {
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(activity.Step);
-            if (!string.IsNullOrWhiteSpace(activity.Note) && ImGui.IsItemHovered())
-            {
-                using var tooltip = ImRaii.Tooltip();
-                DrawNote(activity.Note, ImGui.GetFontSize() * 32f);
-            }
-
-            if (showLine)
-            {
-                ImGui.TableNextColumn();
-                ImGui.TextColored(MutedColor, activity.Line);
-            }
-
-            ImGui.TableNextColumn();
-            ImGui.TextUnformatted(activity.JobsLeft.ToString());
-        }
+        return rewards;
     }
 
     private List<TrackerActivity> GetActivities(string expansionId, IReadOnlyList<RelicLineStatus> statuses)

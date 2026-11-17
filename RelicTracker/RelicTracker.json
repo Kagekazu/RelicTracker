@@ -12,5 +12,5 @@
     "crafting",
     "utility"
   ],
-  "Changelog": "- MogVault is now required to track the relics and materials you own. RelicTracker explains how to install, enable, or update it if needed.\n- FFXIV Collect remains optional for relics you sold or desynthed, and manual completion ticks stay saved until you clear them.\n- Clearer material totals, progress sources, empty results, and helper actions throughout the tracker."
+  "Changelog": "- MogVault is now required to track the relics and materials you own. RelicTracker explains how to install, enable, or update it if needed.\n- Relic steps and armour pieces now update from your inventory. Previous completion marks still count. FFXIV Collect remains optional for relics you sold or desynthed.\n- Clearer material totals, progress sources, empty results, and helper actions throughout the tracker."
 }

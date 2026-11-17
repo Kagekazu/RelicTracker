@@ -200,7 +200,7 @@ TOOL_NOTES = {
    "2. Earn per-class research data (Types I-VII) from stellar missions.",
    "3. Talk to Researchingway to upgrade. Tools climb a 19-step ladder from level 10 (ilvl 10) to level 100 (ilvl 780).",
    "Tip: finishing a tool's final tier stage gives a research bonus for the rest of that tier (+50% for 1-2 tools done, +100% for 3-4, +150% for 5+), so finish one tool at a time and do crafters before gatherers.",
-   "The Overview and Relic tabs still track your Cosmic progress from FFXIV Collect."),
+   "Link FFXIV Collect in Setup to see upgrades you earned and no longer own."),
   "Cosmic": N(
    "Novice tier - the base prototype through v0.2-v0.8 to the Cosmic tool, using Type I-IV research data (per class, cumulative).",
    "Needed to reach Cosmic:",

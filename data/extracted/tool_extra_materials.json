@@ -938,7 +938,8 @@
       "materialIds": [
         5106
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Supra",
@@ -1008,7 +1009,8 @@
       "materialIds": [
         5316
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Supra",
@@ -1334,7 +1336,8 @@
       "materialIds": [
         4828
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Supra",
@@ -2277,7 +2280,8 @@
       "materialIds": [
         4777
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Lucis",
@@ -2300,7 +2304,8 @@
       "materialIds": [
         4829
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Skysteel +1",
@@ -8252,7 +8257,8 @@
       "materialIds": [
         5343
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8275,7 +8281,8 @@
       "materialIds": [
         5516
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8393,7 +8400,8 @@
       "materialIds": [
         5107
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8417,7 +8425,8 @@
       "materialIds": [
         19943
       ],
-      "obtain": "craft"
+      "obtain": "craft",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8463,7 +8472,8 @@
       "materialIds": [
         5111
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8674,7 +8684,8 @@
       "materialIds": [
         5518
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -8816,7 +8827,8 @@
       "materialIds": [
         5107
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -9263,7 +9275,8 @@
       "materialIds": [
         5343
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -9286,7 +9299,8 @@
       "materialIds": [
         5516
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -9688,7 +9702,8 @@
       "materialIds": [
         12901
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Chora-Zoi's",
@@ -10182,7 +10197,8 @@
       "materialIds": [
         5110
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Brilliant",
@@ -10605,7 +10621,8 @@
       "materialIds": [
         5110
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Brilliant",
@@ -10864,7 +10881,8 @@
       "materialIds": [
         5110
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Brilliant",
@@ -10887,7 +10905,8 @@
       "materialIds": [
         5348
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Brilliant",
@@ -11597,7 +11616,8 @@
       "materialIds": [
         12901
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil"
     },
     {
       "step": "Vrandtic",
@@ -12586,7 +12606,9 @@
       "materialIds": [
         5360
       ],
-      "obtain": "gather"
+      "obtain": "gather",
+      "buyAlternative": "Gil",
+      "buyAlternativeQuest": 66790
     },
     {
       "step": "Lodestar",
@@ -14247,7 +14269,8 @@
       "materialIds": [
         5681
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14289,7 +14312,8 @@
       "materialIds": [
         5681
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14331,7 +14355,8 @@
       "materialIds": [
         5671
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14373,7 +14398,8 @@
       "materialIds": [
         5671
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14415,7 +14441,8 @@
       "materialIds": [
         5666
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14457,7 +14484,8 @@
       "materialIds": [
         5666
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14499,7 +14527,8 @@
       "materialIds": [
         5676
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14541,7 +14570,8 @@
       "materialIds": [
         5676
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14583,7 +14613,8 @@
       "materialIds": [
         5721
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Relic",
@@ -14625,7 +14656,8 @@
       "materialIds": [
         5721
       ],
-      "obtain": "content"
+      "obtain": "buy",
+      "obtainVia": "Market Board"
     },
     {
       "step": "Zenith",
@@ -15975,7 +16007,7 @@
       "materialIds": [
         15841
       ],
-      "obtain": "content"
+      "obtain": "trade"
     },
     {
       "step": "Sharpened",
@@ -16156,8 +16188,7 @@
       "materialIds": [
         21802
       ],
-      "obtain": "content",
-      "obtainVia": "Protean Crystal"
+      "obtain": "content"
     },
     {
       "step": "Pagos",
@@ -16287,8 +16318,7 @@
       "materialIds": [
         22975
       ],
-      "obtain": "content",
-      "obtainVia": "Pagos Crystal"
+      "obtain": "content"
     },
     {
       "step": "Elemental +1",
@@ -16392,8 +16422,7 @@
       "materialIds": [
         24123
       ],
-      "obtain": "content",
-      "obtainVia": "Pyros Crystal"
+      "obtain": "content"
     },
     {
       "step": "Hydatos",

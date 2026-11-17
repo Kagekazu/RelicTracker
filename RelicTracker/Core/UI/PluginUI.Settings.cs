@@ -9,11 +9,26 @@ public sealed partial class PluginUI
 
     private void DrawSettingsTab()
     {
-        ImGui.TextColored(MutedColor, "Relic = per-job steps and notes. Tracker = farm totals. Progress is saved per character.");
+        ImGui.TextColored(HeaderColor, "Inventory");
+        DrawIntegration(new("MogVault",
+            "Counts relics and materials in your bags, retainers, dresser, and armoire.",
+            "Wait for MogVault to finish loading, or update it in /xlplugins.",
+            false, MogVaultIpc.IsInstalled, MogVaultIpc.IsEnabled, MogVaultIpc.IsReady, null));
+
         ImGui.Spacing();
+        ImGui.TextColored(HeaderColor, "Optional progress source");
+        DrawCollectSettings();
 
-        DrawIntegrationsSection();
+        ImGui.Spacing();
+        ImGui.TextColored(HeaderColor, "Optional helpers");
+        DrawOptionalHelpers();
 
+        ImGui.Spacing();
+        DrawDisplaySettings();
+    }
+
+    private void DrawDisplaySettings()
+    {
         if (BeginPanel("settings_display"))
         {
             ImGui.TextColored(HeaderColor, "Display");
@@ -30,15 +45,18 @@ public sealed partial class PluginUI
                 ImGui.SetTooltip(
                     "Physeos is the Baldesion Arsenal upgrade after Eureka. Same look/stats outside Eureka, "
                     + "and it does not count as a new relic for achievements. When enabled, Eureka counts as "
-                    + "finished on Overview, Relic, and Tracker.");
+                    + "finished in the catalogue, upgrade path, and materials list.");
             }
 
             EndPanel();
         }
+    }
 
+    private void DrawCollectSettings()
+    {
         if (BeginPanel("settings_collect"))
         {
-            ImGui.TextColored(HeaderColor, "FFXIV Collect (optional)");
+            ImGui.TextColored(HeaderColor, "FFXIV Collect");
             ImGui.SameLine();
             if (config.FfxivCollectCharacterId != 0)
             {
@@ -147,88 +165,63 @@ public sealed partial class PluginUI
         bool Ready,
         string? BusyLabel);
 
-    private void DrawIntegrationsSection()
+    private void DrawOptionalHelpers()
     {
-        if (!BeginPanel("settings_integrations"))
-        {
-            return;
-        }
+        bool artisanReady = ArtisanIpc.SupportsRelicToolLists;
+        DrawIntegration(new("Artisan", "Crafts relic tool turn-ins from the upgrade page.",
+            "Update Artisan to a version that supports relic tool craft lists.", true,
+            ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, artisanReady,
+            artisanReady && ArtisanIpc.IsBusy() ? "Crafting" : null));
 
-        ImGui.TextColored(HeaderColor, "Required");
-        ImGui.Spacing();
-
-        Integration[] integrations =
-        [
-            new("MogVault", "Tracks owned relics and material counts across bags, retainers, dresser, and armoire.", null, false,
-                MogVaultIpc.IsInstalled, MogVaultIpc.IsEnabled, MogVaultIpc.IsReady, null),
-            new("Artisan", "Crafts relic-tool turn-ins from the Relic tab.", null, true,
-                ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, ArtisanIpc.SupportsRelicToolLists,
-                ArtisanIpc.SupportsRelicToolLists && ArtisanIpc.IsBusy() ? "crafting" : null),
-            new("Knightshopper", "Buys missing materials from the Tracker's Buy section.",
-                "In Knightshopper, enable both IPC permission switches and add RelicTracker to the allowed plugins.", true,
-                KnightshopperIpc.IsInstalled, KnightshopperIpc.IsEnabled, KnightshopperIpc.IsReady,
-                KnightshopperIpc.IsReady && KnightshopperIpc.IsBusy() ? "shopping" : null),
-            new("Gather & Chill", "Adds missing gatherables to its gather list from the Tracker.", null, true,
-                GatherChillIpc.IsInstalled, GatherChillIpc.IsEnabled, GatherChillIpc.IsReady,
-                GatherChillIpc.IsReady && GatherChillIpc.IsBusy() ? "gathering" : null),
-        ];
-
-        DrawIntegrationsTable([integrations[0]]);
-        ImGui.Spacing();
-        ImGui.TextColored(HeaderColor, "Optional helpers");
-        ImGui.Spacing();
+        bool knightshopperReady = KnightshopperIpc.IsReady;
+        DrawIntegration(new("Knightshopper",
+            "Save a list to review in Knightshopper, or buy missing materials right away. In Knightshopper Settings, open IPC, turn on both purchase options, and add RelicTracker to the allowed plugins.",
+            "Wait for Knightshopper to finish loading, or update it in /xlplugins.", true,
+            KnightshopperIpc.IsInstalled, KnightshopperIpc.IsEnabled, knightshopperReady,
+            knightshopperReady && KnightshopperIpc.IsBusy() ? "Shopping" : null));
 
         // Gather & Chill isn't released yet: only list it for people who have a build installed.
-        DrawIntegrationsTable([.. integrations[1..].Where(integration =>
-            integration.Name != "Gather & Chill" || integration.Installed)]);
-        EndPanel();
+        if (GatherChillIpc.IsInstalled)
+        {
+            bool gatherChillReady = GatherChillIpc.IsReady;
+            DrawIntegration(new("Gather & Chill", "Adds missing gatherables to its list from the Materials page.",
+                "Wait for Gather & Chill to finish loading, or update it in /xlplugins.", true,
+                true, GatherChillIpc.IsEnabled, gatherChillReady,
+                gatherChillReady && GatherChillIpc.IsBusy() ? "Gathering" : null));
+        }
     }
 
-    private void DrawIntegrationsTable(IReadOnlyList<Integration> integrations)
+    private void DrawIntegration(Integration integration)
     {
-        using var table = ImRaii.Table("Integrations", 3, ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerV, new(0, 0));
-        if (!table)
+        if (!BeginPanel($"settings_{integration.Name}"))
         {
             return;
         }
 
-        ImGui.TableSetupColumn("Plugin", ImGuiTableColumnFlags.WidthFixed, 120);
-        ImGui.TableSetupColumn("Status", ImGuiTableColumnFlags.WidthFixed, 130);
-        ImGui.TableSetupColumn("Used for", ImGuiTableColumnFlags.WidthStretch);
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextColored(HeaderColor, integration.Name);
+        ImGui.SameLine();
 
-        foreach (var integration in integrations)
+        (string label, StatusChipKind kind, string? recovery) = (integration.Installed, integration.Enabled, integration.Ready) switch
         {
-            ImGui.TableNextRow();
-            ImGui.TableNextColumn();
-            ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(integration.Name);
+            (false, _, _) => ("Not installed", integration.Optional ? StatusChipKind.Muted : StatusChipKind.Warn,
+                $"Install {integration.Name} in /xlplugins."),
+            (_, false, _) => ("Disabled", StatusChipKind.Warn, $"Enable {integration.Name} in /xlplugins."),
+            (_, _, false) => ("Not ready", StatusChipKind.Warn, integration.Setup),
+            _ => (integration.BusyLabel ?? "Ready", StatusChipKind.Ok, null),
+        };
+        DrawStatusChip(label, kind);
 
-            ImGui.TableNextColumn();
-            (string label, StatusChipKind kind, string tooltip) = (integration.Installed, integration.Enabled, integration.Ready) switch
-            {
-                (false, _, _) => ("Not installed", integration.Optional ? StatusChipKind.Muted : StatusChipKind.Warn,
-                    $"{integration.Name} is not installed."),
-                (_, false, _) => ("Disabled", StatusChipKind.Warn, $"{integration.Name} is installed but not enabled."),
-                (_, _, false) => ("Not ready", StatusChipKind.Warn,
-                    $"{integration.Name} is still loading or needs an update."),
-                _ => (integration.BusyLabel is { } busy ? $"Installed · {busy}" : "Installed", StatusChipKind.Ok,
-                    $"{integration.Name} is installed and ready to use."),
-            };
-            DrawStatusChip(label, kind);
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip(tooltip);
-            }
-
-            ImGui.TableNextColumn();
-            using (ImRaii.PushColor(ImGuiCol.Text, MutedColor))
-            {
-                ImGui.TextWrapped(integration.UsedFor);
-                if (integration.Setup is { } setup)
-                {
-                    ImGui.TextWrapped(setup);
-                }
-            }
+        using (ImRaii.PushColor(ImGuiCol.Text, MutedColor))
+        {
+            ImGui.TextWrapped(integration.UsedFor);
         }
+
+        if (recovery is not null)
+        {
+            ImGui.TextWrapped(recovery);
+        }
+
+        EndPanel();
     }
 }

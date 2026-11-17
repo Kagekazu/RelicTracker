@@ -24,6 +24,10 @@ public sealed class ShoppingMaterialRow
 
     public string? ObtainVia { get; init; }
 
+    public string? BuyAlternative { get; init; }
+
+    public uint BuyAlternativeQuest { get; init; }
+
     public bool OneTime { get; init; }
 
     public bool Craftable { get; init; }
@@ -218,6 +222,8 @@ public static class ShoppingListBuilder
                 Purchase = purchaseByMaterial.GetValueOrDefault(key.Material),
                 Obtain = firstRow.Obtain,
                 ObtainVia = firstRow.ObtainVia,
+                BuyAlternative = firstRow.BuyAlternative,
+                BuyAlternativeQuest = firstRow.BuyAlternativeQuest,
                 OneTime = firstRow.OneTime,
                 Craftable = firstRow.Craftable,
                 ForSteps = stepsByKey[key]

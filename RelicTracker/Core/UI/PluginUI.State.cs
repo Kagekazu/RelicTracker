@@ -17,7 +17,6 @@ public sealed partial class PluginUI
     private DateTime? cachedOwnershipStamp;
     private Dictionary<uint, uint>? ownedCountCache;
     private long ownedCountCacheStamp;
-    private RelicTrackerDestinationTab? pendingTab;
     private int cacheGeneration;
     private bool inventoryCountsDirty;
     private long lastInventoryCountsInvalidateTick;
@@ -57,6 +56,8 @@ public sealed partial class PluginUI
 
     public void OpenTo(RelicItemTarget target)
     {
+        inspectedTier = null;
+        armorSelection = null;
         config.SelectedExpansionId = target.ExpansionId;
         config.DetailExpansionId = target.ExpansionId;
         if (!string.IsNullOrEmpty(target.CollectType))
@@ -68,26 +69,28 @@ public sealed partial class PluginUI
         {
             config.DetailJob = target.Job;
         }
-
-        if (target.Tab == RelicTrackerDestinationTab.Tracker)
+        else if (target.Tab == RelicTrackerDestinationTab.Relic && !string.IsNullOrEmpty(target.CollectType))
         {
-            config.TrackerLineFilter = string.Empty;
+            var currentJob = Svc.PlayerState.ClassJob.ValueNullable?.Abbreviation.ToString();
+            var relic = catalog.LinesFor(target.ExpansionId).FirstOrDefault(line => line.CollectType == target.CollectType);
+            if (currentJob is not null && relic?.EffectiveJobList.Contains(currentJob, StringComparer.Ordinal) == true)
+            {
+                config.DetailJob = currentJob;
+            }
         }
 
-        pendingTab = target.Tab;
+        config.TrackerLineFilter = target.Tab == RelicTrackerDestinationTab.Relic
+            ? target.CollectType ?? string.Empty
+            : string.Empty;
+
+        page = target.Tab switch
+        {
+            RelicTrackerDestinationTab.Relic => Page.Upgrade,
+            RelicTrackerDestinationTab.Tracker => Page.Materials,
+            _ => Page.Collection,
+        };
         config.OnSettingChanged();
         IsOpen = true;
-    }
-
-    private ImGuiTabItemFlags TabOpenFlags(RelicTrackerDestinationTab tab) =>
-        pendingTab == tab ? ImGuiTabItemFlags.SetSelected : ImGuiTabItemFlags.None;
-
-    private void ConsumePendingTab(RelicTrackerDestinationTab tab)
-    {
-        if (pendingTab == tab)
-        {
-            pendingTab = null;
-        }
     }
 
     private RelicOwnership GetOwnership()

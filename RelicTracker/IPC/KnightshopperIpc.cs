@@ -1,4 +1,3 @@
-using System.Text;
 using Dalamud.Plugin.Ipc;
 using ECommons.Reflection;
 
@@ -58,6 +57,7 @@ internal static class KnightshopperIpc
 {
     private const string InternalName = "Knightshopper";
     private const int RequiredApiVersion = 2;
+    private const int ListSyncApiVersion = 3;
     private const long BindRetryMs = 60_000;
 
     private static ICallGateSubscriber<int>? _apiVersion;
@@ -65,6 +65,7 @@ internal static class KnightshopperIpc
     private static ICallGateSubscriber<int, (uint ItemId, uint Quantity)[], (int, Guid, string)>? _startItems;
     private static ICallGateSubscriber<Guid, (int, int, int, uint, string)>? _getStatus;
     private static ICallGateSubscriber<Guid, bool>? _cancel;
+    private static ICallGateSubscriber<int, string, (uint ItemId, uint Quantity)[], (int Result, Guid ListId, string Message)>? _syncList;
     private static bool _ipcBound;
     private static bool _loggedBindFailure;
     private static long _lastBindAttemptTick;
@@ -98,6 +99,7 @@ internal static class KnightshopperIpc
         _startItems = null;
         _getStatus = null;
         _cancel = null;
+        _syncList = null;
         _ipcBound = false;
         _loggedBindFailure = false;
         _lastBindAttemptTick = 0;
@@ -131,7 +133,7 @@ internal static class KnightshopperIpc
     {
         if (!IsReady || _startItems == null)
         {
-            message = "Knightshopper isn't loaded, or is too old (needs IPC API v2).";
+            message = "Enable or update Knightshopper in /xlplugins to buy materials.";
             return false;
         }
 
@@ -235,31 +237,43 @@ internal static class KnightshopperIpc
         _ => currency.ToString(),
     };
 
-    public static string EncodeList(KnightshopperCurrency currency, string name, IEnumerable<(uint ItemId, uint Quantity)> items)
+    public static (bool Saved, string Message) SyncList(
+        KnightshopperCurrency currency, string name, (uint ItemId, uint Quantity)[] items)
     {
-        var rows = new List<object>();
-        foreach (var item in items)
+        try
         {
-            if (rows.Count == 500)
+            if (!IsReady || _apiVersion is not { HasFunction: true } || _apiVersion.InvokeFunc() < ListSyncApiVersion)
             {
-                throw new ArgumentException("Lists must contain at most 500 items.", nameof(items));
+                return (false, "Enable or update Knightshopper in /xlplugins to save shopping lists.");
             }
 
-            if (item.ItemId == 0 || item.Quantity == 0)
+            _syncList ??= Svc.PluginInterface.GetIpcSubscriber<int, string, (uint ItemId, uint Quantity)[], (int Result, Guid ListId, string Message)>(
+                "Knightshopper.List.SyncShoppingList");
+            if (!_syncList.HasFunction)
             {
-                throw new ArgumentException("Items need a nonzero ID and quantity.", nameof(items));
+                return (false, "Knightshopper could not save your list. Reload or update Knightshopper in /xlplugins.");
             }
 
-            rows.Add(new { itemId = item.ItemId, quantity = item.Quantity });
-        }
+            var response = _syncList.InvokeFunc((int)currency, name, items);
+            if (response.Result == 0)
+            {
+                return (true, $"Shopping list saved. Open Knightshopper and select {name} under {CurrencyLabel(currency)}.");
+            }
 
-        var json = JsonSerializer.Serialize(new { name, currency = currency.ToString(), items = rows });
-        if (json.Length > 65_536 || Encoding.UTF8.GetByteCount(json) > 262_144)
+            if (response.Result == 6)
+            {
+                return (false, "In Knightshopper Settings, open IPC, turn on both purchase options, and add RelicTracker to the allowed plugins.");
+            }
+
+            return (false, string.IsNullOrWhiteSpace(response.Message)
+                ? "Knightshopper could not save the list. Try again."
+                : response.Message);
+        }
+        catch (Exception ex)
         {
-            throw new ArgumentException("The export exceeds Knightshopper's size limits.", nameof(items));
+            Svc.Log.Warning(ex, "[RelicTracker] Knightshopper.List.SyncShoppingList failed.");
+            return (false, "Knightshopper could not save the list. Try again after reopening Knightshopper.");
         }
-
-        return json;
     }
 
     private static string DescribeStartFailure(KnightshopperStartResult result, string text)
@@ -268,7 +282,7 @@ internal static class KnightshopperIpc
         {
             KnightshopperStartResult.Busy => "Knightshopper is already busy.",
             KnightshopperStartResult.NotAllowed =>
-                "Knightshopper blocked the request. Enable its IPC permissions and add RelicTracker to its allowed plugins.",
+                "In Knightshopper Settings, open IPC, turn on both purchase options, and add RelicTracker to the allowed plugins.",
             KnightshopperStartResult.ItemUnavailable => "Knightshopper can't buy one of these items with this currency.",
             KnightshopperStartResult.NotLoggedIn => "Not logged in.",
             KnightshopperStartResult.EmptyList => "Nothing to buy.",

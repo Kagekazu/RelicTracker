@@ -672,7 +672,7 @@ aliases = json.loads((data_dir / "material_aliases.json").read_text(encoding="ut
 attach_tool_extra_materials(data, item_index, aliases)
 
 # Tag every material row with how it's obtained: craft / gather / fish / buy (+ currency) /
-# content (+ the token it's traded for). Game sheets decide unless a role or override says
+# trade (+ the token) / content. Game sheets decide unless a role or override says
 # otherwise. This drives what the Tracker can automate (Artisan, Knightshopper, ...).
 OBTAIN_OVERRIDES = {
     # Diadem nodes aren't in GatheringItem.
@@ -681,9 +681,17 @@ OBTAIN_OVERRIDES = {
         "Ice Stalagmite", "Raspberry", "Spring Water"]},
     # Crafted up the Resplendent chain from Material A; the chain has no recipe rows.
     **{f"Resplendent {CLASS_NAME[cls]}'s Final Material": ("craft", "") for cls in C},
+    # Ulan's exchange is not represented in SpecialShop.
+    "Crystal Sand": ("trade", ""),
+    # Lead with Eureka farming even where a vendor also accepts zone crystals.
+    **{item: ("content", "") for item in
+       ["Protean Crystal", "Pazuzu's Feather", "Louhi's Ice", "Penthesilea's Flame"]},
 }
 with open(data_dir / "_item.csv", encoding="utf-8-sig") as handle:
-    item_names = {int(r[0]): r[4] for r in csv.reader(handle) if r and r[0].isdigit()}
+    item_rows = [row for row in csv.DictReader(handle) if row["#"].isdigit()]
+item_names = {int(row["#"]): row["Name"] for row in item_rows}
+market_items = {int(row["#"]) for row in item_rows
+                if row["IsUntradable"] == "False" and int(row["ItemSearchCategory"]) > 0}
 obtain_index = ObtainIndex(data_dir / "_sheets", item_names)
 for expansion_rows in data.values():
     for row in expansion_rows:
@@ -698,9 +706,16 @@ for expansion_rows in data.values():
             kind, via = "buy", "Scrips"
         else:
             kind, via = obtain_index.primary(row.get("materialIds", []))
+            ids = row.get("materialIds", [])
+            if kind == "content" and ids and all(item_id in market_items for item_id in ids):
+                kind, via = "buy", "Market Board"
         row["obtain"] = kind
         if via:
             row["obtainVia"] = via
+        if kind != "buy" and (alternative := obtain_index.purchase_currency(row.get("materialIds", []))):
+            row["buyAlternative"] = alternative
+            if alternative == "Gil" and (quest := obtain_index.required_gil_quest(row.get("materialIds", []))):
+                row["buyAlternativeQuest"] = quest
         # Bought by default but also craftable (the Anima crafts): offer the Artisan list too.
         if kind != "craft" and any(way == "craft" for way, _ in obtain_index.ways(row.get("materialIds", []))):
             row["craftable"] = True

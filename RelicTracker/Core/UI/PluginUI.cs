@@ -26,6 +26,9 @@ public sealed partial class PluginUI : Window
     private readonly FfxivCollectService ffxivCollect;
 
     private bool trackerTabVisible;
+    private enum Page { Collection, Upgrade, Materials, Setup }
+    private Page page;
+    private Page pageBeforeSetup;
 
     public PluginUI(Configuration config, RelicDataService data, RelicCatalog catalog, FfxivCollectService ffxivCollect)
         : base($"Relic Tracker###{WindowId}")
@@ -49,10 +52,22 @@ public sealed partial class PluginUI : Window
             ShowTooltip = () => ImGui.SetTooltip("Ko-fi (because relics are thirsty work)"),
             Click = _ => ShellStart("https://ko-fi.com/kagekazu")
         });
+        TitleBarButtons.Add(new()
+        {
+            Icon = FontAwesomeIcon.Cog,
+            ShowTooltip = () => ImGui.SetTooltip(page == Page.Setup ? "Close Setup" : "Setup"),
+            Click = _ => ToggleSetup()
+        });
     }
 
     public override void OnClose()
     {
+        page = Page.Collection;
+        inspectedTier = null;
+        armorSelection = null;
+        collectionSearch = string.Empty;
+        collectionScroll = 0;
+        restoreCollectionScroll = true;
         config.PersistIfDirty();
         base.OnClose();
     }
@@ -61,49 +76,59 @@ public sealed partial class PluginUI : Window
     {
         FlushInventoryCountInvalidation();
         trackerTabVisible = false;
-        if (!MogVaultIpc.IsReady)
-        {
-            DrawMogVaultBlocker();
-            DrawTitleBarVersion(
-                TitleBarButtons.Count,
-                AllowPinning || AllowClickthrough);
-            return;
-        }
+        DrawPageButton("All Relics", Page.Collection);
+        ImGui.SameLine();
+        DrawPageButton("Materials", Page.Materials);
+        ImGui.Separator();
 
-        if (ImGui.BeginTabBar("RelicTrackerTabs"))
+        switch (page)
         {
-            if (ImGui.BeginTabItem("Overview", TabOpenFlags(RelicTrackerDestinationTab.Overview)))
-            {
-                ConsumePendingTab(RelicTrackerDestinationTab.Overview);
-                DrawOverviewTab();
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Relic", TabOpenFlags(RelicTrackerDestinationTab.Relic)))
-            {
-                ConsumePendingTab(RelicTrackerDestinationTab.Relic);
+            case Page.Collection:
+                DrawCollection();
+                break;
+            case Page.Upgrade:
                 DrawRelicTab();
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Tracker", TabOpenFlags(RelicTrackerDestinationTab.Tracker)))
-            {
-                ConsumePendingTab(RelicTrackerDestinationTab.Tracker);
-                DrawTrackerTab();
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Settings"))
-            {
+                break;
+            case Page.Materials:
+                if (MogVaultIpc.IsReady)
+                    DrawTrackerTab();
+                else
+                    DrawMogVaultBlocker();
+                break;
+            case Page.Setup:
                 DrawSettingsTab();
-                ImGui.EndTabItem();
-            }
-
-            ImGui.EndTabBar();
+                break;
         }
 
         DrawTitleBarVersion(
             TitleBarButtons.Count,
             AllowPinning || AllowClickthrough);
+    }
+
+    private void DrawPageButton(string label, Page destination)
+    {
+        bool active = page == destination || (page == Page.Upgrade && destination == Page.Collection);
+        using var color = ImRaii.PushColor(ImGuiCol.Button, ImGui.GetStyle().Colors[(int)ImGuiCol.HeaderActive], active);
+        ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 0f);
+        bool clicked = ImGui.Button(label);
+        ImGui.PopStyleVar();
+        if (clicked)
+        {
+            restoreCollectionScroll = destination == Page.Collection && page != Page.Collection;
+            page = destination;
+        }
+    }
+
+    private void ToggleSetup()
+    {
+        if (page == Page.Setup)
+        {
+            page = pageBeforeSetup;
+            restoreCollectionScroll = page == Page.Collection;
+            return;
+        }
+
+        pageBeforeSetup = page;
+        page = Page.Setup;
     }
 }

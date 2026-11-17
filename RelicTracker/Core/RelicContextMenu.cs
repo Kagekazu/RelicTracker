@@ -67,8 +67,8 @@ public sealed class RelicItemNavigationIndex
                 var material = row.Material?.Trim();
                 var label = !string.IsNullOrWhiteSpace(material)
                             && data.MaterialSources.TryGetValue(material, out string? source)
-                    ? $"Open Tracker - {source}"
-                    : $"Open Tracker - {ExpansionNames.LongName(expansionId)}";
+                    ? $"Open Materials - {source}"
+                    : $"Open Materials - {ExpansionNames.LongName(expansionId)}";
 
                 var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
                 foreach (uint itemId in row.MaterialIds)
@@ -94,8 +94,8 @@ public sealed class RelicItemNavigationIndex
                 }
 
                 var label = data.MaterialSources.TryGetValue(cost.Currency, out string? source)
-                    ? $"Open Tracker - {source}"
-                    : $"Open Tracker - {ExpansionNames.LongName(expansionId)}";
+                    ? $"Open Materials - {source}"
+                    : $"Open Materials - {ExpansionNames.LongName(expansionId)}";
                 var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
                 foreach (uint itemId in cost.CurrencyIds)
                 {

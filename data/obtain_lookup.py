@@ -1,4 +1,4 @@
-"""Derive how an item is obtained (craft / gather / fish / buy / content) from game sheets.
+"""Derive how an item is obtained (craft / gather / fish / buy / trade / content) from game sheets.
 
 Used by gen_tool_materials.py to tag every material row with `obtain` (+ `obtainVia`). Sheets
 come from xivapi/ffxiv-datamining and are cached under data/extracted/_sheets/.
@@ -16,7 +16,7 @@ SHEETS = ["Recipe", "GatheringItem", "FishParameter", "SpearfishingItem", "GilSh
           "GCScripShopItem", "SpecialShop", "TomestonesItem"]
 
 # Obtain kinds, in the order a row picks its primary one when several apply.
-KINDS = ["fish", "gather", "buy", "craft", "content"]
+KINDS = ["fish", "gather", "buy", "craft", "trade", "content"]
 
 # Currencies a vendor run can spend (mirrors Knightshopper's currency list).
 CURRENCY_ITEMS = {
@@ -60,6 +60,7 @@ def _load(cache: Path, name: str) -> tuple[list[str], list[list[str]]]:
 class ObtainIndex:
     def __init__(self, cache: Path, item_names: dict[int, str]) -> None:
         self._ways: dict[int, set[tuple[str, str]]] = {}
+        self._gil_quests: dict[int, list[set[int]]] = {}
         sheets = {name: _load(cache, name) for name in SHEETS}
 
         header, rows = sheets["Recipe"]
@@ -78,9 +79,14 @@ class ObtainIndex:
             for row in rows:
                 self._add(int(row[col] or 0), "fish")
 
-        _, rows = sheets["GilShopItem"]
+        header, rows = sheets["GilShopItem"]
+        item_column = header.index("Item")
+        quest_columns = [header.index("QuestRequired[0]"), header.index("QuestRequired[1]")]
         for row in rows:
-            self._add(int(row[1] or 0), "buy", "Gil")
+            item_id = int(row[item_column] or 0)
+            self._add(item_id, "buy", "Gil")
+            required = {int(row[column]) for column in quest_columns if row[column] not in ("", "0")}
+            self._gil_quests.setdefault(item_id, []).append(required)
 
         header, rows = sheets["GCScripShopItem"]
         col = header.index("Item")
@@ -114,7 +120,7 @@ class ObtainIndex:
                         self._add(received, "buy", CURRENCY_ITEMS[cost_id])
                     else:
                         # Traded for a content token (Anemos Crystal, cluster, ...).
-                        self._add(received, "content", item_names.get(cost_id, ""))
+                        self._add(received, "trade", item_names.get(cost_id, ""))
 
     def _add(self, item_id: int, kind: str, via: str = "") -> None:
         if item_id:
@@ -125,6 +131,15 @@ class ObtainIndex:
         for item_id in item_ids:
             found |= self._ways.get(item_id, set())
         return found
+
+    def purchase_currency(self, item_ids: list[int]) -> str:
+        ways = self.ways(item_ids)
+        return next((currency for currency in CURRENCY_PREFERENCE if ("buy", currency) in ways), "")
+
+    def required_gil_quest(self, item_ids: list[int]) -> int:
+        offers = [quests for item_id in item_ids for quests in self._gil_quests.get(item_id, [])]
+        common = set.intersection(*offers) if offers else set()
+        return next(iter(common)) if len(common) == 1 else 0
 
     def primary(self, item_ids: list[int]) -> tuple[str, str]:
         """Best single way to get the item; items no sheet knows are content drops."""
