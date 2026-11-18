@@ -227,6 +227,10 @@ public sealed partial class PluginUI
                 ? "MogVault"
                 : "FFXIV Collect";
         DrawStatusChip(label, StatusChipKind.Ok);
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip($"Progress here is read from {(inventoryLinked && collectLinked ? "MogVault inventory and FFXIV Collect" : inventoryLinked ? "MogVault inventory" : "FFXIV Collect")}.");
+        }
     }
 
     private void DrawQuestRewardsSection(
