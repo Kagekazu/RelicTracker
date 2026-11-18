@@ -13,12 +13,8 @@ public sealed partial class PluginUI
         Muted,
     }
 
-    private static readonly Vector4 DefaultPanelBg = new(0.10f, 0.10f, 0.12f, 0.55f);
-    private static readonly Vector4 DefaultPanelBorder = new(0.40f, 0.40f, 0.45f, 0.55f);
-
-    private Vector4 PanelBg => config.UseIconTheme ? RelicTheme.PanelBg : DefaultPanelBg;
-
-    private Vector4 PanelBorder => config.UseIconTheme ? RelicTheme.PanelBorder : DefaultPanelBorder;
+    private static readonly Vector4 PanelBg = RelicTheme.PanelBg;
+    private static readonly Vector4 PanelBorder = RelicTheme.PanelBorder;
     private static readonly Vector4 ChipOkBg = new(0.18f, 0.38f, 0.24f, 0.95f);
     private static readonly Vector4 ChipWarnBg = new(0.42f, 0.32f, 0.10f, 0.95f);
     private static readonly Vector4 ChipMutedBg = new(0.22f, 0.22f, 0.25f, 0.95f);
