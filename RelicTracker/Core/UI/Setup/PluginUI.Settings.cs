@@ -48,6 +48,18 @@ public sealed partial class PluginUI
                     + "finished in the catalogue, upgrade path, and materials list.");
             }
 
+            var useIconTheme = config.UseIconTheme;
+            if (ImGui.Checkbox("Use RelicTracker theme", ref useIconTheme))
+            {
+                config.UseIconTheme = useIconTheme;
+                config.OnSettingChanged();
+            }
+
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Navy and gold colours from the plugin icon. Turn off to use your Dalamud style.");
+            }
+
             EndPanel();
         }
     }

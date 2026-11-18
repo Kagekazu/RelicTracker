@@ -60,6 +60,17 @@ public sealed partial class PluginUI : Window
         });
     }
 
+    public override void PreDraw()
+    {
+        if (config.UseIconTheme)
+        {
+            RelicTheme.Push();
+        }
+    }
+
+    // Always pop: the setting can be toggled mid-frame, and Pop() only undoes what was pushed.
+    public override void PostDraw() => RelicTheme.Pop();
+
     public override void OnClose()
     {
         page = Page.Collection;

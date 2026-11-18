@@ -42,6 +42,8 @@ public sealed class Configuration : IPluginConfiguration
 
     public bool HidePhyseosRelics { get; set; }
 
+    public bool UseIconTheme { get; set; } = true;
+
     public string TrackerLineFilter { get; set; } = string.Empty;
 
     public bool TrackerGroupBySteps { get; set; }
