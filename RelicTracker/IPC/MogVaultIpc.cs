@@ -44,10 +44,10 @@ internal static class MogVaultIpc
         _ipcBound = false;
     }
 
-    public static uint GetOwnedCount(uint itemId, bool activeCharacterOnly)
+    // Callers check IsReady once per lookup batch; it is too slow to repeat for every item.
+    public static uint GetOwnedCount(uint itemId)
     {
-        // RelicTracker only tracks the active character. MogVault's count is already scoped to it.
-        if (!IsReady || _getItemCount == null)
+        if (_getItemCount == null)
         {
             return 0;
         }

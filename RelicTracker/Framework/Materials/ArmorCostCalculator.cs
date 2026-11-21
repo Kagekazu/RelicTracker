@@ -159,7 +159,9 @@ public static class ArmorCostCalculator
         return slotInSet is 1 or 3 ? (uint)cost.PerPiece : (uint)OtherSlotCost(cost);
     }
 
-    public static bool HasSplitSlotCost(ArmorCostRow cost) => cost.SetTotal != cost.PerPiece * PiecesPerSet;
+    public static bool HasSplitSlotCost(ArmorCostRow cost) =>
+        cost.SetTotal != cost.PerPiece * PiecesPerSet
+        && !(CostLinks.TryGetValue(cost.Set.Trim(), out var link) && link.Slot is not null);
 
     public static int OtherSlotCost(ArmorCostRow cost) => (cost.SetTotal - (2 * cost.PerPiece)) / 3;
 

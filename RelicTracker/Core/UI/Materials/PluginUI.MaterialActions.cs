@@ -7,6 +7,7 @@ public sealed partial class PluginUI
     private readonly record struct TrackerActivity(string Line, string Step, int JobsLeft, string? Note);
 
     private StatusMessage? gatherChillResult;
+    private StatusMessage? artisanResult;
 
     // Inventory is counted once per material, not summed per row.
     private static List<ShoppingMaterialRow> MergeByMaterial(IReadOnlyList<ShoppingMaterialRow> rows)
@@ -80,11 +81,11 @@ public sealed partial class PluginUI
         {
             using (ImRaii.Disabled(ArtisanIpc.IsBusy()))
             {
-                if (ImGui.SmallButton($"Craft {step} with Artisan##artisan_{step}")
-                    && !ArtisanIpc.TryStartRelicToolList(step, ArtisanIpc.AllClassesSlot, out var error)
-                    && !string.IsNullOrWhiteSpace(error))
+                if (ImGui.SmallButton($"Craft {step} with Artisan##artisan_{step}"))
                 {
-                    Svc.Log.Warning("[RelicTracker] {Error}", error);
+                    artisanResult = ArtisanIpc.TryStartRelicToolList(step, ArtisanIpc.AllClassesSlot, out var error)
+                        ? null
+                        : new(error ?? "Artisan didn't start the list.", true);
                 }
             }
 
@@ -99,7 +100,14 @@ public sealed partial class PluginUI
             ImGui.SameLine();
         }
 
-        ImGui.NewLine();
+        if (artisanResult is not null)
+        {
+            DrawStatusMessage(ref artisanResult, "artisan_dismiss");
+        }
+        else
+        {
+            ImGui.NewLine();
+        }
     }
 
     private void DrawGatherChillButton(IReadOnlyList<ShoppingMaterialRow> rows)

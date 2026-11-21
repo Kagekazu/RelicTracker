@@ -6,6 +6,7 @@ public sealed partial class PluginUI
 {
     private string collectCharacterIdInput = string.Empty;
     private bool collectInputInitialized;
+    private bool collectIdInvalid;
 
     private void DrawSettingsTab()
     {
@@ -58,7 +59,7 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(HeaderColor, "FFXIV Collect");
             ImGui.SameLine();
-            if (config.FfxivCollectCharacterId != 0)
+            if (config.CollectCharacterId != 0)
             {
                 DrawStatusChip(ffxivCollect.IsLoading ? "Syncing…" : "Linked", ffxivCollect.IsLoading ? StatusChipKind.Warn : StatusChipKind.Ok);
             }
@@ -84,9 +85,9 @@ public sealed partial class PluginUI
     {
         if (!collectInputInitialized)
         {
-            collectCharacterIdInput = config.FfxivCollectCharacterId == 0
+            collectCharacterIdInput = config.CollectCharacterId == 0
                 ? string.Empty
-                : config.FfxivCollectCharacterId.ToString();
+                : config.CollectCharacterId.ToString();
             collectInputInitialized = true;
         }
 
@@ -98,23 +99,23 @@ public sealed partial class PluginUI
         ImGui.SameLine();
         if (ImGui.Button("Save ID"))
         {
-            if (ulong.TryParse(collectCharacterIdInput.Trim(), out var parsed) && parsed > 0)
+            var input = collectCharacterIdInput.Trim();
+            ulong parsed = 0;
+            collectIdInvalid = input.Length > 0 && !(ulong.TryParse(input, out parsed) && parsed > 0);
+            if (!collectIdInvalid)
             {
-                config.FfxivCollectCharacterId = parsed;
+                config.CollectCharacterId = parsed;
                 config.OnSettingChanged();
                 InvalidateOwnershipCache();
-                ffxivCollect.Refresh(parsed);
-            }
-            else
-            {
-                config.FfxivCollectCharacterId = 0;
-                config.OnSettingChanged();
-                InvalidateOwnershipCache();
+                if (parsed != 0)
+                {
+                    ffxivCollect.ForceRefresh(parsed);
+                }
             }
         }
 
         ImGui.SameLine();
-        using (ImRaii.Disabled(config.FfxivCollectCharacterId == 0 && !MogVaultIpc.IsReady))
+        using (ImRaii.Disabled(config.CollectCharacterId == 0 && !MogVaultIpc.IsReady))
         {
             if (ImGui.Button("Recheck"))
             {
@@ -122,13 +123,18 @@ public sealed partial class PluginUI
             }
         }
 
-        if (config.FfxivCollectCharacterId > 0)
+        if (config.CollectCharacterId > 0)
         {
             ImGui.SameLine();
             if (ImGui.Button("Open profile"))
             {
-                ShellStart($"https://ffxivcollect.com/characters/{config.FfxivCollectCharacterId}");
+                ShellStart($"https://ffxivcollect.com/characters/{config.CollectCharacterId}");
             }
+        }
+
+        if (collectIdInvalid)
+        {
+            ImGui.TextColored(WarningColor, "A character ID is the number at the end of your ffxivcollect.com profile link.");
         }
 
         if (ffxivCollect.IsLoading)
@@ -139,14 +145,15 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(WarningColor, ffxivCollect.StatusMessage);
         }
-        else if (ffxivCollect.LastRefreshUtc is DateTime refreshed)
+        else if (ffxivCollect.LastRefreshUtc is DateTime refreshed
+                 && ffxivCollect.Snapshot.CharacterId == config.CollectCharacterId)
         {
             ImGui.TextColored(
                 GoodColor,
-                $"Owned {ffxivCollect.Snapshot.Owned.Count} · Missing {ffxivCollect.Snapshot.Missing.Count} · Updated {refreshed.ToLocalTime():t}");
+                $"{ffxivCollect.Snapshot.Owned.Count} relics found · Updated {refreshed.ToLocalTime():t}");
         }
 
-        if (config.FfxivCollectCharacterId == 0)
+        if (config.CollectCharacterId == 0)
         {
             ImGui.Spacing();
             ImGui.TextWrapped(

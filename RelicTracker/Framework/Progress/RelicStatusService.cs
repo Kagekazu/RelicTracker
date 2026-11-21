@@ -17,8 +17,6 @@ public sealed class RelicLineStatus
 
     public int JobsComplete => TierCount > 0 ? ReachedPerStep[TierCount - 1] : 0;
 
-    public int JobsNotStarted => Math.Max(0, Line.Jobs - (TierCount > 0 ? ReachedPerStep[0] : 0));
-
     public int StepsDone
     {
         get
@@ -35,31 +33,6 @@ public sealed class RelicLineStatus
 
     public int StepsTotal => Line.Jobs * TierCount;
 
-    public float Percent => StepsTotal > 0 ? (float)StepsDone / StepsTotal : 0f;
-
-    public bool IsComplete => Line.Jobs > 0 && JobsComplete >= Line.Jobs;
-
-    public int JobsAtStep(int tierIndex)
-    {
-        if (tierIndex < 0 || tierIndex >= TierCount)
-        {
-            return 0;
-        }
-
-        var atOrBelow = ReachedPerStep[tierIndex];
-        var above = tierIndex + 1 < TierCount ? ReachedPerStep[tierIndex + 1] : 0;
-        return Math.Max(0, atOrBelow - above);
-    }
-}
-
-public sealed class RelicProgressSummary
-{
-    public int LinesComplete { get; init; }
-    public int LineCount { get; init; }
-    public int JobsComplete { get; init; }
-    public int JobsTotal { get; init; }
-    public int StepsDone { get; init; }
-    public int StepsTotal { get; init; }
     public float Percent => StepsTotal > 0 ? (float)StepsDone / StepsTotal : 0f;
 }
 
@@ -195,20 +168,6 @@ public static class RelicStatusService
         }
 
         return statuses;
-    }
-
-    public static RelicProgressSummary Summarize(IEnumerable<RelicLineStatus> statuses)
-    {
-        var list = statuses as IReadOnlyList<RelicLineStatus> ?? [.. statuses];
-        return new()
-        {
-            LineCount = list.Count,
-            LinesComplete = list.Count(status => status.IsComplete),
-            JobsComplete = list.Sum(status => status.JobsComplete),
-            JobsTotal = list.Sum(status => status.Line.Jobs),
-            StepsDone = list.Sum(status => status.StepsDone),
-            StepsTotal = list.Sum(status => status.StepsTotal)
-        };
     }
 
     public static HashSet<string> BuildStepDoneKeys(RelicCatalog catalog, Func<uint, uint> ownedLookup)

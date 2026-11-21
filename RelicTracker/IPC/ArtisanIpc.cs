@@ -138,7 +138,7 @@ internal static class ArtisanIpc
 
         if (_startListById == null)
         {
-            error = "Artisan IPC is not ready.";
+            error = "Artisan isn't ready. Reload or update it in /xlplugins.";
             return false;
         }
 
@@ -149,7 +149,8 @@ internal static class ArtisanIpc
         }
         catch (Exception ex)
         {
-            error = ex.Message;
+            Svc.Log.Warning(ex, "[RelicTracker] Artisan.StartListById failed.");
+            error = "Artisan didn't start the list. Try again.";
             return false;
         }
     }

@@ -247,7 +247,7 @@ public sealed partial class PluginUI
         var sets = armor.Sets.Where(set => set.Tiers.Count > 0).ToArray();
         if (sets.Length == 0)
         {
-            ImGui.TextUnformatted("No armour sets available.");
+            ImGui.TextUnformatted("No armor sets available.");
             return;
         }
 
@@ -393,7 +393,7 @@ public sealed partial class PluginUI
             uint exchangeId = exchangeTier.PieceIds[index];
             if (exchangeId != 0)
             {
-                string exchange = ItemDisplayNames.Resolve(exchangeId, "the matching Arcanaut’s piece");
+                string exchange = ItemDisplayNames.Resolve(exchangeId, "the matching Arcanaut's piece");
                 ImGui.TextWrapped($"Or exchange {exchange} at the North Horn armorer.");
             }
         }

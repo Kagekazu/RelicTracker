@@ -49,10 +49,15 @@ public sealed partial class PluginUI
     public void OnCharacterChanged()
     {
         config.MigrateLegacyProgressIfNeeded();
+        collectInputInitialized = false;
         InvalidateOwnershipCache();
     }
 
-    public void OnCharacterLoggedOut(int type, int code) => InvalidateOwnershipCache();
+    public void OnCharacterLoggedOut(int type, int code)
+    {
+        collectInputInitialized = false;
+        InvalidateOwnershipCache();
+    }
 
     public void OpenTo(RelicItemTarget target)
     {
@@ -95,7 +100,7 @@ public sealed partial class PluginUI
 
     private RelicOwnership GetOwnership()
     {
-        ulong collectCharacterId = config.FfxivCollectCharacterId;
+        ulong collectCharacterId = config.CollectCharacterId;
         ulong localContentId = CharacterScope.CurrentContentId;
         DateTime? stamp = ffxivCollect.LastRefreshUtc;
         long inventoryStamp = InventoryCacheStamp();
@@ -105,7 +110,9 @@ public sealed partial class PluginUI
             || cachedLocalContentId != localContentId
             || cachedOwnershipInventoryStamp != inventoryStamp)
         {
-            FfxivCollectSnapshot snapshot = collectCharacterId == 0 ? FfxivCollectSnapshot.Empty : ffxivCollect.Snapshot;
+            FfxivCollectSnapshot snapshot = collectCharacterId != 0 && ffxivCollect.Snapshot.CharacterId == collectCharacterId
+                ? ffxivCollect.Snapshot
+                : FfxivCollectSnapshot.Empty;
             CharacterProgress progress = config.CurrentCharacterProgress();
             HashSet<string> inventoryDone;
             HashSet<string> inventoryArmorDone;
@@ -168,12 +175,13 @@ public sealed partial class PluginUI
         }
 
         Dictionary<uint, uint> cache = ownedCountCache;
+        bool mogVaultReady = MogVaultIpc.IsReady;
         return itemId =>
         {
             if (!cache.TryGetValue(itemId, out uint count))
             {
                 count = GetOnCharacterItemCount(itemId);
-                uint mogVault = MogVaultIpc.GetOwnedCount(itemId, activeCharacterOnly: true);
+                uint mogVault = mogVaultReady ? MogVaultIpc.GetOwnedCount(itemId) : 0;
                 if (mogVault > count)
                 {
                     count = mogVault;

@@ -85,7 +85,7 @@ public static class MaterialObtain
             "gather" => hasVia ? $"Gather · {via}" : "Gather",
             "fish" => "Fish",
             "trade" => hasVia ? $"Trade {via}" : "Trade",
-            "content" => hasVia ? $"Trade {via}" : "Content drop",
+            "content" => "Content drop",
             _ => string.Empty,
         };
     }

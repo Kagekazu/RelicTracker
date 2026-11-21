@@ -32,7 +32,7 @@ public sealed partial class PluginUI
         public float Width { get; init; }
     }
 
-    private bool CollectIdLinked => config.FfxivCollectCharacterId != 0;
+    private bool CollectIdLinked => config.CollectCharacterId != 0;
 
     private bool CollectActive => CollectIdLinked && ffxivCollect.LastRefreshUtc.HasValue;
 
@@ -70,7 +70,7 @@ public sealed partial class PluginUI
     }
 
     private void RefreshCollectIfStale() =>
-        ffxivCollect.RefreshIfStale(config.FfxivCollectCharacterId, CollectRefreshInterval);
+        ffxivCollect.RefreshIfStale(config.CollectCharacterId, CollectRefreshInterval);
 
     private bool DrawCatalogLoadError()
     {
@@ -181,7 +181,7 @@ public sealed partial class PluginUI
 
     private void TriggerProgressRecheck()
     {
-        var collectLinked = config.FfxivCollectCharacterId != 0;
+        var collectLinked = config.CollectCharacterId != 0;
         if (!collectLinked && !MogVaultIpc.IsReady)
         {
             return;
@@ -191,13 +191,13 @@ public sealed partial class PluginUI
 
         if (collectLinked)
         {
-            ffxivCollect.ForceRefresh(config.FfxivCollectCharacterId);
+            ffxivCollect.ForceRefresh(config.CollectCharacterId);
         }
     }
 
     private void DrawProgressRecheckButton()
     {
-        if (config.FfxivCollectCharacterId == 0 && !MogVaultIpc.IsReady)
+        if (config.CollectCharacterId == 0 && !MogVaultIpc.IsReady)
         {
             return;
         }
@@ -210,9 +210,9 @@ public sealed partial class PluginUI
 
         if (ImGui.IsItemHovered())
         {
-            var tooltip = config.FfxivCollectCharacterId != 0 && MogVaultIpc.IsReady
+            var tooltip = config.CollectCharacterId != 0 && MogVaultIpc.IsReady
                 ? "Refresh FFXIV Collect and re-read MogVault inventory counts."
-                : config.FfxivCollectCharacterId != 0
+                : config.CollectCharacterId != 0
                     ? "Fetch the latest relic progress from FFXIV Collect."
                     : "Re-read owned relic items (and replicas) from MogVault inventory.";
             ImGui.SetTooltip(tooltip);

@@ -88,7 +88,7 @@ public sealed partial class PluginUI
                 int owned = OwnedPieces(armor, ownership);
                 int total = armor.TotalPieces;
                 uint iconItem = armor.AllTiers.SelectMany(tier => tier.PieceIds).FirstOrDefault(id => id != 0);
-                DrawCollectionEntry(expansion, armor.LineName, "Armour", iconItem, owned, total,
+                DrawCollectionEntry(expansion, armor.LineName, "Armor", iconItem, owned, total,
                     total > 0 ? (float)owned / total : 0);
             }
         }

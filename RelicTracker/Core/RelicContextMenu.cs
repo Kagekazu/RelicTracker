@@ -8,7 +8,6 @@ namespace RelicTracker;
 
 public enum RelicTrackerDestinationTab
 {
-    Overview,
     Relic,
     Tracker,
 }

@@ -22,6 +22,8 @@ internal static class GatherChillIpc
     private static ICallGateSubscriber<Guid, (int State, int Gathered, int Wanted, string Message)>? _getJob;
     private static ICallGateSubscriber<string, Guid, bool>? _cancelJob;
     private static Guid _jobId;
+    private static bool _busy;
+    private static long _busyCheckedTick;
     private static readonly Dictionary<uint, bool> CanGatherCache = [];
     private static bool _ipcBound;
     private static bool _loggedBindFailure;
@@ -80,21 +82,29 @@ internal static class GatherChillIpc
         }
     }
 
+    // Every material row asks each frame; one answer per 250 ms is plenty.
     public static bool IsBusy()
     {
+        long now = Environment.TickCount64;
+        if (now - _busyCheckedTick < 250)
+        {
+            return _busy;
+        }
+
+        _busyCheckedTick = now;
         if (!IsReady || _isBusy == null)
         {
-            return false;
+            return _busy = false;
         }
 
         try
         {
-            return _isBusy.InvokeFunc();
+            return _busy = _isBusy.InvokeFunc();
         }
         catch (Exception ex)
         {
             Svc.Log.Debug(ex, "[RelicTracker] GatherChill.IsBusy failed.");
-            return false;
+            return _busy = false;
         }
     }
 
@@ -143,7 +153,7 @@ internal static class GatherChillIpc
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] GatherChill.AddToGatherList failed.");
-            error = ex.Message;
+            error = "Gather & Chill didn't accept the list. Try again.";
             return false;
         }
     }
@@ -172,7 +182,7 @@ internal static class GatherChillIpc
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] GatherChill.StartJob failed for {ItemId}.", itemId);
-            error = ex.Message;
+            error = "Gather & Chill didn't start gathering. Try again.";
             return false;
         }
     }
@@ -223,7 +233,7 @@ internal static class GatherChillIpc
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] GatherChill.CancelJob failed.");
-            error = ex.Message;
+            error = "Gather & Chill didn't stop. Try again.";
             return false;
         }
     }

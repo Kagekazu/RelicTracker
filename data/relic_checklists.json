@@ -82,18 +82,18 @@
     "Lodestar": "Accept 'Stand Tool, My Friend' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft sixth-tier collectables with the Expert Recipe.\n[[Gatherers]]\nEquip the tool and collect the items and 220 Nightforged Clusters. Use Aetherial Reduction or exchange at Quinnana.\n[[Fisher]]\nEquip the rod and catch 43 each of Little Bounty and Saint Fathric's Face."
   },
   "Cosmic Tools": {
-    "Cosmic": "Get your prototype from 'A Cosmic Homecoming' or Researchingway.\nEarn Types I–IV research data from Stellar Missions on the matching class.\nReturn to Researchingway for each upgrade.",
-    "Stellar": "Run Stellar Missions on the matching class to earn Type V and top up Types I–IV.\nReturn to Researchingway for each upgrade.",
+    "Cosmic": "Get your prototype from 'A Cosmic Homecoming' or Researchingway.\nEarn Types I-IV research data from Stellar Missions on the matching class.\nReturn to Researchingway for each upgrade.",
+    "Stellar": "Run Stellar Missions on the matching class to earn Type V and top up Types I-IV.\nReturn to Researchingway for each upgrade.",
     "Hyper": "Run class A Stellar Missions for Type VI and top up earlier data types as needed.\nReturn to Researchingway for each upgrade.",
-    "Stellar (final)": "Earn Type VII and top up Types I–VI through Stellar Missions.\nReturn to Researchingway to finish the tool."
+    "Stellar (final)": "Earn Type VII and top up Types I-VI through Stellar Missions.\nReturn to Researchingway to finish the tool."
   },
   "Eurekan Armor": {
-    "Eureka Job Armor": "Bring your Antiquated job armour and 50 Protean Crystals per piece to Gerolt in Eureka Anemos.",
+    "Eureka Job Armor": "Bring your Antiquated job armor and 50 Protean Crystals per piece to Gerolt in Eureka Anemos.",
     "Eureka Job Armor +1": "Bring the base piece and 150 Protean Crystals to Gerolt in Eureka Anemos.",
     "Eureka Job Armor +2": "Bring the +1 piece and 400 Protean Crystals to Gerolt in Eureka Anemos.",
     "Eureka Anemos Armor": "Bring the +2 piece and 150 Anemos Crystals to Gerolt in Eureka Anemos.",
-    "Elemental Armor": "Gather Pyros Crystals and trade 40 per piece for Elemental armour in Eureka Pyros.",
-    "Elemental Armor +1": "Bring the base pieces and Hydatos Crystals to the armour vendor in Eureka Hydatos.",
+    "Elemental Armor": "Gather Pyros Crystals and trade 40 per piece for Elemental armor in Eureka Pyros.",
+    "Elemental Armor +1": "Bring the base pieces and Hydatos Crystals to the armor vendor in Eureka Hydatos.",
     "Elemental Armor +2": "Earn Eureka Fragments in the Baldesion Arsenal and trade them with your +1 pieces."
   },
   "Resistance Armor": {
@@ -101,13 +101,13 @@
     "Augmented Bozjan Armor": "Get the matching Bozjan Runner's Secret for each piece.\nTrade the base piece and its Secret to the Resistance Supplier.",
     "Law's Order": "Collect Bozjan Gold Coins and buy Law's Order pieces from the Resistance Supplier.",
     "Augmented Law's Order": "Get the slot-specific Runner's Plating from Delubrum Reginae (Savage) for the Orderly Runner's Secret.\nTrade the Secret, the Law's Order piece and the matching Augmented Bozjan piece.",
-    "Blade's Armor": "Collect Bozjan Platinum Coins in Zadnor and trade them for Blade's armour."
+    "Blade's Armor": "Collect Bozjan Platinum Coins in Zadnor and trade them for Blade's armor."
   },
   "Phantom Armor": {
-    "Arcanaut's Armor": "Earn Enlightenment Silver Pieces in South Horn and trade 4,000 per piece for Arcanaut's armour.",
+    "Arcanaut's Armor": "Earn Enlightenment Silver Pieces in South Horn and trade 4,000 per piece for Arcanaut's armor.",
     "Arcanaut's Armor +1": "For each piece, collect 3 Aetherspun Silver and 3 Aetherial Fixative.\nTrade them with the base piece in South Horn.",
     "Arcanaut's Armor +2": "For each piece, collect 3 Aetherspun Gold and 6 X-Fixative.\nTrade them with the +1 piece in South Horn.",
-    "Phantom Vision": "Earn Enlightenment Silver Obols in North Horn and trade 4,000 per piece for Phantom Vision armour.",
+    "Phantom Vision": "Earn Enlightenment Silver Obols in North Horn and trade 4,000 per piece for Phantom Vision armor.",
     "Phantom Vision +1": "Bring the base piece and 3 Final Final Fixative to the North Horn armorer, or trade a matching Arcanaut's +1 piece.",
     "Phantom Vision +2": "Bring the +1 piece and 4 Final Final Fixative to the North Horn armorer, or trade a matching Arcanaut's +2 piece.",
     "Phantom Vision +3": "Bring the +2 piece and 8 Final Final Fixative to the North Horn armorer."

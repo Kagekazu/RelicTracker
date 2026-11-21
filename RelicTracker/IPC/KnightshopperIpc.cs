@@ -154,7 +154,7 @@ internal static class KnightshopperIpc
         catch (Exception ex)
         {
             Svc.Log.Warning(ex, "[RelicTracker] Knightshopper.Purchase.StartItems failed.");
-            message = ex.Message;
+            message = "Knightshopper didn't start buying. Try again.";
             return false;
         }
     }

@@ -35,7 +35,7 @@ def bundled_data_files() -> list[Path]:
     files: list[Path] = []
     for node in project.findall(".//None"):
         include = node.attrib.get("Include")
-        if not include or not include.startswith("..\\data\\extracted\\"):
+        if not include or not include.startswith("..\\data\\") or not include.endswith(".json"):
             continue
         # csproj paths use Windows separators; normalize so this also runs on Linux.
         files.append((PROJECT.parent / include.replace("\\", "/")).resolve())
@@ -215,6 +215,39 @@ def main() -> int:
         elif any(not isinstance(item_id, int) or item_id <= 0 for item_id in material_ids):
             fail(errors, f"{expansion}[{index}] has invalid materialIds entries")
 
+    # The plugin silently skips rows, checklists and notes whose step or series name has no match.
+    steps_by_expansion: dict[str, set[str]] = {}
+    steps_by_series: dict[str, set[str]] = {}
+    for line in relic_lines:
+        steps = {step.strip().casefold() for step in line.get("steps") or []}
+        steps_by_expansion.setdefault(line.get("expansion"), set()).update(steps)
+        steps_by_series[line.get("collectType")] = {step.strip() for step in line.get("steps") or []}
+    for line in relic_armor:
+        steps_by_series[line.get("lineName")] = {
+            tier.get("collectType") for armor_set in line.get("sets") or [] for tier in armor_set.get("tiers") or []
+        }
+
+    for expansion, index, row in iter_material_rows(extra):
+        step = (row.get("step") or "").strip()
+        if step and step.casefold() not in steps_by_expansion.get(expansion, set()):
+            fail(errors, f"{expansion}[{index}] step {step!r} is not a relic step in that expansion")
+
+    for file_name, entries, allowed_extra in (
+        ("relic_checklists.json", load_json(ROOT / "data" / "relic_checklists.json"), set()),
+        ("relic_step_notes.json", load_json(DATA / "relic_step_notes.json"), {"_line"}),
+    ):
+        for series, by_step in entries.items():
+            if series.startswith("_"):
+                continue
+            if series not in steps_by_series:
+                fail(errors, f"{file_name} series is not a relic or armor line: {series}")
+                continue
+            for step, text in by_step.items():
+                if step not in steps_by_series[series] and step not in allowed_extra:
+                    fail(errors, f"{file_name} {series} has unknown step: {step}")
+                if not isinstance(text, str):
+                    fail(errors, f"{file_name} {series}/{step} is not text")
+
     source_keys = {key for key in sources if not key.startswith("_")}
     stale_sources = sorted(source_keys - material_names)
     for key in stale_sources:
@@ -237,6 +270,13 @@ def main() -> int:
                 fail(errors, f"armor_costs {expansion}[{index}] has no currency")
             if int(cost.get("allTotal") or 0) < 0:
                 fail(errors, f"armor_costs {expansion}[{index}] has negative allTotal")
+            per_piece = int(cost.get("perPiece") or 0)
+            set_total = int(cost.get("setTotal") or 0)
+            single_slot = set_total == per_piece
+            if not single_slot and set_total != per_piece * 5 and (set_total - 2 * per_piece) % 3 != 0:
+                fail(errors, f"armor_costs {expansion}[{index}] setTotal does not split into 2 body/legs + 3 other pieces")
+            if not single_slot and set_total - 2 * per_piece < 0:
+                fail(errors, f"armor_costs {expansion}[{index}] setTotal is below the body/legs cost")
             currency_id = cost.get("currencyId")
             currency_ids = cost.get("currencyIds") or []
             if isinstance(currency_id, int) and currency_id > 0 and not currency_ids:

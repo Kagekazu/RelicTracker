@@ -13,6 +13,8 @@ public sealed class CharacterProgress
     public HashSet<string> InventoryStepDone { get; set; } = new(StringComparer.Ordinal);
 
     public HashSet<string> InventoryArmorPieceDone { get; set; } = new(StringComparer.Ordinal);
+
+    public ulong FfxivCollectCharacterId { get; set; }
 }
 
 [Serializable]
@@ -26,7 +28,21 @@ public sealed class Configuration : IPluginConfiguration
 
     public string SelectedExpansionId { get; set; } = "ARR";
 
+    // Legacy account-wide link; moved to the first character that logs in.
     public ulong FfxivCollectCharacterId { get; set; }
+
+    [Newtonsoft.Json.JsonIgnore]
+    public ulong CollectCharacterId
+    {
+        get => CurrentCharacterProgress().FfxivCollectCharacterId;
+        set
+        {
+            if (CharacterScope.CurrentContentId != 0)
+            {
+                CurrentCharacterProgress().FfxivCollectCharacterId = value;
+            }
+        }
+    }
 
     public Dictionary<ulong, CharacterProgress> ProgressByCharacter { get; set; } = new();
 
@@ -38,13 +54,9 @@ public sealed class Configuration : IPluginConfiguration
 
     public bool HideCompleteMaterials { get; set; } = true;
 
-    public bool OverviewIncompleteOnly { get; set; }
-
     public bool HidePhyseosRelics { get; set; }
 
     public string TrackerLineFilter { get; set; } = string.Empty;
-
-    public bool TrackerGroupBySteps { get; set; }
 
     // Per category ("crafter"/"gatherer"): job abbreviation that makes the first Lucis tool. Missing = furthest along.
     public Dictionary<string, string> LucisFirstJob { get; set; } = new(StringComparer.Ordinal);
@@ -117,12 +129,6 @@ public sealed class Configuration : IPluginConfiguration
         OnSettingChanged();
     }
 
-    public void Save()
-    {
-        WriteToDisk();
-        _pendingPersist = false;
-    }
-
     public void OnSettingChanged() => _pendingPersist = true;
 
     public void PersistIfDirty()
@@ -138,6 +144,17 @@ public sealed class Configuration : IPluginConfiguration
 
     public void MigrateLegacyProgressIfNeeded()
     {
+        if (FfxivCollectCharacterId != 0 && CharacterScope.CurrentContentId != 0)
+        {
+            if (CollectCharacterId == 0)
+            {
+                CollectCharacterId = FfxivCollectCharacterId;
+            }
+
+            FfxivCollectCharacterId = 0;
+            OnSettingChanged();
+        }
+
         if (Version >= 6)
         {
             return;

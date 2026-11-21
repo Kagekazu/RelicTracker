@@ -9,7 +9,6 @@ public sealed class FfxivCollectSnapshot
 
     public ulong CharacterId { get; init; }
     public List<FfxivCollectRelic> Owned { get; init; } = [];
-    public List<FfxivCollectRelic> Missing { get; init; } = [];
 }
 
 public sealed class FfxivCollectRelic
@@ -50,21 +49,14 @@ internal static class FfxivCollectClient
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    static FfxivCollectClient() => Http.DefaultRequestHeaders.UserAgent.ParseAdd("RelicTracker/0.1");
+    static FfxivCollectClient() => Http.DefaultRequestHeaders.UserAgent.ParseAdd("RelicTracker");
 
-    public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId)
-    {
-        var ownedTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned");
-        var missingTask = FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/missing");
-        await Task.WhenAll(ownedTask, missingTask).ConfigureAwait(false);
-
-        return new()
+    public static async Task<FfxivCollectSnapshot> FetchCharacterRelicsAsync(ulong characterId) =>
+        new()
         {
             CharacterId = characterId,
-            Owned = await ownedTask.ConfigureAwait(false),
-            Missing = await missingTask.ConfigureAwait(false)
+            Owned = await FetchRelicListAsync($"{BaseUrl}/characters/{characterId}/relics/owned").ConfigureAwait(false)
         };
-    }
 
     private static async Task<List<FfxivCollectRelic>> FetchRelicListAsync(string url)
     {
@@ -112,7 +104,8 @@ internal static class FfxivCollectClient
         }
         catch (JsonException ex)
         {
-            throw new FfxivCollectException($"Could not parse relic data from FFXIV Collect ({ex.Message}).");
+            Svc.Log.Warning(ex, "[RelicTracker] FFXIV Collect relic list did not parse.");
+            throw new FfxivCollectException("FFXIV Collect sent relic data RelicTracker couldn't read. Try Recheck later.");
         }
     }
 
@@ -144,6 +137,7 @@ public sealed class FfxivCollectService
     private readonly object gate = new();
     private bool isLoading;
     private DateTime? lastAttemptUtc;
+    private ulong lastRequestedId;
     private int refreshGeneration;
 
     public FfxivCollectSnapshot Snapshot { get; private set; } = FfxivCollectSnapshot.Empty;
@@ -185,6 +179,7 @@ public sealed class FfxivCollectService
 
             isLoading = true;
             lastAttemptUtc = DateTime.UtcNow;
+            lastRequestedId = characterId;
             generation = ++refreshGeneration;
         }
 
@@ -208,9 +203,8 @@ public sealed class FfxivCollectService
                 }
 
                 Svc.Log.Information(
-                    "[RelicTracker] FFXIV Collect: {Owned} owned, {Missing} missing for character {CharacterId}.",
+                    "[RelicTracker] FFXIV Collect: {Owned} owned for character {CharacterId}.",
                     snapshot.Owned.Count,
-                    snapshot.Missing.Count,
                     characterId);
             }
             catch (FfxivCollectException ex)
@@ -236,7 +230,7 @@ public sealed class FfxivCollectService
                         return;
                     }
 
-                    StatusMessage = "FFXIV Collect timed out. MogVault inventory progress still works - try Recheck again later.";
+                    StatusMessage = "FFXIV Collect timed out. MogVault inventory progress still works - press Recheck later.";
                 }
 
                 Svc.Log.Warning("[RelicTracker] FFXIV Collect timed out for character {CharacterId}.", characterId);
@@ -276,6 +270,12 @@ public sealed class FfxivCollectService
         }
 
         var now = DateTime.UtcNow;
+        if (Snapshot.CharacterId != characterId && lastRequestedId != characterId)
+        {
+            Refresh(characterId);
+            return;
+        }
+
         if (lastAttemptUtc is not null && now - lastAttemptUtc.Value < maxAge)
         {
             return;

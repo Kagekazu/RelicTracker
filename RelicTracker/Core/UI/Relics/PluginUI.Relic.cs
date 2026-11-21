@@ -261,14 +261,9 @@ public sealed partial class PluginUI
         {
             if (ImGui.Button(resplendentTier is null ? "Craft with Artisan" : $"Craft Component {resplendentTier} with Artisan"))
             {
-                if (ArtisanIpc.TryStartRelicToolList(artisanStep, craftSlot, out string? error))
-                {
-                    Svc.Log.Information("[RelicTracker] Started Artisan list for {Step}.", artisanStep);
-                }
-                else if (!string.IsNullOrWhiteSpace(error))
-                {
-                    Svc.Log.Warning("[RelicTracker] {Error}", error);
-                }
+                artisanResult = ArtisanIpc.TryStartRelicToolList(artisanStep, craftSlot, out string? error)
+                    ? null
+                    : new(error ?? "Artisan didn't start the list.", true);
             }
         }
 
@@ -285,6 +280,12 @@ public sealed partial class PluginUI
                           + "Meld the materia yourself before handing it in."
                         : "Starts Artisan's premade list for this step's crafts - one weapon's worth, across crafter classes, precrafts included.\n"
                           + "Vendor mats are not included - buy those first.");
+        }
+
+        if (artisanResult is not null)
+        {
+            ImGui.SameLine();
+            DrawStatusMessage(ref artisanResult, "artisan_dismiss");
         }
     }
 

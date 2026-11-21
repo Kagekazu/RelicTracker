@@ -106,7 +106,7 @@ public sealed partial class PluginUI
             {
                 if (ExpansionNames.IsTools(expansionId) && ArtisanIpc.SupportsRelicToolLists)
                 {
-                    ImGui.TextWrapped("Choose a crafter on the tool’s upgrade page to start its Artisan list.");
+                    ImGui.TextWrapped("Choose a crafter on the tool's upgrade page to start its Artisan list.");
                 }
                 else
                 {
@@ -293,7 +293,7 @@ public sealed partial class PluginUI
         ImGui.TextColored(HeaderColor, armor.LineName);
         if (!data.ArmorCosts.TryGetValue(armor.Expansion, out var costs))
         {
-            ImGui.TextUnformatted("No armour costs are available.");
+            ImGui.TextUnformatted("No armor costs are available.");
             return;
         }
 
@@ -378,7 +378,7 @@ public sealed partial class PluginUI
 
         if (!any)
         {
-            ImGui.TextUnformatted(query.Length == 0 ? "No armour costs left to show." : "No matching armour tiers or currencies.");
+            ImGui.TextUnformatted(query.Length == 0 ? "No armor costs left to show." : "No matching armor tiers or currencies.");
         }
     }
 
