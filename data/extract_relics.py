@@ -15,6 +15,7 @@ many jobs sit at each step.
 from __future__ import annotations
 
 import json
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -128,10 +129,11 @@ EXPANSION_ORDER = ["ARR", "HW", "SB", "ShB", "EW", "DT", "DoHDoL"]
 
 
 def load_index() -> list[dict]:
-    if RAW_CACHE.exists():
+    # Pass --refresh after a patch adds relic tiers; the cache is otherwise reused as-is.
+    if RAW_CACHE.exists() and "--refresh" not in sys.argv:
         payload = json.loads(RAW_CACHE.read_text(encoding="utf-8"))
     else:
-        request = urllib.request.Request(API_URL, headers={"User-Agent": "RelicTracker/0.1"})
+        request = urllib.request.Request(API_URL, headers={"User-Agent": "RelicTracker"})
         payload = json.loads(urllib.request.urlopen(request, timeout=30).read())
         RAW_CACHE.write_text(json.dumps(payload), encoding="utf-8")
     return payload.get("results", payload) if isinstance(payload, dict) else payload
@@ -168,10 +170,9 @@ def build_lines(relics: list[dict]) -> list[dict]:
         # Full FFXIV Collect order - tier = index // jobs, slot = index % jobs.
         relic_names = [relic_name for _, relic_name in ordered]
         authored = STEP_NAMES.get(name, [])
-        steps = [
-            authored[i] if i < len(authored) else f"Step {i + 1}"
-            for i in range(tier_count)
-        ]
+        if authored and len(authored) != tier_count:
+            raise ValueError(f"{name}: {len(authored)} step names, but FFXIV Collect has {tier_count} tiers")
+        steps = authored or [f"Step {i + 1}" for i in range(tier_count)]
         job_list = JOB_LISTS.get(name, [])
         if job_list and len(job_list) != jobs:
             raise ValueError(f"{name}: job list has {len(job_list)} entries, expected {jobs}")

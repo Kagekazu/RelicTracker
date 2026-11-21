@@ -131,7 +131,7 @@ public sealed partial class PluginUI
                 foreach (var activity in activities)
                 {
                     using var id = ImRaii.PushId(activity.Line);
-                    using var detail = ImRaii.TreeNode($"{activity.Step} · {Plural(activity.JobsLeft, "job")} left");
+                    using var detail = ImRaii.TreeNode($"{activity.Step} · {Plural(activity.JobsLeft, "job")} left###{activity.Step}");
                     if (detail)
                     {
                         DrawMaterialActivityChecklist(activity);
@@ -243,7 +243,7 @@ public sealed partial class PluginUI
     private IEnumerable<string> UnlockInstructions(string series, string step) =>
         ChecklistLines(catalog.StepChecklist(series, step))
             .Where(line => line.StartsWith("Once: ", StringComparison.Ordinal))
-            .Select(line => line[6..]);
+            .Select(line => Sentence(line[6..]));
 
     private void DrawMaterialTasks(IEnumerable<ShoppingMaterialRow> rows, bool showBuySource = false)
     {
@@ -299,7 +299,7 @@ public sealed partial class PluginUI
 
         var ownership = GetOwnership();
         using var armourScope = ImRaii.PushId(armor.LineName);
-        bool canShop = !buying && armor.Expansion == "DT" && armor.LineName == "Phantom Armor";
+        bool canShop = !buying && KnightshopperIpc.IsReady && armor.Expansion == "DT" && armor.LineName == "Phantom Armor";
 
         bool any = false;
         foreach (var set in armor.Sets)
@@ -366,7 +366,7 @@ public sealed partial class PluginUI
                     ImGui.TextWrapped(resolved
                         ? $"Total cost {row.Cost.AllTotal:N0} · In inventory {row.Inventory:N0} · Covered by owned pieces {row.Credit:N0}"
                         : $"Total cost {row.Cost.AllTotal:N0} · Inventory count unavailable");
-                    ImGui.TextWrapped("The same currency in your bags can be used for multiple tiers. Each tier shows its own cost.");
+                    ImGui.TextWrapped("Each tier counts all of this currency in your bags, so the same currency shows under every tier that uses it.");
                     if (!string.IsNullOrWhiteSpace(row.Cost.Note))
                     {
                         ImGui.TextWrapped(row.Cost.Note);

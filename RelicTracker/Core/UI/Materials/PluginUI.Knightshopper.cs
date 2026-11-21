@@ -156,7 +156,8 @@ public sealed partial class PluginUI
         long now = Environment.TickCount64;
         if (knightshopperStatus is null || now - knightshopperStatusTick >= KnightshopperStatusPollMs)
         {
-            knightshopperStatus = KnightshopperIpc.GetActiveStatus();
+            // One failed poll keeps the last status, so a running purchase keeps its progress and Cancel.
+            knightshopperStatus = KnightshopperIpc.GetActiveStatus() ?? (KnightshopperIpc.IsReady ? knightshopperStatus : null);
             knightshopperStatusTick = now;
         }
 
@@ -169,7 +170,9 @@ public sealed partial class PluginUI
                     {
                         KnightshopperPurchaseState.Succeeded => "Knightshopper finished buying.",
                         KnightshopperPurchaseState.Cancelled => "Knightshopper run cancelled.",
-                        _ => $"Knightshopper failed: {finished.Message}",
+                        _ => string.IsNullOrWhiteSpace(finished.Message)
+                            ? "Knightshopper stopped before finishing."
+                            : $"Knightshopper failed: {finished.Message}",
                     },
                     finished.State != KnightshopperPurchaseState.Succeeded);
             }
@@ -205,7 +208,7 @@ public sealed partial class PluginUI
         IReadOnlyList<ShoppingMaterialRow> materials)
     {
         Dictionary<KnightshopperCurrency, List<KnightshopperPurchase>> groups = [];
-        foreach (var row in MergeByMaterial(materials))
+        foreach (var row in materials)
         {
             if (TryGetKnightshopperPurchase(row, out var currency, out var purchase))
             {
@@ -238,7 +241,8 @@ public sealed partial class PluginUI
             || row.Short == 0
             || itemId == 0
             || !VendorAlternativeUnlocked(row)
-            || !KnightshopperIpc.TryParseCurrency(row.Obtain == "buy" ? row.ObtainVia : row.BuyAlternative, out currency))
+            || !(KnightshopperIpc.TryParseCurrency(row.Obtain == "buy" ? row.ObtainVia : row.BuyAlternative, out currency)
+                 || (row.Obtain == "buy" && KnightshopperIpc.TryParseCurrency(row.BuyAlternative, out currency))))
         {
             currency = default;
             return false;
@@ -266,8 +270,15 @@ public sealed partial class PluginUI
     private List<KnightshopperPurchase> GetPhantomArmorPurchases(
         ArmorLine armor, ArmorSet set, ArmorTier tier, RelicOwnership ownership, Func<uint, uint> ownedLookup)
     {
+        // Phantom Vision +1/+2 can also be exchanged 1:1 for the matching Arcanaut's piece, with no materials.
+        var exchangeTier = set.Name == ArmorCostCalculator.PhantomVisionSet && tier.Label is "+1" or "+2"
+            ? armor.Sets.FirstOrDefault(candidate => candidate.Name == ArmorCostCalculator.ArcanautsSet)?
+                .Tiers.FirstOrDefault(candidate => candidate.Label == tier.Label)
+            : null;
         var missing = Enumerable.Range(0, tier.Pieces)
-            .Where(index => !ownership.IsArmorPieceOwned(tier.CollectType, index))
+            .Where(index => !ownership.IsArmorPieceOwned(tier.CollectType, index)
+                            && (exchangeTier is null || index >= exchangeTier.PieceIds.Count
+                                || ownedLookup(exchangeTier.PieceIds[index]) == 0))
             .ToArray();
         if (missing.Length == 0)
         {
@@ -294,7 +305,7 @@ public sealed partial class PluginUI
     [
         .. missing.Where(index => index < tier.PieceIds.Count)
             .Select(index => tier.PieceIds[index])
-            .Where(id => id != 0)
+            .Where(id => id != 0 && GetOnCharacterItemCount(id) == 0)
             .Distinct()
             .Select(id => new KnightshopperPurchase(id, ItemDisplayNames.Resolve(id, $"Item {id}"), 1)),
     ];

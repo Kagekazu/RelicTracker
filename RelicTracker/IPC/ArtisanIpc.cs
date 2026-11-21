@@ -7,7 +7,7 @@ internal static class ArtisanIpc
 {
     private const string InternalName = "Artisan";
     private static readonly Version MinimumPluginVersion = new(4, 0, 5, 24);
-    private const long BindRetryMs = 60_000;
+    private const long BindRetryMs = 5_000;
 
     // Must match Artisan's RelicToolPremadeLists.RelicToolStep ordinals.
     private static readonly Dictionary<string, int> StepOrdinals = new(StringComparer.OrdinalIgnoreCase)
@@ -68,6 +68,10 @@ internal static class ArtisanIpc
     }
 
     public static void Init() => EnsureBound();
+
+    // Artisan's weapon lists are per job only on the Zodiac Relic step. Elsewhere a job slot can collide with a tool
+    // list (slot 8 is SCH's Relic list, and "Augmented" is also a Splendorous tool step).
+    public static bool IsPerJobStep(string stepName) => string.Equals(stepName, "Relic", StringComparison.OrdinalIgnoreCase);
 
     public static void Dispose()
     {
@@ -187,12 +191,6 @@ internal static class ArtisanIpc
             Svc.Log.Information("[RelicTracker] Artisan IPC gone.");
         }
 
-        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
-            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
-        {
-            return;
-        }
-
         long now = Environment.TickCount64;
         if (_lastBindAttemptTick != 0 && now - _lastBindAttemptTick < BindRetryMs)
         {
@@ -200,6 +198,12 @@ internal static class ArtisanIpc
         }
 
         _lastBindAttemptTick = now;
+
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
+        {
+            return;
+        }
 
         try
         {

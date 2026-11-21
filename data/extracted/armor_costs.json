@@ -6,7 +6,7 @@
       "perPiece": 50,
       "setTotal": 250,
       "allTotal": 3750,
-      "note": "Eurekan/Anemos line - from Gerolt, Eureka Anemos; 50 every slot. All = 15 job sets",
+      "note": "From Gerolt in Eureka Anemos.",
       "currencyIds": [
         21801
       ]
@@ -17,7 +17,6 @@
       "perPiece": 150,
       "setTotal": 750,
       "allTotal": 11250,
-      "note": "150 every slot. All = 15 job sets",
       "currencyIds": [
         21801
       ]
@@ -28,7 +27,6 @@
       "perPiece": 400,
       "setTotal": 2000,
       "allTotal": 30000,
-      "note": "400 every slot. All = 15 job sets",
       "currencyIds": [
         21801
       ]
@@ -39,7 +37,7 @@
       "perPiece": 150,
       "setTotal": 750,
       "allTotal": 11250,
-      "note": "final stage - dyeable, 5 materia slots; 150 every slot. All = 15 job sets",
+      "note": "The final Eurekan stage: dyeable, with 5 materia slots.",
       "currencyIds": [
         21803
       ]
@@ -50,7 +48,6 @@
       "perPiece": 40,
       "setTotal": 200,
       "allTotal": 1400,
-      "note": "40 every slot. All = 7 role sets",
       "currencyIds": [
         24124
       ]
@@ -61,7 +58,7 @@
       "perPiece": 50,
       "setTotal": 190,
       "allTotal": 1330,
-      "note": "body/legs 50, head/hands/feet 30. All = 7 role sets",
+      "note": "Body and legs cost more than the other pieces.",
       "currencyIds": [
         24807
       ]
@@ -72,7 +69,7 @@
       "perPiece": 35,
       "setTotal": 133,
       "allTotal": 931,
-      "note": "body/legs 35, head/hands/feet 21. All = 7 role sets",
+      "note": "Body and legs cost more than the other pieces.",
       "currencyIds": [
         24808
       ]
@@ -85,23 +82,63 @@
       "perPiece": 28,
       "setTotal": 98,
       "allTotal": 686,
-      "note": "body/legs 28, head/hands/feet 14 - Resistance Supplier, Southern Front. All = 7 role sets",
+      "note": "From the Resistance Supplier on the Bozjan Southern Front. Body and legs cost more.",
       "currencyIds": [
         31351
       ]
     },
     {
-      "set": "Augmented Bozjan",
-      "currency": "Bozjan Runner's Secrets",
+      "set": "Aug. Bozjan (Head)",
+      "currency": "Bozjan Runner's Secrets (Head Gear)",
       "perPiece": 1,
-      "setTotal": 5,
-      "allTotal": 35,
-      "note": "1 of the MATCHING slot's Bozjan Runner's Secrets per piece (5 slot-specific items), plus the base Bozjan piece. Each = 999 (body/legs) or 500 (small) Bozjan Coin, or rare Castrum Lacus Litore drops. Owned = total across all 5 slots. All = 7 role sets",
+      "setTotal": 1,
+      "allTotal": 7,
+      "note": "Plus the matching Bozjan piece. Buy for 500 Bozjan Coins on the Bozjan Southern Front, or get it from Castrum Lacus Litore.",
       "currencyIds": [
-        31352,
-        31353,
-        31354,
-        31355,
+        31352
+      ]
+    },
+    {
+      "set": "Aug. Bozjan (Body)",
+      "currency": "Bozjan Runner's Secrets (Body Gear)",
+      "perPiece": 1,
+      "setTotal": 1,
+      "allTotal": 7,
+      "note": "Plus the matching Bozjan piece. Buy for 999 Bozjan Coins on the Bozjan Southern Front, or get it from Castrum Lacus Litore.",
+      "currencyIds": [
+        31353
+      ]
+    },
+    {
+      "set": "Aug. Bozjan (Hands)",
+      "currency": "Bozjan Runner's Secrets (Hand Gear)",
+      "perPiece": 1,
+      "setTotal": 1,
+      "allTotal": 7,
+      "note": "Plus the matching Bozjan piece. Buy for 500 Bozjan Coins on the Bozjan Southern Front, or get it from Castrum Lacus Litore.",
+      "currencyIds": [
+        31354
+      ]
+    },
+    {
+      "set": "Aug. Bozjan (Legs)",
+      "currency": "Bozjan Runner's Secrets (Leg Gear)",
+      "perPiece": 1,
+      "setTotal": 1,
+      "allTotal": 7,
+      "note": "Plus the matching Bozjan piece. Buy for 999 Bozjan Coins on the Bozjan Southern Front, or get it from Castrum Lacus Litore.",
+      "currencyIds": [
+        31355
+      ]
+    },
+    {
+      "set": "Aug. Bozjan (Feet)",
+      "currency": "Bozjan Runner's Secrets (Foot Gear)",
+      "perPiece": 1,
+      "setTotal": 1,
+      "allTotal": 7,
+      "note": "Plus the matching Bozjan piece. Buy for 500 Bozjan Coins on the Bozjan Southern Front, or get it from Castrum Lacus Litore.",
+      "currencyIds": [
         31356
       ]
     },
@@ -111,7 +148,7 @@
       "perPiece": 3,
       "setTotal": 12,
       "allTotal": 84,
-      "note": "body/legs 3, others 2 - Gangos. 1 Gold = 100 Silver Coin. All = 7 role sets",
+      "note": "From Gangos. 1 Bozjan Gold Coin = 100 Bozjan Silver Coins. Body and legs cost more.",
       "currencyIds": [
         32180
       ]
@@ -122,7 +159,7 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Head Gear Orderly Runner's Secrets. Drops in Delubrum Reginae (Savage). Also needs the matching Law's Order & Augmented Bozjan pieces. All = 7 role sets",
+      "note": "10 plating trade for the Head Gear Orderly Runner's Secrets. Plating drops in Delubrum Reginae (Savage). The upgrade also needs the matching Law's Order and Augmented Bozjan pieces.",
       "currencyIds": [
         32181
       ]
@@ -133,7 +170,7 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Body Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "note": "10 plating trade for the Body Gear Orderly Runner's Secrets. Plating drops in Delubrum Reginae (Savage).",
       "currencyIds": [
         32182
       ]
@@ -144,7 +181,7 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Hand Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "note": "10 plating trade for the Hand Gear Orderly Runner's Secrets. Plating drops in Delubrum Reginae (Savage).",
       "currencyIds": [
         32183
       ]
@@ -155,7 +192,7 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Leg Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "note": "10 plating trade for the Leg Gear Orderly Runner's Secrets. Plating drops in Delubrum Reginae (Savage).",
       "currencyIds": [
         32184
       ]
@@ -166,7 +203,7 @@
       "perPiece": 10,
       "setTotal": 10,
       "allTotal": 70,
-      "note": "10 → the Foot Gear Orderly Runner's Secrets (Delubrum Reginae Savage). All = 7 role sets",
+      "note": "10 plating trade for the Foot Gear Orderly Runner's Secrets. Plating drops in Delubrum Reginae (Savage).",
       "currencyIds": [
         32185
       ]
@@ -177,7 +214,7 @@
       "perPiece": 9,
       "setTotal": 36,
       "allTotal": 252,
-      "note": "body/legs 9, others 6 - Zadnor. 1 Platinum = 100 Mythril Coin. Separate set, no Save the Queen effects. All = 7 role sets",
+      "note": "From Zadnor. 1 Bozjan Platinum Coin = 100 Bozjan Mythril Coins. A separate set without the Save the Queen effects. Body and legs cost more.",
       "currencyIds": [
         33796
       ]
@@ -190,7 +227,7 @@
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (South Horn) - 4,000 every slot. All = 7 role sets",
+      "note": "From the South Horn in the Occult Crescent.",
       "currencyIds": [
         45043
       ]
@@ -201,7 +238,7 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "needs the base piece; Aetherspun Silver ≈ 1,200 Enlightenment Silver Piece each. All = 7 role sets",
+      "note": "Needs the base piece. Aetherspun Silver costs about 1,200 Enlightenment Silver Pieces.",
       "currencyIds": [
         47864
       ]
@@ -212,7 +249,7 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "Aetherial Fixative ≈ 1,600 Enlightenment Gold Piece each. All = 7 role sets",
+      "note": "Aetherial Fixative costs about 1,600 Enlightenment Gold Pieces.",
       "currencyIds": [
         47865
       ]
@@ -223,7 +260,7 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "needs the +1 piece; Aetherspun Gold drops from treasure chests. All = 7 role sets",
+      "note": "Needs the +1 piece. Aetherspun Gold drops from treasure chests.",
       "currencyIds": [
         47866
       ]
@@ -234,7 +271,7 @@
       "perPiece": 6,
       "setTotal": 30,
       "allTotal": 210,
-      "note": "each X-Fixative = 10 Sanguinite (60 Sanguinite per piece). All = 7 role sets",
+      "note": "Each X-Fixative costs 10 Sanguinite.",
       "currencyIds": [
         47867
       ]
@@ -245,7 +282,7 @@
       "perPiece": 4000,
       "setTotal": 20000,
       "allTotal": 140000,
-      "note": "Occult Crescent (North Horn) - 4,000 Enlightenment Silver Obol every slot. All = 7 role sets",
+      "note": "From the North Horn in the Occult Crescent.",
       "currencyIds": [
         51975
       ]
@@ -256,7 +293,7 @@
       "perPiece": 3,
       "setTotal": 15,
       "allTotal": 105,
-      "note": "needs the base piece, or exchange Arcanaut's +1 1:1 (no mats). Fixatives from North Horn currencies/coffers/Forked Tower: Magic. All = 7 role sets",
+      "note": "Needs the base piece, or exchange the matching Arcanaut's +1 piece with no materials. Fixatives come from North Horn currencies, coffers and the Forked Tower: Magic.",
       "currencyIds": [
         51978
       ]
@@ -267,7 +304,7 @@
       "perPiece": 4,
       "setTotal": 20,
       "allTotal": 140,
-      "note": "needs the +1 piece, or exchange Arcanaut's +2 1:1 (no mats). All = 7 role sets",
+      "note": "Needs the +1 piece, or exchange the matching Arcanaut's +2 piece with no materials.",
       "currencyIds": [
         51978
       ]
@@ -278,7 +315,7 @@
       "perPiece": 8,
       "setTotal": 40,
       "allTotal": 280,
-      "note": "needs the +2 piece. All = 7 role sets",
+      "note": "Needs the +2 piece.",
       "currencyIds": [
         51978
       ]

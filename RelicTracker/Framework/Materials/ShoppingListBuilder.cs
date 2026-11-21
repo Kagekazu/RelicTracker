@@ -109,6 +109,39 @@ public static class ShoppingListBuilder
         // Dragonsung, Cosmic) the shared rows apply to every job, the Fisher included.
         var fisherSteps = isTools ? StepsWithFisherSection(sheet) : null;
 
+        // Tool steps are a recipe tree (turn-in <- precraft <- raw, linked by craftOf).
+        Dictionary<string, ExpansionMaterialRow> productRows = new(StringComparer.OrdinalIgnoreCase);
+        if (isTools)
+        {
+            foreach (var row in sheet.Materials)
+            {
+                if (!IsQuestRewardRow(row) && !string.IsNullOrWhiteSpace(row.Step) && !string.IsNullOrWhiteSpace(row.Material))
+                {
+                    productRows.TryAdd($"{row.Step.Trim()}|{row.Material.Trim()}", row);
+                }
+            }
+        }
+
+        // How many of a product are already covered by owning it, or by owning what it is crafted into.
+        uint CraftedCover(string step, string product, int jobs, int depth)
+        {
+            if (depth > 4 || !productRows.TryGetValue($"{step}|{product}", out var productRow) || productRow.PerUnitCount == 0)
+            {
+                return 0;
+            }
+
+            var productNeed = productRow.PerUnitCount * (uint)jobs;
+            var owned = materialIdsByName.TryGetValue(product, out var productIds) ? SumOwned(productIds, ownedLookup) : 0;
+            var parent = productRow.CraftOf?.Trim();
+            if (!string.IsNullOrEmpty(parent)
+                && productRows.TryGetValue($"{step}|{parent}", out var parentRow) && parentRow.PerUnitCount > 0)
+            {
+                owned += CraftedCover(step, parent, jobs, depth + 1) * productRow.PerUnitCount / parentRow.PerUnitCount;
+            }
+
+            return Math.Min(owned, productNeed);
+        }
+
         foreach (var row in sheet.Materials)
         {
             var step = row.Step?.Trim();
@@ -166,6 +199,13 @@ public static class ShoppingListBuilder
             var need = row.OneTime
                 ? (jobsNeeding > 0 && info.Status.ReachedPerStep[info.Tier] == 0 ? perUnit : 0)
                 : perUnit * (uint)jobsNeeding;
+            var craftOf = row.CraftOf?.Trim();
+            if (isTools && need > 0 && !string.IsNullOrEmpty(craftOf)
+                && productRows.TryGetValue($"{step}|{craftOf}", out var made) && made.PerUnitCount > 0)
+            {
+                need -= Math.Min(need, CraftedCover(step!, craftOf, jobsNeeding, 0) * perUnit / made.PerUnitCount);
+            }
+
             if (need == 0)
             {
                 continue;
@@ -202,7 +242,7 @@ public static class ShoppingListBuilder
             var firstRow = firstRowByKey[key];
             var itemIds = materialIdsByName.TryGetValue(key.Material, out var ids) ? ids : [];
             var resolved = itemIds.Count > 0;
-            var ownedInventory = SumOwned(itemIds, ownedLookup);
+            var ownedInventory = OwnedTowardNeed(itemIds, need, ownedLookup);
             var ownedQuestCredit = QuestCreditFor(
                 catalogStep,
                 key.Material,
@@ -263,6 +303,24 @@ public static class ShoppingListBuilder
         }
 
         return result;
+    }
+
+    // A row with several IDs needs one of each (the 12 Atma), so each item only counts up to its share.
+    public static uint OwnedTowardNeed(IReadOnlyList<uint> itemIds, uint need, Func<uint, uint> ownedLookup)
+    {
+        if (itemIds.Count <= 1)
+        {
+            return SumOwned(itemIds, ownedLookup);
+        }
+
+        var share = (need + (uint)itemIds.Count - 1) / (uint)itemIds.Count;
+        var total = 0u;
+        foreach (var itemId in itemIds)
+        {
+            total += Math.Min(ownedLookup(itemId), share);
+        }
+
+        return total;
     }
 
     public static uint SumOwned(IReadOnlyList<uint> itemIds, Func<uint, uint> ownedLookup)

@@ -17,7 +17,11 @@ public sealed record RelicItemTarget(
     string ExpansionId,
     string MenuLabel,
     string? CollectType = null,
-    string? Job = null);
+    string? Job = null,
+    string? Search = null,
+    string? ArmorSet = null,
+    int ArmorTier = -1,
+    int ArmorPiece = -1);
 
 public sealed class RelicItemNavigationIndex
 {
@@ -64,12 +68,11 @@ public sealed class RelicItemNavigationIndex
                 }
 
                 var material = row.Material?.Trim();
-                var label = !string.IsNullOrWhiteSpace(material)
-                            && data.MaterialSources.TryGetValue(material, out string? source)
-                    ? $"Open Materials - {source}"
-                    : $"Open Materials - {ExpansionNames.LongName(expansionId)}";
-
-                var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
+                var target = new RelicItemTarget(
+                    RelicTrackerDestinationTab.Tracker,
+                    expansionId,
+                    $"Open Materials - {ExpansionNames.LongName(expansionId)}",
+                    Search: material);
                 foreach (uint itemId in row.MaterialIds)
                 {
                     if (itemId > 0 && seen.Add(itemId))
@@ -92,10 +95,11 @@ public sealed class RelicItemNavigationIndex
                     continue;
                 }
 
-                var label = data.MaterialSources.TryGetValue(cost.Currency, out string? source)
-                    ? $"Open Materials - {source}"
-                    : $"Open Materials - {ExpansionNames.LongName(expansionId)}";
-                var target = new RelicItemTarget(RelicTrackerDestinationTab.Tracker, expansionId, label);
+                var target = new RelicItemTarget(
+                    RelicTrackerDestinationTab.Tracker,
+                    expansionId,
+                    $"Open Materials - {ExpansionNames.LongName(expansionId)}",
+                    Search: cost.Currency);
                 foreach (uint itemId in cost.CurrencyIds)
                 {
                     Add(itemId, target);
@@ -109,16 +113,22 @@ public sealed class RelicItemNavigationIndex
         foreach (ArmorLine line in catalog.ArmorLines)
         {
             var label = $"Open Relic - {line.LineName}";
-            var target = new RelicItemTarget(
-                RelicTrackerDestinationTab.Relic,
-                line.Expansion,
-                label,
-                CollectType: line.LineName);
-            foreach (ArmorTier tier in line.AllTiers)
+            foreach (ArmorSet set in line.Sets)
             {
-                foreach (uint itemId in tier.PieceIds)
+                for (int tierIndex = 0; tierIndex < set.Tiers.Count; tierIndex++)
                 {
-                    Add(itemId, target, preferRelic: true);
+                    List<uint> pieceIds = set.Tiers[tierIndex].PieceIds;
+                    for (int piece = 0; piece < pieceIds.Count; piece++)
+                    {
+                        Add(pieceIds[piece], new RelicItemTarget(
+                            RelicTrackerDestinationTab.Relic,
+                            line.Expansion,
+                            label,
+                            CollectType: line.LineName,
+                            ArmorSet: set.Name,
+                            ArmorTier: tierIndex,
+                            ArmorPiece: piece), preferRelic: true);
+                    }
                 }
             }
         }

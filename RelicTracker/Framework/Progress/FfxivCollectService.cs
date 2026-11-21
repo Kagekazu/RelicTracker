@@ -137,7 +137,7 @@ public sealed class FfxivCollectService
     private readonly object gate = new();
     private bool isLoading;
     private DateTime? lastAttemptUtc;
-    private ulong lastRequestedId;
+    public ulong LastRequestedId { get; private set; }
     private int refreshGeneration;
 
     public FfxivCollectSnapshot Snapshot { get; private set; } = FfxivCollectSnapshot.Empty;
@@ -179,7 +179,7 @@ public sealed class FfxivCollectService
 
             isLoading = true;
             lastAttemptUtc = DateTime.UtcNow;
-            lastRequestedId = characterId;
+            LastRequestedId = characterId;
             generation = ++refreshGeneration;
         }
 
@@ -270,7 +270,7 @@ public sealed class FfxivCollectService
         }
 
         var now = DateTime.UtcNow;
-        if (Snapshot.CharacterId != characterId && lastRequestedId != characterId)
+        if (Snapshot.CharacterId != characterId && LastRequestedId != characterId)
         {
             Refresh(characterId);
             return;

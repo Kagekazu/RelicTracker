@@ -188,18 +188,19 @@ public sealed class RelicDataService
     public void Load()
     {
         Manifest = BundledData.ReadJson<RelicManifest>("manifest.json", JsonOptions) ?? new RelicManifest();
-        MaterialSources = BundledData.ReadJson<Dictionary<string, string>>("material_sources.json", JsonOptions)
-                          ?? new(StringComparer.OrdinalIgnoreCase);
+        MaterialSources = new(
+            BundledData.ReadJson<Dictionary<string, string>>("material_sources.json", JsonOptions) ?? [],
+            StringComparer.OrdinalIgnoreCase);
         ArmorCosts = BundledData.ReadJson<Dictionary<string, List<ArmorCostRow>>>("armor_costs.json", JsonOptions)
                      ?? new(StringComparer.Ordinal);
-        MergeExtraMaterials();
+        LoadMaterials();
         BuildMaterialIdIndex();
         Svc.Log.Information(
             "[RelicTracker] Loaded relic materials for {ExpansionCount} expansions.",
             Expansions.Count);
     }
 
-    private void MergeExtraMaterials()
+    private void LoadMaterials()
     {
         var extra = BundledData.ReadJson<Dictionary<string, List<ExpansionMaterialRow>>>(
             "tool_extra_materials.json",
@@ -211,14 +212,7 @@ public sealed class RelicDataService
 
         foreach ((var expansionId, var materials) in extra)
         {
-            if (!Expansions.TryGetValue(expansionId, out var sheet))
-            {
-                sheet = new() { Id = expansionId };
-                Expansions[expansionId] = sheet;
-            }
-
-            sheet.Materials.Clear();
-            sheet.Materials.AddRange(materials);
+            Expansions[expansionId] = new() { Id = expansionId, Materials = materials };
         }
     }
 

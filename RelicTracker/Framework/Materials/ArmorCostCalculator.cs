@@ -21,7 +21,11 @@ public static class ArmorCostCalculator
             ["Elemental +1"] = ("Elemental", "+1", null),
             ["Elemental +2"] = ("Elemental", "+2", null),
             ["Bozjan"] = ("Bozjan", "Base", null),
-            ["Augmented Bozjan"] = ("Bozjan", "Augmented", null),
+            ["Aug. Bozjan (Head)"] = ("Bozjan", "Augmented", 0),
+            ["Aug. Bozjan (Body)"] = ("Bozjan", "Augmented", 1),
+            ["Aug. Bozjan (Hands)"] = ("Bozjan", "Augmented", 2),
+            ["Aug. Bozjan (Legs)"] = ("Bozjan", "Augmented", 3),
+            ["Aug. Bozjan (Feet)"] = ("Bozjan", "Augmented", 4),
             ["Law's Order"] = ("Law's Order", "Base", null),
             ["Aug. Law's Order (Head)"] = ("Law's Order", "Augmented", 0),
             ["Aug. Law's Order (Body)"] = ("Law's Order", "Augmented", 1),
@@ -42,7 +46,8 @@ public static class ArmorCostCalculator
         string expansionId,
         ArmorCostRow cost,
         RelicCatalog catalog,
-        Func<uint, uint> ownedLookup)
+        Func<uint, uint> ownedLookup,
+        RelicOwnership? ownership = null)
     {
         if (!TryResolveCostTarget(
                 expansionId,
@@ -66,7 +71,8 @@ public static class ArmorCostCalculator
                 continue;
             }
 
-            if (!PieceSatisfied(line, set, tierIndex, index, ownedLookup))
+            if (!PieceSatisfied(line, set, tierIndex, index, ownedLookup)
+                && ownership?.IsArmorPieceOwned(set.Tiers[tierIndex].CollectType, index) != true)
             {
                 continue;
             }

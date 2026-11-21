@@ -71,31 +71,16 @@ internal static class ArmorShopResolver
             return 0;
         }
 
+        // Only rows that already name the shop item are overlaid: the bundled rows can track a farmable
+        // input (Runner's Plating) instead of the exchange token the shop asks for.
         HashSet<uint> claimed = [];
         var updated = 0;
-        List<ArmorCostRow> unmatched = [];
         foreach ((ArmorCostRow row, _, _, _, _) in rows)
         {
-            if (TryMatch(row, materials, claimed, out var material))
+            if (TryMatch(row, materials, claimed, out var material) && ApplyMaterial(row, material))
             {
-                if (ApplyMaterial(row, material))
-                {
-                    updated++;
-                }
+                updated++;
             }
-            else
-            {
-                unmatched.Add(row);
-            }
-        }
-
-        List<(uint ItemId, uint Amount, string Name)> leftover =
-        [
-            .. materials.Where(material => !claimed.Contains(material.ItemId))
-        ];
-        if (unmatched.Count == 1 && leftover.Count == 1 && ApplyMaterial(unmatched[0], leftover[0]))
-        {
-            updated++;
         }
 
         return updated;
@@ -127,7 +112,7 @@ internal static class ArmorShopResolver
         return false;
     }
 
-    private static bool ApplyMaterial(ArmorCostRow row, (uint ItemId, uint Amount, string Name) material)
+    internal static bool ApplyMaterial(ArmorCostRow row, (uint ItemId, uint Amount, string Name) material)
     {
         var changed = false;
         if (row.CurrencyIds.Count != 1 || row.CurrencyIds[0] != material.ItemId)
@@ -143,18 +128,12 @@ internal static class ArmorShopResolver
             changed = true;
         }
 
-        if (material.Amount > 0 && row.PerPiece != (int)material.Amount)
+        // Split body/legs rows never reach here: their pieces have two different shop prices.
+        if (material.Amount > 0 && row.PerPiece > 0 && row.PerPiece != (int)material.Amount
+            && !ArmorCostCalculator.HasSplitSlotCost(row))
         {
-            if (row.PerPiece > 0 && row.SetTotal == row.PerPiece * ArmorCostCalculator.PiecesPerSet)
-            {
-                row.SetTotal = (int)material.Amount * ArmorCostCalculator.PiecesPerSet;
-            }
-
-            if (row.PerPiece > 0 && row.AllTotal == row.PerPiece * ArmorCostCalculator.PiecesPerSet * ArmorCostCalculator.RoleSets)
-            {
-                row.AllTotal = (int)material.Amount * ArmorCostCalculator.PiecesPerSet * ArmorCostCalculator.RoleSets;
-            }
-
+            row.SetTotal = row.SetTotal / row.PerPiece * (int)material.Amount;
+            row.AllTotal = row.AllTotal / row.PerPiece * (int)material.Amount;
             row.PerPiece = (int)material.Amount;
             changed = true;
         }

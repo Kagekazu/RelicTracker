@@ -123,6 +123,16 @@ public sealed partial class PluginUI : Window
         }
     }
 
+    public void OpenSetup()
+    {
+        if (page != Page.Setup)
+        {
+            ToggleSetup();
+        }
+
+        IsOpen = true;
+    }
+
     private void ToggleSetup()
     {
         if (page == Page.Setup)

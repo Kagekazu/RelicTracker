@@ -27,6 +27,17 @@ def expand_name_variants(name: str):
         yield name[:-1]
 
 
+def replica_base(name: str) -> str:
+    """Relic name a replica item copies: 'Replica X', 'Replica of (the) X', 'X Replica' or 'X Replicas'."""
+    for prefix in ("Replica of the ", "Replica of ", "Replica "):
+        if name.startswith(prefix):
+            return name[len(prefix):].strip()
+    for suffix in (" Replicas", " Replica"):
+        if name.endswith(suffix):
+            return name[: -len(suffix)].strip()
+    return ""
+
+
 class ItemIndex:
     def __init__(self) -> None:
         self._by_name: dict[str, int] = {}
@@ -63,19 +74,11 @@ class ItemIndex:
             index._by_name.setdefault(name.casefold(), item_id)
             if name.lower().startswith("hq "):
                 index._by_name.setdefault(name[3:].strip().casefold(), item_id)
-            lowered = name.casefold()
-            if name.startswith("Replica "):
-                base = name[len("Replica ") :].strip()
-                if base:
-                    replicas = index._replicas_by_base.setdefault(base.casefold(), [])
-                    if item_id not in replicas:
-                        replicas.append(item_id)
-            elif name.endswith(" Replica"):
-                base = name[: -len(" Replica")].strip()
-                if base:
-                    replicas = index._replicas_by_base.setdefault(base.casefold(), [])
-                    if item_id not in replicas:
-                        replicas.append(item_id)
+            base = replica_base(name)
+            if base:
+                replicas = index._replicas_by_base.setdefault(base.casefold(), [])
+                if item_id not in replicas:
+                    replicas.append(item_id)
 
         return index
 

@@ -317,7 +317,8 @@
         10120
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -430,7 +431,8 @@
         10121
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -543,7 +545,8 @@
         10122
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -1432,7 +1435,8 @@
         10112
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -1526,7 +1530,8 @@
         10113
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -1620,7 +1625,8 @@
         10114
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -1808,7 +1814,8 @@
         10115
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -1879,7 +1886,8 @@
         10116
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -2045,7 +2053,8 @@
         10117
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -2116,7 +2125,8 @@
         10118
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -2210,7 +2220,8 @@
         10119
       ],
       "obtain": "buy",
-      "obtainVia": "GC seals"
+      "obtainVia": "GC seals",
+      "buyAlternative": "Hunt seals"
     },
     {
       "step": "Lucis",
@@ -7838,7 +7849,7 @@
     {
       "step": "Crystalline",
       "material": "Underground Spring Water",
-      "perUnit": 120,
+      "perUnit": 40,
       "jobs": [
         false,
         false,
@@ -7860,8 +7871,32 @@
     },
     {
       "step": "Crystalline",
+      "material": "Lunatender Blossom",
+      "perUnit": 20,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        36258
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
+    },
+    {
+      "step": "Crystalline",
       "material": "Lime Basil",
-      "perUnit": 60,
+      "perUnit": 40,
       "jobs": [
         false,
         false,
@@ -7878,29 +7913,6 @@
       "craftOf": "Grade 5 Vitality Alkahest",
       "materialIds": [
         27783
-      ],
-      "obtain": "gather"
-    },
-    {
-      "step": "Crystalline",
-      "material": "Tiger Lily",
-      "perUnit": 60,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Grade 5 Vitality Alkahest",
-      "materialIds": [
-        27784
       ],
       "obtain": "gather"
     },
@@ -7930,8 +7942,31 @@
     },
     {
       "step": "Crystalline",
+      "material": "Underground Spring Water",
+      "perUnit": 40,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Mind Alkahest",
+      "materialIds": [
+        27782
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Crystalline",
       "material": "Lunatender Blossom",
-      "perUnit": 60,
+      "perUnit": 20,
       "jobs": [
         false,
         false,
@@ -7951,6 +7986,29 @@
       ],
       "obtain": "buy",
       "obtainVia": "Bicolor Gemstones"
+    },
+    {
+      "step": "Crystalline",
+      "material": "Tiger Lily",
+      "perUnit": 40,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Mind Alkahest",
+      "materialIds": [
+        27784
+      ],
+      "obtain": "gather"
     },
     {
       "step": "Crystalline",
@@ -8027,7 +8085,7 @@
     {
       "step": "Crystalline",
       "material": "Dark Rye",
-      "perUnit": 180,
+      "perUnit": 120,
       "jobs": [
         false,
         false,
@@ -8074,7 +8132,7 @@
     {
       "step": "Crystalline",
       "material": "Palm Syrup",
-      "perUnit": 180,
+      "perUnit": 120,
       "jobs": [
         false,
         false,
@@ -9377,7 +9435,7 @@
     {
       "step": "Chora-Zoi's",
       "material": "Underground Spring Water",
-      "perUnit": 90,
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -9446,30 +9504,6 @@
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Hoptrap Leaf",
-      "perUnit": 60,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Grade 5 Intelligence Alkahest",
-      "materialIds": [
-        27763
-      ],
-      "obtain": "buy",
-      "obtainVia": "Bicolor Gemstones"
-    },
-    {
-      "step": "Chora-Zoi's",
       "material": "Growth Formula Kappa",
       "perUnit": 30,
       "jobs": [
@@ -9491,6 +9525,53 @@
         27778
       ],
       "obtain": "craft"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Underground Spring Water",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        27782
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Chora-Zoi's",
+      "material": "Hoptrap Leaf",
+      "perUnit": 60,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        27763
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Chora-Zoi's",
@@ -9637,77 +9718,7 @@
     },
     {
       "step": "Chora-Zoi's",
-      "material": "Highland Wheat",
-      "perUnit": 100,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Upland Wheat Flour",
-      "materialIds": [
-        12880
-      ],
-      "obtain": "gather"
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Dravanian Spring Water",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Upland Wheat Flour",
-      "materialIds": [
-        12631
-      ],
-      "obtain": "gather"
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Abalathian Rock Salt",
-      "perUnit": 20,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Upland Wheat Flour",
-      "materialIds": [
-        12901
-      ],
-      "obtain": "gather",
-      "buyAlternative": "Gil"
-    },
-    {
-      "step": "Chora-Zoi's",
-      "material": "Ovibos Milk",
+      "material": "Upland Wheat",
       "perUnit": 150,
       "jobs": [
         false,
@@ -9724,10 +9735,9 @@
       ],
       "craftOf": "Upland Wheat Flour",
       "materialIds": [
-        36255
+        27832
       ],
-      "obtain": "buy",
-      "obtainVia": "Bicolor Gemstones"
+      "obtain": "gather"
     },
     {
       "step": "Brilliant",
@@ -11243,7 +11253,7 @@
     {
       "step": "Brilliant",
       "material": "Underground Spring Water",
-      "perUnit": 120,
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -11262,6 +11272,30 @@
         27782
       ],
       "obtain": "gather"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Lunatender Blossom",
+      "perUnit": 30,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Grade 5 Vitality Alkahest",
+      "materialIds": [
+        36258
+      ],
+      "obtain": "buy",
+      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -11285,30 +11319,6 @@
         27783
       ],
       "obtain": "gather"
-    },
-    {
-      "step": "Brilliant",
-      "material": "Hoptrap Leaf",
-      "perUnit": 120,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-      ],
-      "craftOf": "Grade 5 Vitality Alkahest",
-      "materialIds": [
-        27763
-      ],
-      "obtain": "buy",
-      "obtainVia": "Bicolor Gemstones"
     },
     {
       "step": "Brilliant",
@@ -11336,8 +11346,8 @@
     },
     {
       "step": "Brilliant",
-      "material": "Lunatender Blossom",
-      "perUnit": 30,
+      "material": "Underground Spring Water",
+      "perUnit": 60,
       "jobs": [
         false,
         false,
@@ -11353,7 +11363,30 @@
       ],
       "craftOf": "Growth Formula Kappa",
       "materialIds": [
-        36258
+        27782
+      ],
+      "obtain": "gather"
+    },
+    {
+      "step": "Brilliant",
+      "material": "Hoptrap Leaf",
+      "perUnit": 120,
+      "jobs": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "craftOf": "Growth Formula Kappa",
+      "materialIds": [
+        27763
       ],
       "obtain": "buy",
       "obtainVia": "Bicolor Gemstones"
@@ -14825,7 +14858,8 @@
         9543
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 65892
     },
     {
       "step": "Zodiac",
@@ -14847,7 +14881,8 @@
         9542
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 65892
     },
     {
       "step": "Zodiac",
@@ -14869,7 +14904,8 @@
         9538
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 65892
     },
     {
       "step": "Zodiac",
@@ -14891,7 +14927,8 @@
         9544
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 65892
     },
     {
       "step": "Zodiac",
@@ -17529,7 +17566,8 @@
         46854
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 70856
     },
     {
       "step": "Umbrae",
@@ -17696,7 +17734,8 @@
         50054
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 70918
     },
     {
       "step": "Obscurum",
@@ -17862,7 +17901,8 @@
         50970
       ],
       "obtain": "buy",
-      "obtainVia": "Gil"
+      "obtainVia": "Gil",
+      "buyAlternativeQuest": 70992
     },
     {
       "step": "Eclipticum",

@@ -46,10 +46,43 @@ public sealed partial class PluginUI
                 ImGui.SetTooltip(
                     "Physeos is the Baldesion Arsenal upgrade after Eureka. Same look/stats outside Eureka, "
                     + "and it does not count as a new relic for achievements. When enabled, Eureka counts as "
-                    + "finished in the catalogue, upgrade path, and materials list.");
+                    + "finished in All Relics, on upgrade pages, and in Materials.");
             }
 
+            DrawClearManualMarks();
             EndPanel();
+        }
+    }
+
+    // Version 1 let players tick steps by hand. Those marks still count, and this is the only way to remove them.
+    private void DrawClearManualMarks()
+    {
+        CharacterProgress progress = config.CurrentCharacterProgress();
+        int marks = progress.RelicStepDone.Count + progress.ArmorPieceDone.Count;
+        if (marks == 0)
+        {
+            return;
+        }
+
+        ImGui.Spacing();
+        bool ctrl = ImGui.GetIO().KeyCtrl;
+        using (ImRaii.Disabled(!ctrl))
+        {
+            if (ImGui.Button($"Clear old manual marks ({marks})"))
+            {
+                progress.RelicStepDone.Clear();
+                progress.ArmorPieceDone.Clear();
+                config.OnSettingChanged();
+                config.PersistIfDirty();
+                InvalidateOwnershipCache();
+            }
+        }
+
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+        {
+            ImGui.SetTooltip(
+                "Steps and armor pieces you ticked by hand in an older version still count as done.\n"
+                + "Hold Ctrl and click to remove them for this character. Items you own still count.");
         }
     }
 
@@ -97,21 +130,32 @@ public sealed partial class PluginUI
         ImGui.InputTextWithHint("##collectCharacterId", "Character ID", ref collectCharacterIdInput, 32);
 
         ImGui.SameLine();
-        if (ImGui.Button("Save ID"))
+        bool loggedIn = CharacterScope.CurrentContentId != 0;
+        using (ImRaii.Disabled(!loggedIn))
         {
-            var input = collectCharacterIdInput.Trim();
-            ulong parsed = 0;
-            collectIdInvalid = input.Length > 0 && !(ulong.TryParse(input, out parsed) && parsed > 0);
-            if (!collectIdInvalid)
+            if (ImGui.Button("Save ID"))
             {
-                config.CollectCharacterId = parsed;
-                config.OnSettingChanged();
-                InvalidateOwnershipCache();
-                if (parsed != 0)
+                var input = collectCharacterIdInput.Trim();
+                ulong parsed = 0;
+                collectIdInvalid = input.Length > 0 && !(ulong.TryParse(input, out parsed) && parsed > 0);
+                if (!collectIdInvalid)
                 {
-                    ffxivCollect.ForceRefresh(parsed);
+                    config.CollectCharacterId = parsed;
+                    config.OnSettingChanged();
+                    InvalidateOwnershipCache();
+                    if (parsed != 0)
+                    {
+                        ffxivCollect.ForceRefresh(parsed);
+                    }
+
+                    config.PersistIfDirty();
                 }
             }
+        }
+
+        if (!loggedIn && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+        {
+            ImGui.SetTooltip("Log in first: the FFXIV Collect link is saved for each character.");
         }
 
         ImGui.SameLine();
@@ -141,7 +185,9 @@ public sealed partial class PluginUI
         {
             ImGui.TextColored(MutedColor, "Loading…");
         }
-        else if (!string.IsNullOrWhiteSpace(ffxivCollect.StatusMessage))
+        else if (!string.IsNullOrWhiteSpace(ffxivCollect.StatusMessage)
+                 && config.CollectCharacterId != 0
+                 && ffxivCollect.LastRequestedId == config.CollectCharacterId)
         {
             ImGui.TextColored(WarningColor, ffxivCollect.StatusMessage);
         }
@@ -158,7 +204,7 @@ public sealed partial class PluginUI
             ImGui.Spacing();
             ImGui.TextWrapped(
                 "Find your character ID in the URL on ffxivcollect.com when viewing your public profile, e.g. ffxivcollect.com/characters/123456. "
-                + "Saving it lets RelicTracker request that profile's relic lists.");
+                + "The link is saved for this character only. Clear the box and press Save ID to unlink.");
         }
     }
 
@@ -175,7 +221,7 @@ public sealed partial class PluginUI
     private void DrawOptionalHelpers()
     {
         bool artisanReady = ArtisanIpc.SupportsRelicToolLists;
-        DrawIntegration(new("Artisan", "Crafts relic tool turn-ins from the upgrade page.",
+        DrawIntegration(new("Artisan", "Crafts relic weapon and tool turn-ins from upgrade pages and Materials.",
             "Update Artisan in /xlplugins to use relic crafting lists.", true,
             ArtisanIpc.IsInstalled, ArtisanIpc.IsEnabled, artisanReady,
             artisanReady && ArtisanIpc.IsBusy() ? "Crafting" : null));

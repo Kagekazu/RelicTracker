@@ -63,6 +63,13 @@ internal static class RelicTheme
         (ImGuiCol.HeaderHovered, WithAlpha(Gold, 0.40f)),
         (ImGuiCol.HeaderActive, WithAlpha(GoldDark, 0.90f)),
 
+        // Dalamud's ImGuiCol names: TabActive / TabUnfocused / TabUnfocusedActive.
+        (ImGuiCol.Tab, Control),
+        (ImGuiCol.TabHovered, ControlHover),
+        (ImGuiCol.TabActive, ControlActive),
+        (ImGuiCol.TabUnfocused, Control),
+        (ImGuiCol.TabUnfocusedActive, ControlActive),
+
         (ImGuiCol.Separator, WithAlpha(GoldDark, 0.50f)),
         (ImGuiCol.SeparatorHovered, Gold),
         (ImGuiCol.SeparatorActive, GoldBright),

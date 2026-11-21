@@ -20,7 +20,7 @@ public sealed partial class PluginUI
 
         RefreshCollectIfStale();
         var ownership = GetOwnership();
-        var statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
+        var statuses = GetStatuses();
         string query = collectionSearch.Trim();
 
         ImGui.TextColored(HeaderColor, "All Relics");
@@ -36,7 +36,7 @@ public sealed partial class PluginUI
 
         if (!MogVaultIpc.IsReady)
         {
-            ImGui.TextWrapped("Inventory is offline. Showing saved progress.");
+            ImGui.TextWrapped("MogVault is off. Showing saved progress.");
         }
 
         using var scroll = ImRaii.Child("##CollectionScroll", new(0, -1), false);

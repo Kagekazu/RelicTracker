@@ -15,7 +15,11 @@ import json
 from pathlib import Path
 
 from item_lookup import attach_armor_costs, attach_tool_extra_materials, load_item_index
-from obtain_lookup import ObtainIndex
+from obtain_lookup import CURRENCY_PREFERENCE, ObtainIndex
+
+# Must match KnightshopperIpc.TryParseCurrency.
+KNIGHTSHOPPER_CURRENCIES = {"Gil", "Tomestones", "Scrips", "Bicolor Gemstones", "Skybuilders' Scrips",
+                            "Hunt seals", "Cosmocredits", "MGP", "PvP"}
 
 SLOT = {"CRP":0,"BSM":1,"ARM":2,"GSM":3,"LTW":4,"WVR":5,"ALC":6,"CUL":7,"MIN":8,"BTN":9,"FSH":10}
 def flags(*slots):
@@ -246,16 +250,16 @@ craft_tree("Crystalline", 30, {
   "collectable": "Connoisseur's Elixir Bottle",
   "scrip": ("Select Hoptrap Leaf", 30),
   "precrafts": [
-   ("Grade 5 Vitality Alkahest", 60, [("Underground Spring Water", 120), ("Lime Basil", 60), ("Tiger Lily", 60)]),
-   ("Grade 5 Mind Alkahest", 60, [("Lunatender Blossom", 60)]),
+   ("Grade 5 Vitality Alkahest", 60, [("Underground Spring Water", 40), ("Lunatender Blossom", 20), ("Lime Basil", 40)]),
+   ("Grade 5 Mind Alkahest", 60, [("Underground Spring Water", 40), ("Lunatender Blossom", 20), ("Tiger Lily", 40)]),
   ],
  },
  "CUL": {
   "collectable": "Connoisseur's Pixieberry Tart",
   "scrip": ("Select Pixieberry", 30),
   "precrafts": [
-   ("Dark Rye Flour", 60, [("Dark Rye", 180)]),
-   ("Palm Sugar", 60, [("Palm Syrup", 180)]),
+   ("Dark Rye Flour", 60, [("Dark Rye", 120)]),
+   ("Palm Sugar", 60, [("Palm Syrup", 120)]),
   ],
  },
 })
@@ -314,8 +318,8 @@ craft_tree("Chora-Zoi's", 30, {
   "collectable": "Connoisseur's Topiary Moogle",
   "scrip": ("Select Rak'tika Seedling", 30),
   "precrafts": [
-   ("Grade 5 Intelligence Alkahest", 90, [("Underground Spring Water", 90), ("Lunatender Blossom", 30), ("Fernleaf Lavender", 60), ("Hoptrap Leaf", 60)]),
-   ("Growth Formula Kappa", 30, [("Vampire Vine Sap", 60)]),
+   ("Grade 5 Intelligence Alkahest", 90, [("Underground Spring Water", 60), ("Lunatender Blossom", 30), ("Fernleaf Lavender", 60)]),
+   ("Growth Formula Kappa", 30, [("Underground Spring Water", 30), ("Hoptrap Leaf", 60), ("Vampire Vine Sap", 60)]),
   ],
  },
  "CUL": {
@@ -323,7 +327,7 @@ craft_tree("Chora-Zoi's", 30, {
   "scrip": ("Select Squid Ink", 30),
   "precrafts": [
    ("Northern Sea Salt", 90, [("Sharlayan Rock Salt", 180)]),
-   ("Upland Wheat Flour", 90, [("Highland Wheat", 100), ("Dravanian Spring Water", 20), ("Abalathian Rock Salt", 20), ("Ovibos Milk", 150)]),
+   ("Upland Wheat Flour", 90, [("Upland Wheat", 150)]),
   ],
  },
 })
@@ -388,8 +392,8 @@ craft_tree("Brilliant", 30, {
   "scrip": ("Select Rak'tika Seedling", 30),
   "precrafts": [
    ("Ironwood Lumber", 30, [("Ironwood Log", 150)]),
-   ("Grade 5 Vitality Alkahest", 90, [("Underground Spring Water", 120), ("Lime Basil", 60), ("Hoptrap Leaf", 120)]),
-   ("Growth Formula Kappa", 60, [("Lunatender Blossom", 30), ("Vampire Vine Sap", 120)]),
+   ("Grade 5 Vitality Alkahest", 90, [("Underground Spring Water", 60), ("Lunatender Blossom", 30), ("Lime Basil", 60)]),
+   ("Growth Formula Kappa", 60, [("Underground Spring Water", 60), ("Hoptrap Leaf", 120), ("Vampire Vine Sap", 120)]),
   ],
  },
  "CUL": {
@@ -712,10 +716,20 @@ for expansion_rows in data.values():
         row["obtain"] = kind
         if via:
             row["obtainVia"] = via
-        if kind != "buy" and (alternative := obtain_index.purchase_currency(row.get("materialIds", []))):
+        ids = row.get("materialIds", [])
+        if kind != "buy":
+            alternative = obtain_index.purchase_currency(ids)
+        elif via not in KNIGHTSHOPPER_CURRENCIES:
+            # e.g. GC seals: offer a second shop currency that Knightshopper can buy with.
+            alternative = next((c for c in CURRENCY_PREFERENCE
+                                if c in KNIGHTSHOPPER_CURRENCIES and ("buy", c) in obtain_index.ways(ids)), "")
+        else:
+            alternative = ""
+        if alternative:
             row["buyAlternative"] = alternative
-            if alternative == "Gil" and (quest := obtain_index.required_gil_quest(row.get("materialIds", []))):
-                row["buyAlternativeQuest"] = quest
+        gil_shop = via if kind == "buy" and via == "Gil" else alternative
+        if gil_shop == "Gil" and (quest := obtain_index.required_gil_quest(ids)):
+            row["buyAlternativeQuest"] = quest
         # Bought by default but also craftable (the Anima crafts): offer the Artisan list too.
         if kind != "craft" and any(way == "craft" for way, _ in obtain_index.ways(row.get("materialIds", []))):
             row["craftable"] = True

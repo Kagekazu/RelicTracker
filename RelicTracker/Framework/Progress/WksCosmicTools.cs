@@ -72,6 +72,15 @@ internal static unsafe class WksCosmicTools
         }
     }
 
+    public static bool IsResearchLoaded
+    {
+        get
+        {
+            WKSManager* manager = WKSManager.Instance();
+            return manager is not null && manager->ResearchModule is not null && manager->ResearchModule->IsLoaded;
+        }
+    }
+
     public static bool CreditsStep(RelicLine line, int slot, int tier)
     {
         if (!string.Equals(line.CollectType, CollectType, StringComparison.Ordinal))

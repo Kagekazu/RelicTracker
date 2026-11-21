@@ -88,7 +88,7 @@ public sealed partial class PluginUI
 
     private IReadOnlyList<RelicLineStatus> TrackerStatuses(string expansionId, string? lineFilter) =>
     [
-        .. RelicStatusService.Build(GetOwnership(), catalog, config.HidePhyseosRelics)
+        .. GetStatuses()
             .Where(status => string.Equals(status.Line.Expansion, expansionId, StringComparison.Ordinal))
             .Where(status => string.IsNullOrEmpty(lineFilter)
                              || string.Equals(status.Line.CollectType, lineFilter, StringComparison.Ordinal))
@@ -119,7 +119,7 @@ public sealed partial class PluginUI
         }
 
         RelicOwnership ownership = GetOwnership();
-        IReadOnlyList<RelicLineStatus> statuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
+        IReadOnlyList<RelicLineStatus> statuses = GetStatuses();
         List<ShoppingMaterialRow> materials = data.Expansions.TryGetValue(expansionId, out var sheet)
             ? ShoppingListBuilder.Build(
                 expansionId,
@@ -179,7 +179,7 @@ public sealed partial class PluginUI
         Func<uint, uint> ownedLookup)
     {
         uint inventory = ShoppingListBuilder.SumOwned(cost.CurrencyIds, ownedLookup);
-        uint armorCredit = ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup);
+        uint armorCredit = ArmorCostCalculator.ArmorPieceCredit(expansionId, cost, catalog, ownedLookup, GetOwnership());
         return (inventory, armorCredit, inventory + armorCredit);
     }
 
@@ -193,10 +193,6 @@ public sealed partial class PluginUI
         {
             config.ExpandedMaterialSections[configKey] = nodeOpen;
             config.OnSettingChanged();
-        }
-        else if (!config.ExpandedMaterialSections.ContainsKey(configKey))
-        {
-            config.ExpandedMaterialSections[configKey] = nodeOpen;
         }
 
         return nodeOpen;

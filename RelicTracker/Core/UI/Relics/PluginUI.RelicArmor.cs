@@ -26,12 +26,15 @@ public sealed partial class PluginUI
         {
             DrawStatusChip("Saved progress", StatusChipKind.Muted);
             ImGui.SameLine();
-            ImGui.TextWrapped("Connect MogVault to update your progress.");
+            ImGui.TextWrapped("Enable MogVault or link FFXIV Collect in Setup to update your progress.");
         }
     }
 
     private (ArmorLine Line, ulong Character)? armorSelection;
     private int armorSetIndex;
+
+    // Set by a right-click on an armour piece: open its set, tier and role instead of the defaults.
+    private (string Set, int Tier, int Piece)? pendingArmorFocus;
     private int? inspectedArmorTier;
 
     private string ArmorPieceCostLabel(ArmorLine line, ArmorSet set, ArmorTier tier, int pieceIndex)

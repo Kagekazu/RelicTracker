@@ -82,7 +82,7 @@ public sealed partial class PluginUI
         bool inventoryReady = MogVaultIpc.IsReady;
         if (!inventoryReady && items.Length > 0)
         {
-            ImGui.TextWrapped("MogVault is offline. Counts only include items on this character.");
+            ImGui.TextWrapped("MogVault is off. Counts only include items on this character.");
         }
 
         if (!IsStepUnlockedOnAnyJob(weapon, stepName))
@@ -91,7 +91,7 @@ public sealed partial class PluginUI
             ImGui.TextColored(HeaderColor, "Unlock once");
             foreach (var objective in checklist.Where(line => line.StartsWith("Once: ", StringComparison.Ordinal)))
             {
-                ImGui.TextWrapped(objective[6..]);
+                ImGui.TextWrapped(Sentence(objective[6..]));
             }
             DrawUpgradeItemTasks(unlockItems, inventoryReady);
             if (unlockItems.Any(item => item.Obtain == "craft" && item.Owned < item.Need))
@@ -111,13 +111,15 @@ public sealed partial class PluginUI
 
         ImGui.Spacing();
         ImGui.TextColored(HeaderColor, "Turn in");
+        var arcanite = upgradeItems.FirstOrDefault(item => item.Name?.Contains("Arcanite", StringComparison.OrdinalIgnoreCase) == true).Name
+                       ?? "Arcanite";
         if (tier == 0)
         {
-            ImGui.TextWrapped("Bring the Arcanite to Dodokkuli in Phantom Village.");
+            ImGui.TextWrapped($"Bring the {arcanite} to Dodokkuli in Phantom Village.");
         }
         else
         {
-            ImGui.TextWrapped($"Bring the Arcanite and your {weapon.StepName(tier - 1)} weapon to Dodokkuli in Phantom Village.");
+            ImGui.TextWrapped($"Bring the {arcanite} and your {weapon.StepName(tier - 1)} weapon to Dodokkuli in Phantom Village.");
             if (!ownership.IsStepDoneOrManual(weapon, slot, tier - 1))
             {
                 ImGui.TextColored(MutedColor, "The previous upgrade is still incomplete.");
@@ -135,7 +137,7 @@ public sealed partial class PluginUI
         bool inventoryReady = MogVaultIpc.IsReady;
         if (!inventoryReady && items.Length > 0)
         {
-            ImGui.TextWrapped("MogVault is offline. Counts only include items on this character.");
+            ImGui.TextWrapped("MogVault is off. Counts only include items on this character.");
         }
 
         var unlockItems = items.Where(item => item.OneTime).ToArray();
@@ -147,7 +149,7 @@ public sealed partial class PluginUI
             ImGui.TextColored(HeaderColor, "Unlock once");
             foreach (var objective in checklist.Where(line => line.StartsWith("Once: ", StringComparison.Ordinal)))
             {
-                ImGui.TextWrapped(objective[6..]);
+                ImGui.TextWrapped(Sentence(objective[6..]));
             }
             DrawUpgradeItemTasks(unlockItems, inventoryReady);
             if (unlockHasCrafts)
@@ -157,14 +159,15 @@ public sealed partial class PluginUI
         }
 
         var objectives = checklist.Where(line => !line.StartsWith("Once: ", StringComparison.Ordinal))
-            .Select(line => line.StartsWith("Per weapon: ", StringComparison.Ordinal) ? line[12..] : line)
+            .Select(line => line.StartsWith("Per weapon: ", StringComparison.Ordinal) ? Sentence(line[12..]) : line)
             .ToArray();
         bool endsWithTurnIn = objectives.Length > 1
             && (objectives[^1].StartsWith("Return to ", StringComparison.Ordinal)
                 || objectives[^1].StartsWith("Bring ", StringComparison.Ordinal)
                 || objectives[^1].StartsWith("Hand ", StringComparison.Ordinal)
                 || objectives[^1].StartsWith("Deliver ", StringComparison.Ordinal)
-                || objectives[^1].StartsWith("Turn ", StringComparison.Ordinal));
+                || objectives[^1].StartsWith("Turn ", StringComparison.Ordinal)
+                || objectives[^1].StartsWith("Trade ", StringComparison.Ordinal));
         DrawRelicChecklist(endsWithTurnIn ? objectives[..^1] : objectives);
         DrawLucisSalvagerHint(weapon, slot);
 
@@ -260,6 +263,15 @@ public sealed partial class PluginUI
                 FirstIncompleteArmorTier(set, ownership, DefaultArmorGroup(set)) < set.Tiers.Count));
             armorGroup = DefaultArmorGroup(sets[armorSetIndex]);
             inspectedArmorTier = null;
+            if (pendingArmorFocus is { } focus
+                && Array.FindIndex(sets, candidate => candidate.Name == focus.Set) is var focusSet and >= 0)
+            {
+                armorSetIndex = focusSet;
+                armorGroup = focus.Piece / ArmorCostCalculator.PiecesPerSet;
+                inspectedArmorTier = focus.Tier;
+            }
+
+            pendingArmorFocus = null;
         }
 
         ImGui.SetNextItemWidth(Math.Min(190, ImGui.GetContentRegionAvail().X));
@@ -334,13 +346,13 @@ public sealed partial class PluginUI
         }
 
         DrawRelicChecklist(ChecklistLines(catalog.StepChecklist(armor.LineName, tier.CollectType)));
-        if (MogVaultIpc.IsReady)
+        if (ArmorAutoTracked)
         {
             DrawArmorPieceTasks(armor, set, tier, ownership, groups);
         }
         else
         {
-            ImGui.TextWrapped("Connect MogVault to see individual piece status.");
+            ImGui.TextWrapped("Enable MogVault or link FFXIV Collect in Setup to see which pieces you own.");
         }
         DrawUpgradeQuestDetails(catalog.StepNote(armor.LineName, string.Empty));
     }

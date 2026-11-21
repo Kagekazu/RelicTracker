@@ -24,17 +24,14 @@ public sealed partial class PluginUI
 
     private static readonly TimeSpan CollectRefreshInterval = TimeSpan.FromMinutes(10);
 
-    private readonly Stack<PanelScope> panelStack = new();
-
-    private readonly struct PanelScope
-    {
-        public required bool UseChild { get; init; }
-        public float Width { get; init; }
-    }
+    private readonly Stack<float> panelStack = new();
 
     private bool CollectIdLinked => config.CollectCharacterId != 0;
 
-    private bool CollectActive => CollectIdLinked && ffxivCollect.LastRefreshUtc.HasValue;
+    private static string Sentence(string text) =>
+        text.Length == 0 ? text : string.Concat(char.ToUpperInvariant(text[0]).ToString(), text[1..]);
+
+    private bool CollectActive => CollectIdLinked && ffxivCollect.Snapshot.CharacterId == config.CollectCharacterId;
 
     private bool ArmorAutoTracked => CollectActive || MogVaultIpc.IsReady;
 
@@ -90,28 +87,11 @@ public sealed partial class PluginUI
         ImGui.Dummy(new Vector2(0, 6));
     }
 
-    private bool BeginPanel(string id, float height = 0f)
+    private bool BeginPanel(string id)
     {
-        if (height != 0f)
-        {
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, PanelBg);
-            ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 5f);
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(PanelPadX, PanelPadY));
-            if (!ImGui.BeginChild($"##panel_{id}", new Vector2(0, height), true))
-            {
-                ImGui.EndChild();
-                ImGui.PopStyleVar(2);
-                ImGui.PopStyleColor();
-                return false;
-            }
-
-            panelStack.Push(new PanelScope { UseChild = true });
-            return true;
-        }
-
         ImGui.PushID(id);
         float width = ImGui.GetContentRegionAvail().X;
-        panelStack.Push(new PanelScope { UseChild = false, Width = width });
+        panelStack.Push(width);
 
         ImDrawListPtr drawList = ImGui.GetWindowDrawList();
         drawList.ChannelsSplit(2);
@@ -125,23 +105,14 @@ public sealed partial class PluginUI
 
     private void EndPanel()
     {
-        PanelScope scope = panelStack.Pop();
-        if (scope.UseChild)
-        {
-            ImGui.EndChild();
-            ImGui.PopStyleVar(2);
-            ImGui.PopStyleColor();
-            ImGui.Dummy(new Vector2(0, 8));
-            return;
-        }
-
+        float width = panelStack.Pop();
         ImGui.Unindent(PanelPadX);
-        ImGui.Dummy(new Vector2(scope.Width, PanelPadY));
+        ImGui.Dummy(new Vector2(width, PanelPadY));
         ImGui.EndGroup();
 
         Vector2 min = ImGui.GetItemRectMin();
         Vector2 max = ImGui.GetItemRectMax();
-        max.X = min.X + scope.Width;
+        max.X = min.X + width;
 
         ImDrawListPtr drawList = ImGui.GetWindowDrawList();
         drawList.ChannelsSetCurrent(0);
@@ -383,7 +354,7 @@ public sealed partial class PluginUI
             return;
         }
 
-        var text = GetVersionLabel();
+        var text = versionLabel ??= GetVersionLabel();
         if (string.IsNullOrEmpty(text))
         {
             return;
@@ -413,6 +384,8 @@ public sealed partial class PluginUI
         drawList.AddText(ImGui.GetFont(), ImGui.GetFontSize(), position, color, text);
         drawList.PopClipRect();
     }
+
+    private static string? versionLabel;
 
     private static string GetVersionLabel()
     {

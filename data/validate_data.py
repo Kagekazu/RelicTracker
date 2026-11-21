@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -42,6 +43,97 @@ def bundled_data_files() -> list[Path]:
     return files
 
 
+MATERIAL_ROLES = {"craft", "precraft", "scrip", "quest", "covers"}
+SLOTS = ["Head", "Body", "Hands", "Legs", "Feet"]
+
+# Mirror of ArmorCostCalculator.CostLinks: armor_costs set -> (armor set name, tier label, slot).
+ARMOR_COST_LINKS = {
+    "Artifact (base)": ("Eurekan", "Base", None),
+    "Artifact +1": ("Eurekan", "+1", None),
+    "Artifact +2": ("Eurekan", "+2", None),
+    "Anemos (final)": ("Eurekan", "Anemos", None),
+    "Elemental (base)": ("Elemental", "Base", None),
+    "Elemental +1": ("Elemental", "+1", None),
+    "Elemental +2": ("Elemental", "+2", None),
+    "Bozjan": ("Bozjan", "Base", None),
+    **{f"Aug. Bozjan ({s})": ("Bozjan", "Augmented", i) for i, s in enumerate(SLOTS)},
+    "Law's Order": ("Law's Order", "Base", None),
+    **{f"Aug. Law's Order ({s})": ("Law's Order", "Augmented", i) for i, s in enumerate(SLOTS)},
+    "Blade's": ("Blade's", "Base", None),
+    "Arcanaut's (base)": ("Arcanaut's", "Base", None),
+    "Arcanaut's +1": ("Arcanaut's", "+1", None),
+    "Arcanaut's +2": ("Arcanaut's", "+2", None),
+    "Phantom Vision (base)": ("Phantom Vision", "Base", None),
+    "Phantom Vision +1": ("Phantom Vision", "+1", None),
+    "Phantom Vision +2": ("Phantom Vision", "+2", None),
+    "Phantom Vision +3": ("Phantom Vision", "+3", None),
+}
+
+
+def check_recipes(extra: dict[str, list[dict]], recipe_csv: Path, warnings: list[str]) -> list[str]:
+    """Each precraft's raw rows must match the game recipe, expanding intermediate crafts the data skips."""
+    if not recipe_csv.exists():
+        warnings.append(f"Skipped recipe check: {recipe_csv} not found.")
+        return []
+
+    with recipe_csv.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+        table = list(csv.reader(handle))
+    col = {name: i for i, name in enumerate(table[0])}
+    recipes: dict[int, list[tuple[int, int, dict[int, int]]]] = {}
+    for record in table[1:]:
+        if not record or not record[0].isdigit() or int(record[col["ItemResult"]] or 0) <= 0:
+            continue
+        ingredients: dict[int, int] = {}
+        for k in range(8):
+            item_id = int(record[col[f"Ingredient[{k}]"]] or 0)
+            amount = int(record[col[f"AmountIngredient[{k}]"]] or 0)
+            if item_id > 19 and amount > 0:  # ids 2-19 are crystals, which the data leaves out
+                ingredients[item_id] = ingredients.get(item_id, 0) + amount
+        recipes.setdefault(int(record[col["ItemResult"]]), []).append(
+            (int(record[col["CraftType"]] or 0), int(record[col["AmountResult"]] or 1), ingredients))
+
+    errors: list[str] = []
+    for expansion, rows in extra.items():
+        for product in rows:
+            ids = product.get("materialIds") or []
+            if product.get("role") != "precraft" or len(ids) != 1:
+                continue
+            slots = [i for i, flag in enumerate(product.get("jobs") or []) if flag and i < 8]
+            candidates = [r for r in recipes.get(ids[0], []) if r[0] in slots] or recipes.get(ids[0], [])
+            if not candidates:
+                continue
+            actual: dict[int, int] = {}
+            for row in rows:
+                row_ids = row.get("materialIds") or []
+                if (row.get("craftOf") == product.get("material") and row.get("step") == product.get("step")
+                        and row.get("jobs") == product.get("jobs") and len(row_ids) == 1):
+                    actual[row_ids[0]] = actual.get(row_ids[0], 0) + int(row.get("perUnit") or 0)
+            if not actual:
+                continue
+
+            expected: dict[int, int] = {}
+
+            def expand(item_id: int, quantity: int, depth: int) -> None:
+                sub = recipes.get(item_id)
+                if item_id in actual or not sub or depth > 3:
+                    expected[item_id] = expected.get(item_id, 0) + quantity
+                    return
+                _, result_yield, sub_ingredients = sub[0]
+                crafts = math.ceil(quantity / result_yield)
+                for sub_id, amount in sub_ingredients.items():
+                    expand(sub_id, amount * crafts, depth + 1)
+
+            _, product_yield, ingredients = candidates[0]
+            crafts = math.ceil(int(product.get("perUnit") or 0) / product_yield)
+            for item_id, amount in ingredients.items():
+                expand(item_id, amount * crafts, 0)
+            if actual != expected:
+                errors.append(
+                    f"{expansion} {product.get('step')} {product.get('material')}: raw materials {actual} "
+                    f"do not match the game recipe {expected}")
+    return errors
+
+
 def iter_material_rows(extra: dict[str, list[dict]]) -> Iterable[tuple[str, int, dict]]:
     for expansion, rows in extra.items():
         for index, row in enumerate(rows):
@@ -50,7 +142,7 @@ def iter_material_rows(extra: dict[str, list[dict]]) -> Iterable[tuple[str, int,
 
 def load_item_names(path: Path | None) -> tuple[set[str], str | None]:
     if path is None or not path.exists():
-        return set(), None
+        return set(), f"Skipped item resolution: {path} not found."
 
     first = path.read_text(encoding="utf-8", errors="replace")[:128]
     if first.startswith("404:") or "," not in first:
@@ -104,6 +196,14 @@ def main() -> int:
     armor_costs = load_json(DATA / "armor_costs.json")
 
     expansions = set(manifest.get("expansions") or [])
+    armor_tier_pieces = {
+        (line.get("expansion"), armor_set.get("name"), key): int(tier.get("pieces") or 0)
+        for line in relic_armor
+        for armor_set in line.get("sets") or []
+        for tier in armor_set.get("tiers") or []
+        for key in (tier.get("label"), tier.get("collectType"))
+    }
+    jobs_by_expansion = {line.get("expansion"): int(line.get("jobs") or 0) for line in relic_lines}
 
     for index, line in enumerate(relic_lines):
         expansion = line.get("expansion")
@@ -180,6 +280,10 @@ def main() -> int:
                         f"relic_armor[{index}] set[{set_index}] tier[{tier_index}] still has pieceNames (IDs only)",
                     )
 
+    products = {
+        (expansion, (row.get("step") or "").strip().casefold(), (row.get("material") or "").strip().casefold())
+        for expansion, _, row in iter_material_rows(extra)
+    }
     material_names: set[str] = set()
     for expansion, index, row in iter_material_rows(extra):
         if expansion not in expansions:
@@ -206,6 +310,15 @@ def main() -> int:
             fail(errors, f"{expansion}[{index}] has invalid jobs flags")
         if role not in ("quest", "covers") and row.get("obtain") not in OBTAIN_KINDS:
             fail(errors, f"{expansion}[{index}] {material} has invalid obtain: {row.get('obtain')!r}")
+        if role and role not in MATERIAL_ROLES:
+            fail(errors, f"{expansion}[{index}] has unknown role: {role!r}")
+        if isinstance(per_unit, float) and not per_unit.is_integer():
+            fail(errors, f"{expansion}[{index}] perUnit {per_unit} is not a whole number (the plugin rounds it)")
+        if isinstance(jobs, list) and jobs_by_expansion.get(expansion) and len(jobs) != jobs_by_expansion[expansion]:
+            fail(errors, f"{expansion}[{index}] has {len(jobs)} job flags, its relic line has {jobs_by_expansion[expansion]} jobs")
+        craft_of = (row.get("craftOf") or "").strip()
+        if craft_of and role != "covers" and (expansion, step.casefold(), craft_of.casefold()) not in products:
+            fail(errors, f"{expansion}[{index}] craftOf {craft_of!r} is not a material in step {step!r}")
         if "oneTime" in row and not isinstance(row["oneTime"], bool):
             fail(errors, f"{expansion}[{index}] has non-boolean oneTime")
 
@@ -277,14 +390,22 @@ def main() -> int:
                 fail(errors, f"armor_costs {expansion}[{index}] setTotal does not split into 2 body/legs + 3 other pieces")
             if not single_slot and set_total - 2 * per_piece < 0:
                 fail(errors, f"armor_costs {expansion}[{index}] setTotal is below the body/legs cost")
-            currency_id = cost.get("currencyId")
             currency_ids = cost.get("currencyIds") or []
-            if isinstance(currency_id, int) and currency_id > 0 and not currency_ids:
-                currency_ids = [currency_id]
+            link = ARMOR_COST_LINKS.get((cost.get("set") or "").strip())
+            if link is None:
+                fail(errors, f"armor_costs {expansion}[{index}] set {cost.get('set')!r} is not in ArmorCostCalculator.CostLinks")
+            else:
+                pieces = armor_tier_pieces.get((expansion, link[0], link[1]))
+                if pieces is None:
+                    fail(errors, f"armor_costs {expansion}[{index}] links to a missing armour tier {link[:2]}")
+                elif int(cost.get("allTotal") or 0) != int(cost.get("setTotal") or 0) * (pieces // 5):
+                    fail(errors, f"armor_costs {expansion}[{index}] allTotal is not setTotal x {pieces // 5} sets")
             if not isinstance(currency_ids, list) or not currency_ids:
                 fail(errors, f"armor_costs {expansion}[{index}] has no currencyIds")
             elif any(not isinstance(item_id, int) or item_id <= 0 for item_id in currency_ids):
                 fail(errors, f"armor_costs {expansion}[{index}] has invalid currencyIds entries")
+
+    errors.extend(check_recipes(extra, DATA / "_sheets" / "Recipe.csv", warnings))
 
     item_names, item_warning = load_item_names(args.item_csv)
     if item_warning:

@@ -49,61 +49,48 @@ public sealed class RelicOwnership
     private readonly HashSet<string> manualArmor = manualArmor ?? new(StringComparer.Ordinal);
     private readonly HashSet<string> manualDone = manualDone ?? new(StringComparer.Ordinal);
 
-    private readonly HashSet<string> owned = snapshot.Owned
+    // FFXIV Collect orders per series. Armour order is piece index + 1; weapon order is tier * jobs + slot + 1.
+    private readonly Dictionary<string, HashSet<int>> ownedOrders = snapshot.Owned
         .Where(relic => relic.Type is not null && relic.Order > 0)
-        .Select(relic => $"{relic.Type!.Name}#{relic.Order}")
-        .ToHashSet(StringComparer.Ordinal);
-    private readonly Dictionary<string, int> ownedCountByType = snapshot.Owned
-        .Where(relic => relic.Type is not null)
         .GroupBy(relic => relic.Type!.Name, StringComparer.Ordinal)
-        .ToDictionary(group => group.Key, group => group.Count(), StringComparer.Ordinal);
+        .ToDictionary(group => group.Key, group => group.Select(relic => relic.Order).ToHashSet(), StringComparer.Ordinal);
 
-    public int OwnedCount(string collectType) =>
-        ownedCountByType.TryGetValue(collectType, out var count) ? count : 0;
-
-    private int ManualPieceCount(string collectType, int pieces) =>
-        CountKeys(manualArmor, collectType, pieces);
-
-    private int InventoryPieceCount(string collectType, int pieces) =>
-        CountKeys(inventoryArmor, collectType, pieces);
-
-    private static int CountKeys(HashSet<string> keys, string collectType, int pieces)
+    public int OwnedPieceCount(string collectType, int pieces)
     {
-        if (keys.Count == 0)
-        {
-            return 0;
-        }
-
-        var n = 0;
+        var count = 0;
         for (var i = 0; i < pieces; i++)
         {
-            if (keys.Contains(ProgressKeys.ArmorPiece(collectType, i)))
+            if (IsArmorPieceOwned(collectType, i))
             {
-                n++;
+                count++;
             }
         }
 
-        return n;
+        return count;
     }
-
-    public int OwnedPieceCount(string collectType, int pieces) =>
-        Math.Max(
-            Math.Min(pieces, OwnedCount(collectType)),
-            Math.Max(ManualPieceCount(collectType, pieces), InventoryPieceCount(collectType, pieces)));
 
     public bool IsArmorPieceOwned(string collectType, int pieceIndex) =>
         inventoryArmor.Contains(ProgressKeys.ArmorPiece(collectType, pieceIndex))
-        || manualArmor.Contains(ProgressKeys.ArmorPiece(collectType, pieceIndex));
+        || manualArmor.Contains(ProgressKeys.ArmorPiece(collectType, pieceIndex))
+        || (ownedOrders.TryGetValue(collectType, out var orders) && orders.Contains(pieceIndex + 1));
 
+    // A later tier on FFXIV Collect means every earlier tier of that job was done too.
     public bool IsCollectStepDone(RelicLine line, int slotIndex, int tier)
     {
-        if (line.Jobs <= 0 || slotIndex < 0 || tier < 0)
+        if (line.Jobs <= 0 || slotIndex < 0 || tier < 0 || !ownedOrders.TryGetValue(line.CollectType, out var orders))
         {
             return false;
         }
 
-        var order = (tier * line.Jobs) + slotIndex + 1;
-        return owned.Contains($"{line.CollectType}#{order}");
+        for (var t = tier; t < line.TierCount; t++)
+        {
+            if (orders.Contains((t * line.Jobs) + slotIndex + 1))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool IsInventoryStepDone(RelicLine line, int slotIndex, int tier)

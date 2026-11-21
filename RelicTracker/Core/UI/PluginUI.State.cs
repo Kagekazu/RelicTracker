@@ -55,6 +55,7 @@ public sealed partial class PluginUI
 
     public void OnCharacterLoggedOut(int type, int code)
     {
+        config.PersistIfDirty();
         collectInputInitialized = false;
         InvalidateOwnershipCache();
     }
@@ -84,6 +85,14 @@ public sealed partial class PluginUI
             }
         }
 
+        pendingArmorFocus = target.ArmorSet is not null && target.ArmorPiece >= 0
+            ? (target.ArmorSet, target.ArmorTier, target.ArmorPiece)
+            : null;
+        if (target.Tab == RelicTrackerDestinationTab.Tracker)
+        {
+            materialFilter = target.Search ?? string.Empty;
+        }
+
         config.TrackerLineFilter = target.Tab == RelicTrackerDestinationTab.Relic
             ? target.CollectType ?? string.Empty
             : string.Empty;
@@ -96,6 +105,25 @@ public sealed partial class PluginUI
         };
         config.OnSettingChanged();
         IsOpen = true;
+    }
+
+    private IReadOnlyList<RelicLineStatus>? cachedStatuses;
+    private RelicOwnership? cachedStatusesOwnership;
+    private bool cachedStatusesHidePhyseos;
+
+    private IReadOnlyList<RelicLineStatus> GetStatuses()
+    {
+        var ownership = GetOwnership();
+        if (cachedStatuses is null
+            || !ReferenceEquals(ownership, cachedStatusesOwnership)
+            || cachedStatusesHidePhyseos != config.HidePhyseosRelics)
+        {
+            cachedStatuses = RelicStatusService.Build(ownership, catalog, config.HidePhyseosRelics);
+            cachedStatusesOwnership = ownership;
+            cachedStatusesHidePhyseos = config.HidePhyseosRelics;
+        }
+
+        return cachedStatuses;
     }
 
     private RelicOwnership GetOwnership()
@@ -121,6 +149,13 @@ public sealed partial class PluginUI
                 Func<uint, uint> ownedLookup = CreateOwnedLookup();
                 inventoryDone = RelicStatusService.BuildStepDoneKeys(catalog, ownedLookup);
                 inventoryArmorDone = RelicStatusService.BuildArmorPieceDoneKeys(catalog, ownedLookup);
+                if (!WksCosmicTools.IsResearchLoaded)
+                {
+                    // Research stages only go up; keep the credit saved while Cosmic Exploration data isn't loaded.
+                    inventoryDone.UnionWith(progress.InventoryStepDone.Where(key =>
+                        key.StartsWith(WksCosmicTools.CollectType + "|", StringComparison.Ordinal)));
+                }
+
                 config.SaveInventorySnapshot(inventoryDone, inventoryArmorDone);
             }
             else

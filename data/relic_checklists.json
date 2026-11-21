@@ -5,7 +5,7 @@
     "Animus": "Finish 'Trials of the Braves' to meet G'jusana.\nBuy and finish all 9 books, one at a time, with your Atma weapon equipped.\nReturn to Jalzahn.",
     "Novus": "Unlock Sphere Scrolls through Hubairtin and buy 3 Superior Enchanted Ink.\nFill your scroll with 75 Alexandrite and 75 successful materia infusions.\nBring the filled scroll to Jalzahn.",
     "Nexus": "Finish 'Mmmmmm, Soulglazed Relics' and have Jalzahn soulglaze your Novus weapon.\nEquip the weapon and earn Light from duties. Check it with the Zodiac Glass.\nReturn to Jalzahn when the weapon is full.",
-    "Zodiac": "Complete the four repeatable sub-quests for their turn-ins.\nGather the remaining items and HQ crafts listed under Requirements.\nTurn everything in to Gerolt for your first weapon, or Jalzahn for later weapons.",
+    "Zodiac": "Complete the four repeatable sub-quests for their turn-ins.\nGather the remaining items and HQ crafts listed under Get materials.\nTurn everything in to Gerolt for your first weapon, or Jalzahn for later weapons.",
     "Zeta": "Finish 'Rise and Shine' to meet Remon.\nBuy and awaken 12 Mahatma, one at a time, by running duties with your weapon equipped.\nReturn to Jalzahn."
   },
   "Anima Weapons": {
@@ -58,8 +58,8 @@
   },
   "Lucis Tools": {
     "Mastercraft": "Complete your level 50 crafting or gathering class quest for the base tool.",
-    "Supra": "Bring your base tool, 2 Fieldcraft Demimateria III and 1 Mastercraft Demimateria to Talan in Mor Dhona.\n[[Crafters]]\nCraft the class-specific turn-in listed under Requirements.\n[[Gatherers]]\nGather 30 Antumbral Rock as Miner or 30 Redolent Log as Botanist for a Talan Seal.\n[[Fisher]]\nCatch Olgoi-Khorkhoi during Heat Waves by mooching a Storm Rider.",
-    "Lucis": "Trade your Supra tool, 5 Moonstones and your class turn-in to Talan.\n[[Crafters]]\nCraft the class-specific final item listed under Requirements.\n[[Gatherers]]\nGather the class materials for a Talan Mastery Seal.\n[[Fisher]]\nCollect 15 Glacier Crystals and 10 Gigant Clams for a Talan Mastery Seal."
+    "Supra": "Bring your base tool and 1 Mastercraft Demimateria to Talan in Mor Dhona.\n[[Crafters]]\nCraft the class-specific turn-in listed under Get materials. The craft uses the 2 Fieldcraft Demimateria III.\n[[Gatherers]]\nGather 30 Antumbral Rock as Miner or 30 Redolent Log as Botanist for a Talan's Seal of Mining or Botany. Also bring 2 Fieldcraft Demimateria III.\n[[Fisher]]\nCatch Olgoi-Khorkhoi during Heat Waves by mooching a Storm Rider. Also bring 2 Fieldcraft Demimateria III.",
+    "Lucis": "Trade your Supra tool, 5 Moonstones and your class turn-in to Talan.\n[[Crafters]]\nCraft the class-specific final item listed under Get materials.\n[[Gatherers]]\nGather the class materials for a Talan's Seal of Mining or Botany Mastery.\n[[Fisher]]\nCollect 15 Glacier Crystals and 10 Gigant Clams for a Talan's Seal of Fishing Mastery."
   },
   "Skysteel Tools": {
     "Skysteel": "Finish 'Mislaid Plans' and open the prototype coffer on your chosen class.\nBuy other classes' base tools from Denys for 80,000 gil each.",

@@ -23,7 +23,22 @@ internal static class MogVaultIpc
 
     public static bool IsBound => _ipcBound && _getItemCount != null;
 
-    public static bool IsReady => IsBound && IsEnabled && HasRequiredContract() && InvokeIsReady();
+    private static (int Frame, bool Ready) _readyCache = (-1, false);
+
+    // Checked again every frame (never cached longer), but once per frame: it scans the plugin list by reflection.
+    public static bool IsReady
+    {
+        get
+        {
+            int frame = ImGui.GetFrameCount();
+            if (frame != _readyCache.Frame)
+            {
+                _readyCache = (frame, IsBound && IsEnabled && HasRequiredContract() && InvokeIsReady());
+            }
+
+            return _readyCache.Ready;
+        }
+    }
 
     public static void Init()
     {
@@ -42,6 +57,7 @@ internal static class MogVaultIpc
         _ready = null;
         _getItemCount = null;
         _ipcBound = false;
+        _readyCache = (-1, false);
     }
 
     // Callers check IsReady once per lookup batch; it is too slow to repeat for every item.

@@ -80,7 +80,7 @@ public sealed partial class PluginUI
     private void DrawRelicWeaponStatusChips(RelicLine line, RelicOwnership ownership, IReadOnlyList<string> jobList)
     {
         ImGui.Spacing();
-        bool collectLinked = CollectIdLinked;
+        bool collectLinked = CollectActive;
         bool inventoryLinked = MogVaultIpc.IsReady;
 
         int tiers = VisibleTierCount(line);
@@ -204,7 +204,7 @@ public sealed partial class PluginUI
         yield return "Follow Gerolt's A Relic Reborn quest for this job.";
         if (weapon.Name is not null && materia.Name is not null)
         {
-            yield return $"Turn in a {weapon.Name} melded with {materia.Need} × {materia.Name}.";
+            yield return $"Turn in the {weapon.Name} melded with {materia.Need} × {materia.Name}.";
         }
         if (oil.Name is not null)
         {
@@ -248,9 +248,7 @@ public sealed partial class PluginUI
         }
 
         var artisanStep = isTools ? ArtisanIpc.ArtisanStepFor(stepName, slotIndex, GetOnCharacterItemCount) : stepName;
-        var craftSlot = isTools || ArtisanIpc.TryGetRelicToolListId(artisanStep, slotIndex, out _)
-            ? slotIndex
-            : ArtisanIpc.AllClassesSlot;
+        var craftSlot = isTools || ArtisanIpc.IsPerJobStep(stepName) ? slotIndex : ArtisanIpc.AllClassesSlot;
         if (!ArtisanIpc.TryGetRelicToolListId(artisanStep, craftSlot, out _))
         {
             return;
@@ -275,7 +273,7 @@ public sealed partial class PluginUI
                 : isTools
                     ? "Starts Artisan's premade list for this step (precrafts and turn-in crafts).\n"
                       + "Vendor mats (scrip, GC seal, gil) are not included - buy those first."
-                    : craftSlot != ArtisanIpc.AllClassesSlot
+                    : ArtisanIpc.IsPerJobStep(stepName)
                         ? "Starts Artisan's premade list for this job's crafted weapon, precrafts included.\n"
                           + "Meld the materia yourself before handing it in."
                         : "Starts Artisan's premade list for this step's crafts - one weapon's worth, across crafter classes, precrafts included.\n"
@@ -362,7 +360,13 @@ public sealed partial class PluginUI
                 continue;
             }
 
-            yield return ToStepItem(row, product, 0, true);
+            var productItem = ToStepItem(row, product, 0, true);
+            yield return productItem;
+            // Once the turn-in item is crafted, its ingredients and precrafts are no longer needed.
+            if (Covered(productItem))
+            {
+                continue;
+            }
 
             foreach (var ingredient in matched)
             {
@@ -399,7 +403,12 @@ public sealed partial class PluginUI
                     continue;
                 }
 
-                yield return ToStepItem(precraft, precraftName, 1, isPrecraft: true);
+                var precraftItem = ToStepItem(precraft, precraftName, 1, isPrecraft: true);
+                yield return precraftItem;
+                if (Covered(precraftItem))
+                {
+                    continue;
+                }
 
                 foreach (var raw in matched)
                 {
@@ -436,6 +445,8 @@ public sealed partial class PluginUI
             yield return ToStepItem(row, name);
         }
 
+        static bool Covered(StepItem item) => item.Resolved && item.OwnedInventory + item.OwnedQuestCredit >= item.Need;
+
         StepItem ToStepItem(
             ExpansionMaterialRow row,
             string name,
@@ -447,7 +458,7 @@ public sealed partial class PluginUI
             var need = row.PerUnitCount;
             var itemIds = row.MaterialIds;
             var resolved = itemIds.Count > 0;
-            var ownedInventory = ShoppingListBuilder.SumOwned(itemIds, ownedLookup);
+            var ownedInventory = ShoppingListBuilder.OwnedTowardNeed(itemIds, need, ownedLookup);
             var ownedQuestCredit = ShoppingListBuilder.QuestCreditFor(
                 stepName,
                 name,
@@ -481,7 +492,7 @@ public sealed partial class PluginUI
             configKey,
             rewards,
             $"Prefarmed quest rewards ({ownedCount}/{rewards.Count} in inventory)",
-            "Owning these credits their turn-in materials below (one weapon).",
+            "Owning these credits their turn-in materials below (for one upgrade).",
             ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.RowBg,
             ownedColumnWidth: 52,
             showResolvedTooltip: false);
@@ -511,6 +522,13 @@ public sealed partial class PluginUI
         }
 
         var start = note.IndexOf(wanted, StringComparison.Ordinal);
+        if (start < 0 && wanted == "[[Fisher]]")
+        {
+            // Some tool notes only split crafters and gatherers; the Fisher follows the gatherer advice there.
+            wanted = "[[Gatherers]]";
+            start = note.IndexOf(wanted, StringComparison.Ordinal);
+        }
+
         if (start < 0)
         {
             return intro;

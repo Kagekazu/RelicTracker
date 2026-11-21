@@ -12,7 +12,7 @@ internal static class GatherChillIpc
     private const int JobRunning = 1;
     private const int JobStopping = 2;
     private const string JobOwner = "RelicTracker";
-    private const long BindRetryMs = 60_000;
+    private const long BindRetryMs = 5_000;
 
     private static ICallGateSubscriber<int>? _apiVersion;
     private static ICallGateSubscriber<bool>? _isBusy;
@@ -176,7 +176,14 @@ internal static class GatherChillIpc
                 return true;
             }
 
-            error = result.Message;
+            Svc.Log.Debug("[RelicTracker] GatherChill.StartJob refused {ItemId}: {Result} {Message}", itemId, result.Result, result.Message);
+            error = result.Result switch
+            {
+                1 => "Gather & Chill is already gathering.",
+                2 => "Gather & Chill has no gathering route for this item.",
+                4 => "Gather & Chill isn't ready. Log in and try again.",
+                _ => "Gather & Chill didn't start gathering. Try again.",
+            };
             return false;
         }
         catch (Exception ex)
@@ -252,12 +259,6 @@ internal static class GatherChillIpc
             Svc.Log.Information("[RelicTracker] Gather & Chill IPC gone.");
         }
 
-        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
-            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
-        {
-            return;
-        }
-
         long now = Environment.TickCount64;
         if (_lastBindAttemptTick != 0 && now - _lastBindAttemptTick < BindRetryMs)
         {
@@ -265,6 +266,12 @@ internal static class GatherChillIpc
         }
 
         _lastBindAttemptTick = now;
+
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
+        {
+            return;
+        }
 
         try
         {

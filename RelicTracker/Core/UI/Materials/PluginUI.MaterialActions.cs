@@ -70,7 +70,8 @@ public sealed partial class PluginUI
                 .Where(row => (row.Obtain == "craft" || row.Craftable) && row.Short > 0)
                 .SelectMany(row => row.ForSteps)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Where(step => ArtisanIpc.TryGetRelicToolListId(step, ArtisanIpc.AllClassesSlot, out _))
+                .Where(step => !ArtisanIpc.IsPerJobStep(step)
+                               && ArtisanIpc.TryGetRelicToolListId(step, ArtisanIpc.AllClassesSlot, out _))
         ];
         if (steps.Count == 0)
         {
@@ -220,8 +221,6 @@ public sealed partial class PluginUI
 
             if (!drewLabel)
             {
-                // Same line as the summary sentence.
-                ImGui.SameLine(0, 24);
                 ImGui.TextColored(HeaderColor, "First Lucis tool");
                 if (ImGui.IsItemHovered())
                 {
@@ -319,8 +318,8 @@ public sealed partial class PluginUI
                 var step = status.Line.StepName(tier);
                 if (stepsWithMaterials.Contains(step)
                     || (!string.IsNullOrWhiteSpace(materialFilter)
-                        && !step.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)
-                        && !status.Line.CollectType.Contains(materialFilter, StringComparison.OrdinalIgnoreCase)))
+                        && !step.Contains(materialFilter.Trim(), StringComparison.OrdinalIgnoreCase)
+                        && !status.Line.CollectType.Contains(materialFilter.Trim(), StringComparison.OrdinalIgnoreCase)))
                 {
                     continue;
                 }

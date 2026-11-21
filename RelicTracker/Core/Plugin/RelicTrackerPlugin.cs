@@ -53,12 +53,12 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
         {
             Svc.Commands.AddHandler(commandName, new(OnCommand)
             {
-                HelpMessage = "Open RelicTracker"
+                HelpMessage = "Open or close RelicTracker"
             });
         }
 
         Svc.PluginInterface.UiBuilder.Draw += windowSystem.Draw;
-        Svc.PluginInterface.UiBuilder.OpenConfigUi += ToggleUi;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi += OpenSetup;
         Svc.PluginInterface.UiBuilder.OpenMainUi += ToggleUi;
 
         Svc.Log.Information("Loaded {Name} (data {Version}).", Svc.PluginInterface.Manifest.Name, relicData.Manifest.SheetVersion);
@@ -77,7 +77,14 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
             Svc.ClientState.Login -= pluginUi.OnCharacterChanged;
             Svc.ClientState.Logout -= pluginUi.OnCharacterLoggedOut;
             Svc.GameInventory.InventoryChanged -= pluginUi.OnInventoryChanged;
-            Configuration.PersistIfDirty();
+            try
+            {
+                Configuration.PersistIfDirty();
+            }
+            catch (Exception ex)
+            {
+                Svc.Log.Warning(ex, "[RelicTracker] Could not save settings while unloading.");
+            }
         }
 
         contextMenu?.Dispose();
@@ -87,7 +94,7 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
         }
 
         Svc.PluginInterface.UiBuilder.Draw -= windowSystem.Draw;
-        Svc.PluginInterface.UiBuilder.OpenConfigUi -= ToggleUi;
+        Svc.PluginInterface.UiBuilder.OpenConfigUi -= OpenSetup;
         Svc.PluginInterface.UiBuilder.OpenMainUi -= ToggleUi;
         windowSystem.RemoveAllWindows();
         MogVaultIpc.Dispose();
@@ -101,4 +108,6 @@ public sealed class RelicTrackerPlugin(IDalamudPluginInterface pluginInterface) 
     private void OnCommand(string command, string args) => ToggleUi();
 
     private void ToggleUi() => pluginUi!.IsOpen = !pluginUi.IsOpen;
+
+    private void OpenSetup() => pluginUi!.OpenSetup();
 }

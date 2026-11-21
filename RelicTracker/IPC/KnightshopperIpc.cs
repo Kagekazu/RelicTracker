@@ -57,7 +57,7 @@ internal static class KnightshopperIpc
     private const string InternalName = "Knightshopper";
     private static readonly Version MinimumPluginVersion = new(1, 0, 2, 0);
     private const int RequiredApiVersion = 4;
-    private const long BindRetryMs = 60_000;
+    private const long BindRetryMs = 5_000;
 
     private static ICallGateSubscriber<int>? _apiVersion;
     private static ICallGateSubscriber<bool>? _isBusy;
@@ -283,7 +283,8 @@ internal static class KnightshopperIpc
             KnightshopperStartResult.ItemUnavailable => "Knightshopper can't buy one of these items with this currency.",
             KnightshopperStartResult.NotLoggedIn => "Not logged in.",
             KnightshopperStartResult.EmptyList => "Nothing to buy.",
-            _ => $"Knightshopper did not start ({result}).",
+            KnightshopperStartResult.NotReady => "Knightshopper isn't ready yet. Try again in a moment.",
+            _ => "Knightshopper did not start. Try again.",
         };
 
         return string.IsNullOrWhiteSpace(text) ? reason : $"{reason}\n{text}";
@@ -316,12 +317,6 @@ internal static class KnightshopperIpc
             Svc.Log.Information("[RelicTracker] Knightshopper IPC gone.");
         }
 
-        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
-            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
-        {
-            return;
-        }
-
         long now = Environment.TickCount64;
         if (_lastBindAttemptTick != 0 && now - _lastBindAttemptTick < BindRetryMs)
         {
@@ -329,6 +324,12 @@ internal static class KnightshopperIpc
         }
 
         _lastBindAttemptTick = now;
+
+        if (!IsEnabled || !Svc.PluginInterface.InstalledPlugins.Any(
+            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
+        {
+            return;
+        }
 
         try
         {
