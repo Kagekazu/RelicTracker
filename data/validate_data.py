@@ -7,6 +7,7 @@ import argparse
 import csv
 import json
 import math
+import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -14,7 +15,7 @@ from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from item_lookup import alias_targets, expand_name_variants
-from obtain_lookup import KINDS as OBTAIN_KINDS
+from obtain_lookup import KINDS as OBTAIN_KINDS, _load as obtain_sheet
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,6 +132,34 @@ def check_recipes(extra: dict[str, list[dict]], recipe_csv: Path, warnings: list
                 errors.append(
                     f"{expansion} {product.get('step')} {product.get('material')}: raw materials {actual} "
                     f"do not match the game recipe {expected}")
+    return errors
+
+
+QUOTED = re.compile(r"(?<![A-Za-z])'([^'\n]{3,80}?)'(?![A-Za-z])|\"([^\"\n]{3,80})\"")
+NAME_SHEETS = ["Quest", "Fate", "ContentFinderCondition", "WKSMissionUnit"]
+GLYPH = re.compile(r"^[-]\s*")
+
+
+def check_quoted_names(texts: list[tuple[str, str]], item_names: set[str], known: set[str], warnings: list[str]) -> list[str]:
+    """A quoted name in player text must be a real quest, FATE, duty, mission or item."""
+    names = {name.casefold() for name in known} | item_names
+    try:
+        for sheet in NAME_SHEETS:
+            header, rows = obtain_sheet(DATA / "_sheets", sheet)
+            col = header.index("Name")
+            # Some names start with a private-use icon glyph, e.g. " A Tool for the Ages".
+            names |= {GLYPH.sub("", row[col]).casefold() for row in rows if len(row) > col and row[col]}
+    except OSError as error:
+        warnings.append(f"Skipped quoted-name check: {error}")
+        return []
+
+    errors: list[str] = []
+    for where, text in texts:
+        for match in QUOTED.finditer(text):
+            name = match.group(1) or match.group(2)
+            # A family like 'Oddly Specific' passes when it is part of a real name.
+            if not any(name.casefold() in known_name for known_name in names):
+                fail(errors, f"{where} quotes '{name}', which is not a quest, FATE, duty, mission or item name")
     return errors
 
 
@@ -345,6 +374,7 @@ def main() -> int:
         if step and step.casefold() not in steps_by_expansion.get(expansion, set()):
             fail(errors, f"{expansion}[{index}] step {step!r} is not a relic step in that expansion")
 
+    player_texts: list[tuple[str, str]] = []
     for file_name, entries, allowed_extra in (
         ("relic_checklists.json", load_json(ROOT / "data" / "relic_checklists.json"), set()),
         ("relic_step_notes.json", load_json(DATA / "relic_step_notes.json"), {"_line"}),
@@ -360,7 +390,11 @@ def main() -> int:
                     fail(errors, f"{file_name} {series} has unknown step: {step}")
                 if not isinstance(text, str):
                     fail(errors, f"{file_name} {series}/{step} is not text")
+                else:
+                    player_texts.append((f"{file_name} {series}/{step}", text))
 
+    player_texts += [(f"material_sources.json {key}", text) for key, text in sources.items()
+                     if not key.startswith("_") and isinstance(text, str)]
     source_keys = {key for key in sources if not key.startswith("_")}
     stale_sources = sorted(source_keys - material_names)
     for key in stale_sources:
@@ -416,6 +450,9 @@ def main() -> int:
             candidates = [candidate for target in targets for candidate in expand_name_variants(target)]
             if not any(candidate.casefold() in item_names for candidate in candidates):
                 fail(errors, f"Material does not resolve against item CSV: {material}")
+        # Series names and the Select button are quoted in the text but are not game names.
+        known = {line.get("collectType") or "" for line in relic_lines} | {"Select"}
+        errors.extend(check_quoted_names(player_texts, item_names, known, warnings))
 
     for warning in warnings:
         print(f"warning: {warning}")

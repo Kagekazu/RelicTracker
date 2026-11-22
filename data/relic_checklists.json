@@ -5,7 +5,7 @@
     "Animus": "Finish 'Trials of the Braves' to meet G'jusana.\nBuy and finish all 9 books, one at a time, with your Atma weapon equipped.\nReturn to Jalzahn.",
     "Novus": "Unlock Sphere Scrolls through Hubairtin and buy 3 Superior Enchanted Ink.\nFill your scroll with 75 Alexandrite and 75 successful materia infusions.\nBring the filled scroll to Jalzahn.",
     "Nexus": "Finish 'Mmmmmm, Soulglazed Relics' and have Jalzahn soulglaze your Novus weapon.\nEquip the weapon and earn Light from duties. Check it with the Zodiac Glass.\nReturn to Jalzahn when the weapon is full.",
-    "Zodiac": "Complete the four repeatable sub-quests for their turn-ins.\nGather the remaining items and HQ crafts listed under Get materials.\nTurn everything in to Gerolt for your first weapon, or Jalzahn for later weapons.",
+    "Zodiac": "Gather the items and HQ crafts listed under Get materials.\nTurn them in during the four repeatable sub-quests.\nBring the four rewards and your weapon to Gerolt for your first weapon, or Jalzahn for later weapons.",
     "Zeta": "Finish 'Rise and Shine' to meet Remon.\nBuy and awaken 12 Mahatma, one at a time, by running duties with your weapon equipped.\nReturn to Jalzahn."
   },
   "Anima Weapons": {
@@ -41,25 +41,25 @@
     "Recollection": "Accept 'The Will to Resist'.\nCollect and turn in 6 Bitter Memories from synced Heavensward dungeons, Leveling Roulette or Bozja.",
     "Law's Order": "Reach Resistance Rank 10, clear Castrum Lacus Litore, and finish the story through Delubrum Reginae.\nCollect 15 Loathsome Memories and turn them in for 'Change of Arms'.",
     "Augmented Law's Order": "Once: complete 'The Resistance Remembers' with 18 Haunting and 18 Vexatious Memories.\nPer weapon: turn in 15 Timeworn Artifacts for 'A New Path of Resistance'.",
-    "Blade's": "Once: unlock Zadnor and finish its three material quests.\nPer weapon: collect 15 Raw Emotions and turn them in for 'Irresistible'."
+    "Blade's": "Once: unlock Zadnor, finish 'What Dreams Are Made Of', its three material quests and 'A Done Deal'.\nPer weapon: collect 15 Raw Emotions and turn them in for 'Irresistible'."
   },
   "Manderville Weapons": {
     "Manderville": "Finish the Hildibrand story through 'The Imperfect Gentleman'.\nBuy 3 Manderium Meteorites from Jubrunnah and turn them in.",
-    "Amazing": "Finish 'Generational Bonding' and accept 'The Next Mander-level'.\nBuy 3 Complementary Chondrites from Jubrunnah and turn them in.",
-    "Majestic": "Finish 'Not from Around Here' and accept 'In Need of Adjustment'.\nBuy 3 Amplifying Achondrites from Jubrunnah, turn them in, and pick your stats.",
-    "Mandervillous": "Finish 'Gentlemen at Heart' and accept 'Positively Mandervillous'.\nBuy 3 Cosmic Crystallites from Jubrunnah, turn them in, and pick your stats."
+    "Amazing": "Finish 'Generational Bonding' and accept 'Well-oiled' from Gerolt (later weapons: 'The Next Mander-level').\nBuy 3 Complementary Chondrites from Jubrunnah and turn them in.",
+    "Majestic": "Finish 'Not from Around Here' and accept 'A Spirited Reforging' from Gerolt (later weapons: 'In Need of Adjustment').\nBuy 3 Amplifying Achondrites from Jubrunnah, turn them in, and pick your stats.",
+    "Mandervillous": "Finish 'Gentlemen at Heart' and accept 'Resonating with Perfection' from Gerolt (later weapons: 'Positively Mandervillous').\nBuy 3 Cosmic Crystallites from Jubrunnah, turn them in, and pick your stats."
   },
   "Phantom Weapons": {
     "Penumbrae": "Once: unlock Occult Crescent and collect 3 of each of the six Demiatma.\nPer weapon: buy 3 Arcanite from Ermina and trade it to Dodokkuli.",
     "Umbrae": "Once: turn in the materials for 'Keeping the Old Ways Alive' and fill the Aetherwell Array from roulettes.\nPer weapon: trade 3 Waxing Arcanite and your Penumbrae weapon to Dodokkuli.",
     "Obscurum": "Once: turn in the materials for 'Timeworn Techniques' and collect 1,200 Crystal Paste from duties.\nPer weapon: trade 3 Waning Arcanite and your Umbrae weapon to Dodokkuli.",
-    "Eclipticum": "Once: unlock North Horn, finish the 'Under No Illusion' turn-ins, and collect 100 of each Phantom Dispeller.\nPer weapon: trade 3 Ecliptic Arcanite and your Obscurum weapon to Dodokkuli.",
+    "Eclipticum": "Once: finish the 'Under No Illusion' turn-ins and collect 100 of each Phantom Dispeller from North Horn or duty roulettes.\nPer weapon: trade 3 Ecliptic Arcanite and your Obscurum weapon to Dodokkuli.",
     "Occultum": "Finish 'Final Phantasm' to convert your Eclipticum weapon.\nBring later jobs' Eclipticum weapons to Dodokkuli for the same conversion.\nFinish 'All Too Fleeting' to close out the story."
   },
   "Lucis Tools": {
     "Mastercraft": "Complete your level 50 crafting or gathering class quest for the base tool.",
     "Supra": "Bring your base tool and 1 Mastercraft Demimateria to Talan in Mor Dhona.\n[[Crafters]]\nCraft the class-specific turn-in listed under Get materials. The craft uses the 2 Fieldcraft Demimateria III.\n[[Gatherers]]\nGather 30 Antumbral Rock as Miner or 30 Redolent Log as Botanist for a Talan's Seal of Mining or Botany. Also bring 2 Fieldcraft Demimateria III.\n[[Fisher]]\nCatch Olgoi-Khorkhoi during Heat Waves by mooching a Storm Rider. Also bring 2 Fieldcraft Demimateria III.",
-    "Lucis": "Trade your Supra tool, 5 Moonstones and your class turn-in to Talan.\n[[Crafters]]\nCraft the class-specific final item listed under Get materials.\n[[Gatherers]]\nGather the class materials for a Talan's Seal of Mining or Botany Mastery.\n[[Fisher]]\nCollect 15 Glacier Crystals and 10 Gigant Clams for a Talan's Seal of Fishing Mastery."
+    "Lucis": "Trade your Supra tool, 5 Moonstones and your class turn-in to Talan.\n[[Crafters]]\nCraft 5 of the class-specific final item listed under Get materials.\n[[Gatherers]]\nGather the class materials for a Talan's Seal of Mining or Botany Mastery.\n[[Fisher]]\nCollect 15 Glacier Crystals and 10 Gigant Clams for a Talan's Seal of Fishing Mastery."
   },
   "Skysteel Tools": {
     "Skysteel": "Finish 'Mislaid Plans' and open the prototype coffer on your chosen class.\nBuy other classes' base tools from Denys for 80,000 gil each.",
@@ -78,8 +78,8 @@
     "Crystalline": "Accept 'An Adaptive Tool' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft second-tier collectables using Select materials.\n[[Gatherers]]\nEquip the tool and gather 70 collectables plus 210 hidden crystals.\n[[Fisher]]\nEquip the rod and catch 40 each of Mirror Image and Spangled Pirarucu.",
     "Chora-Zoi's": "Accept 'A Tool of Her Own' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft third-tier collectables using Select materials.\n[[Gatherers]]\nEquip the tool and gather 70 collectables plus 210 hidden Custom Crystals.\n[[Fisher]]\nEquip the rod and catch 40 each of Gold Dustfish and Forgiven Melancholy.",
     "Brilliant": "Accept 'A Tool without Compare' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft fourth-tier collectables using Select materials.\n[[Gatherers]]\nEquip the tool and collect 70 collectables plus 210 Brilliant Clusters.\n[[Fisher]]\nEquip the rod and catch 40 each of Oil Slick and Gonzalo's Grace.",
-    "Vrandtic": "Accept 'A Tool for the Ages' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft fifth-tier collectables with the Expert Recipe.\n[[Gatherers]]\nEquip the tool and collect the items and 220 Inspirational Clusters. Use Aetherial Reduction or exchange at Quinnana.\n[[Fisher]]\nEquip the rod and catch 43 each of Deadwood Shadow and Ronkan Bullion.",
-    "Lodestar": "Accept 'Stand Tool, My Friend' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft sixth-tier collectables with the Expert Recipe.\n[[Gatherers]]\nEquip the tool and collect the items and 220 Nightforged Clusters. Use Aetherial Reduction or exchange at Quinnana.\n[[Fisher]]\nEquip the rod and catch 43 each of Little Bounty and Saint Fathric's Face."
+    "Vrandtic": "Accept 'A Tool for the Ages' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft fifth-tier collectables with the Expert Recipe.\n[[Gatherers]]\nEquip the tool and collect the items and 220 Inspirational Clusters. Use Aetherial Reduction or exchange at Quinnana.\n[[Fisher]]\nEquip the rod and catch about 43 high-collectability Ronkan Bullion for 170 Inspirational Fisher's Components.",
+    "Lodestar": "Accept 'Stand Tool, My Friend' and turn in the materials in the Crystarium.\n[[Crafters]]\nCraft sixth-tier collectables with the Expert Recipe.\n[[Gatherers]]\nEquip the tool and collect the items and 220 Nightforged Clusters. Use Aetherial Reduction or exchange at Quinnana.\n[[Fisher]]\nEquip the rod and catch about 43 Saint Fathric's Face at max collectability for 170 Nightforged Fisher's Components."
   },
   "Cosmic Tools": {
     "Cosmic": "Get your prototype from 'A Cosmic Homecoming' or Researchingway.\nEarn Types I-IV research data from Stellar Missions on the matching class.\nReturn to Researchingway for each upgrade.",
@@ -92,9 +92,9 @@
     "Eureka Job Armor +1": "Bring the base piece and 150 Protean Crystals to Gerolt in Eureka Anemos.",
     "Eureka Job Armor +2": "Bring the +1 piece and 400 Protean Crystals to Gerolt in Eureka Anemos.",
     "Eureka Anemos Armor": "Bring the +2 piece and 150 Anemos Crystals to Gerolt in Eureka Anemos.",
-    "Elemental Armor": "Gather Pyros Crystals and trade 40 per piece for Elemental armor in Eureka Pyros.",
-    "Elemental Armor +1": "Bring the base pieces and Hydatos Crystals to the armor vendor in Eureka Hydatos.",
-    "Elemental Armor +2": "Earn Eureka Fragments in the Baldesion Arsenal and trade them with your +1 pieces."
+    "Elemental Armor": "Gather Pyros Crystals and trade 40 per piece with the Expedition Artisan in Eureka Pyros.",
+    "Elemental Armor +1": "Bring the base pieces and Hydatos Crystals to the Expedition Artisan in Eureka Hydatos.",
+    "Elemental Armor +2": "Earn Eureka Fragments in the Baldesion Arsenal and trade them with your +1 pieces to the Expedition Artisan in Eureka Hydatos."
   },
   "Resistance Armor": {
     "Bozjan Armor": "Collect Bozjan Coins in the Southern Front and trade them to the Resistance Supplier.",

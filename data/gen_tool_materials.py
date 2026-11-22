@@ -94,17 +94,18 @@ craft_tree("Supra", 1, {
  "ALC":{"collectable":"Concentrated Spirits of Salt","precrafts":[("Spirits of Salt",1,[("Volcanic Rock Salt",2),("Vitriol",1)])]},
  "CUL":{"collectable":"Rich Tomato Relish","precrafts":[("Spicy Tomato Relish",1,[("Dzemael Tomato",1),("Cinnamon",1),("Table Salt",1),("Noble Grapes",4)])]},
 })
-craft_tree("Lucis", 1, {
- "CRP":{"collectable":"Petrified Orb","direct":[("Urushi",3),("Petrified Log",1),("Scarlet Sap",1)]},
- "BSM":{"collectable":"Mummer's Daggers","direct":[("Composite Whetstone",3),("Scheelite",1),("Ferberite",1)]},
- "ARM":{"collectable":"Lapdog Collar Bell","direct":[("Heat-resistant Plaster",3),("Scheelite",1),("Ferberite",1)]},
- "GSM":{"collectable":"Fluorite Lens","direct":[("Clear Fluorite",3),("Emery",1)],
-        "precrafts":[("Basilisk Whetstone",1,[("Basilisk Egg",1)]),("Siltstone Whetstone",1,[("Siltstone",2)])]},
- "LTW":{"collectable":"Patent Leather","direct":[("Lampblack Linseed Oil",3),("Saurian Skin",1),("Shroud Tea Leaves",1)]},
- "WVR":{"collectable":"Camlet","direct":[("Camel Hair",3),("Cashmere Fleece",1)],
-        "precrafts":[("Diluted Vitriol",1,[("Filtered Water",9),("Vitriol",6)])]},
- "ALC":{"collectable":"Enchanted Quicksilver","direct":[("Black Cinnabar",3),("Raziqsand",1),("Tarantula",2)]},
- "CUL":{"collectable":"Duck Broth","direct":[("Duck Bones",3),("Canard Breast",1),("Thyme",1),("Wild Onion",4),("Garlean Garlic",2)]},
+# Talan takes 5 of the class item per Lucis tool. One Diluted Vitriol craft yields enough for all 5.
+craft_tree("Lucis", 5, {
+ "CRP":{"collectable":"Petrified Orb","direct":[("Urushi",15),("Petrified Log",5),("Scarlet Sap",5)]},
+ "BSM":{"collectable":"Mummer's Daggers","direct":[("Composite Whetstone",15),("Scheelite",5),("Ferberite",5)]},
+ "ARM":{"collectable":"Lapdog Collar Bell","direct":[("Heat-resistant Plaster",15),("Scheelite",5),("Ferberite",5)]},
+ "GSM":{"collectable":"Fluorite Lens","direct":[("Clear Fluorite",15),("Emery",5)],
+        "precrafts":[("Basilisk Whetstone",5,[("Basilisk Egg",5)]),("Siltstone Whetstone",5,[("Siltstone",10)])]},
+ "LTW":{"collectable":"Patent Leather","direct":[("Lampblack Linseed Oil",15),("Saurian Skin",5),("Shroud Tea Leaves",5)]},
+ "WVR":{"collectable":"Camlet","direct":[("Camel Hair",15),("Cashmere Fleece",5)],
+        "precrafts":[("Diluted Vitriol",5,[("Filtered Water",9),("Vitriol",6)])]},
+ "ALC":{"collectable":"Enchanted Quicksilver","direct":[("Black Cinnabar",15),("Raziqsand",5),("Tarantula",10)]},
+ "CUL":{"collectable":"Duck Broth","direct":[("Duck Bones",15),("Canard Breast",5),("Thyme",5),("Wild Onion",20),("Garlean Garlic",10)]},
 })
 
 # ===== Skysteel +1 (IL455) - craft 20 =====
@@ -440,14 +441,15 @@ SPL_GATH={
 }
 for st,(mi,bo,cnt) in SPL_GATH.items():
     add(st,mi,cnt,SLOT["MIN"]); add(st,bo,cnt,SLOT["BTN"])
-# Splendorous Fisher: two fish per step (count = caught of each, best case).
+# Splendorous Fisher: two fish per step (count = caught of each, best case). Vrandtic and Lodestar
+# take one component type that either fish gives, so only the better fish is listed.
 SPL_FISH={
  "Augmented":[("Platinum Seahorse",30),("Clavekeeper",30)],
  "Crystalline":[("Mirror Image",40),("Spangled Pirarucu",40)],
  "Chora-Zoi's":[("Gold Dustfish",40),("Forgiven Melancholy",40)],
  "Brilliant":[("Oil Slick",40),("Gonzalo's Grace",40)],
- "Vrandtic":[("Deadwood Shadow",43),("Ronkan Bullion",43)],
- "Lodestar":[("Little Bounty",43),("Saint Fathric's Face",43)],
+ "Vrandtic":[("Ronkan Bullion",43)],
+ "Lodestar":[("Saint Fathric's Face",43)],
 }
 for st,fishes in SPL_FISH.items():
     for fname,fcnt in fishes: add(st,fname,fcnt,SLOT["FSH"])
@@ -509,8 +511,9 @@ for job, weapon, materia in [
     arr_job("Relic", materia, 2, job)
 # Zenith: 3 Thavnairian Mist (20 Poetics each).
 arr_add("Zenith", "Thavnairian Mist", 3)
-# Atma: 12 FATE-drop atmas (aliased to the 12 items).
-arr_add("Atma", "Atma", 12)
+# Atma: one of each of the 12 FATE-drop Atma, one row each so each shows its own zone.
+for sign in ["Lion", "Water-bearer", "Ram", "Crab", "Fish", "Bull", "Scales", "Twins", "Scorpion", "Archer", "Goat", "Maiden"]:
+    arr_add("Atma", f"Atma of the {sign}", 1)
 # Animus: 9 Trials of the Braves books, held one at a time -> note only.
 # Novus: Sphere Scroll = 3 Superior Enchanted Ink + 75 Alexandrite (+ ~75 materia, grade I-IV -> note).
 arr_add("Novus", "Superior Enchanted Ink", 3)

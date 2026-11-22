@@ -22,7 +22,7 @@ TOOL_NOTES = {
    "Base IL55 tools from your level 50 Disciple of the Hand or Land class quest.",
    "Lost it? A Calamity Salvager sells a replacement for 1,000 gil once you finish the class quest."),
   "Supra": N(
-   "IL75 tools (patch 2.3) from Talan in Mor Dhona (X:22, Y:6). Every class also turns in 2 Fieldcraft Demimateria III and 1 Mastercraft Demimateria.",
+   "IL75 tools (patch 2.3) from Talan in Mor Dhona (X:21.9, Y:6.8). Every class also turns in 2 Fieldcraft Demimateria III and 1 Mastercraft Demimateria.",
    "[[Crafters]]",
    "1. Craft the class item from a gathered material (mostly an Unspoiled Node item).",
    "2. Combine it with the 2 Fieldcraft Demimateria III into the final turn-in.",
@@ -36,7 +36,7 @@ TOOL_NOTES = {
    "IL90 tools (patch 2.5) from Talan. Every class trades its Supra tool plus 5 Moonstone (about 4,000 GC seals each, 20,000 total).",
    "Tip: once you have one crafter Lucis and one gatherer Lucis, a Calamity Salvager sells the other tools in that category for 1,000 gil each - e.g. Miner Lucis unlocks Botanist and Fisher; one crafter Lucis unlocks all crafter tools.",
    "[[Crafters]]",
-   "Craft the class-specific final item (~36,500 GC seals all-in; Weaver ~37,400, Culinarian ~29,150).",
+   "Craft 5 of the class-specific final item (~36,500 GC seals all-in; Weaver ~37,400, Culinarian ~29,150).",
    "[[Gatherers]]",
    "Hand in a Talan's Seal of Mining or Botany Mastery:",
    "- Miner: 15 Magicked Oilcloth + 30 Antumbral Rock",
@@ -46,7 +46,7 @@ TOOL_NOTES = {
  },
  "Skysteel Tools": {
   "_line": N(
-   "Heavensward Disciple of the Hand & Land tools, built at the Skysteel Manufactory in the Firmament. Hand-ins go to Denys (X:8.0, Y:10.0), collectables to Spanner, quest steps to Nimie and Emeny.",
+   "Disciple of the Hand & Land tools from patch 5.25, built at the Skysteel Manufactory in Foundation (Ishgard). Hand-ins and collectables go to Denys (X:8.0, Y:10.0), except the Skybuilders' collectables, which go to Spanner. Quest steps go to Nimie and Emeny.",
    "Six stages: Skysteel → Skysteel +1 → Dragonsung → Augmented Dragonsung → Skysung → Skybuilders'.",
    "Tip: from Augmented Dragonsung on, the current tool must be equipped while you gather or fish the upgrade items."),
   "Skysteel": N(
@@ -182,7 +182,7 @@ TOOL_NOTES = {
    "Gather ~74 of your collectable plus 220 hidden Inspirational Wind/Fire Clusters.",
    "Tip: ~74 is the best case via Aetherial Reduction; turning in to Quinnana takes 110.",
    "[[Fisher]]",
-   "Catch 43 each of Deadwood Shadow and Ronkan Bullion."),
+   "Turn in 170 Inspirational Fisher's Components. About 43 high-collectability Ronkan Bullion is enough; Deadwood Shadow also works but gives fewer components per fish."),
   "Lodestar": N(
    "Final upgrade (IL640) - repeatable quest 'Stand Tool, My Friend'.",
    "[[Crafters]]",
@@ -191,7 +191,7 @@ TOOL_NOTES = {
    "Gather ~74 of your collectable plus 220 hidden Nightforged Ice/Water Clusters.",
    "Tip: ~74 is the best case via Aetherial Reduction; turning in to Quinnana takes 110.",
    "[[Fisher]]",
-   "Catch 43 each of Little Bounty and Saint Fathric's Face."),
+   "Turn in 170 Nightforged Fisher's Components. About 43 Saint Fathric's Face at max collectability is enough; Little Bounty also works but gives fewer components per fish."),
  },
  "Cosmic Tools": {
   "_line": N(
@@ -207,7 +207,7 @@ TOOL_NOTES = {
    "- about 2,800 Type I, 2,900 Type II, 2,300 Type III, 1,500 Type IV",
    "Tip: the tool doesn't need to be equipped to earn data, but equipping it for a whole mission adds a zone-credit bonus.",
    "[[Crafters]]",
-   "Recommended on Oizys: class D, then class C missions.",
+   "Recommended on Auxesia: class D and C missions.",
    "[[Gatherers]]",
    "Recommended on Oizys: the class A 'Mineral Gravitational Stabilizers' (Miner) / 'Fibrous Gravitational Stabilizers' (Botanist).",
    "[[Fisher]]",
@@ -223,7 +223,7 @@ TOOL_NOTES = {
   "Hyper": N(
    "Advanced tier - v1.1-v1.2 up to the Hyper tool, adding Type VI data.",
    "Cumulative totals at Hyper:",
-   "- about 7,100 each of Types I-IV, 3,150 Type V, 1,900 Type VI",
+   "- about 7,100 each of Types I-IV, 3,150 Type V, 1,600 Type VI",
    "[[Crafters]]",
    "Recommended: class B, then class A.",
    "Tip: Type VI is only on class A and is the longest grind.",

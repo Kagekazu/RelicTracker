@@ -1393,7 +1393,7 @@
     {
       "step": "Lucis",
       "material": "Petrified Orb",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         true,
         false,
@@ -1416,7 +1416,7 @@
     {
       "step": "Lucis",
       "material": "Urushi",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         true,
         false,
@@ -1441,7 +1441,7 @@
     {
       "step": "Lucis",
       "material": "Petrified Log",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         true,
         false,
@@ -1465,7 +1465,7 @@
     {
       "step": "Lucis",
       "material": "Scarlet Sap",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         true,
         false,
@@ -1488,7 +1488,7 @@
     {
       "step": "Lucis",
       "material": "Mummer's Daggers",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         true,
@@ -1511,7 +1511,7 @@
     {
       "step": "Lucis",
       "material": "Composite Whetstone",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         true,
@@ -1536,7 +1536,7 @@
     {
       "step": "Lucis",
       "material": "Scheelite",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         true,
@@ -1560,7 +1560,7 @@
     {
       "step": "Lucis",
       "material": "Ferberite",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         true,
@@ -1583,7 +1583,7 @@
     {
       "step": "Lucis",
       "material": "Lapdog Collar Bell",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1606,7 +1606,7 @@
     {
       "step": "Lucis",
       "material": "Heat-resistant Plaster",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -1631,7 +1631,7 @@
     {
       "step": "Lucis",
       "material": "Scheelite",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1655,7 +1655,7 @@
     {
       "step": "Lucis",
       "material": "Ferberite",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1678,7 +1678,7 @@
     {
       "step": "Lucis",
       "material": "Fluorite Lens",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1701,7 +1701,7 @@
     {
       "step": "Lucis",
       "material": "Basilisk Whetstone",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1725,7 +1725,7 @@
     {
       "step": "Lucis",
       "material": "Basilisk Egg",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1748,7 +1748,7 @@
     {
       "step": "Lucis",
       "material": "Siltstone Whetstone",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1772,7 +1772,7 @@
     {
       "step": "Lucis",
       "material": "Siltstone",
-      "perUnit": 2,
+      "perUnit": 10,
       "jobs": [
         false,
         false,
@@ -1795,7 +1795,7 @@
     {
       "step": "Lucis",
       "material": "Clear Fluorite",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -1820,7 +1820,7 @@
     {
       "step": "Lucis",
       "material": "Emery",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1844,7 +1844,7 @@
     {
       "step": "Lucis",
       "material": "Patent Leather",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1867,7 +1867,7 @@
     {
       "step": "Lucis",
       "material": "Lampblack Linseed Oil",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -1892,7 +1892,7 @@
     {
       "step": "Lucis",
       "material": "Saurian Skin",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1916,7 +1916,7 @@
     {
       "step": "Lucis",
       "material": "Shroud Tea Leaves",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1939,7 +1939,7 @@
     {
       "step": "Lucis",
       "material": "Camlet",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -1962,7 +1962,7 @@
     {
       "step": "Lucis",
       "material": "Diluted Vitriol",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2034,7 +2034,7 @@
     {
       "step": "Lucis",
       "material": "Camel Hair",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -2059,7 +2059,7 @@
     {
       "step": "Lucis",
       "material": "Cashmere Fleece",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2083,7 +2083,7 @@
     {
       "step": "Lucis",
       "material": "Enchanted Quicksilver",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2106,7 +2106,7 @@
     {
       "step": "Lucis",
       "material": "Black Cinnabar",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -2131,7 +2131,7 @@
     {
       "step": "Lucis",
       "material": "Raziqsand",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2155,7 +2155,7 @@
     {
       "step": "Lucis",
       "material": "Tarantula",
-      "perUnit": 2,
+      "perUnit": 10,
       "jobs": [
         false,
         false,
@@ -2178,7 +2178,7 @@
     {
       "step": "Lucis",
       "material": "Duck Broth",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2201,7 +2201,7 @@
     {
       "step": "Lucis",
       "material": "Duck Bones",
-      "perUnit": 3,
+      "perUnit": 15,
       "jobs": [
         false,
         false,
@@ -2226,7 +2226,7 @@
     {
       "step": "Lucis",
       "material": "Canard Breast",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2250,7 +2250,7 @@
     {
       "step": "Lucis",
       "material": "Thyme",
-      "perUnit": 1,
+      "perUnit": 5,
       "jobs": [
         false,
         false,
@@ -2273,7 +2273,7 @@
     {
       "step": "Lucis",
       "material": "Wild Onion",
-      "perUnit": 4,
+      "perUnit": 20,
       "jobs": [
         false,
         false,
@@ -2297,7 +2297,7 @@
     {
       "step": "Lucis",
       "material": "Garlean Garlic",
-      "perUnit": 2,
+      "perUnit": 10,
       "jobs": [
         false,
         false,
@@ -13792,28 +13792,6 @@
     },
     {
       "step": "Vrandtic",
-      "material": "Deadwood Shadow",
-      "perUnit": 43,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true
-      ],
-      "materialIds": [
-        41298
-      ],
-      "obtain": "fish"
-    },
-    {
-      "step": "Vrandtic",
       "material": "Ronkan Bullion",
       "perUnit": 43,
       "jobs": [
@@ -13831,28 +13809,6 @@
       ],
       "materialIds": [
         41299
-      ],
-      "obtain": "fish"
-    },
-    {
-      "step": "Lodestar",
-      "material": "Little Bounty",
-      "perUnit": 43,
-      "jobs": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        true
-      ],
-      "materialIds": [
-        41300
       ],
       "obtain": "fish"
     },
@@ -14716,8 +14672,8 @@
     },
     {
       "step": "Atma",
-      "material": "Atma",
-      "perUnit": 12,
+      "material": "Atma of the Lion",
+      "perUnit": 1,
       "jobs": [
         true,
         true,
@@ -14731,18 +14687,238 @@
         true
       ],
       "materialIds": [
-        7860,
-        7855,
-        7862,
-        7859,
-        7854,
-        7858,
-        7851,
-        7856,
-        7861,
-        7852,
-        7857,
+        7858
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Water-bearer",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
         7853
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Ram",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7856
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Crab",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7862
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Fish",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7859
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Bull",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7855
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Scales",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7861
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Twins",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7857
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Scorpion",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7852
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Archer",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7860
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Goat",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7854
+      ],
+      "obtain": "content"
+    },
+    {
+      "step": "Atma",
+      "material": "Atma of the Maiden",
+      "perUnit": 1,
+      "jobs": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "materialIds": [
+        7851
       ],
       "obtain": "content"
     },
