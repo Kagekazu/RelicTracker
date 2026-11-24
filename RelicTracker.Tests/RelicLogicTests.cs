@@ -123,6 +123,29 @@ public class RelicLogicTests
             done.Order());
     }
 
+    [Fact]
+    public void OwnedUltimateWeaponIsSavedForItsJob()
+    {
+        var line = new RelicLine
+        {
+            CollectType = "Test Ultimate",
+            Jobs = 2,
+            TierCount = 1,
+            JobList = ["PLD", "WAR"],
+            RelicIds = [10, 11],
+        };
+        var catalog = new RelicCatalog();
+        typeof(RelicCatalog).GetProperty(nameof(RelicCatalog.UltimateLines), BindingFlags.Instance | BindingFlags.Public)!
+            .SetValue(catalog, new List<RelicLine> { line });
+
+        var done = RelicStatusService.BuildStepDoneKeys(catalog, itemId => itemId == 11 ? 1u : 0u);
+        var ownership = new RelicOwnership(FfxivCollectSnapshot.Empty, inventoryDone: done);
+
+        Assert.Equal(new[] { "Test Ultimate|WAR|0" }, done);
+        Assert.False(ownership.IsStepDone(line, 0, 0));
+        Assert.True(ownership.IsStepDone(line, 1, 0));
+    }
+
     private static RelicLine LucisLine() => new()
     {
         CollectType = LucisToolShortcut.CollectType,

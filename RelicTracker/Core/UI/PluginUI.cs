@@ -26,7 +26,7 @@ public sealed partial class PluginUI : Window
     private readonly FfxivCollectService ffxivCollect;
 
     private bool trackerTabVisible;
-    private enum Page { Collection, Upgrade, Materials, Setup }
+    private enum Page { Collection, Upgrade, Ultimates, Materials, Setup }
     private Page page;
     private Page pageBeforeSetup;
 
@@ -82,6 +82,8 @@ public sealed partial class PluginUI : Window
         trackerTabVisible = false;
         DrawPageButton("All Relics", Page.Collection);
         ImGui.SameLine();
+        DrawPageButton("Ultimates", Page.Ultimates);
+        ImGui.SameLine();
         DrawPageButton("Materials", Page.Materials);
         ImGui.Separator();
 
@@ -92,6 +94,9 @@ public sealed partial class PluginUI : Window
                 break;
             case Page.Upgrade:
                 DrawRelicTab();
+                break;
+            case Page.Ultimates:
+                DrawUltimatesTab();
                 break;
             case Page.Materials:
                 if (MogVaultIpc.IsReady)

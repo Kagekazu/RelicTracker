@@ -219,6 +219,7 @@ def main() -> int:
     manifest = load_json(DATA / "manifest.json")
     relic_lines = load_json(DATA / "relic_lines.json")
     relic_armor = load_json(DATA / "relic_armor.json")
+    ultimates = load_json(DATA / "ultimate_weapons.json")
     extra = load_json(DATA / "tool_extra_materials.json")
     sources = load_json(DATA / "material_sources.json")
     aliases = load_json(DATA / "material_aliases.json")
@@ -234,7 +235,8 @@ def main() -> int:
     }
     jobs_by_expansion = {line.get("expansion"): int(line.get("jobs") or 0) for line in relic_lines}
 
-    for index, line in enumerate(relic_lines):
+    line_files = (("relic_lines", relic_lines), ("ultimate_weapons", ultimates))
+    for label, index, line in [(name, i, item) for name, lines in line_files for i, item in enumerate(lines)]:
         expansion = line.get("expansion")
         jobs = int(line.get("jobs") or 0)
         tier_count = int(line.get("tierCount") or 0)
@@ -242,45 +244,48 @@ def main() -> int:
         steps = line.get("steps") or []
         relic_names = line.get("relicNames") or []
 
-        if expansion not in expansions:
-            fail(errors, f"relic_lines[{index}] uses expansion not in manifest: {expansion}")
+        if label == "ultimate_weapons":
+            if tier_count != 1 or not line.get("shortName"):
+                fail(errors, f"{label}[{index}] needs tierCount 1 and a shortName")
+        elif expansion not in expansions:
+            fail(errors, f"{label}[{index}] uses expansion not in manifest: {expansion}")
         if jobs <= 0 or tier_count <= 0:
-            fail(errors, f"relic_lines[{index}] has invalid jobs/tierCount")
+            fail(errors, f"{label}[{index}] has invalid jobs/tierCount")
         if len(steps) != tier_count:
-            fail(errors, f"relic_lines[{index}] step count does not match tierCount")
+            fail(errors, f"{label}[{index}] step count does not match tierCount")
         if relic_count != jobs * tier_count:
-            fail(errors, f"relic_lines[{index}] relicCount does not equal jobs * tierCount")
+            fail(errors, f"{label}[{index}] relicCount does not equal jobs * tierCount")
         if len(relic_names) != relic_count:
-            fail(errors, f"relic_lines[{index}] relicNames count does not match relicCount")
+            fail(errors, f"{label}[{index}] relicNames count does not match relicCount")
         if any(not isinstance(name, str) or not name.strip() for name in relic_names):
-            fail(errors, f"relic_lines[{index}] has blank relicNames entries")
+            fail(errors, f"{label}[{index}] has blank relicNames entries")
 
         job_list = line.get("jobList") or []
         slot_relics = line.get("slotRelics") or []
         if len(job_list) != jobs:
-            fail(errors, f"relic_lines[{index}] jobList length does not match jobs")
+            fail(errors, f"{label}[{index}] jobList length does not match jobs")
         if len(slot_relics) != jobs:
-            fail(errors, f"relic_lines[{index}] slotRelics length does not match jobs")
+            fail(errors, f"{label}[{index}] slotRelics length does not match jobs")
 
         relic_ids = line.get("relicIds") or []
         slot_relic_ids = line.get("slotRelicIds") or []
         relic_replica_ids = line.get("relicReplicaIds") or []
         if len(relic_ids) != relic_count:
-            fail(errors, f"relic_lines[{index}] relicIds count does not match relicCount")
+            fail(errors, f"{label}[{index}] relicIds count does not match relicCount")
         if len(slot_relic_ids) != jobs:
-            fail(errors, f"relic_lines[{index}] slotRelicIds length does not match jobs")
+            fail(errors, f"{label}[{index}] slotRelicIds length does not match jobs")
         if len(relic_replica_ids) != relic_count:
-            fail(errors, f"relic_lines[{index}] relicReplicaIds count does not match relicCount")
+            fail(errors, f"{label}[{index}] relicReplicaIds count does not match relicCount")
         if any(not isinstance(item_id, int) or item_id <= 0 for item_id in relic_ids):
-            fail(errors, f"relic_lines[{index}] has invalid relicIds entries")
+            fail(errors, f"{label}[{index}] has invalid relicIds entries")
         if any(not isinstance(item_id, int) or item_id <= 0 for item_id in slot_relic_ids):
-            fail(errors, f"relic_lines[{index}] has invalid slotRelicIds entries")
+            fail(errors, f"{label}[{index}] has invalid slotRelicIds entries")
         for replica_index, replicas in enumerate(relic_replica_ids):
             if not isinstance(replicas, list):
-                fail(errors, f"relic_lines[{index}] relicReplicaIds[{replica_index}] is not a list")
+                fail(errors, f"{label}[{index}] relicReplicaIds[{replica_index}] is not a list")
                 continue
             if any(not isinstance(item_id, int) or item_id <= 0 for item_id in replicas):
-                fail(errors, f"relic_lines[{index}] relicReplicaIds[{replica_index}] has invalid ids")
+                fail(errors, f"{label}[{index}] relicReplicaIds[{replica_index}] has invalid ids")
 
     for index, line in enumerate(relic_armor):
         expansion = line.get("expansion")

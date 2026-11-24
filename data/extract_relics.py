@@ -124,6 +124,17 @@ ARMOR_LINES = [
     ]),
 ]
 
+# Column labels for the Ultimates page; every FFXIV Collect ultimate type needs one.
+ULTIMATE_SHORT_NAMES = {
+    "The Unending Coil of Bahamut": "UCoB",
+    "The Weapon's Refrain": "UwU",
+    "The Epic of Alexander": "TEA",
+    "Dragonsong's Reprise": "DSR",
+    "The Omega Protocol": "TOP",
+    "Futures Rewritten": "FRU",
+    "Dancing Mad": "DMU",
+}
+
 # Display order of expansions in the catalog.
 EXPANSION_ORDER = ["ARR", "HW", "SB", "ShB", "EW", "DT", "DoHDoL"]
 
@@ -210,6 +221,45 @@ def attach_relic_ids(lines: list[dict], index: ItemIndex) -> None:
         line["slotRelicIds"] = [index.resolve(name) for name in line["slotRelics"]]
 
 
+def build_ultimates(relics: list[dict]) -> list[dict]:
+    grouped: dict[str, dict] = {}
+    for relic in relics:
+        type_info = relic.get("type") or {}
+        if type_info.get("category") != "ultimate":
+            continue
+        name = type_info.get("name") or ""
+        entry = grouped.setdefault(name, {"order": type_info.get("order") or 0, "jobs": type_info.get("jobs") or 0, "relics": []})
+        entry["relics"].append((relic.get("order") or 0, relic.get("name") or ""))
+
+    all_jobs = JOB_LISTS["Phantom Weapons"]
+    lines: list[dict] = []
+    for name, entry in sorted(grouped.items(), key=lambda item: item[1]["order"]):
+        if name not in ULTIMATE_SHORT_NAMES:
+            raise ValueError(f"Ultimate type without a short name: {name}")
+        jobs = entry["jobs"]
+        relic_names = [relic_name for _, relic_name in sorted(entry["relics"])]
+        if len(relic_names) != jobs or jobs > len(all_jobs):
+            raise ValueError(f"{name}: {len(relic_names)} weapons, expected {jobs}")
+        lines.append(
+            {
+                "collectType": name,
+                "shortName": ULTIMATE_SHORT_NAMES[name],
+                "category": "ultimate",
+                "expansion": "Ultimate",
+                "jobs": jobs,
+                "tierCount": 1,
+                "relicCount": jobs,
+                "steps": ["Ultimate"],
+                # Collect slot order follows the relic job order; the game's job data replaces it at load.
+                "jobList": all_jobs[:jobs],
+                "slotRelics": relic_names,
+                "relicNames": relic_names,
+                "typeOrder": entry["order"],
+            }
+        )
+    return lines
+
+
 def piece_names_for_type(relics: list[dict], collect_type: str) -> list[str]:
     ordered = sorted(
         (relic.get("order") or 0, relic.get("name") or "")
@@ -260,6 +310,14 @@ def main() -> None:
     print(f"Wrote {len(lines)} relic lines to {OUT}")
     for line in lines:
         print(f"  {line['expansion']:7} {line['collectType']:20} jobs={line['jobs']:2} tiers={line['tierCount']}")
+
+    ultimates = build_ultimates(relics)
+    attach_relic_ids(ultimates, item_index)
+    ultimate_out = OUT.parent / "ultimate_weapons.json"
+    ultimate_out.write_text(json.dumps(ultimates, indent=2) + "\n", encoding="utf-8")
+    print(f"\nWrote {len(ultimates)} ultimate lines to {ultimate_out}")
+    for line in ultimates:
+        print(f"  {line['shortName']:5} {line['collectType']:30} jobs={line['jobs']:2}")
 
     armor = build_armor(relics)
     attach_armor_ids(armor, item_index)

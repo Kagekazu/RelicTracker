@@ -6,7 +6,6 @@ namespace RelicTracker.IPC;
 internal static class MogVaultIpc
 {
     private const string InternalName = "MogVault";
-    private static readonly Version MinimumPluginVersion = new(1, 0, 0, 0);
     private const int RequiredContractVersion = 1;
 
     private static ICallGateSubscriber<int>? _version;
@@ -101,8 +100,7 @@ internal static class MogVaultIpc
 
     private static bool HasRequiredContract()
     {
-        if (_version is not { HasFunction: true } || !Svc.PluginInterface.InstalledPlugins.Any(
-            plugin => plugin.InternalName == InternalName && plugin.Version >= MinimumPluginVersion))
+        if (_version is not { HasFunction: true })
         {
             return false;
         }

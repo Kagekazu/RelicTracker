@@ -22,7 +22,7 @@ RelicTracker tracks relic progress per character and shows which materials you s
 
 5. `/xlplugins` -> **MogVault** -> **Install** and enable it
 
-MogVault 1.0.0.0 or newer is required for live inventory tracking and the Materials page. It detects relics, replicas, and materials across bags, retainers, dresser, and armoire.
+MogVault is required for live inventory tracking and the Materials page. It detects relics, replicas, and materials across bags, retainers, dresser, and armoire.
 
 ## Using RelicTracker
 

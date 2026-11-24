@@ -44,6 +44,9 @@
         <None Include="..\data\relic_checklists.json" Link="Data\relic_checklists.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Include="..\data\extracted\ultimate_weapons.json" Link="Data\ultimate_weapons.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Include="..\data\extracted\relic_armor.json" Link="Data\relic_armor.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

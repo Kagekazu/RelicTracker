@@ -29,6 +29,9 @@ public sealed class RelicLine
     [JsonPropertyName("relicReplicaIds")]
     public List<List<uint>> RelicReplicaIds { get; set; } = [];
 
+    [JsonPropertyName("shortName")]
+    public string ShortName { get; set; } = string.Empty;
+
     [JsonPropertyName("typeOrder")]
     public int TypeOrder { get; set; }
 
@@ -149,6 +152,8 @@ public sealed class RelicCatalog
 
     public IReadOnlyList<RelicLine> Lines { get; private set; } = [];
 
+    public IReadOnlyList<RelicLine> UltimateLines { get; private set; } = [];
+
     public IReadOnlyList<ArmorLine> ArmorLines { get; private set; } = [];
 
     public IReadOnlyList<string> Expansions { get; private set; } = [];
@@ -177,6 +182,7 @@ public sealed class RelicCatalog
         stepChecklists = BundledData.ReadJson<Dictionary<string, Dictionary<string, string>>>(
                              "relic_checklists.json", JsonOptions)
                          ?? new(StringComparer.Ordinal);
+        UltimateLines = BundledData.ReadJson<List<RelicLine>>("ultimate_weapons.json", JsonOptions) ?? [];
         ArmorLines = BundledData.ReadJson<List<ArmorLine>>("relic_armor.json", JsonOptions) ?? [];
         if (ArmorLines.Count > 0)
         {
@@ -210,7 +216,7 @@ public sealed class RelicCatalog
     public void ResolveJobs()
     {
         var resolvedLines = 0;
-        foreach (var line in Lines)
+        foreach (var line in Lines.Concat(UltimateLines))
         {
             if (line.Jobs <= 0 || line.SlotRelicIds.Count != line.Jobs)
             {
@@ -242,7 +248,7 @@ public sealed class RelicCatalog
             }
         }
 
-        Svc.Log.Information("[RelicTracker] Resolved job order from game data for {Count}/{Total} relic lines.", resolvedLines, Lines.Count);
+        Svc.Log.Information("[RelicTracker] Resolved job order from game data for {Count}/{Total} relic lines.", resolvedLines, Lines.Count + UltimateLines.Count);
         try
         {
             WksCosmicTools.AttachStageReplicas(Lines);

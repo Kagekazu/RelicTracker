@@ -160,7 +160,7 @@ public static class RelicStatusService
     public static HashSet<string> BuildStepDoneKeys(RelicCatalog catalog, Func<uint, uint> ownedLookup)
     {
         HashSet<string> done = new(StringComparer.Ordinal);
-        foreach (RelicLine line in catalog.Lines)
+        foreach (RelicLine line in catalog.Lines.Concat(catalog.UltimateLines))
         {
             IReadOnlyList<string> jobs = line.EffectiveJobList;
             for (int slot = 0; slot < line.Jobs && slot < jobs.Count; slot++)
